@@ -535,6 +535,7 @@ public abstract class ASwingWorkbench extends JFrame
 		return menu;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void addDefaultMenuEntries() {
 
 		final boolean isMacOS = System.getProperty("mrj.version") != null;

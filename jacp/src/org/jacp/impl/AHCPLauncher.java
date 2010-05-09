@@ -4,6 +4,10 @@
  */
 package org.jacp.impl;
 
+import java.awt.Container;
+import java.awt.LayoutManager2;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,8 +19,8 @@ import org.jacp.swing.demo1.workbench.TestSwingWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * 
- * @author amo
+ * Launches the spring context, handles workbench initialization and set OS specific settings
+ * @author Andy Moncsek
  */
 public class AHCPLauncher {
 
@@ -29,11 +33,12 @@ public class AHCPLauncher {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void main(final String[] args) throws ClassNotFoundException {
 		final String[] contextPath = new String[] { "org/jacp/impl/resources/ahcpWorkbench.xml" };
 		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				contextPath);
-		final IWorkbench workbench = (IWorkbench) context.getBean("workbench");
+		final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) context.getBean("workbench");
 		workbench.init();
 	}
 
@@ -42,6 +47,7 @@ public class AHCPLauncher {
 		if (osName.toLowerCase().trim().contains("mac")) {
 			setOSXspecific();
 		} else {
+			setDefault();
 		}
 	}
 
@@ -49,6 +55,22 @@ public class AHCPLauncher {
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 				"TestApp");
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (final InstantiationException ex) {
+			Logger.getLogger(AHCPLauncher.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} catch (final IllegalAccessException ex) {
+			Logger.getLogger(AHCPLauncher.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} catch (final UnsupportedLookAndFeelException ex) {
+			Logger.getLogger(TestSwingWorkbench.class.getName()).log(
+					Level.SEVERE, null, ex);
+		}
+
+	}
+	
+	private static void setDefault() throws ClassNotFoundException {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final InstantiationException ex) {
