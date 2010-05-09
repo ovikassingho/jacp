@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:flow="http://www.springframework.org/schema/webflow-config"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config-1.0.xsd
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-2.5.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+       http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
+       http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+
+	<bean id="workbench" class="org.jacp.swing.demo1.workbench.TestSwingWorkbench">
+
+		<property name="perspectives">
+			<list>
+				<ref bean="perspective1" />
+				<ref bean="perspective2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="perspective1"
+		class="org.jacp.swing.demo1.perspectives.TestSwingSplitPanePerspective">
+		<property name="name" value="testPerspective" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="editors">
+			<list>
+				<ref bean="editor1" />
+				<ref bean="editor2" />
+				<ref bean="editor3" />
+			</list>
+		</property>
+	</bean>
+	<bean id="perspective2"
+		class="org.jacp.swing.demo1.perspectives.TestSwingSplitPanePerspective2">
+		<property name="name" value="testPerspective2" />
+		<property name="id" value="id02" />
+		<property name="active" value="false" />
+		<property name="editors">
+			<list>
+				<ref bean="editor4" />
+				<ref bean="editor5" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="editor1" class="org.jacp.swing.demo1.editors.TestSwingEditor">
+		<property name="name" value="testEditor1" />
+		<property name="active" value="true" />
+		<property name="id" value="id03" />
+		<property name="target" value="editor1" />
+	</bean>
+
+	<bean id="editor2" class="org.jacp.swing.demo1.editors.TestSwingEditor2">
+		<property name="name" value="testEditor2" />
+		<property name="active" value="false" />
+		<property name="id" value="id04" />
+		<property name="target" value="editor2" />
+	</bean>
+	<bean id="editor3" class="org.jacp.swing.demo1.editors.TestEditor3">
+		<property name="name" value="testEditor3" />
+		<property name="active" value="true" />
+		<property name="id" value="id05" />
+		<property name="target" value="editor0" />
+	</bean>
+	<bean id="editor4" class="org.jacp.swing.demo1.editors.TestEditor4">
+		<property name="name" value="testEditor4" />
+		<property name="active" value="true" />
+		<property name="id" value="id06" />
+		<property name="target" value="view" />
+	</bean>
+	<bean id="editor5" class="org.jacp.swing.demo1.editors.TestEditor5">
+		<property name="name" value="testEditor5" />
+		<property name="active" value="true" />
+		<property name="id" value="id07" />
+		<property name="target" value="editor" />
+	</bean>
+</beans>
+
