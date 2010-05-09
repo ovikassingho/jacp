@@ -183,9 +183,6 @@ public abstract class ASwingWorkbench extends JFrame
 	public void initPerspective(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective,
 			final IAction<Object, ActionEvent> action) {
-		// TODO when initPerspective is called explicit by a component message,
-		// manage to pass the massage at initilaisation process and activate
-		// components if nedded
 		final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 				.getIPerspectiveLayout();
 
@@ -206,7 +203,12 @@ public abstract class ASwingWorkbench extends JFrame
 					.getName());
 		}
 	}
-
+	/**
+	 * handles initialization with correct action; perspective can be initialized at application start or when called by an other component
+	 * @param action
+	 * @param perspectiveLayout
+	 * @param perspective
+	 */
 	private void handlePerspectiveInitMethod(
 			final IAction<Object, ActionEvent> action,
 			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout,
@@ -314,9 +316,7 @@ public abstract class ASwingWorkbench extends JFrame
 			final String name) {
 		enableComponents();
 		final JInternalFrame internalFrame = getActiveInternalFrame(name);
-		final JPanel frame = getActivePanel(new Dimension(this.layout
-				.getWorkbenchSize().getX() - 15, this.layout.getWorkbenchSize()
-				.getY() - 15));
+		final JPanel frame = getActivePanel(getPanelDimension(this.layout));
 		final Container comp = getLayoutComponentFromPerspectiveLayout(layout,
 				new Dimension(this.layout.getWorkbenchSize().getX() - 30,
 						this.layout.getWorkbenchSize().getY() - 20));
@@ -324,6 +324,17 @@ public abstract class ASwingWorkbench extends JFrame
 		internalFrame.setContentPane(frame);
 		getContentPane().add(internalFrame);
 		invalidateHost(this);
+	}
+
+	/**
+	 * returns panel size in window mode
+	 * 
+	 * @param layout
+	 * @return
+	 */
+	private Dimension getPanelDimension(final IWorkbenchLayout<LayoutManager2> layout) {
+		return new Dimension(layout.getWorkbenchSize().getX() - 15, layout
+				.getWorkbenchSize().getY() - 15);
 	}
 
 	/**
