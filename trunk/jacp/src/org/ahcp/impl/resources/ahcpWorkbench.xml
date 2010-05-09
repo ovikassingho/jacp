@@ -18,7 +18,7 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
 
-	<bean id="workbench" class="org.ahcp.swing.test.workbench.TestSwingWorkbench">
+	<bean id="workbench" class="org.ahcp.swing.demo1.workbench.TestSwingWorkbench">
 
 		<property name="perspectives">
 			<list>
@@ -29,7 +29,7 @@
 	</bean>
 
 	<bean id="perspective1"
-		class="org.ahcp.swing.test.perspectives.TestSwingSplitPanePerspective">
+		class="org.ahcp.swing.demo1.perspectives.TestSwingSplitPanePerspective">
 		<property name="name" value="testPerspective" />
 		<property name="id" value="id01" />
 		<property name="active" value="true" />
@@ -42,7 +42,7 @@
 		</property>
 	</bean>
 	<bean id="perspective2"
-		class="org.ahcp.swing.test.perspectives.TestSwingSplitPanePerspective2">
+		class="org.ahcp.swing.demo1.perspectives.TestSwingSplitPanePerspective2">
 		<property name="name" value="testPerspective2" />
 		<property name="id" value="id02" />
 		<property name="active" value="false" />
@@ -54,32 +54,32 @@
 		</property>
 	</bean>
 
-	<bean id="editor1" class="org.ahcp.swing.test.editors.TestSwingEditor">
+	<bean id="editor1" class="org.ahcp.swing.demo1.editors.TestSwingEditor">
 		<property name="name" value="testEditor1" />
 		<property name="active" value="true" />
 		<property name="id" value="id03" />
 		<property name="target" value="editor1" />
 	</bean>
 
-	<bean id="editor2" class="org.ahcp.swing.test.editors.TestSwingEditor2">
+	<bean id="editor2" class="org.ahcp.swing.demo1.editors.TestSwingEditor2">
 		<property name="name" value="testEditor2" />
 		<property name="active" value="false" />
 		<property name="id" value="id04" />
 		<property name="target" value="editor2" />
 	</bean>
-	<bean id="editor3" class="org.ahcp.swing.test.editors.TestEditor3">
+	<bean id="editor3" class="org.ahcp.swing.demo1.editors.TestEditor3">
 		<property name="name" value="testEditor3" />
 		<property name="active" value="true" />
 		<property name="id" value="id05" />
 		<property name="target" value="editor0" />
 	</bean>
-	<bean id="editor4" class="org.ahcp.swing.test.editors.TestEditor4">
+	<bean id="editor4" class="org.ahcp.swing.demo1.editors.TestEditor4">
 		<property name="name" value="testEditor4" />
 		<property name="active" value="true" />
 		<property name="id" value="id06" />
 		<property name="target" value="view" />
 	</bean>
-	<bean id="editor5" class="org.ahcp.swing.test.editors.TestEditor5">
+	<bean id="editor5" class="org.ahcp.swing.demo1.editors.TestEditor5">
 		<property name="name" value="testEditor5" />
 		<property name="active" value="true" />
 		<property name="id" value="id07" />

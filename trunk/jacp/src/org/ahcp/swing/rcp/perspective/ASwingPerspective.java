@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ahcp.swing.test.perspectives;
+package org.ahcp.swing.rcp.perspective;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

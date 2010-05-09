@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ahcp.swing.test.workbench;
+package org.ahcp.swing.demo1.workbench;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -19,6 +19,7 @@ import javax.swing.KeyStroke;
 
 import org.ahcp.api.ria.base.WorkspaceMode;
 import org.ahcp.api.ria.componentLayout.Layout;
+import org.ahcp.swing.rcp.workbench.ASwingWorkbench;
 import org.ahcp.swing.ria.action.SwingAction;
 import org.ahcp.swing.ria.componentLayout.SwingWorkbenchLayout;
 

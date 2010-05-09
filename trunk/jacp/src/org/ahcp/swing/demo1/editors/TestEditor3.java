@@ -1,4 +1,4 @@
-package org.ahcp.swing.test.editors;
+package org.ahcp.swing.demo1.editors;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -8,6 +8,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.ahcp.api.ria.action.IAction;
+import org.ahcp.swing.rcp.editor.ASwingEditor;
 
 public class TestEditor3 extends ASwingEditor {
 
