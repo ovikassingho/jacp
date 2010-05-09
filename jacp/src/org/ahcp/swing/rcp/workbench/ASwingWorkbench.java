@@ -29,18 +29,18 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import org.ahcp.api.ria.action.IAction;
-import org.ahcp.api.ria.base.IEditor;
-import org.ahcp.api.ria.base.IPerspective;
-import org.ahcp.api.ria.base.IRootComponent;
-import org.ahcp.api.ria.base.IWorkbench;
-import org.ahcp.api.ria.componentLayout.IPerspectiveLayout;
-import org.ahcp.api.ria.componentLayout.IWorkbenchLayout;
-import org.ahcp.api.ria.observers.IPerspectiveObserver;
-import org.ahcp.swing.ria.action.SwingAction;
-import org.ahcp.swing.ria.componentLayout.SwingWorkbenchLayout;
-import org.ahcp.swing.ria.handler.MacOSXController;
-import org.ahcp.swing.ria.observers.SwingPerspectiveObserver;
+import org.ahcp.api.action.IAction;
+import org.ahcp.api.base.IEditor;
+import org.ahcp.api.base.IPerspective;
+import org.ahcp.api.base.IRootComponent;
+import org.ahcp.api.base.IWorkbench;
+import org.ahcp.api.componentLayout.IPerspectiveLayout;
+import org.ahcp.api.componentLayout.IWorkbenchLayout;
+import org.ahcp.api.observers.IPerspectiveObserver;
+import org.ahcp.swing.rcp.action.SwingAction;
+import org.ahcp.swing.rcp.componentLayout.SwingWorkbenchLayout;
+import org.ahcp.swing.rcp.handler.MacOSXController;
+import org.ahcp.swing.rcp.observers.SwingPerspectiveObserver;
 
 import com.apple.mrj.MRJApplicationUtils;
 

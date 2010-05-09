@@ -12,22 +12,22 @@ import java.util.List;
 
 import javax.swing.JMenu;
 
-import org.ahcp.api.ria.action.IAction;
-import org.ahcp.api.ria.action.IActionListener;
-import org.ahcp.api.ria.base.IEditor;
-import org.ahcp.api.ria.base.IPerspective;
-import org.ahcp.api.ria.base.ISubComponent;
-import org.ahcp.api.ria.base.IView;
-import org.ahcp.api.ria.componentLayout.IPerspectiveLayout;
-import org.ahcp.api.ria.observers.IComponentObserver;
-import org.ahcp.api.ria.observers.IObserver;
-import org.ahcp.swing.ria.action.SwingAction;
-import org.ahcp.swing.ria.action.SwingActionListener;
-import org.ahcp.swing.ria.componentLayout.SwingPerspectiveLayout;
+import org.ahcp.api.action.IAction;
+import org.ahcp.api.action.IActionListener;
+import org.ahcp.api.base.IEditor;
+import org.ahcp.api.base.IPerspective;
+import org.ahcp.api.base.ISubComponent;
+import org.ahcp.api.base.IView;
+import org.ahcp.api.componentLayout.IPerspectiveLayout;
+import org.ahcp.api.observers.IComponentObserver;
+import org.ahcp.api.observers.IObserver;
+import org.ahcp.swing.rcp.action.SwingAction;
+import org.ahcp.swing.rcp.action.SwingActionListener;
+import org.ahcp.swing.rcp.componentLayout.SwingPerspectiveLayout;
+import org.ahcp.swing.rcp.observers.SwingComponentObserver;
+import org.ahcp.swing.rcp.util.ComponentInitWorker;
+import org.ahcp.swing.rcp.util.ComponentReplaceWorker;
 
-import org.ahcp.swing.ria.observers.SwingComponentObserver;
-import org.ahcp.swing.ria.util.ComponentInitWorker;
-import org.ahcp.swing.ria.util.ComponentReplaceWorker;
 
 /**
  * 

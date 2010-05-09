@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.ahcp.api.ria.base.IWorkbench;
+import org.ahcp.api.base.IWorkbench;
 import org.ahcp.swing.demo1.workbench.TestSwingWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

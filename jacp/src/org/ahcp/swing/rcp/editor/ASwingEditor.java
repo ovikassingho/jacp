@@ -4,12 +4,12 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.ahcp.api.ria.action.IActionListener;
-import org.ahcp.api.ria.base.IEditor;
-import org.ahcp.api.ria.base.IPerspective;
-import org.ahcp.api.ria.observers.IObserver;
-import org.ahcp.swing.ria.action.SwingAction;
-import org.ahcp.swing.ria.action.SwingActionListener;
+import org.ahcp.api.action.IActionListener;
+import org.ahcp.api.base.IEditor;
+import org.ahcp.api.base.IPerspective;
+import org.ahcp.api.observers.IObserver;
+import org.ahcp.swing.rcp.action.SwingAction;
+import org.ahcp.swing.rcp.action.SwingActionListener;
 
 public abstract class ASwingEditor implements
 		IEditor<Container, ActionListener, ActionEvent, Object> {

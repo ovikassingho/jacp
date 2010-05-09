@@ -15,10 +15,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
-import org.ahcp.api.ria.action.IActionListener;
+import org.ahcp.api.action.IActionListener;
+import org.ahcp.swing.rcp.action.SwingAction;
+import org.ahcp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.ahcp.swing.rcp.perspective.ASwingPerspective;
-import org.ahcp.swing.ria.action.SwingAction;
-import org.ahcp.swing.ria.componentLayout.SwingPerspectiveLayout;
 
 /**
  * 

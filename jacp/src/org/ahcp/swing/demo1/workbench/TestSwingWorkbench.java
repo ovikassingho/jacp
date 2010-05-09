@@ -17,11 +17,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.ahcp.api.ria.base.WorkspaceMode;
-import org.ahcp.api.ria.componentLayout.Layout;
+import org.ahcp.api.base.WorkspaceMode;
+import org.ahcp.api.componentLayout.Layout;
+import org.ahcp.swing.rcp.action.SwingAction;
+import org.ahcp.swing.rcp.componentLayout.SwingWorkbenchLayout;
 import org.ahcp.swing.rcp.workbench.ASwingWorkbench;
-import org.ahcp.swing.ria.action.SwingAction;
-import org.ahcp.swing.ria.componentLayout.SwingWorkbenchLayout;
 
 /**
  * 
