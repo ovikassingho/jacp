@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.ahcp.api.ria.action.IAction;
-import org.ahcp.api.ria.action.IActionListener;
+import org.ahcp.api.action.IAction;
+import org.ahcp.api.action.IActionListener;
 import org.ahcp.swing.rcp.editor.ASwingEditor;
 
 public class TestSwingEditor extends ASwingEditor {
