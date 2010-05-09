@@ -1,4 +1,4 @@
-package org.ahcp.swing.test.editors;
+package org.ahcp.swing.rcp.editor;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

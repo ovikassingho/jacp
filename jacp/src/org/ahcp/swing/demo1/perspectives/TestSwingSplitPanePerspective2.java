@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ahcp.swing.test.perspectives;
+package org.ahcp.swing.demo1.perspectives;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import org.ahcp.api.ria.action.IActionListener;
+import org.ahcp.swing.rcp.perspective.ASwingPerspective;
 import org.ahcp.swing.ria.action.SwingAction;
 import org.ahcp.swing.ria.componentLayout.SwingPerspectiveLayout;
 

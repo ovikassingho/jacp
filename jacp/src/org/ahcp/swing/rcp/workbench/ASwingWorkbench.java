@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ahcp.swing.test.workbench;
+package org.ahcp.swing.rcp.workbench;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

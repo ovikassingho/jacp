@@ -1,4 +1,4 @@
-package org.ahcp.swing.test.editors;
+package org.ahcp.swing.demo1.editors;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -8,8 +8,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.ahcp.api.ria.action.IAction;
+import org.ahcp.swing.rcp.editor.ASwingEditor;
 
-public class TestEditor5 extends ASwingEditor {
+public class TestEditor4 extends ASwingEditor {
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
@@ -27,7 +28,7 @@ public class TestEditor5 extends ASwingEditor {
 	@Override
 	public Container handle(final IAction<Object, ActionEvent> action) {
 
-		System.out.println("Editor5 CALL");
+		System.out.println("Editor4 CALL");
 		Long j = 0L;
 
 		while (j < 100000000L) {
@@ -35,13 +36,28 @@ public class TestEditor5 extends ASwingEditor {
 			// System.out.print("test"+j+" ");
 
 		}
+		System.out.println("Editor4 got message: " + action.getMessage());
+		if (action.getMessage().equals("test")) {
+			return handleViewLayout4();
+		} else {
+			return handleViewLayout3();
+		}
 
-		return handleViewLayout3();
 	}
 
 	private Container handleViewLayout3() {
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
-				"HAllo Welt Editor 5");
+				"HAllo Welt Editor 4");
+		createNodes(top);
+		final JTree tree = new JTree(top);
+		final JPanel panel = new JPanel();
+		panel.add(tree);
+		return panel;
+	}
+
+	private Container handleViewLayout4() {
+		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
+				"Neue Nachricht erhalten");
 		createNodes(top);
 		final JTree tree = new JTree(top);
 		final JPanel panel = new JPanel();

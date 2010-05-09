@@ -1,4 +1,4 @@
-package org.ahcp.swing.test.editors;
+package org.ahcp.swing.demo1.editors;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -8,10 +8,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.ahcp.api.ria.action.IAction;
+import org.ahcp.swing.rcp.editor.ASwingEditor;
 
-public class TestSwingEditor2 extends ASwingEditor {
-
-	int i = 0;
+public class TestEditor5 extends ASwingEditor {
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
@@ -29,7 +28,7 @@ public class TestSwingEditor2 extends ASwingEditor {
 	@Override
 	public Container handle(final IAction<Object, ActionEvent> action) {
 
-		System.out.println("Editor2 CALL");
+		System.out.println("Editor5 CALL");
 		Long j = 0L;
 
 		while (j < 100000000L) {
@@ -38,15 +37,12 @@ public class TestSwingEditor2 extends ASwingEditor {
 
 		}
 
-		final int z = i % 3;
-		setTarget("editor" + z);
-		i = i + 1;
 		return handleViewLayout3();
 	}
 
 	private Container handleViewLayout3() {
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
-				"HAllo Welt Editor 2");
+				"HAllo Welt Editor 5");
 		createNodes(top);
 		final JTree tree = new JTree(top);
 		final JPanel panel = new JPanel();
