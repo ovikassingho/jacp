@@ -28,7 +28,6 @@ import org.jacp.swing.rcp.observers.SwingComponentObserver;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
 
-
 /**
  * 
  * @author Andy Moncsek
@@ -52,49 +51,14 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public void init() {
 	}
 
-	@Override
-	public void setViews(
-			final List<IView<Container, ActionListener, ActionEvent, Object>> views) {
-		this.views = views;
-		registerSubcomponents(this.views);
-	}
+	public abstract void addMenuEntries(JMenu menuBar);
 
 	@Override
-	public List<IView<Container, ActionListener, ActionEvent, Object>> getViews() {
-		return views;
-	}
-
-	@Override
-	public void setEditors(
-			final List<IEditor<Container, ActionListener, ActionEvent, Object>> editors) {
-		this.editors = editors;
-		registerSubcomponents(this.editors);
-	}
-
-	@Override
-	public List<IEditor<Container, ActionListener, ActionEvent, Object>> getEditors() {
-		return this.editors;
-	}
-
-	@Override
-	public void setObserver(
-			final IObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver) {
-		this.perspectiveObserver = perspectiveObserver;
-	}
+	public abstract void handleBarEntries(Container toolBar, Container bottomBar);
 
 	@Override
 	public Container handle(final IAction<Object, ActionEvent> action) {
 		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
-		return new SwingActionListener(new SwingAction(id), perspectiveObserver);
-	}
-
-	@Override
-	public IPerspectiveLayout<T, Container> getIPerspectiveLayout() {
-		return this.perspectiveLayout;
 	}
 
 	public abstract void handleInitialLayout(SwingAction action,
@@ -107,13 +71,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 		handleInitialLayout((SwingAction) action,
 				(SwingPerspectiveLayout<T>) perspectiveLayout);
 
-	}
-
-	private <M extends ISubComponent<Container, ActionListener, ActionEvent, Object>> void registerSubcomponents(
-			final List<M> components) {
-		for (final M component : components) {
-			registerComponent(component, componentObserver);
-		}
 	}
 
 	@Override
@@ -163,45 +120,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	}
 
-	/**
-	 * returns the message target id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	private String getTargetComponentId(final String messageId) {
-		final String[] targetId = getTargetId(messageId);
-		if (isFullValidId(targetId)) {
-			return targetId[1];
-		}
-		return messageId;
-	}
-
-	/**
-	 * returns target message with perspective and component name
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	private String[] getTargetId(final String messageId) {
-		return messageId.split("\\.");
-	}
-
-	/**
-	 * a target id is valid, when it does contain a perspective and a component
-	 * id (perspectiveId.componentId)
-	 * 
-	 * @param targetId
-	 * @return
-	 */
-	private boolean isFullValidId(final String[] targetId) {
-		if (targetId != null && targetId.length == 2) {
-			return true;
-		}
-
-		return false;
-	}
-
 	@Override
 	public synchronized void replaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
@@ -231,11 +149,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 		// handle the message
 		this.componentObserver.delegateMessage(target, action);
 	}
-
-	public abstract void addMenuEntries(JMenu menuBar);
-
-	@Override
-	public abstract void handleBarEntries(Container toolBar, Container bottomBar);
 
 	@Override
 	public String getName() {
@@ -279,5 +192,97 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	public void setBlocked(final boolean blocked) {
 		this.blocked = blocked;
+	}
+
+	@Override
+	public void setViews(
+			final List<IView<Container, ActionListener, ActionEvent, Object>> views) {
+		this.views = views;
+		registerSubcomponents(this.views);
+	}
+
+	@Override
+	public List<IView<Container, ActionListener, ActionEvent, Object>> getViews() {
+		return views;
+	}
+
+	@Override
+	public void setEditors(
+			final List<IEditor<Container, ActionListener, ActionEvent, Object>> editors) {
+		this.editors = editors;
+		registerSubcomponents(this.editors);
+	}
+
+	@Override
+	public List<IEditor<Container, ActionListener, ActionEvent, Object>> getEditors() {
+		return this.editors;
+	}
+
+	@Override
+	public void setObserver(
+			final IObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver) {
+		this.perspectiveObserver = perspectiveObserver;
+	}
+
+	@Override
+	public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
+		return new SwingActionListener(new SwingAction(id), perspectiveObserver);
+	}
+
+	@Override
+	public IPerspectiveLayout<T, Container> getIPerspectiveLayout() {
+		return this.perspectiveLayout;
+	}
+
+	/**
+	 * register components at componentObserver
+	 * 
+	 * @param <M>
+	 * @param components
+	 */
+	private <M extends ISubComponent<Container, ActionListener, ActionEvent, Object>> void registerSubcomponents(
+			final List<M> components) {
+		for (final M component : components) {
+			registerComponent(component, componentObserver);
+		}
+	}
+
+	/**
+	 * returns the message target id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	private String getTargetComponentId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (isFullValidId(targetId)) {
+			return targetId[1];
+		}
+		return messageId;
+	}
+
+	/**
+	 * returns target message with perspective and component name
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	private String[] getTargetId(final String messageId) {
+		return messageId.split("\\.");
+	}
+
+	/**
+	 * a target id is valid, when it does contain a perspective and a component
+	 * id (perspectiveId.componentId)
+	 * 
+	 * @param targetId
+	 * @return
+	 */
+	private boolean isFullValidId(final String[] targetId) {
+		if (targetId != null && targetId.length == 2) {
+			return true;
+		}
+
+		return false;
 	}
 }

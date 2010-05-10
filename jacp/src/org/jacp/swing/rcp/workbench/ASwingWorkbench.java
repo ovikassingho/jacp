@@ -45,8 +45,10 @@ import org.jacp.swing.rcp.observers.SwingPerspectiveObserver;
 import com.apple.mrj.MRJApplicationUtils;
 
 /**
+ * represents the basic swing workbench instance; handles perspectives and
+ * components;
  * 
- * @author amo
+ * @author Andy Moncsek
  */
 public abstract class ASwingWorkbench extends JFrame
 		implements
@@ -138,39 +140,6 @@ public abstract class ASwingWorkbench extends JFrame
 	public abstract void handleInitialLayout(SwingAction action,
 			SwingWorkbenchLayout layout);
 
-	/**
-	 * perspectives are a set in workbench. Each perspective contains a Layout
-	 * object (container like splitPane), a view container and a
-	 * editorContainer. The initPerspective method should stick these three
-	 * parts together so they can be add to the workbench
-	 */
-	private void initPerspectives() {
-		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
-			registerComponent(perspective, perspectiveObserver);
-			// TODO what if component removed an initilaized later again?
-			createPerspectiveMenue(perspective);
-			if (perspective.isActive()) {
-				final Thread worker = new Thread() {
-					@Override
-					public void run() {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								initPerspective(perspective, new SwingAction(
-										perspective.getId(), perspective
-												.getId(), "init"));
-
-							}
-						}); // SWING UTILS END
-					} // run end
-				}; // thred END
-				worker.start();
-
-			}
-
-		}
-	}
-
 	@Override
 	public void registerComponent(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> component,
@@ -203,51 +172,6 @@ public abstract class ASwingWorkbench extends JFrame
 					.getName());
 		}
 	}
-	/**
-	 * handles initialization with correct action; perspective can be initialized at application start or when called by an other component
-	 * @param action
-	 * @param perspectiveLayout
-	 * @param perspective
-	 */
-	private void handlePerspectiveInitMethod(
-			final IAction<Object, ActionEvent> action,
-			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		if (getTargetPerspectiveId(action.getTargetId()).equals(
-				perspective.getId())) {
-			perspective.handleInitialLayout(action, perspectiveLayout);
-		} else {
-			perspective.handleInitialLayout(new SwingAction(
-					perspective.getId(), perspective.getId(), "init"),
-					perspectiveLayout);
-		}
-	}
-
-	/**
-	 * returns the message target id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	private String getTargetPerspectiveId(final String messageId) {
-		final String[] targetId = getTargetId(messageId);
-		if (checkValidComponentId(targetId)) {
-			return targetId[0];
-		}
-		return messageId;
-	}
-
-	private String[] getTargetId(final String messageId) {
-		return messageId.split("\\.");
-	}
-
-	private boolean checkValidComponentId(final String[] targetId) {
-		if (targetId != null && targetId.length == 2) {
-			return true;
-		}
-
-		return false;
-	}
 
 	@Override
 	public void replacePerspective(
@@ -265,131 +189,6 @@ public abstract class ASwingWorkbench extends JFrame
 		// set already active editors to new component
 		reassignSubcomponents(perspectiveLayout, perspective);
 		invalidateHost(parent);
-	}
-
-	/**
-	 * add all active subcomponents to replaced perspective
-	 * 
-	 * @param layout
-	 * @param perspective
-	 */
-	private void reassignSubcomponents(
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		for (final IEditor<Container, ActionListener, ActionEvent, Object> editor : perspective
-				.getEditors()) {
-			final Container editorComponent = editor.getRoot();
-			if (editorComponent != null) {
-				editorComponent.setVisible(true);
-				editorComponent.setEnabled(true);
-				addComponentByType(layout, editor);
-			}
-		}
-	}
-
-	/**
-	 * takes the root component from old container, removes old container and
-	 * add the new one
-	 * 
-	 * @param oldComp
-	 * @param newComp
-	 * @return
-	 */
-	private Container getParentAndReplace(final Container oldComp,
-			final Container newComp) {
-		final Container parent = oldComp.getParent();
-		parent.remove(oldComp);
-		parent.add(newComp);
-		parent.setVisible(true);
-		return parent;
-	}
-
-	/**
-	 * initialize perspective in window mode; creates an internal frame and add
-	 * perspective
-	 * 
-	 * @param layout
-	 * @param name
-	 */
-	private void initPerspectiveInWindowMode(
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final String name) {
-		enableComponents();
-		final JInternalFrame internalFrame = getActiveInternalFrame(name);
-		final JPanel frame = getActivePanel(getPanelDimension(this.layout));
-		final Container comp = getLayoutComponentFromPerspectiveLayout(layout,
-				new Dimension(this.layout.getWorkbenchSize().getX() - 30,
-						this.layout.getWorkbenchSize().getY() - 20));
-		frame.add(comp);
-		internalFrame.setContentPane(frame);
-		getContentPane().add(internalFrame);
-		invalidateHost(this);
-	}
-
-	/**
-	 * returns panel size in window mode
-	 * 
-	 * @param layout
-	 * @return
-	 */
-	private Dimension getPanelDimension(final IWorkbenchLayout<LayoutManager2> layout) {
-		return new Dimension(layout.getWorkbenchSize().getX() - 15, layout
-				.getWorkbenchSize().getY() - 15);
-	}
-
-	/**
-	 * create an active JPanel
-	 * 
-	 * @param dimension
-	 * @return
-	 */
-	private JPanel getActivePanel(final Dimension dimension) {
-		final JPanel frame = new JPanel();
-		frame.setSize(dimension);
-		return frame;
-	}
-
-	/**
-	 * get perspectives root container
-	 * 
-	 * @param layout
-	 * @param dimension
-	 * @return
-	 */
-	private Container getLayoutComponentFromPerspectiveLayout(
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final Dimension dimension) {
-		final Container comp = layout.getRootLayoutComponent();
-		comp.setVisible(true);
-		comp.setPreferredSize(dimension);
-		return comp;
-	}
-
-	/**
-	 * initialize perspective in tabed mode; creates an tab an add perspective
-	 * 
-	 * @param layout
-	 */
-	private void initPerspectivesInTabbedMode(
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final String name) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	/**
-	 * initialize perspective in stacked mode; creates an panel an add
-	 * perspective
-	 * 
-	 * @param layout
-	 */
-	private void initPerspectiveInStackMode(
-			final IPerspectiveLayout<? extends Container, Container> layout) {
-		disableComponents();
-		final JComponent wrapper = new JPanel(true);
-		final Container comp = layout.getRootLayoutComponent();
-		comp.setVisible(true);
-		getContentPane().add(wrapper.add(layout.getRootLayoutComponent()));
-		invalidateHost(getContentPane());
 	}
 
 	/**
@@ -411,7 +210,7 @@ public abstract class ASwingWorkbench extends JFrame
 	}
 
 	/**
-	 * anable all components in workspace; for use in
+	 * enable all components in workspace; for use in
 	 * initPerspectiveInWindowMode
 	 */
 	@Override
@@ -419,56 +218,6 @@ public abstract class ASwingWorkbench extends JFrame
 		for (final Component comp : getContentPane().getComponents()) {
 			comp.setVisible(true);
 		}
-	}
-
-	private JInternalFrame getActiveInternalFrame(final String name) {
-		final JInternalFrame internalFrame = new JInternalFrame(name, true,
-				true, true, true);
-		try {
-			internalFrame.setSelected(true);
-		} catch (final PropertyVetoException ex) {
-			Logger.getLogger(ASwingWorkbench.class.getName()).log(Level.SEVERE,
-					null, ex);
-		}
-		internalFrame.setSize(layout.getWorkbenchSize().getX() - 10, layout
-				.getWorkbenchSize().getY() - 10);
-		internalFrame.setVisible(true);
-		return internalFrame;
-	}
-
-	private void invalidateHost(final Container host) {
-		if (host instanceof JComponent) {
-			((JComponent) host).revalidate();
-		} else {
-			host.invalidate();
-		}
-		host.repaint();
-	}
-
-	/**
-	 * find valid target and add type specific new component
-	 * 
-	 * @param layout
-	 * @param editor
-	 */
-	private void addComponentByType(
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final IEditor<Container, ActionListener, ActionEvent, Object> editor) {
-		final Container validContainer = layout.getTargetLayoutComponents()
-				.get(editor.getTarget());
-		if (validContainer instanceof JScrollPane) {
-			((JScrollPane) validContainer).setViewportView(editor.getRoot());
-		} else {
-			validContainer.add(editor.getName(), editor.getRoot());
-		}
-		validContainer.setEnabled(true);
-		invalidateHost(validContainer);
-
-	}
-
-	private void initWorkbenchSize() {
-		this.setSize(layout.getWorkbenchSize().getX(), layout
-				.getWorkbenchSize().getY());
 	}
 
 	@Override
@@ -482,6 +231,7 @@ public abstract class ASwingWorkbench extends JFrame
 		addDefaultMenuEntries();
 	}
 
+	@Override
 	public Container handleMenuEntries(final Container menue) {
 		if (menue instanceof JMenu) {
 			return this.handleMenuEntries((JMenu) menue);
@@ -611,6 +361,277 @@ public abstract class ASwingWorkbench extends JFrame
 	@Override
 	public IWorkbenchLayout<LayoutManager2> getWorkbenchLayout() {
 		return layout;
+	}
+
+	/**
+	 * perspectives are a set in workbench. Each perspective contains a Layout
+	 * object (container like splitPane), a view container and a
+	 * editorContainer. The initPerspective method should stick these three
+	 * parts together so they can be add to the workbench
+	 */
+	private void initPerspectives() {
+		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
+			registerComponent(perspective, perspectiveObserver);
+			// TODO what if component removed an initialized later again?
+			createPerspectiveMenue(perspective);
+			if (perspective.isActive()) {
+				final Thread worker = new Thread() {
+					@Override
+					public void run() {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								initPerspective(perspective, new SwingAction(
+										perspective.getId(), perspective
+												.getId(), "init"));
+
+							}
+						}); // SWING UTILS END
+					} // run end
+				}; // thred END
+				worker.start();
+
+			}
+
+		}
+	}
+
+	/**
+	 * add all active subcomponents to replaced perspective
+	 * 
+	 * @param layout
+	 * @param perspective
+	 */
+	private void reassignSubcomponents(
+			final IPerspectiveLayout<? extends Container, Container> layout,
+			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+		for (final IEditor<Container, ActionListener, ActionEvent, Object> editor : perspective
+				.getEditors()) {
+			final Container editorComponent = editor.getRoot();
+			if (editorComponent != null) {
+				editorComponent.setVisible(true);
+				editorComponent.setEnabled(true);
+				addComponentByType(layout, editor);
+			}
+		}
+	}
+
+	/**
+	 * takes the root component from old container, removes old container and
+	 * add the new one
+	 * 
+	 * @param oldComp
+	 * @param newComp
+	 * @return
+	 */
+	private Container getParentAndReplace(final Container oldComp,
+			final Container newComp) {
+		final Container parent = oldComp.getParent();
+		parent.remove(oldComp);
+		parent.add(newComp);
+		parent.setVisible(true);
+		return parent;
+	}
+
+	/**
+	 * initialize perspective in window mode; creates an internal frame and add
+	 * perspective
+	 * 
+	 * @param layout
+	 * @param name
+	 */
+	private void initPerspectiveInWindowMode(
+			final IPerspectiveLayout<? extends Container, Container> layout,
+			final String name) {
+		enableComponents();
+		final JInternalFrame internalFrame = getActiveInternalFrame(name);
+		final JPanel frame = getActivePanel(getPanelDimension(this.layout));
+		final Container comp = getLayoutComponentFromPerspectiveLayout(layout,
+				new Dimension(this.layout.getWorkbenchSize().getX() - 30,
+						this.layout.getWorkbenchSize().getY() - 20));
+		frame.add(comp);
+		internalFrame.setContentPane(frame);
+		getContentPane().add(internalFrame);
+		invalidateHost(this);
+	}
+
+	/**
+	 * returns panel size in window mode
+	 * 
+	 * @param layout
+	 * @return
+	 */
+	private Dimension getPanelDimension(
+			final IWorkbenchLayout<LayoutManager2> layout) {
+		return new Dimension(layout.getWorkbenchSize().getX() - 15, layout
+				.getWorkbenchSize().getY() - 15);
+	}
+
+	/**
+	 * handles initialization with correct action; perspective can be
+	 * initialized at application start or when called by an other component
+	 * 
+	 * @param action
+	 * @param perspectiveLayout
+	 * @param perspective
+	 */
+	private void handlePerspectiveInitMethod(
+			final IAction<Object, ActionEvent> action,
+			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout,
+			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+		if (getTargetPerspectiveId(action.getTargetId()).equals(
+				perspective.getId())) {
+			perspective.handleInitialLayout(action, perspectiveLayout);
+		} else {
+			perspective.handleInitialLayout(new SwingAction(
+					perspective.getId(), perspective.getId(), "init"),
+					perspectiveLayout);
+		}
+	}
+
+	/**
+	 * find valid target and add type specific new component
+	 * 
+	 * @param layout
+	 * @param editor
+	 */
+	private void addComponentByType(
+			final IPerspectiveLayout<? extends Container, Container> layout,
+			final IEditor<Container, ActionListener, ActionEvent, Object> editor) {
+		final Container validContainer = layout.getTargetLayoutComponents()
+				.get(editor.getTarget());
+		if (validContainer instanceof JScrollPane) {
+			((JScrollPane) validContainer).setViewportView(editor.getRoot());
+		} else {
+			validContainer.add(editor.getName(), editor.getRoot());
+		}
+		validContainer.setEnabled(true);
+		invalidateHost(validContainer);
+
+	}
+
+	/**
+	 * returns active internal frame for swing window mode
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private JInternalFrame getActiveInternalFrame(final String name) {
+		final JInternalFrame internalFrame = new JInternalFrame(name, true,
+				true, true, true);
+		try {
+			internalFrame.setSelected(true);
+		} catch (final PropertyVetoException ex) {
+			Logger.getLogger(ASwingWorkbench.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+		internalFrame.setSize(layout.getWorkbenchSize().getX() - 10, layout
+				.getWorkbenchSize().getY() - 10);
+		internalFrame.setVisible(true);
+		return internalFrame;
+	}
+
+	/**
+	 * create an active JPanel
+	 * 
+	 * @param dimension
+	 * @return
+	 */
+	private JPanel getActivePanel(final Dimension dimension) {
+		final JPanel frame = new JPanel();
+		frame.setSize(dimension);
+		return frame;
+	}
+
+	/**
+	 * get perspectives root container
+	 * 
+	 * @param layout
+	 * @param dimension
+	 * @return
+	 */
+	private Container getLayoutComponentFromPerspectiveLayout(
+			final IPerspectiveLayout<? extends Container, Container> layout,
+			final Dimension dimension) {
+		final Container comp = layout.getRootLayoutComponent();
+		comp.setVisible(true);
+		comp.setPreferredSize(dimension);
+		return comp;
+	}
+
+	/**
+	 * initialize perspective in tabed mode; creates an tab an add perspective
+	 * 
+	 * @param layout
+	 */
+	private void initPerspectivesInTabbedMode(
+			final IPerspectiveLayout<? extends Container, Container> layout,
+			final String name) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	/**
+	 * initialize perspective in stacked mode; creates an panel an add
+	 * perspective
+	 * 
+	 * @param layout
+	 */
+	private void initPerspectiveInStackMode(
+			final IPerspectiveLayout<? extends Container, Container> layout) {
+		disableComponents();
+		final JComponent wrapper = new JPanel(true);
+		final Container comp = layout.getRootLayoutComponent();
+		comp.setVisible(true);
+		getContentPane().add(wrapper.add(layout.getRootLayoutComponent()));
+		invalidateHost(getContentPane());
+	}
+
+	/**
+	 * invalidate swing host after changes
+	 * 
+	 * @param host
+	 */
+	private void invalidateHost(final Container host) {
+		if (host instanceof JComponent) {
+			((JComponent) host).revalidate();
+		} else {
+			host.invalidate();
+		}
+		host.repaint();
+	}
+
+	/**
+	 * set initial workbench size
+	 */
+	private void initWorkbenchSize() {
+		this.setSize(layout.getWorkbenchSize().getX(), layout
+				.getWorkbenchSize().getY());
+	}
+
+	/**
+	 * returns the message target id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	private String getTargetPerspectiveId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (checkValidComponentId(targetId)) {
+			return targetId[0];
+		}
+		return messageId;
+	}
+
+	private String[] getTargetId(final String messageId) {
+		return messageId.split("\\.");
+	}
+
+	private boolean checkValidComponentId(final String[] targetId) {
+		if (targetId != null && targetId.length == 2) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
