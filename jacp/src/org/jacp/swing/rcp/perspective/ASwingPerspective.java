@@ -29,6 +29,7 @@ import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
 
 /**
+ * represents a basic swing perspective that handles subcomponents
  * 
  * @author Andy Moncsek
  */
@@ -111,7 +112,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IAction<Object, ActionEvent> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-
 		synchronized (component) {
 			final ComponentInitWorker tmp = new ComponentInitWorker(layout
 					.getTargetLayoutComponents(), component, action);
@@ -123,30 +123,25 @@ public abstract class ASwingPerspective<T extends Container> implements
 	@Override
 	public synchronized void replaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<Object, ActionEvent> action) {
-		// TODO when target not found use initial target
-		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(layout
-				.getTargetLayoutComponents(), editor, action);
-		tmp.execute();
+		synchronized (component) {
+			final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
+					layout.getTargetLayoutComponents(), component, action);
+			tmp.execute();
+		}
 
 	}
 
 	@Override
 	public synchronized void delegateMassege(final String target,
 			final IAction<Object, ActionEvent> action) {
-		// TODO delegate massage and action to workspace, find target
-		// perspective and let the componentObserver of target perspective
-		// handle the message
 		this.perspectiveObserver.delegateMessage(target, action);
 	}
 
 	@Override
 	public synchronized void delegateComponentMassege(final String target,
 			final IAction<Object, ActionEvent> action) {
-		// TODO delegate massage and action to workspace, find target
-		// perspective and let the componentObserver of target perspective
-		// handle the message
 		this.componentObserver.delegateMessage(target, action);
 	}
 
