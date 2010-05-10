@@ -45,6 +45,9 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			final Container currentContainer = component.getRoot();
 			final String currentTaget = component.getTarget();
 			final Container parent = currentContainer.getParent();
+
+			prepareAndHandleComponent(component, action);
+
 			System.out.print("doInBackground() PART1 parent: " + parent);
 			final Thread worker = new Thread() {
 				@Override
@@ -59,9 +62,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 				} // run end
 			}; // thred END
 			worker.start();
-
-			prepareComponent(component, action);
-
+			
 			handleNewComponentValue(component, parent, currentTaget);
 			// /////
 			return component;
@@ -85,7 +86,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 		}
 	}
 
-	private Container prepareComponent(
+	private Container prepareAndHandleComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<Object, ActionEvent> action) {
 		final Container editorComponent = component.handle(action);
