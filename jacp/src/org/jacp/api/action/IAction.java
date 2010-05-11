@@ -8,9 +8,12 @@ import java.util.Map;
 
 /**
  * represents an action used by specific listener, targets a component and
- * contains a message M defines the type of message A defines the type of
- * ActionEvent
+ * contains a message 
  * 
+ * @param <M>
+ *            defines the type of message 
+ * @param <A>
+ *            defines the type of ActionEvent
  * @author Andy Moncsek
  */
 public interface IAction<M, A> extends Cloneable {
@@ -20,7 +23,7 @@ public interface IAction<M, A> extends Cloneable {
 	 * 
 	 * @param message
 	 */
-	public abstract void setMessage(M message);
+	public abstract void setMessage(final M message);
 
 	/**
 	 * set message for target component
@@ -28,7 +31,7 @@ public interface IAction<M, A> extends Cloneable {
 	 * @param id
 	 * @param message
 	 */
-	public abstract void setMessage(String id, M message);
+	public abstract void setMessage(final String id, final M message);
 
 	/**
 	 * get action message
@@ -56,7 +59,7 @@ public interface IAction<M, A> extends Cloneable {
 	 * 
 	 * @param event
 	 */
-	public abstract void setActionEvent(A event);
+	public abstract void setActionEvent(final A event);
 
 	/**
 	 * get implementation specific action event

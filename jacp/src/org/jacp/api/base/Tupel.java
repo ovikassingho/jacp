@@ -6,7 +6,7 @@
 package org.jacp.api.base;
 
 /**
- * helper class
+ * helper class... TODO remove!!!
  * 
  * @author Andy Moncsek
  */

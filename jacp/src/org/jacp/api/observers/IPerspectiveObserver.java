@@ -37,7 +37,7 @@ public interface IPerspectiveObserver<C, A, E, T> extends IObserver<C, A, E, T> 
 	 * 
 	 * @return
 	 */
-	public abstract IWorkbench<C, ?, A, E, T> getPerentWorkbench();
+	public abstract IWorkbench<?, C, A, E, T> getPerentWorkbench();
 
 	/**
 	 * set the parent workbench of observed perspectives
@@ -45,6 +45,6 @@ public interface IPerspectiveObserver<C, A, E, T> extends IObserver<C, A, E, T> 
 	 * @param workbench
 	 */
 	public abstract void setParentWorkbench(
-			final IWorkbench<C, ?, A, E, T> workbench);
+			final IWorkbench<?, C, A, E, T> workbench);
 
 }

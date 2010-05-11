@@ -52,7 +52,7 @@ import com.apple.mrj.MRJApplicationUtils;
  */
 public abstract class ASwingWorkbench extends JFrame
 		implements
-		IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>,
+		IWorkbench<LayoutManager2, Container,  ActionListener, ActionEvent, Object>,
 		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>, IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
 
 	/**
@@ -79,6 +79,22 @@ public abstract class ASwingWorkbench extends JFrame
 	public Container init() {
 		// init user defined worspace
 		this.handleInitialLayout(new SwingAction("TODO", "init"), layout);
+
+		// define basic content pane
+		handleWorkspaceMode();
+
+		final Container contentPane = getContentPane();
+
+		setBasicLayout(contentPane);
+		handleInitialisationSequence();
+
+		return contentPane;
+	}
+
+	/**
+	 * set workspace type specific content wrapper
+	 */
+	private void handleWorkspaceMode() {
 		// define basic content pane
 		switch (layout.getWorkspaceMode()) {
 		case WINDOWED_PAIN:
@@ -92,10 +108,13 @@ public abstract class ASwingWorkbench extends JFrame
 		default:
 			;
 		}
-		final Container contentPane = getContentPane();
-		// set layout manager
-		contentPane.setLayout(layout.getLayoutManager() != null ? layout
-				.getLayoutManager() : new BorderLayout());
+	}
+
+	/**
+	 * handles sequence for workbench size, menu bar, tool bar and perspective
+	 * initialisation
+	 */
+	private void handleInitialisationSequence() {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -121,7 +140,17 @@ public abstract class ASwingWorkbench extends JFrame
 
 			}
 		});
-		return contentPane;
+	}
+
+	/**
+	 * set basic layout manager for workspace
+	 * 
+	 * @param contentPane
+	 */
+	private void setBasicLayout(final Container contentPane) {
+		// set layout manager
+		contentPane.setLayout(layout.getLayoutManager() != null ? layout
+				.getLayoutManager() : new BorderLayout());
 	}
 
 	@Override
@@ -544,7 +573,7 @@ public abstract class ASwingWorkbench extends JFrame
 	}
 
 	/**
-	 * get perspectives root container
+	 * get perspectives ui root container
 	 * 
 	 * @param layout
 	 * @param dimension
@@ -560,7 +589,7 @@ public abstract class ASwingWorkbench extends JFrame
 	}
 
 	/**
-	 * initialize perspective in tabed mode; creates an tab an add perspective
+	 * initialize perspective in tabbed mode; creates an tab an add perspective
 	 * 
 	 * @param layout
 	 */

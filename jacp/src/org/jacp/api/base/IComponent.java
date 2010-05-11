@@ -15,14 +15,14 @@ import org.jacp.api.observers.IObserver;
  * @author Andy Moncsek
  * @param <C>
  *            defines the base component where others extend from
- * @param <A>
+ * @param <L>
  *            defines the action listener type
- * @param <E>
+ * @param <A>
  *            defines the basic action type
- * @param <T>
+ * @param <M>
  *            defines the basic message type
  */
-public interface IComponent<C, A, E, T> {
+public interface IComponent<C, L, A, M> {
 
 	/**
 	 * handles component when called
@@ -30,14 +30,14 @@ public interface IComponent<C, A, E, T> {
 	 * @param action
 	 * @return view component
 	 */
-	public abstract C handle(final IAction<T, E> action);
+	public abstract C handle(final IAction<M, A> action);
 
 	/**
 	 * returns action listener (for local, target and global use)
 	 * 
 	 * @return
 	 */
-	public abstract IActionListener<A, E, T> getActionListener();
+	public abstract IActionListener<L, M, A> getActionListener();
 
 	/**
 	 * returns id of component
@@ -51,7 +51,7 @@ public interface IComponent<C, A, E, T> {
 	 * 
 	 * @param id
 	 */
-	public abstract void setId(String id);
+	public abstract void setId(final String id);
 
 	/**
 	 * get active status of perspective
@@ -86,10 +86,6 @@ public interface IComponent<C, A, E, T> {
 	 * 
 	 * @return
 	 */
-	public abstract void setObserver(IObserver<C, A, E, T> observer);
-
-	public abstract void setBlocked(boolean blocked);
-
-	public abstract boolean isBlocked();
+	public abstract void setObserver(final IObserver<C, L, A, M> observer);
 
 }

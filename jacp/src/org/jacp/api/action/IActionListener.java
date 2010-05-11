@@ -5,36 +5,42 @@
 package org.jacp.api.action;
 
 /**
- * handles implementation specific ActionListener L defines the basic listener
- * type E defines the basic action type M defines the basic message type
+ * handles implementation specific ActionListener
  * 
+ * 
+ * @param <L>
+ *            defines the basic listener type 
+ * @param <M>
+ *            defines the type of message ActionEvent
+ * @param <A>
+ *            defines the type of ActionEvent
  * @author Andy Moncsek
  */
-public interface IActionListener<L, E, M> {
+public interface IActionListener<L, M, A> {
 
 	/**
 	 * notify component when action fired
 	 * 
 	 * @param action
 	 */
-	public abstract void notifyComponents(IAction<M, E> action);
+	public abstract void notifyComponents(final IAction<M, A> action);
 
 	/**
 	 * set Action to listener
 	 * 
 	 * @param action
 	 */
-	public abstract void setAction(IAction<M, E> action);
+	public abstract void setAction(final IAction<M, A> action);
 
 	/**
 	 * returns the action
 	 * 
 	 * @return
 	 */
-	public IAction<M, E> getAction();
+	public IAction<M, A> getAction();
 
 	/**
-	 * returns implemetation specific ActionListener
+	 * returns implementation specific ActionListener
 	 * 
 	 * @return
 	 */

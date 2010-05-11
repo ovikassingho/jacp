@@ -48,21 +48,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 
 			prepareAndHandleComponent(component, action);
 
-			System.out.print("doInBackground() PART1 parent: " + parent);
-			final Thread worker = new Thread() {
-				@Override
-				public void run() {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							// run in EventDispatchThread
-							parent.remove(currentContainer);
-						}
-					}); // SWING UTILS END
-				} // run end
-			}; // thred END
-			worker.start();
-			
+			handleOldComponentRemove(parent, currentContainer);
+
 			handleNewComponentValue(component, parent, currentTaget);
 			// /////
 			return component;
@@ -71,6 +58,36 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 
 	}
 
+	/**
+	 * removes old ui component of subcomponent form parent ui component
+	 * 
+	 * @param parent
+	 * @param currentContainer
+	 */
+	private void handleOldComponentRemove(final Container parent,
+			final Container currentContainer) {
+		final Thread worker = new Thread() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						// run in EventDispatchThread
+						parent.remove(currentContainer);
+					}
+				}); // SWING UTILS END
+			} // run end
+		}; // thred END
+		worker.start();
+	}
+
+	/**
+	 * set new ui component to parent ui component
+	 * 
+	 * @param component
+	 * @param parent
+	 * @param currentTaget
+	 */
 	private void handleNewComponentValue(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final Container parent, final String currentTaget) {
@@ -81,11 +98,17 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			final Container validContainer = getValidContainerById(
 					targetComponents, component.getTarget());
 			addComponentByType(validContainer, component);
-			invalidateHost(parent);
 
 		}
 	}
 
+	/**
+	 * runs subcomponents handle method
+	 * 
+	 * @param component
+	 * @param action
+	 * @return
+	 */
 	private Container prepareAndHandleComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<Object, ActionEvent> action) {

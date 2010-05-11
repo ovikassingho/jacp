@@ -11,14 +11,14 @@ package org.jacp.api.base;
  * @author Andy Moncsek
  * @param <C>
  *            defines the base component where others extend from
- * @param <A>
+ * @param <L>
  *            defines the action listener type
- * @param <E>
+ * @param <A>
  *            defines the basic action type
- * @param <T>
+ * @param <M>
  *            defines the basic message type
  */
-public interface IEditor<C, A, E, T> extends IExtendedComponent<C>,
-		ISubComponent<C, A, E, T> {
+public interface IEditor<C, L, A, M> extends IExtendedComponent<C>,
+		ISubComponent<C, L, A, M> {
 
 }

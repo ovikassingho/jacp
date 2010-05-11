@@ -20,6 +20,6 @@ public interface IRootComponent<T, H> {
 	 * @param component
 	 * @param handler
 	 */
-	abstract public void registerComponent(T component, H handler);
+	abstract public void registerComponent(final T component, final H handler);
 
 }

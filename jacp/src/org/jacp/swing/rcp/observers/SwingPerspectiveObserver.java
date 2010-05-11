@@ -25,10 +25,10 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 		IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> {
 
 	private final List<IPerspective<Container, ActionListener, ActionEvent, Object>> perspectives = new ArrayList<IPerspective<Container, ActionListener, ActionEvent, Object>>();
-	private IWorkbench<Container, ?, ActionListener, ActionEvent, Object> workbench;
+	private IWorkbench<?, Container,  ActionListener, ActionEvent, Object> workbench;
 
 	public SwingPerspectiveObserver(
-			final IWorkbench<Container, ?, ActionListener, ActionEvent, Object> workbench) {
+			final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
 		this.workbench = workbench;
 	}
 
@@ -87,13 +87,13 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public IWorkbench<Container, ?, ActionListener, ActionEvent, Object> getPerentWorkbench() {
+	public IWorkbench<?, Container, ActionListener, ActionEvent, Object> getPerentWorkbench() {
 		return workbench;
 	}
 
 	@Override
 	public void setParentWorkbench(
-			final IWorkbench<Container, ?, ActionListener, ActionEvent, Object> workbench) {
+			final IWorkbench<?,Container, ActionListener, ActionEvent, Object> workbench) {
 		this.workbench = workbench;
 	}
 

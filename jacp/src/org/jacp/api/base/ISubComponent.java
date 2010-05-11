@@ -7,14 +7,14 @@ package org.jacp.api.base;
  * 
  * @param <C>
  *            defines the base component where others extend from
- * @param <A>
+ * @param <L>
  *            defines the action listener type
- * @param <E>
+ * @param <A>
  *            defines the basic action type
- * @param <T>
+ * @param <M>
  *            defines the basic message type
  */
-public interface ISubComponent<C, A, E, T> extends IComponent<C, A, E, T> {
+public interface ISubComponent<C, L, A, M> extends IComponent<C, L, A, M> {
 	/**
 	 * returns the ui target; defines the target container in perspective
 	 * 
@@ -49,12 +49,12 @@ public interface ISubComponent<C, A, E, T> extends IComponent<C, A, E, T> {
 	 * @param perspective
 	 */
 	public abstract void setParentPerspective(
-			final IPerspective<C, A, E, T> perspective);
+			final IPerspective<C, L, A, M> perspective);
 
 	/**
 	 * returns responsible perspective
 	 * 
 	 * @return
 	 */
-	public abstract IPerspective<C, A, E, T> getParentPerspective();
+	public abstract IPerspective<C, L, A, M> getParentPerspective();
 }
