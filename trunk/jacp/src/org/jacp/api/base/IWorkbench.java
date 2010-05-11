@@ -6,14 +6,24 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 
 /**
- * base component fpor an application, handles perspectives and containing
- * components C defines the base component where others extend L defines the
- * basic layout manager A defines the basic action listener E defines a basic
- * event T defines the basic message type
+ * base component for an application, handles perspectives and containing
+ * components 
+ * 
+ * @param <P>
+ *            defines the default layout manager
+ * 
+ * @param <C>
+ *            defines the base component where others extend from
+ * @param <L>
+ *            defines the action listener type
+ * @param <A>
+ *            defines the basic action type
+ * @param <M>
+ *            defines the basic message type
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbench<C, L, A, E, T> {
+public interface IWorkbench<P, C, L, A, M> {
 
 	/**
 	 * returns basic container to handle perspectives
@@ -83,14 +93,14 @@ public interface IWorkbench<C, L, A, E, T> {
 	 * @param perspectives
 	 */
 	public abstract void setPerspectives(
-			final List<IPerspective<C, A, E, T>> perspectives);
+			final List<IPerspective<C, L, A, M>> perspectives);
 
 	/**
 	 * get perspectives in workbench
 	 * 
 	 * @return
 	 */
-	public abstract List<IPerspective<C, A, E, T>> getPerspectives();
+	public abstract List<IPerspective<C, L, A, M>> getPerspectives();
 
 	/**
 	 * init single perspective instance
@@ -99,7 +109,7 @@ public interface IWorkbench<C, L, A, E, T> {
 	 * @param action
 	 */
 	public abstract void initPerspective(
-			final IPerspective<C, A, E, T> perspective, IAction<T, E> action);
+			final IPerspective<C, L, A, M> perspective, IAction<M, A> action);
 
 	/**
 	 * calls perspective handle method and replaces the old entry by new one
@@ -107,8 +117,8 @@ public interface IWorkbench<C, L, A, E, T> {
 	 * @param perspective
 	 * @param action
 	 */
-	public void replacePerspective(final IPerspective<C, A, E, T> perspective,
-			final IAction<T, E> action);
+	public void replacePerspective(final IPerspective<C, L, A, M> perspective,
+			final IAction<M, A> action);
 
 	/**
 	 * set visibility of all components in workspacewrapper to false
@@ -129,14 +139,14 @@ public interface IWorkbench<C, L, A, E, T> {
 	 * @param action
 	 * @param layout
 	 */
-	public abstract void handleInitialLayout(IAction<T, E> action,
-			IWorkbenchLayout<L> layout);
+	public abstract void handleInitialLayout(IAction<M, A> action,
+			IWorkbenchLayout<P> layout);
 
 	/**
 	 * returns workbench layout object
 	 * 
 	 * @return
 	 */
-	public abstract IWorkbenchLayout<L> getWorkbenchLayout();
+	public abstract IWorkbenchLayout<P> getWorkbenchLayout();
 
 }

@@ -70,13 +70,13 @@ public class TestSwingSplitPanePerspective extends
 	public void addMenuEntries(final JMenu meuBar) {
 		// meuBar.setText("blubber");
 		final JMenuItem quitItem = new JMenuItem("Test");
-		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
+		final IActionListener<ActionListener,Object,ActionEvent> listener = getActionListener();
 		listener.getAction().setMessage("test");
 		quitItem.addActionListener(listener.getListener());
 		meuBar.add(quitItem);
 
 		final JMenuItem quitItem2 = new JMenuItem("Test2");
-		final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+		final IActionListener<ActionListener,Object,ActionEvent> listener2 = getActionListener();
 		listener2.getAction().setMessage("tester");
 		quitItem2.addActionListener(listener2.getListener());
 		meuBar.add(quitItem2);

@@ -17,7 +17,7 @@ import org.jacp.api.observers.IObserver;
  * @author amo
  */
 public class SwingActionListener implements ActionListener,
-		IActionListener<ActionListener, ActionEvent, Object> {
+		IActionListener<ActionListener, Object, ActionEvent> {
 
 	private IAction<Object, ActionEvent> action;
 	private final IObserver<Container, ActionListener, ActionEvent, Object> observer;

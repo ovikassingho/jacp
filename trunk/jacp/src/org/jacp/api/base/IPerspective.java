@@ -7,25 +7,25 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.observers.IComponentObserver;
 
 /**
- * a perspective is a root component handled by an workbench and contains
+ * a perspective is a root component, handled by an workbench and contains
  * subcomponents
  * 
  * @author Andy Moncsek
  * 
  * @param <C>
  *            defines the base component where others extend from
- * @param <A>
+ * @param <L>
  *            defines the action listener type
- * @param <E>
+ * @param <A>
  *            defines the basic action type
- * @param <T>
+ * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<C, A, E, T>
+public interface IPerspective<C, L, A, M>
 		extends
 		IExtendedComponent<C>,
-		IComponent<C, A, E, T>,
-		IRootComponent<ISubComponent<C, A, E, T>, IComponentObserver<C, A, E, T>> {
+		IComponent<C, L, A, M>,
+		IRootComponent<ISubComponent<C, L, A, M>, IComponentObserver<C, L, A, M>> {
 
 	/**
 	 * the initialization method
@@ -37,28 +37,28 @@ public interface IPerspective<C, A, E, T>
 	 * 
 	 * @param views
 	 */
-	public abstract void setViews(List<IView<C, A, E, T>> views);
+	public abstract void setViews(final List<IView<C, L, A, M>> views);
 
 	/**
 	 * returns all available views of perspective
 	 * 
 	 * @return
 	 */
-	public abstract List<IView<C, A, E, T>> getViews();
+	public abstract List<IView<C, L, A, M>> getViews();
 
 	/**
 	 * set editors of a perspective
 	 * 
 	 * @param editors
 	 */
-	public abstract void setEditors(List<IEditor<C, A, E, T>> editors);
+	public abstract void setEditors(final List<IEditor<C, L, A, M>> editors);
 
 	/**
 	 * get perspectives editors
 	 * 
 	 * @return
 	 */
-	public abstract List<IEditor<C, A, E, T>> getEditors();
+	public abstract List<IEditor<C, L, A, M>> getEditors();
 
 	/**
 	 * handle baselayout when perspective started
@@ -66,8 +66,8 @@ public interface IPerspective<C, A, E, T>
 	 * @param action
 	 * @param perspectiveLayout
 	 */
-	public abstract void handleInitialLayout(IAction<T, E> action,
-			IPerspectiveLayout<? extends C, C> perspectiveLayout);
+	public abstract void handleInitialLayout(final IAction<M, A> action,
+			final IPerspectiveLayout<? extends C, C> perspectiveLayout);
 
 	/**
 	 * returns perspectives layout dto
@@ -82,9 +82,9 @@ public interface IPerspective<C, A, E, T>
 	 * @param layout
 	 * @param perspective
 	 */
-	public abstract void initSubcomponents(final IAction<T, E> action,
+	public abstract void initSubcomponents(final IAction<M, A> action,
 			final IPerspectiveLayout<? extends C, C> layout,
-			final IPerspective<C, A, E, T> perspective);
+			final IPerspective<C, L, A, M> perspective);
 
 	/**
 	 * TODO move to IRoot component handles initialisation of a single
@@ -93,9 +93,9 @@ public interface IPerspective<C, A, E, T>
 	 * @param layout
 	 * @param editor
 	 */
-	public abstract void initSubcomonent(final IAction<T, E> action,
+	public abstract void initSubcomonent(final IAction<M, A> action,
 			final IPerspectiveLayout<? extends C, C> layout,
-			final ISubComponent<C, A, E, T> component);
+			final ISubComponent<C, L, A, M> component);
 
 	/**
 	 * handles init and replace of subcomponents in perspective
@@ -106,25 +106,25 @@ public interface IPerspective<C, A, E, T>
 	 */
 	public abstract void replaceSubcomponent(
 			final IPerspectiveLayout<? extends C, C> layout,
-			final ISubComponent<C, A, E, T> component,
-			final IAction<T, E> action);
+			final ISubComponent<C, L, A, M> component,
+			final IAction<M, A> action);
 
 	/**
-	 * delegates massage to responsible componentObserver to notify component
+	 * delegates massage to responsible componentObserver to notify target component
 	 * 
 	 * @param target
 	 * @param action
 	 */
-	public void delegateComponentMassege(final String target,
-			final IAction<T, E> action);
+	public abstract void delegateComponentMassege(final String target,
+			final IAction<M, A> action);
 
 	/**
 	 * delegates message to responsible perspectiveObserver to notify
-	 * perspective
+	 * target perspective
 	 * 
 	 * @param target
 	 * @param action
 	 */
-	public void delegateMassege(final String target, final IAction<T, E> action);
+	public abstract void delegateMassege(final String target, final IAction<M, A> action);
 
 }

@@ -44,13 +44,13 @@ public class TestSwingSplitPanePerspective2 extends
 		// meuBar.setText("blubber");
 		final JMenuItem quitItem = new JMenuItem("Test2");
 
-		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
+		final IActionListener<ActionListener,Object,ActionEvent> listener = getActionListener();
 		listener.getAction().setMessage("id01", "test");
 		quitItem.addActionListener(listener.getListener());
 		meuBar.add(quitItem);
 
 		final JMenuItem quitItem2 = new JMenuItem("Test3");
-		final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+		final IActionListener<ActionListener,Object,ActionEvent> listener2 = getActionListener();
 		listener2.getAction().setMessage("test");
 		quitItem2.addActionListener(listener2.getListener());
 		meuBar.add(quitItem2);

@@ -108,7 +108,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public synchronized void initSubcomonent(
+	public void initSubcomonent(
 			final IAction<Object, ActionEvent> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
@@ -121,7 +121,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public synchronized void replaceSubcomponent(
+	public void replaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<Object, ActionEvent> action) {
@@ -220,7 +220,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
+	public IActionListener<ActionListener, Object, ActionEvent> getActionListener() {
 		return new SwingActionListener(new SwingAction(id), perspectiveObserver);
 	}
 

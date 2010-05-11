@@ -1,7 +1,7 @@
 package org.jacp.api.base;
 
 /**
- * represents a extended component with menu entries and toolbar access
+ * represents a extended component with menu entries and tool bar access
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -21,6 +21,6 @@ public interface IExtendedComponent<C> {
 	 * 
 	 * @param toolBar
 	 */
-	public abstract void handleBarEntries(C toolBar, C bottomBar);
+	public abstract void handleBarEntries(final C toolBar, final C bottomBar);
 
 }
