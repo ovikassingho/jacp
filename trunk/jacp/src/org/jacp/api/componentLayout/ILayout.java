@@ -9,6 +9,7 @@ package org.jacp.api.componentLayout;
  * 
  * @author amo
  */
+@Deprecated
 public interface ILayout {
 
 }

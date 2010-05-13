@@ -16,7 +16,7 @@ import java.util.Map;
  *            defines the type of ActionEvent
  * @author Andy Moncsek
  */
-public interface IAction<M, A> extends Cloneable {
+public interface IAction<A, M> extends Cloneable {
 
 	/**
 	 * set message for target component: OWN
@@ -73,7 +73,7 @@ public interface IAction<M, A> extends Cloneable {
 	 * 
 	 * @return
 	 */
-	public abstract IAction<M, A> clone();
+	public abstract IAction<A, M> clone();
 
 	/**
 	 * returns action target id

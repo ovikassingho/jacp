@@ -17,12 +17,12 @@ import org.jacp.api.base.ISubComponent;
 public class ComponentInitWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
 	private final ISubComponent<Container, ActionListener, ActionEvent, Object> editor;
-	private final IAction<Object, ActionEvent> action;
+	private final IAction<ActionEvent,Object> action;
 
 	public ComponentInitWorker(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		this.targetComponents = targetComponents;
 		this.editor = editor;
 		this.action = action;
@@ -37,7 +37,7 @@ public class ComponentInitWorker extends AbstractComponentWorker {
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		synchronized (component) {
 			final Container editorComponent = component.handle(action);
 			component.setRoot(editorComponent);

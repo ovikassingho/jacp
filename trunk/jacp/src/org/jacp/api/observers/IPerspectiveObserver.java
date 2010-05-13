@@ -14,7 +14,7 @@ import org.jacp.api.base.IWorkbench;
  * 
  * @author Andy Moncsek
  */
-public interface IPerspectiveObserver<C, A, E, T> extends IObserver<C, A, E, T> {
+public interface IPerspectiveObserver<C, L, A, M> extends IObserver<C, L, A, M> {
 
 	/**
 	 * add perspective to observe
@@ -22,7 +22,7 @@ public interface IPerspectiveObserver<C, A, E, T> extends IObserver<C, A, E, T> 
 	 * @param perspective
 	 */
 	public abstract void addPerspective(
-			final IPerspective<C, A, E, T> perspective);
+			final IPerspective<C, L, A, M> perspective);
 
 	/**
 	 * remove perspective; e.g. when perspective is deactivated
@@ -30,14 +30,14 @@ public interface IPerspectiveObserver<C, A, E, T> extends IObserver<C, A, E, T> 
 	 * @param perspective
 	 */
 	public abstract void removePerspective(
-			final IPerspective<C, A, E, T> perspective);
+			final IPerspective<C, L, A, M> perspective);
 
 	/**
 	 * returns the parent workbench
 	 * 
 	 * @return
 	 */
-	public abstract IWorkbench<?, C, A, E, T> getPerentWorkbench();
+	public abstract IWorkbench<?, C, L, A, M> getPerentWorkbench();
 
 	/**
 	 * set the parent workbench of observed perspectives
@@ -45,6 +45,6 @@ public interface IPerspectiveObserver<C, A, E, T> extends IObserver<C, A, E, T> 
 	 * @param workbench
 	 */
 	public abstract void setParentWorkbench(
-			final IWorkbench<?, C, A, E, T> workbench);
+			final IWorkbench<?, C, L, A, M> workbench);
 
 }

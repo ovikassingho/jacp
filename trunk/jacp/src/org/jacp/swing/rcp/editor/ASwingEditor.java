@@ -24,7 +24,7 @@ public abstract class ASwingEditor implements
 	private volatile boolean blocked;
 
 	@Override
-	public IActionListener<ActionListener,Object,ActionEvent> getActionListener() {
+	public IActionListener<ActionListener,ActionEvent, Object> getActionListener() {
 		return new SwingActionListener(new SwingAction(id), componentObserver);
 	}
 

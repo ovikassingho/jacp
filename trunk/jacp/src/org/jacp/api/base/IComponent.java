@@ -30,14 +30,14 @@ public interface IComponent<C, L, A, M> {
 	 * @param action
 	 * @return view component
 	 */
-	public abstract C handle(final IAction<M, A> action);
+	public abstract C handle(final IAction<A, M> action);
 
 	/**
 	 * returns action listener (for local, target and global use)
 	 * 
 	 * @return
 	 */
-	public abstract IActionListener<L, M, A> getActionListener();
+	public abstract IActionListener<L, A, M> getActionListener();
 
 	/**
 	 * returns id of component
