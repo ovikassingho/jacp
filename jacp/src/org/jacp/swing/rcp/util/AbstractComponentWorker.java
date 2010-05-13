@@ -73,6 +73,6 @@ public abstract class AbstractComponentWorker
 
 	protected abstract ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<Object, ActionEvent> action);
+			final IAction<ActionEvent,Object> action);
 
 }

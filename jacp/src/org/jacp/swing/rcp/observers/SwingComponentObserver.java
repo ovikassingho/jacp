@@ -61,7 +61,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 */
 	@Override
 	public void handleMessage(final String targetId,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
 				getTargetComponentId(targetId), components);
 		if (component != null) {
@@ -81,7 +81,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 * @param action
 	 */
 	private void handleComponentMiss(final String targetId,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		final boolean local = isLocalMessage(targetId);
 		if (!local) {
 			final String targetPerspectiveId = getTargetPerspectiveId(targetId);
@@ -107,9 +107,9 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 */
 	private void handleComponentHit(
 			final String targetId,
-			final IAction<Object, ActionEvent> action,
+			final IAction<ActionEvent,Object> action,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		final IAction<Object, ActionEvent> actionClone = getValidAction(action,
+		final IAction<ActionEvent,Object> actionClone = getValidAction(action,
 				targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
 			handleActive(component, actionClone);
@@ -120,14 +120,14 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	@Override
 	public synchronized void delegateMessage(final String target,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		handleMessage(target, action);
 
 	}
 
 	@Override
 	public synchronized <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
-			final M component, final IAction<Object, ActionEvent> action) {
+			final M component, final IAction<ActionEvent,Object> action) {
 		perspective
 				.replaceSubcomponent(
 						perspective.getIPerspectiveLayout(),
@@ -138,7 +138,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	@Override
 	public synchronized <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
-			final M component, final IAction<Object, ActionEvent> action) {
+			final M component, final IAction<ActionEvent,Object> action) {
 		component.setActive(true);
 		perspective
 				.initSubcomonent(

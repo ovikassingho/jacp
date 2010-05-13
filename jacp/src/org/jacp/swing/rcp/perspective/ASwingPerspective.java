@@ -58,7 +58,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public abstract void handleBarEntries(Container toolBar, Container bottomBar);
 
 	@Override
-	public Container handle(final IAction<Object, ActionEvent> action) {
+	public Container handle(final IAction<ActionEvent,Object> action) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
@@ -67,7 +67,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void handleInitialLayout(
-			final IAction<Object, ActionEvent> action,
+			final IAction<ActionEvent,Object> action,
 			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout) {
 		handleInitialLayout((SwingAction) action,
 				(SwingPerspectiveLayout<T>) perspectiveLayout);
@@ -91,7 +91,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public synchronized void initSubcomponents(
-			final IAction<Object, ActionEvent> action,
+			final IAction<ActionEvent,Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
 		final String targetId = getTargetComponentId(action.getTargetId());
@@ -109,7 +109,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void initSubcomonent(
-			final IAction<Object, ActionEvent> action,
+			final IAction<ActionEvent,Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		synchronized (component) {
@@ -124,7 +124,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public void replaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		synchronized (component) {
 			final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
 					layout.getTargetLayoutComponents(), component, action);
@@ -135,13 +135,13 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public synchronized void delegateMassege(final String target,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		this.perspectiveObserver.delegateMessage(target, action);
 	}
 
 	@Override
 	public synchronized void delegateComponentMassege(final String target,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		this.componentObserver.delegateMessage(target, action);
 	}
 
@@ -220,7 +220,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public IActionListener<ActionListener, Object, ActionEvent> getActionListener() {
+	public IActionListener<ActionListener,ActionEvent, Object> getActionListener() {
 		return new SwingActionListener(new SwingAction(id), perspectiveObserver);
 	}
 

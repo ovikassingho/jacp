@@ -16,28 +16,28 @@ package org.jacp.api.action;
  *            defines the type of ActionEvent
  * @author Andy Moncsek
  */
-public interface IActionListener<L, M, A> {
+public interface IActionListener<L, A, M> {
 
 	/**
 	 * notify component when action fired
 	 * 
 	 * @param action
 	 */
-	public abstract void notifyComponents(final IAction<M, A> action);
+	public abstract void notifyComponents(final IAction<A, M> action);
 
 	/**
 	 * set Action to listener
 	 * 
 	 * @param action
 	 */
-	public abstract void setAction(final IAction<M, A> action);
+	public abstract void setAction(final IAction<A, M> action);
 
 	/**
 	 * returns the action
 	 * 
 	 * @return
 	 */
-	public IAction<M, A> getAction();
+	public IAction<A, M> getAction();
 
 	/**
 	 * returns implementation specific ActionListener

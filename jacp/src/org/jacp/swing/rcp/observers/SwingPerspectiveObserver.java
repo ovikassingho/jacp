@@ -55,12 +55,12 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	 */
 	@Override
 	public void handleMessage(final String target,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		final IPerspective<Container, ActionListener, ActionEvent, Object> perspective = getObserveableById(
 				target, perspectives);
 		if (perspective != null) {
 			handleWorkspaceModeSpecific();
-			final IAction<Object, ActionEvent> actionClone = getValidAction(
+			final IAction<ActionEvent,Object> actionClone = getValidAction(
 					action, target, action.getMessageList().get(target));
 			if (perspective.isActive()) {
 				// if perspective already active handle perspective and replace
@@ -99,7 +99,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 
 	@Override
 	public synchronized void delegateMessage(final String target,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		// Find local Target; if target is perspective handle target or delegate
 		// message to responsible component observer
 		if (isLocalMessage(target)) {
@@ -117,7 +117,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	 * @param action
 	 */
 	private void callComponentDelegate(final String target,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		final IPerspective<Container, ActionListener, ActionEvent, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		// TODO REMOVE null handling... use DUMMY instead (maybe like
@@ -135,7 +135,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 
 	@Override
 	public <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
-			final M component, final IAction<Object, ActionEvent> action) {
+			final M component, final IAction<ActionEvent,Object> action) {
 		workbench
 				.replacePerspective(
 						(IPerspective<Container, ActionListener, ActionEvent, Object>) component,
@@ -145,7 +145,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 
 	@Override
 	public <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
-			final M component, final IAction<Object, ActionEvent> action) {
+			final M component, final IAction<ActionEvent,Object> action) {
 		component.setActive(true);
 		workbench
 				.initPerspective(

@@ -4,27 +4,34 @@ import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.ISubComponent;
 
 /**
- * notifies components included in perspective C defines the base component
- * where others extend A defines the action listener type E defines the basic
- * action type T defines the basic message type
+ * notifies components included in perspective
+ * 
+ * @param <C>
+ *            defines the base component where others extend from
+ * @param <L>
+ *            defines the action listener type
+ * @param <A>
+ *            defines the basic action type
+ * @param <M>
+ *            defines the basic message type
  * 
  * @author Andy Moncsek
  */
-public interface IComponentObserver<C, A, E, T> extends IObserver<C, A, E, T> {
+public interface IComponentObserver<C, L, A, M> extends IObserver<C, L, A, M> {
 
 	/**
 	 * add component to observe
 	 * 
 	 * @param component
 	 */
-	public abstract void addComponent(ISubComponent<C, A, E, T> component);
+	public abstract void addComponent(ISubComponent<C, L, A, M> component);
 
 	/**
 	 * remove component; e.g. when component is deactivated
 	 * 
 	 * @param component
 	 */
-	public abstract void removeComponent(ISubComponent<C, A, E, T> component);
+	public abstract void removeComponent(ISubComponent<C, L, A, M> component);
 
 	/**
 	 * set parent perspective of observed components (1P -> NComp.)
@@ -32,6 +39,6 @@ public interface IComponentObserver<C, A, E, T> extends IObserver<C, A, E, T> {
 	 * @param perspective
 	 */
 	public abstract void setParentPerspective(
-			IPerspective<C, A, E, T> perspective);
+			IPerspective<C, L, A, M> perspective);
 
 }

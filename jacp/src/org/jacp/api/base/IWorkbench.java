@@ -109,7 +109,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param action
 	 */
 	public abstract void initPerspective(
-			final IPerspective<C, L, A, M> perspective, IAction<M, A> action);
+			final IPerspective<C, L, A, M> perspective, IAction<A, M> action);
 
 	/**
 	 * calls perspective handle method and replaces the old entry by new one
@@ -118,10 +118,10 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param action
 	 */
 	public void replacePerspective(final IPerspective<C, L, A, M> perspective,
-			final IAction<M, A> action);
+			final IAction<A, M> action);
 
 	/**
-	 * set visibility of all components in workspacewrapper to false
+	 * set visibility of all components in workspace wrapper to false
 	 * 
 	 * @param component
 	 */
@@ -139,7 +139,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param action
 	 * @param layout
 	 */
-	public abstract void handleInitialLayout(IAction<M, A> action,
+	public abstract void handleInitialLayout(IAction<A, M> action,
 			IWorkbenchLayout<P> layout);
 
 	/**

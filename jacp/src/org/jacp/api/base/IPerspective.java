@@ -66,7 +66,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param action
 	 * @param perspectiveLayout
 	 */
-	public abstract void handleInitialLayout(final IAction<M, A> action,
+	public abstract void handleInitialLayout(final IAction<A, M> action,
 			final IPerspectiveLayout<? extends C, C> perspectiveLayout);
 
 	/**
@@ -82,7 +82,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param layout
 	 * @param perspective
 	 */
-	public abstract void initSubcomponents(final IAction<M, A> action,
+	public abstract void initSubcomponents(final IAction<A, M> action,
 			final IPerspectiveLayout<? extends C, C> layout,
 			final IPerspective<C, L, A, M> perspective);
 
@@ -93,7 +93,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param layout
 	 * @param editor
 	 */
-	public abstract void initSubcomonent(final IAction<M, A> action,
+	public abstract void initSubcomonent(final IAction<A, M> action,
 			final IPerspectiveLayout<? extends C, C> layout,
 			final ISubComponent<C, L, A, M> component);
 
@@ -107,7 +107,7 @@ public interface IPerspective<C, L, A, M>
 	public abstract void replaceSubcomponent(
 			final IPerspectiveLayout<? extends C, C> layout,
 			final ISubComponent<C, L, A, M> component,
-			final IAction<M, A> action);
+			final IAction<A, M> action);
 
 	/**
 	 * delegates massage to responsible componentObserver to notify target component
@@ -116,7 +116,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param action
 	 */
 	public abstract void delegateComponentMassege(final String target,
-			final IAction<M, A> action);
+			final IAction<A, M> action);
 
 	/**
 	 * delegates message to responsible perspectiveObserver to notify
@@ -125,6 +125,6 @@ public interface IPerspective<C, L, A, M>
 	 * @param target
 	 * @param action
 	 */
-	public abstract void delegateMassege(final String target, final IAction<M, A> action);
+	public abstract void delegateMassege(final String target, final IAction<A, M> action);
 
 }

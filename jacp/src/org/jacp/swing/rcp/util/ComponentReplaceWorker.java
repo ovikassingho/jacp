@@ -20,12 +20,12 @@ import org.jacp.api.base.ISubComponent;
 public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
 	private final ISubComponent<Container, ActionListener, ActionEvent, Object> editor;
-	private final IAction<Object, ActionEvent> action;
+	private final IAction<ActionEvent,Object> action;
 
 	public ComponentReplaceWorker(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		this.targetComponents = targetComponents;
 		this.editor = editor;
 		this.action = action;
@@ -40,18 +40,18 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		synchronized (component) {
 			final Container currentContainer = component.getRoot();
 			final String currentTaget = component.getTarget();
 			final Container parent = currentContainer.getParent();
-
+			// run code
 			prepareAndHandleComponent(component, action);
-
+			//remove old view
 			handleOldComponentRemove(parent, currentContainer);
-
+			// add new view
 			handleNewComponentValue(component, parent, currentTaget);
-			// /////
+	
 			return component;
 
 		}
@@ -91,8 +91,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private void handleNewComponentValue(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final Container parent, final String currentTaget) {
-		final String newTaget = component.getTarget();
-		if (currentTaget.equals(newTaget)) {
+		if (currentTaget.equals(component.getTarget())) {
 			addComponentByType(parent, component);
 		} else {
 			final Container validContainer = getValidContainerById(
@@ -111,7 +110,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	 */
 	private Container prepareAndHandleComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<Object, ActionEvent> action) {
+			final IAction<ActionEvent,Object> action) {
 		final Container editorComponent = component.handle(action);
 		component.setRoot(editorComponent);
 		editorComponent.setVisible(true);

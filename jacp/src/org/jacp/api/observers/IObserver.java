@@ -4,16 +4,33 @@ import java.util.List;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.IComponent;
-
-public interface IObserver<C, A, E, T> {
+/**
+ * Defines a basic observer for component messages; handles the message and delegate to responsible component
+ * 
+ * @author Andy Moncsek
+ *
+ * @param <C>
+ *            defines the base component where others extend from
+ * @param <L>
+ *            defines the action listener type
+ * @param <A>
+ *            defines the basic action type
+ * @param <M>
+ *            defines the basic message type
+ */
+public interface IObserver<C, L, A, M> {
 	/**
 	 * handles an action and delegate it to addressed perspective
 	 * 
 	 * @param action
 	 */
-	public abstract void handle(IAction<T, E> action);
-
-	public abstract void handleMessage(final String id, IAction<T, E> action);
+	public abstract void handle(IAction<A, M> action);
+	/**
+	 * handles message to specific component addressed by id
+	 * @param id
+	 * @param action
+	 */
+	public abstract void handleMessage(final String id, IAction<A, M> action);
 
 	/**
 	 * delegate message from a subcomponent or "outside" to target perspective
@@ -22,7 +39,7 @@ public interface IObserver<C, A, E, T> {
 	 * @param target
 	 * @param action
 	 */
-	public void delegateMessage(final String target, final IAction<T, E> action);
+	public void delegateMessage(final String target, final IAction<A, M> action);
 
 	/**
 	 * returns specific, observed perspective or component by id
@@ -30,8 +47,8 @@ public interface IObserver<C, A, E, T> {
 	 * @param id
 	 * @return
 	 */
-	public <M extends IComponent<C, A, E, T>> M getObserveableById(
-			final String id, final List<M> perspectives);
+	public <P extends IComponent<C, L, A, M>> P getObserveableById(
+			final String id, final List<P> perspectives);
 
 	/**
 	 * handle message to active component
@@ -40,8 +57,8 @@ public interface IObserver<C, A, E, T> {
 	 * @param component
 	 * @param action
 	 */
-	public <M extends IComponent<C, A, E, T>> void handleActive(
-			final M component, final IAction<T, E> action);
+	public <P extends IComponent<C, L, A, M>> void handleActive(
+			final P component, final IAction<A, M> action);
 
 	/**
 	 * handle message to inactive component
@@ -50,6 +67,6 @@ public interface IObserver<C, A, E, T> {
 	 * @param component
 	 * @param action
 	 */
-	public <M extends IComponent<C, A, E, T>> void handleInActive(
-			final M component, final IAction<T, E> action);
+	public <P extends IComponent<C, L, A, M>> void handleInActive(
+			final P component, final IAction<A, M> action);
 }
