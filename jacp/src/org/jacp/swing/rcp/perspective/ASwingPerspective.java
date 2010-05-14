@@ -108,29 +108,37 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public void initSubcomonent(
+	public synchronized void initSubcomonent(
 			final IAction<ActionEvent,Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		synchronized (component) {
 			final ComponentInitWorker tmp = new ComponentInitWorker(layout
 					.getTargetLayoutComponents(), component, action);
 			tmp.execute();
-		}
 
 	}
 
 	@Override
-	public void replaceSubcomponent(
+	public synchronized void replaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent,Object> action) {
-		synchronized (component) {
 			final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
 					layout.getTargetLayoutComponents(), component, action);
 			tmp.execute();
-		}
 
+	}
+	
+	@Override
+	public synchronized void delegateTargetChange(final String target,final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		String parentId = getTargetParentId(target);
+		if(!this.id.equals(parentId)) {
+			// unregister component in current perspective
+			// delegate to perspective observer
+			// find responsible perspective
+			// find correct target in perspective
+			// add component.getRoot to correct target
+		}
 	}
 
 	@Override
@@ -252,6 +260,20 @@ public abstract class ASwingPerspective<T extends Container> implements
 		final String[] targetId = getTargetId(messageId);
 		if (isFullValidId(targetId)) {
 			return targetId[1];
+		}
+		return messageId;
+	}
+	
+	/**
+	 * returns the message (parent) target id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	private String getTargetParentId(final String messageId) {
+		final String[] parentId = getTargetId(messageId);
+		if (isFullValidId(parentId)) {
+			return parentId[0];
 		}
 		return messageId;
 	}

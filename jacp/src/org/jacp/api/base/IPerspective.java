@@ -108,6 +108,12 @@ public interface IPerspective<C, L, A, M>
 			final IPerspectiveLayout<? extends C, C> layout,
 			final ISubComponent<C, L, A, M> component,
 			final IAction<A, M> action);
+	/**
+	 * delegate target change to an other perspective 
+	 * @param target
+	 * @param component
+	 */
+	public void delegateTargetChange(final String target,final ISubComponent<C, L, A, M> component);
 
 	/**
 	 * delegates massage to responsible componentObserver to notify target component
