@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * represents an action used by specific listener, targets a component and
- * contains a message 
+ * contains a message, every target get a specific instance of an action (clone) containing only his specific message and action event
  * 
  * @param <M>
  *            defines the type of message 
@@ -28,10 +28,10 @@ public interface IAction<A, M> extends Cloneable {
 	/**
 	 * set message for target component
 	 * 
-	 * @param id
+	 * @param targetId
 	 * @param message
 	 */
-	public abstract void setMessage(final String id, final M message);
+	public abstract void setMessage(final String targetId, final M message);
 
 	/**
 	 * get action message

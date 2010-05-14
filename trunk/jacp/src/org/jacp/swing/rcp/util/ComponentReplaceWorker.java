@@ -19,22 +19,22 @@ import org.jacp.api.base.ISubComponent;
  */
 public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
-	private final ISubComponent<Container, ActionListener, ActionEvent, Object> editor;
+	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent,Object> action;
 
 	public ComponentReplaceWorker(
 			final Map<String, Container> targetComponents,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent,Object> action) {
 		this.targetComponents = targetComponents;
-		this.editor = editor;
+		this.component = component;
 		this.action = action;
 	}
 
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
 			throws Exception {
-		return runHandleSubcomponent(editor, action);
+		return runHandleSubcomponent(component, action);
 	}
 
 	@Override
@@ -96,7 +96,13 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 		} else {
 			final Container validContainer = getValidContainerById(
 					targetComponents, component.getTarget());
-			addComponentByType(validContainer, component);
+			if(validContainer!=null) {
+				addComponentByType(validContainer, component);
+			} else {
+				// handle target outside current perspective
+				component.getParentPerspective().delegateTargetChange(component.getTarget(), component);
+			}
+
 
 		}
 	}
