@@ -126,8 +126,8 @@ public class SwingComponentObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public synchronized <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
-			final M component, final IAction<ActionEvent,Object> action) {
+	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
+			final P component, final IAction<ActionEvent,Object> action) {
 		perspective
 				.replaceSubcomponent(
 						perspective.getIPerspectiveLayout(),
@@ -137,8 +137,8 @@ public class SwingComponentObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public synchronized <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
-			final M component, final IAction<ActionEvent,Object> action) {
+	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
+			final P component, final IAction<ActionEvent,Object> action) {
 		component.setActive(true);
 		perspective
 				.initSubcomonent(
@@ -147,4 +147,13 @@ public class SwingComponentObserver extends ASwingObserver implements
 						(ISubComponent<Container, ActionListener, ActionEvent, Object>) component);
 
 	}
+
+	@Override
+	public void delegateTargetChange(
+			String target,
+			ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

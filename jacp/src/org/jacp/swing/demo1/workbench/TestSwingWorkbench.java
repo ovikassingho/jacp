@@ -25,7 +25,7 @@ import org.jacp.swing.rcp.workbench.ASwingWorkbench;
 
 /**
  * 
- * @author amo
+ * @author Andy Moncsek
  */
 public class TestSwingWorkbench extends ASwingWorkbench {
 

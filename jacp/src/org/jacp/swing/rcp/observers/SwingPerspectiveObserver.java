@@ -13,6 +13,7 @@ import java.util.List;
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.IComponent;
 import org.jacp.api.base.IPerspective;
+import org.jacp.api.base.ISubComponent;
 import org.jacp.api.base.IWorkbench;
 import org.jacp.api.observers.IPerspectiveObserver;
 
@@ -108,6 +109,14 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			callComponentDelegate(target, action);
 		}
 
+	}
+	
+	@Override
+	public synchronized void delegateTargetChange(final String target,final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		// find responsible perspective
+		// find correct target in perspective
+		// add component.getRoot to correct target
+		
 	}
 
 	/**
