@@ -11,3 +11,6 @@
  * background component messaging implemented (not implemented)
  * switch target environment from one perspective to an other (in progress)
  * switch target in perspective DONE
+ * create workbench in modal, windowed or tabbed modus (change in later version to perspective style?) tabbed mode not implemented
+ * define perspective layout: register root node and all leaves in your layout representing targets in perspective DONE
+ * create demos
