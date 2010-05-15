@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JMenu;
 
@@ -38,7 +39,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	private List<IView<Container, ActionListener, ActionEvent, Object>> views = new ArrayList<IView<Container, ActionListener, ActionEvent, Object>>();
 	private List<IEditor<Container, ActionListener, ActionEvent, Object>> editors = new ArrayList<IEditor<Container, ActionListener, ActionEvent, Object>>();
-	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subcomponents = new ArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
+	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
 	private IObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver;
 	private final IComponentObserver<Container, ActionListener, ActionEvent, Object> componentObserver = new SwingComponentObserver(
 			this);
@@ -134,11 +135,22 @@ public abstract class ASwingPerspective<T extends Container> implements
 		String parentId = getTargetParentId(target);
 		if(!this.id.equals(parentId)) {
 			// unregister component in current perspective
+			unregisterComponent(component, this.componentObserver);
 			// delegate to perspective observer
-			// find responsible perspective
-			// find correct target in perspective
-			// add component.getRoot to correct target
+			this.perspectiveObserver.delegateTargetChange(target, component);
+
 		}
+	}
+	
+	/**
+	 * unregister component from current perspective
+	 * @param component
+	 */
+	private void unregisterComponent(final ISubComponent<Container, ActionListener, ActionEvent, Object> component, final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
+		handler.removeComponent(component);
+		this.subcomponents.remove(component);
+		this.getEditors().remove(component);
+		this.getViews().remove(component);
 	}
 
 	@Override

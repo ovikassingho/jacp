@@ -5,6 +5,7 @@
 package org.jacp.api.observers;
 
 import org.jacp.api.base.IPerspective;
+import org.jacp.api.base.ISubComponent;
 import org.jacp.api.base.IWorkbench;
 
 /**
@@ -46,5 +47,7 @@ public interface IPerspectiveObserver<C, L, A, M> extends IObserver<C, L, A, M> 
 	 */
 	public abstract void setParentWorkbench(
 			final IWorkbench<?, C, L, A, M> workbench);
+	
+
 
 }
