@@ -1,8 +1,0 @@
-#Features planned for a first alpha release
-
-= Feature plan =
-
- * create workbench, perspectives, ui components, background components
- * perspective messaging implemented  DONE
- * component ui messaging implemented DONE
- * background component messaging implemented
