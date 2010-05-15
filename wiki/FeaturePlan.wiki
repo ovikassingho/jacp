@@ -9,3 +9,5 @@
  * component ui messaging implemented DONE
  * messaging between components in different perspectives DONE 
  * background component messaging implemented (not implemented)
+ * switch target environment from one perspective to an other (in progress)
+ * switch target in perspective DONE
