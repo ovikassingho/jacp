@@ -2,7 +2,10 @@
 
 = Feature plan =
 
- * create workbench, perspectives, ui components, background components
+ * create initial api to define workbench, perspectives, components DONE
+ * define messaging capabilities and component handling DONE
+ * create workbench, perspectives, ui components, background components (background components not implemented)
  * perspective messaging implemented  DONE
  * component ui messaging implemented DONE
- * background component messaging implemented
+ * messaging between components in different perspectives DONE 
+ * background component messaging implemented (not implemented)
