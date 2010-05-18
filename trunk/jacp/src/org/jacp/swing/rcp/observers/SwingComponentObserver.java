@@ -129,7 +129,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
 			final P component, final IAction<ActionEvent, Object> action) {
 		perspective
-				.replaceSubcomponent(
+				.handleAndReplaceSubcomponent(
 						perspective.getIPerspectiveLayout(),
 						(ISubComponent<Container, ActionListener, ActionEvent, Object>) component,
 						action);

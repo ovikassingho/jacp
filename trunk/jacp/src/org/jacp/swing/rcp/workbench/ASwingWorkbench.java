@@ -53,7 +53,7 @@ import com.apple.mrj.MRJApplicationUtils;
 public abstract class ASwingWorkbench extends JFrame
 		implements
 		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>, IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
+		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>> {
 
 	/**
 	 * 
@@ -171,9 +171,8 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void registerComponent(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> component,
-			final IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
-		handler.addPerspective(component);
+			final IPerspective<Container, ActionListener, ActionEvent, Object> component) {
+		this.perspectiveObserver.addPerspective(component);
 
 	}
 
@@ -400,7 +399,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
 	private void initPerspectives() {
 		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
-			registerComponent(perspective, perspectiveObserver);
+			registerComponent(perspective);
 			// TODO what if component removed an initialized later again?
 			createPerspectiveMenue(perspective);
 			if (perspective.isActive()) {
