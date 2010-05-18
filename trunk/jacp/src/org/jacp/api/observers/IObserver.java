@@ -5,11 +5,13 @@ import java.util.List;
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.IComponent;
 import org.jacp.api.base.ISubComponent;
+
 /**
- * Defines a basic observer for component messages; handles the message and delegate to responsible component
+ * Defines a basic observer for component messages; handles the message and
+ * delegate to responsible component
  * 
  * @author Andy Moncsek
- *
+ * 
  * @param <C>
  *            defines the base component where others extend from
  * @param <L>
@@ -26,8 +28,10 @@ public interface IObserver<C, L, A, M> {
 	 * @param action
 	 */
 	public abstract void handle(IAction<A, M> action);
+
 	/**
 	 * handles message to specific component addressed by id
+	 * 
 	 * @param id
 	 * @param action
 	 */
@@ -70,12 +74,13 @@ public interface IObserver<C, L, A, M> {
 	 */
 	public <P extends IComponent<C, L, A, M>> void handleInActive(
 			final P component, final IAction<A, M> action);
-	
-	
+
 	/**
-	 * delegate component target change to an other perspective 
+	 * delegate component target change to an other perspective
+	 * 
 	 * @param target
 	 * @param component
 	 */
-	public abstract void delegateTargetChange(final String target,final ISubComponent<C, L, A, M> component);
+	public abstract void delegateTargetChange(final String target,
+			final ISubComponent<C, L, A, M> component);
 }

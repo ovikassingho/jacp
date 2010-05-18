@@ -17,13 +17,13 @@ import org.jacp.api.observers.IObserver;
  * @author amo
  */
 public class SwingActionListener implements ActionListener,
-		IActionListener<ActionListener,ActionEvent, Object> {
+		IActionListener<ActionListener, ActionEvent, Object> {
 
-	private IAction<ActionEvent,Object> action;
+	private IAction<ActionEvent, Object> action;
 	private final IObserver<Container, ActionListener, ActionEvent, Object> observer;
 
 	public SwingActionListener(
-			final IAction<ActionEvent,Object> action,
+			final IAction<ActionEvent, Object> action,
 			final IObserver<Container, ActionListener, ActionEvent, Object> observer) {
 		this.action = action;
 		this.observer = observer;
@@ -36,16 +36,16 @@ public class SwingActionListener implements ActionListener,
 	}
 
 	@Override
-	public void notifyComponents(final IAction<ActionEvent,Object> action) {
+	public void notifyComponents(final IAction<ActionEvent, Object> action) {
 		observer.handle(action);
 	}
 
-	public void setAction(final IAction<ActionEvent,Object> action) {
+	public void setAction(final IAction<ActionEvent, Object> action) {
 		this.action = action;
 	}
 
 	@Override
-	public IAction<ActionEvent,Object> getAction() {
+	public IAction<ActionEvent, Object> getAction() {
 		return action;
 	}
 

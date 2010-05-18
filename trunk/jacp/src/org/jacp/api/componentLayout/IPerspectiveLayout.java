@@ -8,10 +8,10 @@ import java.util.Map;
 
 /**
  * defines layout of a perspective and the container for included editors and
- * views (target components); for use in perspectives handle method 
+ * views (target components); for use in perspectives handle method
  * 
  * @param <M>
- *            type of root component 
+ *            type of root component
  * @param <B>
  *            type of target components
  * @author Andy Moncsek

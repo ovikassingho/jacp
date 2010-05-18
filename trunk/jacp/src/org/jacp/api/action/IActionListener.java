@@ -9,7 +9,7 @@ package org.jacp.api.action;
  * 
  * 
  * @param <L>
- *            defines the basic listener type 
+ *            defines the basic listener type
  * @param <M>
  *            defines the type of message ActionEvent
  * @param <A>

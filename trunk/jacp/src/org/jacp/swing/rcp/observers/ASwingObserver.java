@@ -26,10 +26,10 @@ public abstract class ASwingObserver implements
 	 * @param message
 	 * @return
 	 */
-	protected IAction<ActionEvent,Object> getValidAction(
-			final IAction<ActionEvent,Object> action, final String target,
+	protected IAction<ActionEvent, Object> getValidAction(
+			final IAction<ActionEvent, Object> action, final String target,
 			final Object message) {
-		final IAction<ActionEvent,Object> actionClone = action.clone();
+		final IAction<ActionEvent, Object> actionClone = action.clone();
 		actionClone.setMessage(target, message);
 		return actionClone;
 	}
@@ -78,8 +78,8 @@ public abstract class ASwingObserver implements
 
 	@Override
 	public <M extends IComponent<Container, ActionListener, ActionEvent, Object>> M getObserveableById(
-			final String id, final List<M> perspectives) {
-		for (final M p : perspectives) {
+			final String id, final List<M> components) {
+		for (final M p : components) {
 			if (p.getId().equals(id)) {
 				return p;
 			}
@@ -88,7 +88,7 @@ public abstract class ASwingObserver implements
 	}
 
 	@Override
-	public synchronized void handle(final IAction<ActionEvent,Object> action) {
+	public synchronized void handle(final IAction<ActionEvent, Object> action) {
 		final Map<String, Object> messages = action.getMessageList();
 		for (final String targetId : messages.keySet()) {
 			handleMessage(targetId, action);
