@@ -19,7 +19,9 @@ import org.jacp.swing.demo1.workbench.TestSwingWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * Launches the spring context, handles workbench initialization and set OS specific settings
+ * Launches the spring context, handles workbench initialization and set OS
+ * specific settings
+ * 
  * @author Andy Moncsek
  */
 public class AHCPLauncher {
@@ -38,7 +40,8 @@ public class AHCPLauncher {
 		final String[] contextPath = new String[] { "org/jacp/impl/resources/ahcpWorkbench.xml" };
 		final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				contextPath);
-		final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) context.getBean("workbench");
+		final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) context
+				.getBean("workbench");
 		workbench.init();
 	}
 
@@ -69,7 +72,7 @@ public class AHCPLauncher {
 		}
 
 	}
-	
+
 	private static void setDefault() throws ClassNotFoundException {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

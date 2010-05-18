@@ -8,10 +8,11 @@ import java.util.Map;
 
 /**
  * represents an action used by specific listener, targets a component and
- * contains a message, every target get a specific instance of an action (clone) containing only his specific message and action event
+ * contains a message, every target get a specific instance of an action (clone)
+ * containing only his specific message and action event
  * 
  * @param <M>
- *            defines the type of message 
+ *            defines the type of message
  * @param <A>
  *            defines the type of ActionEvent
  * @author Andy Moncsek

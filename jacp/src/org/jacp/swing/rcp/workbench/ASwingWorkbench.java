@@ -52,7 +52,7 @@ import com.apple.mrj.MRJApplicationUtils;
  */
 public abstract class ASwingWorkbench extends JFrame
 		implements
-		IWorkbench<LayoutManager2, Container,  ActionListener, ActionEvent, Object>,
+		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
 		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>, IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
 
 	/**
@@ -154,7 +154,7 @@ public abstract class ASwingWorkbench extends JFrame
 	}
 
 	@Override
-	public void handleInitialLayout(final IAction<ActionEvent,Object> action,
+	public void handleInitialLayout(final IAction<ActionEvent, Object> action,
 			final IWorkbenchLayout<LayoutManager2> layout) {
 		handleInitialLayout((SwingAction) action, (SwingWorkbenchLayout) layout);
 
@@ -180,7 +180,7 @@ public abstract class ASwingWorkbench extends JFrame
 	@Override
 	public void initPerspective(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective,
-			final IAction<ActionEvent,Object> action) {
+			final IAction<ActionEvent, Object> action) {
 		final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 				.getIPerspectiveLayout();
 
@@ -205,7 +205,7 @@ public abstract class ASwingWorkbench extends JFrame
 	@Override
 	public void replacePerspective(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective,
-			final IAction<ActionEvent,Object> action) {
+			final IAction<ActionEvent, Object> action) {
 		final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 				.getIPerspectiveLayout();
 		// backup old component
@@ -505,7 +505,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 * @param perspective
 	 */
 	private void handlePerspectiveInitMethod(
-			final IAction<ActionEvent,Object> action,
+			final IAction<ActionEvent, Object> action,
 			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
 		if (getTargetPerspectiveId(action.getTargetId()).equals(

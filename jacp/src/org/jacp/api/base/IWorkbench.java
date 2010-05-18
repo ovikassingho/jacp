@@ -7,7 +7,7 @@ import org.jacp.api.componentLayout.IWorkbenchLayout;
 
 /**
  * base component for an application, handles perspectives and containing
- * components 
+ * components
  * 
  * @param <P>
  *            defines the default layout manager

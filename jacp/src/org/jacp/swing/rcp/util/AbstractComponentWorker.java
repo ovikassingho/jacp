@@ -73,6 +73,73 @@ public abstract class AbstractComponentWorker
 
 	protected abstract ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<ActionEvent,Object> action);
+			final IAction<ActionEvent, Object> action);
+
+	/**
+	 * removes old ui component of subcomponent form parent ui component
+	 * 
+	 * @param parent
+	 * @param currentContainer
+	 */
+	protected void handleOldComponentRemove(final Container parent,
+			final Container currentContainer) {
+		final Thread worker = new Thread() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						// run in EventDispatchThread
+						parent.remove(currentContainer);
+					}
+				}); // SWING UTILS END
+			} // run end
+		}; // thred END
+		worker.start();
+	}
+
+	/**
+	 * set new ui component to parent ui component
+	 * 
+	 * @param component
+	 * @param parent
+	 * @param currentTaget
+	 */
+	protected void handleNewComponentValue(
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final Map<String, Container> targetComponents,
+			final Container parent, final String currentTaget) {
+		if (currentTaget.equals(component.getTarget())) {
+			addComponentByType(parent, component);
+		} else {
+			final Container validContainer = getValidContainerById(
+					targetComponents, component.getTarget());
+			if (validContainer != null) {
+				addComponentByType(validContainer, component);
+			} else {
+				// handle target outside current perspective
+				component.getParentPerspective().delegateTargetChange(
+						component.getTarget(), component);
+			}
+
+		}
+	}
+
+	/**
+	 * runs subcomponents handle method
+	 * 
+	 * @param component
+	 * @param action
+	 * @return
+	 */
+	protected Container prepareAndHandleComponent(
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IAction<ActionEvent, Object> action) {
+		final Container editorComponent = component.handle(action);
+		component.setRoot(editorComponent);
+		editorComponent.setVisible(true);
+		editorComponent.setEnabled(true);
+		return editorComponent;
+	}
 
 }

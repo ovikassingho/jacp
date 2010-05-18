@@ -14,7 +14,7 @@ import org.jacp.api.action.IAction;
  * 
  * @author Andy Moncsek
  */
-public final class SwingAction implements IAction<ActionEvent,Object> {
+public final class SwingAction implements IAction<ActionEvent, Object> {
 
 	private final Map<String, Object> messages = new HashMap<String, Object>();
 	private Object message;
@@ -83,8 +83,8 @@ public final class SwingAction implements IAction<ActionEvent,Object> {
 	}
 
 	@Override
-	public IAction<ActionEvent,Object> clone() {
-		final IAction<ActionEvent,Object> clone = new SwingAction(sourceId);
+	public IAction<ActionEvent, Object> clone() {
+		final IAction<ActionEvent, Object> clone = new SwingAction(sourceId);
 		clone.setActionEvent(event);
 		return clone;
 	}

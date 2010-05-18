@@ -26,7 +26,7 @@ public class TestEditor5 extends ASwingEditor {
 	}
 
 	@Override
-	public Container handle(final IAction<ActionEvent,Object> action) {
+	public Container handle(final IAction<ActionEvent, Object> action) {
 
 		System.out.println("Editor5 CALL");
 		Long j = 0L;

@@ -6,8 +6,8 @@
 package org.jacp.api.base;
 
 /**
- *represents an view handled by a perspective 
- *
+ *represents an view handled by a perspective
+ * 
  * @param <C>
  *            defines the base component where others extend from
  * @param <L>

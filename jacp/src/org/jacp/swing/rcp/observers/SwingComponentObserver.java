@@ -3,8 +3,8 @@ package org.jacp.swing.rcp.observers;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.IComponent;
@@ -21,7 +21,7 @@ import org.jacp.api.observers.IComponentObserver;
 public class SwingComponentObserver extends ASwingObserver implements
 		IComponentObserver<Container, ActionListener, ActionEvent, Object> {
 
-	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> components = new ArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
+	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
 
 	private IPerspective<Container, ActionListener, ActionEvent, Object> perspective;
 
@@ -61,7 +61,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 */
 	@Override
 	public void handleMessage(final String targetId,
-			final IAction<ActionEvent,Object> action) {
+			final IAction<ActionEvent, Object> action) {
 		final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
 				getTargetComponentId(targetId), components);
 		if (component != null) {
@@ -81,7 +81,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 * @param action
 	 */
 	private void handleComponentMiss(final String targetId,
-			final IAction<ActionEvent,Object> action) {
+			final IAction<ActionEvent, Object> action) {
 		final boolean local = isLocalMessage(targetId);
 		if (!local) {
 			final String targetPerspectiveId = getTargetPerspectiveId(targetId);
@@ -107,9 +107,9 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 */
 	private void handleComponentHit(
 			final String targetId,
-			final IAction<ActionEvent,Object> action,
+			final IAction<ActionEvent, Object> action,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		final IAction<ActionEvent,Object> actionClone = getValidAction(action,
+		final IAction<ActionEvent, Object> actionClone = getValidAction(action,
 				targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
 			handleActive(component, actionClone);
@@ -120,14 +120,14 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	@Override
 	public synchronized void delegateMessage(final String target,
-			final IAction<ActionEvent,Object> action) {
+			final IAction<ActionEvent, Object> action) {
 		handleMessage(target, action);
 
 	}
 
 	@Override
 	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
-			final P component, final IAction<ActionEvent,Object> action) {
+			final P component, final IAction<ActionEvent, Object> action) {
 		perspective
 				.replaceSubcomponent(
 						perspective.getIPerspectiveLayout(),
@@ -138,7 +138,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	@Override
 	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
-			final P component, final IAction<ActionEvent,Object> action) {
+			final P component, final IAction<ActionEvent, Object> action) {
 		component.setActive(true);
 		perspective
 				.initSubcomonent(
@@ -150,10 +150,10 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	@Override
 	public void delegateTargetChange(
-			String target,
-			ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final String target,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
