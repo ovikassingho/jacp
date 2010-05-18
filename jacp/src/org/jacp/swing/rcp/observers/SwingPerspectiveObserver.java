@@ -121,10 +121,12 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 				perspectiveId, perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
-			final String perspectiveTargetId = getTargetComponentId(target);
 			// register new component at perspective
-
-			// add component.getRoot to correct target
+			responsiblePerspective.registerComponent(component);
+			// add component root to correct target
+			responsiblePerspective.addComponentUIValue(responsiblePerspective.getIPerspectiveLayout().getTargetLayoutComponents(),component);
+		} else {
+			throw new UnsupportedOperationException("No responsible perspective found. Handling not implemented yet.");
 		}
 
 	}

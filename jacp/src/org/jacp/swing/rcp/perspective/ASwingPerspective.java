@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JMenu;
@@ -26,8 +27,10 @@ import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.observers.SwingComponentObserver;
+import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
+
 
 /**
  * represents a basic swing perspective that handles subcomponents
@@ -77,11 +80,26 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void registerComponent(
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		componentObserver.addComponent(component);
+		this.subcomponents.add(component);
+		component.setParentPerspective(this);
+
+	}
+	
+	/**
+	 * unregister component from current perspective
+	 *TODO add to api
+	 * @param component
+	 */
+	private void unregisterComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
-		handler.addComponent(component);
-		this.subcomponents.add(component);
-
+		handler.removeComponent(component);
+		this.subcomponents.remove(component);
+		this.getEditors().remove(component);
+		this.getViews().remove(component);
+		component.setParentPerspective(null);
 	}
 
 	@Override
@@ -120,7 +138,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public synchronized void replaceSubcomponent(
+	public synchronized void handleAndReplaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
@@ -128,6 +146,11 @@ public abstract class ASwingPerspective<T extends Container> implements
 				.getTargetLayoutComponents(), component, action);
 		tmp.execute();
 
+	}
+	
+	public synchronized void addComponentUIValue(final Map<String, Container> targetComponents, final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		final ComponentAddWorker worker = new ComponentAddWorker(targetComponents, component);
+		worker.execute();
 	}
 
 	@Override
@@ -144,19 +167,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 		}
 	}
 
-	/**
-	 * unregister component from current perspective
-	 * 
-	 * @param component
-	 */
-	private void unregisterComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
-		handler.removeComponent(component);
-		this.subcomponents.remove(component);
-		this.getEditors().remove(component);
-		this.getViews().remove(component);
-	}
+
 
 	@Override
 	public synchronized void delegateMassege(final String target,
@@ -263,7 +274,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	private <M extends ISubComponent<Container, ActionListener, ActionEvent, Object>> void registerSubcomponents(
 			final List<M> components) {
 		for (final M component : components) {
-			registerComponent(component, componentObserver);
+			registerComponent(component);
 		}
 	}
 

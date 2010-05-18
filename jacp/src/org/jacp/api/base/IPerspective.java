@@ -1,6 +1,10 @@
 package org.jacp.api.base;
 
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -25,7 +29,7 @@ public interface IPerspective<C, L, A, M>
 		extends
 		IExtendedComponent<C>,
 		IComponent<C, L, A, M>,
-		IRootComponent<ISubComponent<C, L, A, M>, IComponentObserver<C, L, A, M>> {
+		IRootComponent<ISubComponent<C, L, A, M>> {
 
 	/**
 	 * the initialization method
@@ -98,16 +102,23 @@ public interface IPerspective<C, L, A, M>
 			final ISubComponent<C, L, A, M> component);
 
 	/**
-	 * handles init and replace of subcomponents in perspective
+	 * runs 'handle' method and replace of subcomponent in perspective
 	 * 
 	 * @param layout
 	 * @param component
 	 * @param action
 	 */
-	public abstract void replaceSubcomponent(
+	public abstract void handleAndReplaceSubcomponent(
 			final IPerspectiveLayout<? extends C, C> layout,
 			final ISubComponent<C, L, A, M> component,
 			final IAction<A, M> action);
+	
+	/**
+	 * handles component ui return value and add to correct target at perspective 
+	 * @param targetComponents
+	 * @param component
+	 */
+	public abstract void addComponentUIValue(final Map<String, C> targetComponents, final ISubComponent<C, L, A, M> component);
 
 	/**
 	 * delegate target change to an other perspective
