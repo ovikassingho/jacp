@@ -73,7 +73,10 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 				handleInActive(perspective, actionClone);
 
 			}
-		} // TODO implement missing perspective!!
+		} else {
+			// TODO implement missing perspective!!
+			throw new UnsupportedOperationException("No responsible perspective found. Handling not implemented yet.");
+		}
 	}
 
 	private void handleWorkspaceModeSpecific() {
