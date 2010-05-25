@@ -71,7 +71,7 @@ public class TestSwingSplitPanePerspective2 extends
 
 		splitPane.add(scrollPaneEditor, JSplitPane.RIGHT);
 		perspectiveLayout.registerTargetLayoutComponent("view", viewTabs);
-		perspectiveLayout.registerTargetLayoutComponent("editor", editorTabs);
+		perspectiveLayout.registerTargetLayoutComponent("editor0", editorTabs);
 		// splitPane.setDividerLocation(100);
 		perspectiveLayout.setRootLayoutComponent(splitPane);
 		System.out.println("perspective2");

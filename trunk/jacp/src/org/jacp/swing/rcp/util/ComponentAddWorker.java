@@ -40,6 +40,7 @@ public class ComponentAddWorker extends AbstractComponentWorker{
 	
 	@Override
 	public void done() {
+		component.setTarget(getTargetComponentId(component.getTarget()));
 		handleNewComponentValue(component, targetComponents, null, "");
 	}
 

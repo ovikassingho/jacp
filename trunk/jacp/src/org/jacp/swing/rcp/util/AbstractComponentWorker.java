@@ -1,5 +1,6 @@
 package org.jacp.swing.rcp.util;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +43,13 @@ public abstract class AbstractComponentWorker
 		if (validContainer instanceof JScrollPane) {
 			((JScrollPane) validContainer).getViewport().add(editor.getRoot());
 		} else {
-			validContainer.add(editor.getName(), editor.getRoot());
+			final Container uiComponent = editor.getRoot();
+			uiComponent.setEnabled(true);
+			uiComponent.setVisible(true);
+			uiComponent.validate();
+			//System.out.println("name1: "+editor.getName() +" parent1: " +uiComponent.getParent());
+			validContainer.add(editor.getName(), uiComponent);
+			//System.out.println("name: "+editor.getName() + " valid: "+uiComponent.isValid()+" parent: " +uiComponent.getParent());
 		}
 		validContainer.setEnabled(true);
 		invalidateHost(validContainer);
@@ -66,7 +73,7 @@ public abstract class AbstractComponentWorker
 					}
 				}); // SWING UTILS END
 			} // run end
-		}; // thred END
+		}; // Thread END
 		worker.start();
 
 	}
@@ -94,7 +101,7 @@ public abstract class AbstractComponentWorker
 					}
 				}); // SWING UTILS END
 			} // run end
-		}; // thred END
+		}; // Thread END
 		worker.start();
 	}
 
@@ -112,16 +119,35 @@ public abstract class AbstractComponentWorker
 		if (currentTaget.equals(component.getTarget())) {
 			addComponentByType(parent, component);
 		} else {
-			final Container validContainer = getValidContainerById(
-					targetComponents, component.getTarget());
-			if (validContainer != null) {
-				addComponentByType(validContainer, component);
+			if(currentTaget.length()<2){
+				handleTargetChange(component, targetComponents,getTargetComponentId(component.getTarget()));
 			} else {
-				// handle target outside current perspective
-				component.getParentPerspective().delegateTargetChange(
-						component.getTarget(), component);
+				handleTargetChange(component, targetComponents,component.getTarget());
 			}
+				
 
+
+		}
+	}
+	
+	
+	
+	/**
+	 * handle component when target has changed
+	 * @param component
+	 * @param targetComponents
+	 */
+	private void handleTargetChange(
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final Map<String, Container> targetComponents, final String target) {
+		final Container validContainer = getValidContainerById(
+				targetComponents, target);
+		if (validContainer != null) {
+			addComponentByType(validContainer, component);
+		} else {
+			// handle target outside current perspective
+			component.getParentPerspective().delegateTargetChange(
+					component.getTarget(), component);
 		}
 	}
 
@@ -141,5 +167,34 @@ public abstract class AbstractComponentWorker
 		editorComponent.setEnabled(true);
 		return editorComponent;
 	}
+	
+	/**
+	 * returns the message target component id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected String getTargetComponentId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (!isLocalMessage(messageId)) {
+			return targetId[1];
+		}
+		return messageId;
+	}
+	
+	protected boolean isLocalMessage(final String messageId) {
+		return !messageId.contains(".");
+	}
+
+	/**
+	 * returns target message with perspective and component name
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected String[] getTargetId(final String messageId) {
+		return messageId.split("\\.");
+	}
+
 
 }

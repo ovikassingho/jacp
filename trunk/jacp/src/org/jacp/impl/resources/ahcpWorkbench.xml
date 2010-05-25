@@ -63,7 +63,7 @@
 
 	<bean id="editor2" class="org.jacp.swing.demo1.editors.TestSwingEditor2">
 		<property name="name" value="testEditor2" />
-		<property name="active" value="false" />
+		<property name="active" value="true" />
 		<property name="id" value="id04" />
 		<property name="target" value="editor2" />
 	</bean>
@@ -81,9 +81,9 @@
 	</bean>
 	<bean id="editor5" class="org.jacp.swing.demo1.editors.TestEditor5">
 		<property name="name" value="testEditor5" />
-		<property name="active" value="true" />
+		<property name="active" value="false" />
 		<property name="id" value="id07" />
-		<property name="target" value="editor" />
+		<property name="target" value="editor0" />
 	</bean>
 </beans>
 

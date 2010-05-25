@@ -64,6 +64,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 			final IAction<ActionEvent, Object> action) {
 		final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
 				getTargetComponentId(targetId), components);
+		System.out.println("handle");
 		if (component != null) {
 			handleComponentHit(targetId, action, component);
 		} else {
