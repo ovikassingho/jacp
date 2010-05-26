@@ -63,6 +63,12 @@ public interface IPerspective<C, L, A, M>
 	 * @return
 	 */
 	public abstract List<IEditor<C, L, A, M>> getEditors();
+	
+	/**
+	 * get all subcomponents in perspective
+	 * @return
+	 */
+	public List<ISubComponent<C, L, A, M>> getSubcomponents();
 
 	/**
 	 * handle baselayout when perspective started

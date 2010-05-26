@@ -7,15 +7,20 @@ package org.jacp.swing.demo1.perspectives;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.base.IEditor;
+import org.jacp.api.base.ISubComponent;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
@@ -26,16 +31,31 @@ import org.jacp.swing.rcp.perspective.ASwingPerspective;
  */
 public class TestSwingSplitPanePerspective2 extends
 		ASwingPerspective<JSplitPane> {
+	
+	private JTextField text1 = new JTextField();
+	int i=0;
 
 	private Container handleEditorLayout() {
 		final JTabbedPane pane = new JTabbedPane();
 		pane.setTabPlacement(SwingConstants.BOTTOM);
+		JPanel panel = new JPanel();
+		List<ISubComponent<Container, ActionListener, ActionEvent, Object>> myeditors = this.getSubcomponents();
+		for(ISubComponent<Container, ActionListener, ActionEvent, Object> e:myeditors) {
+			JTextField field = new JTextField(e.getName());
+			panel.add(field);
+			
+		}
+		text1.setText("count: "+i);
+		i++;
+		panel.add(text1);
+		pane.add(panel);
 		return pane;
 	}
 
 	private Container handleViewLayout() {
 		final JTabbedPane pane = new JTabbedPane();
 		pane.setTabPlacement(SwingConstants.LEFT);
+
 		return pane;
 	}
 

@@ -41,18 +41,20 @@ public abstract class AbstractComponentWorker
 			final Container validContainer,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor) {
 		if (validContainer instanceof JScrollPane) {
-			((JScrollPane) validContainer).getViewport().add(editor.getRoot());
+			((JScrollPane) validContainer).getViewport().add(editor.getName(),editor.getRoot());
 		} else {
-			final Container uiComponent = editor.getRoot();
-			uiComponent.setEnabled(true);
-			uiComponent.setVisible(true);
-			uiComponent.validate();
-			//System.out.println("name1: "+editor.getName() +" parent1: " +uiComponent.getParent());
-			validContainer.add(editor.getName(), uiComponent);
-			//System.out.println("name: "+editor.getName() + " valid: "+uiComponent.isValid()+" parent: " +uiComponent.getParent());
+			handleAdd(validContainer, editor.getRoot(), editor.getName());
+
 		}
 		validContainer.setEnabled(true);
-		invalidateHost(validContainer);
+		validContainer.setVisible(true);
+	}
+	
+	
+	private void handleAdd(final Container validContainer,final Container uiComponent, final String name) {
+		uiComponent.setEnabled(true);
+		uiComponent.setVisible(true);
+		validContainer.add(name, uiComponent);
 	}
 
 	protected void invalidateHost(final Container host) {

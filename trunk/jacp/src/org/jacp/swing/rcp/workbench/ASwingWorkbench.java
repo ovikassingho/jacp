@@ -33,6 +33,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.base.IEditor;
 import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.IRootComponent;
+import org.jacp.api.base.ISubComponent;
 import org.jacp.api.base.IWorkbench;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -433,8 +434,8 @@ public abstract class ASwingWorkbench extends JFrame
 	private void reassignSubcomponents(
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		for (final IEditor<Container, ActionListener, ActionEvent, Object> editor : perspective
-				.getEditors()) {
+		for (final ISubComponent<Container, ActionListener, ActionEvent, Object> editor : perspective
+				.getSubcomponents()) {
 			final Container editorComponent = editor.getRoot();
 			if (editorComponent != null) {
 				editorComponent.setVisible(true);
@@ -525,7 +526,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
 	private void addComponentByType(
 			final IPerspectiveLayout<? extends Container, Container> layout,
-			final IEditor<Container, ActionListener, ActionEvent, Object> editor) {
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor) {
 		final Container validContainer = layout.getTargetLayoutComponents()
 				.get(editor.getTarget());
 		if (validContainer instanceof JScrollPane) {

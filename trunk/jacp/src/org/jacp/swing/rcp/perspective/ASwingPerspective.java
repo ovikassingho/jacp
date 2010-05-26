@@ -114,8 +114,8 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
 		final String targetId = getTargetComponentId(action.getTargetId());
-		for (final IEditor<Container, ActionListener, ActionEvent, Object> component : perspective
-				.getEditors()) {
+		for (final ISubComponent<Container, ActionListener, ActionEvent, Object> component : perspective
+				.getSubcomponents()) {
 			if (component.getId().equals(targetId)) {
 				initSubcomonent(action, layout, component);
 			} else if (component.isActive()) {
@@ -329,5 +329,9 @@ public abstract class ASwingPerspective<T extends Container> implements
 		}
 
 		return false;
+	}
+
+	public List<ISubComponent<Container, ActionListener, ActionEvent, Object>> getSubcomponents() {
+		return subcomponents;
 	}
 }
