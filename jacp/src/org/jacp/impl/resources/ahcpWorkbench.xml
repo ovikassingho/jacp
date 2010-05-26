@@ -50,6 +50,7 @@
 			<list>
 				<ref bean="editor4" />
 				<ref bean="editor5" />
+
 			</list>
 		</property>
 	</bean>
@@ -65,7 +66,7 @@
 		<property name="name" value="testEditor2" />
 		<property name="active" value="true" />
 		<property name="id" value="id04" />
-		<property name="target" value="editor2" />
+		<property name="target" value="editor0" />
 	</bean>
 	<bean id="editor3" class="org.jacp.swing.demo1.editors.TestEditor3">
 		<property name="name" value="testEditor3" />

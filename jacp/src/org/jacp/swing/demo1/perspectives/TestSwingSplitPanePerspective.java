@@ -134,7 +134,7 @@ public class TestSwingSplitPanePerspective extends
 			final JSplitPane test = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 			final JTabbedPane panelTest = new JTabbedPane();
 			panelTest.setTabPlacement(SwingConstants.LEFT);
-			panelTest.add(handleViewLayout1());
+			//panelTest.add(handleViewLayout1());
 			final JScrollPane scrollPaneView = new JScrollPane(panelTest);
 
 			splitPane.add(scrollPaneView, JSplitPane.LEFT);

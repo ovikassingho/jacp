@@ -16,6 +16,7 @@ import org.jacp.swing.rcp.editor.ASwingEditor;
 public class TestSwingEditor2 extends ASwingEditor {
 
 	int i = 0;
+	int p = 2;
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
@@ -33,7 +34,7 @@ public class TestSwingEditor2 extends ASwingEditor {
 	@Override
 	public Container handle(final IAction<ActionEvent, Object> action) {
 
-		System.out.println("Editor2 CALL: "+action.getMessage());
+
 		if(action.getMessage().equals("test")) {
 			Long j = 0L;
 
@@ -48,8 +49,15 @@ public class TestSwingEditor2 extends ASwingEditor {
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
 		} else if(action.getMessage().equals("testBLA")){
-			setTarget("id02.editor0");
-			System.out.println("Editor2 CALL 2: ");
+			setTarget("id0"+p+".editor0");
+			if(p==2) {
+				p =1;
+			} else {
+				p=2;
+			}
+			System.out.println("Editor2 CALL 2: "+p);
+		} else {
+			System.out.println("Editor2 CALL: "+action.getMessage());
 		}
 
 		return handleViewLayout3();
@@ -64,7 +72,7 @@ public class TestSwingEditor2 extends ASwingEditor {
 			public void actionPerformed(final ActionEvent e) {
 
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-					//System.out.println("action");
+					System.out.println("action");
 					listener3.getAction().setMessage("testBLA");
 					listener3.getListener().actionPerformed(e);
 	
