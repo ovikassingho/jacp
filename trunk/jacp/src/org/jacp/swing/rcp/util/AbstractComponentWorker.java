@@ -49,7 +49,13 @@ public abstract class AbstractComponentWorker
 		validContainer.setEnabled(true);
 		validContainer.setVisible(true);
 	}
-
+	
+	/**
+	 * enables component an add to container
+	 * @param validContainer
+	 * @param uiComponent
+	 * @param name
+	 */
 	private void handleAdd(final Container validContainer,
 			final Container uiComponent, final String name) {
 		uiComponent.setEnabled(true);
@@ -120,7 +126,7 @@ public abstract class AbstractComponentWorker
 			final Container parent, final String currentTaget) {
 		if (currentTaget.equals(component.getTarget())) {
 			addComponentByType(parent, component);
-		} else {
+		} else { // currentTarget.length < 2 happends when component changed target from one perspective to an other
 			if (currentTaget.length() < 2) {
 				handleTargetChange(component, targetComponents,
 						getTargetComponentId(component.getTarget()));
@@ -183,6 +189,12 @@ public abstract class AbstractComponentWorker
 		return messageId;
 	}
 
+	/**
+	 * when id has no separator it is a local message
+	 * 
+	 * @param messageId
+	 * @return
+	 */
 	protected boolean isLocalMessage(final String messageId) {
 		return !messageId.contains(".");
 	}

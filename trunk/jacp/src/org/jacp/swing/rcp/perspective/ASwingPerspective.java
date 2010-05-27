@@ -97,7 +97,10 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
-		this.addMenuEntries((JMenu) meuneBar);
+		if(meuneBar instanceof JMenu) {
+			this.addMenuEntries((JMenu) meuneBar);
+		}
+
 
 	}
 

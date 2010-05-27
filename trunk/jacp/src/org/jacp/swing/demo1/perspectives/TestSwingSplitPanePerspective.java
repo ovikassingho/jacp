@@ -92,6 +92,9 @@ public class TestSwingSplitPanePerspective extends
 		add.putClientProperty("JButton.segmentPosition", "first");
 		add.setFocusable(false);
 		add.setSize(new Dimension(10, 10));
+		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
+		listener.getAction().setMessage("id02", "test");
+		add.addActionListener(listener.getListener());
 		toolBar.add(add);
 
 		if (bottomBar != null) {
@@ -101,6 +104,9 @@ public class TestSwingSplitPanePerspective extends
 			// "segmentedTextured");
 			add2.putClientProperty("JButton.segmentPosition", "first");
 			add2.setFocusable(false);
+			final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+			listener2.getAction().setMessage("id01","tester");
+			add2.addActionListener(listener2.getListener());
 			bottomBar.add(add2);
 		}
 	}
@@ -131,6 +137,7 @@ public class TestSwingSplitPanePerspective extends
 
 			final JSplitPane splitPane = new JSplitPane(
 					JSplitPane.HORIZONTAL_SPLIT);
+			splitPane.setDividerLocation(300);
 			final JSplitPane test = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 			final JTabbedPane panelTest = new JTabbedPane();
 			panelTest.setTabPlacement(SwingConstants.LEFT);

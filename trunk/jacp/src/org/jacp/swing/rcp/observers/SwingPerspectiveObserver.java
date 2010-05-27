@@ -80,6 +80,11 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 		}
 	}
 
+	/**
+	 * handle workspace mode specific actions. When working in single pain mode
+	 * all components are deactivated and only one (the active) will be
+	 * activated; when working in window mode all components must be visible
+	 */
 	private void handleWorkspaceModeSpecific() {
 		switch (workbench.getWorkbenchLayout().getWorkspaceMode()) {
 		case WINDOWED_PAIN:
@@ -120,11 +125,28 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			final String target,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		// find responsible perspective
-		final String perspectiveId = getTargetPerspectiveId(target);
 		final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
-				perspectiveId, perspectives);
+				getTargetPerspectiveId(target), perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
+			handleTargetHit(responsiblePerspective, component);
+
+		} else {
+			handleTargetMiss();
+		}
+
+	}
+
+	/**
+	 * handle component delegate when target was found
+	 * 
+	 * @param responsiblePerspective
+	 * @param component
+	 */
+	private void handleTargetHit(
+			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		if (responsiblePerspective.isActive()) {
 			// register new component at perspective
 			responsiblePerspective.registerComponent(component);
 			// add component root to correct target
@@ -132,10 +154,20 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 					.getIPerspectiveLayout().getTargetLayoutComponents(),
 					component);
 		} else {
-			throw new UnsupportedOperationException(
-					"No responsible perspective found. Handling not implemented yet.");
+			// TODO
+			// 1. init perspective (do not register component before perspective
+			// init, otherwise component will be handled once again)
+			// 2. register new component
+			// 3. add component value to perspective
 		}
+	}
 
+	/**
+	 *handle component delegate when no target found
+	 */
+	private void handleTargetMiss() {
+		throw new UnsupportedOperationException(
+				"No responsible perspective found. Handling not implemented yet.");
 	}
 
 	/**
