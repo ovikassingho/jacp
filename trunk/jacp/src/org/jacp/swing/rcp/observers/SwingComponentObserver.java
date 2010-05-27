@@ -23,7 +23,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
 
-	private IPerspective<Container, ActionListener, ActionEvent, Object> perspective;
+	private final IPerspective<Container, ActionListener, ActionEvent, Object> perspective;
 
 	public SwingComponentObserver(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
@@ -46,13 +46,6 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	}
 
-	@Override
-	public void setParentPerspective(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		this.perspective = perspective;
-
-	}
-
 	/**
 	 * handle message to specific component
 	 * 
@@ -64,7 +57,6 @@ public class SwingComponentObserver extends ASwingObserver implements
 			final IAction<ActionEvent, Object> action) {
 		final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
 				getTargetComponentId(targetId), components);
-		System.out.println("handle");
 		if (component != null) {
 			handleComponentHit(targetId, action, component);
 		} else {
@@ -89,6 +81,8 @@ public class SwingComponentObserver extends ASwingObserver implements
 			if (perspective.getId().equals(targetPerspectiveId)) {
 				// TODO target is in same perspective but component was not
 				// found previously
+				throw new UnsupportedOperationException(
+						"invalid component id handling not supported yet.");
 			} else {
 				// delegate to parent perspective, then find responsible
 				// perspective
@@ -96,6 +90,8 @@ public class SwingComponentObserver extends ASwingObserver implements
 			}
 		} else {
 			// TODO handle invalid id
+			throw new UnsupportedOperationException(
+					"invalid id handling not supported yet.");
 		}
 	}
 

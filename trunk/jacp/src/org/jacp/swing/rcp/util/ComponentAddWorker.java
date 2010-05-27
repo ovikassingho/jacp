@@ -7,17 +7,18 @@ import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.ISubComponent;
+
 /**
- * Handles ui return value of component and add to correct perspective target 
+ * Handles ui return value of component and add to correct perspective target
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
-public class ComponentAddWorker extends AbstractComponentWorker{
-	
-	
+public class ComponentAddWorker extends AbstractComponentWorker {
+
 	private final Map<String, Container> targetComponents;
 	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
-	
+
 	public ComponentAddWorker(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
@@ -27,8 +28,8 @@ public class ComponentAddWorker extends AbstractComponentWorker{
 
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-			ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			IAction<ActionEvent, Object> action) {
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IAction<ActionEvent, Object> action) {
 		return null;
 	}
 
@@ -37,7 +38,7 @@ public class ComponentAddWorker extends AbstractComponentWorker{
 			throws Exception {
 		return null;
 	}
-	
+
 	@Override
 	public void done() {
 		component.setTarget(getTargetComponentId(component.getTarget()));

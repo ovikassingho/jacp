@@ -1,6 +1,5 @@
 package org.jacp.api.observers;
 
-import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.ISubComponent;
 
 /**
@@ -32,13 +31,5 @@ public interface IComponentObserver<C, L, A, M> extends IObserver<C, L, A, M> {
 	 * @param component
 	 */
 	public abstract void removeComponent(ISubComponent<C, L, A, M> component);
-
-	/**
-	 * set parent perspective of observed components (1P -> NComp.)
-	 * 
-	 * @param perspective
-	 */
-	public abstract void setParentPerspective(
-			IPerspective<C, L, A, M> perspective);
 
 }

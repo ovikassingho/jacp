@@ -75,7 +75,8 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			}
 		} else {
 			// TODO implement missing perspective!!
-			throw new UnsupportedOperationException("No responsible perspective found. Handling not implemented yet.");
+			throw new UnsupportedOperationException(
+					"No responsible perspective found. Handling not implemented yet.");
 		}
 	}
 
@@ -127,9 +128,12 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			// register new component at perspective
 			responsiblePerspective.registerComponent(component);
 			// add component root to correct target
-			responsiblePerspective.addComponentUIValue(responsiblePerspective.getIPerspectiveLayout().getTargetLayoutComponents(),component);
+			responsiblePerspective.addComponentUIValue(responsiblePerspective
+					.getIPerspectiveLayout().getTargetLayoutComponents(),
+					component);
 		} else {
-			throw new UnsupportedOperationException("No responsible perspective found. Handling not implemented yet.");
+			throw new UnsupportedOperationException(
+					"No responsible perspective found. Handling not implemented yet.");
 		}
 
 	}
