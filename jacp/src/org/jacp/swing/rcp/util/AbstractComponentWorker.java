@@ -1,6 +1,5 @@
 package org.jacp.swing.rcp.util;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +40,8 @@ public abstract class AbstractComponentWorker
 			final Container validContainer,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor) {
 		if (validContainer instanceof JScrollPane) {
-			((JScrollPane) validContainer).getViewport().add(editor.getName(),editor.getRoot());
+			((JScrollPane) validContainer).getViewport().add(editor.getName(),
+					editor.getRoot());
 		} else {
 			handleAdd(validContainer, editor.getRoot(), editor.getName());
 
@@ -49,9 +49,9 @@ public abstract class AbstractComponentWorker
 		validContainer.setEnabled(true);
 		validContainer.setVisible(true);
 	}
-	
-	
-	private void handleAdd(final Container validContainer,final Container uiComponent, final String name) {
+
+	private void handleAdd(final Container validContainer,
+			final Container uiComponent, final String name) {
 		uiComponent.setEnabled(true);
 		uiComponent.setVisible(true);
 		validContainer.add(name, uiComponent);
@@ -121,21 +121,20 @@ public abstract class AbstractComponentWorker
 		if (currentTaget.equals(component.getTarget())) {
 			addComponentByType(parent, component);
 		} else {
-			if(currentTaget.length()<2){
-				handleTargetChange(component, targetComponents,getTargetComponentId(component.getTarget()));
+			if (currentTaget.length() < 2) {
+				handleTargetChange(component, targetComponents,
+						getTargetComponentId(component.getTarget()));
 			} else {
-				handleTargetChange(component, targetComponents,component.getTarget());
+				handleTargetChange(component, targetComponents, component
+						.getTarget());
 			}
-				
-
 
 		}
 	}
-	
-	
-	
+
 	/**
 	 * handle component when target has changed
+	 * 
 	 * @param component
 	 * @param targetComponents
 	 */
@@ -169,7 +168,7 @@ public abstract class AbstractComponentWorker
 		editorComponent.setEnabled(true);
 		return editorComponent;
 	}
-	
+
 	/**
 	 * returns the message target component id
 	 * 
@@ -183,7 +182,7 @@ public abstract class AbstractComponentWorker
 		}
 		return messageId;
 	}
-	
+
 	protected boolean isLocalMessage(final String messageId) {
 		return !messageId.contains(".");
 	}
@@ -197,6 +196,5 @@ public abstract class AbstractComponentWorker
 	protected String[] getTargetId(final String messageId) {
 		return messageId.split("\\.");
 	}
-
 
 }

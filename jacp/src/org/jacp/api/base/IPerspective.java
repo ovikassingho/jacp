@@ -1,14 +1,10 @@
 package org.jacp.api.base;
 
-import java.awt.Container;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
-import org.jacp.api.observers.IComponentObserver;
 
 /**
  * a perspective is a root component, handled by an workbench and contains
@@ -25,11 +21,8 @@ import org.jacp.api.observers.IComponentObserver;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<C, L, A, M>
-		extends
-		IExtendedComponent<C>,
-		IComponent<C, L, A, M>,
-		IRootComponent<ISubComponent<C, L, A, M>> {
+public interface IPerspective<C, L, A, M> extends IExtendedComponent<C>,
+		IComponent<C, L, A, M>, IRootComponent<ISubComponent<C, L, A, M>> {
 
 	/**
 	 * the initialization method
@@ -37,38 +30,19 @@ public interface IPerspective<C, L, A, M>
 	public abstract void init();
 
 	/**
-	 * set all available views of perspective
-	 * 
-	 * @param views
-	 */
-	public abstract void setViews(final List<IView<C, L, A, M>> views);
-
-	/**
-	 * returns all available views of perspective
-	 * 
-	 * @return
-	 */
-	public abstract List<IView<C, L, A, M>> getViews();
-
-	/**
-	 * set editors of a perspective
-	 * 
-	 * @param editors
-	 */
-	public abstract void setEditors(final List<IEditor<C, L, A, M>> editors);
-
-	/**
-	 * get perspectives editors
-	 * 
-	 * @return
-	 */
-	public abstract List<IEditor<C, L, A, M>> getEditors();
-	
-	/**
 	 * get all subcomponents in perspective
+	 * 
 	 * @return
 	 */
-	public List<ISubComponent<C, L, A, M>> getSubcomponents();
+	public abstract List<ISubComponent<C, L, A, M>> getSubcomponents();
+
+	/**
+	 * set all subcomponents of perspective
+	 * 
+	 * @param subComponents
+	 */
+	public abstract void setSubcomponents(
+			List<ISubComponent<C, L, A, M>> subComponents);
 
 	/**
 	 * handle baselayout when perspective started
@@ -118,13 +92,17 @@ public interface IPerspective<C, L, A, M>
 			final IPerspectiveLayout<? extends C, C> layout,
 			final ISubComponent<C, L, A, M> component,
 			final IAction<A, M> action);
-	
+
 	/**
-	 * handles component ui return value and add to correct target at perspective 
+	 * handles component ui return value and add to correct target at
+	 * perspective
+	 * 
 	 * @param targetComponents
 	 * @param component
 	 */
-	public abstract void addComponentUIValue(final Map<String, C> targetComponents, final ISubComponent<C, L, A, M> component);
+	public abstract void addComponentUIValue(
+			final Map<String, C> targetComponents,
+			final ISubComponent<C, L, A, M> component);
 
 	/**
 	 * delegate target change to an other perspective

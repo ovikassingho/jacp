@@ -7,7 +7,6 @@ package org.jacp.swing.rcp.perspective;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,10 +15,8 @@ import javax.swing.JMenu;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.base.IEditor;
 import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.ISubComponent;
-import org.jacp.api.base.IView;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.observers.IComponentObserver;
 import org.jacp.api.observers.IObserver;
@@ -31,7 +28,6 @@ import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
 
-
 /**
  * represents a basic swing perspective that handles subcomponents
  * 
@@ -40,8 +36,6 @@ import org.jacp.swing.rcp.util.ComponentReplaceWorker;
 public abstract class ASwingPerspective<T extends Container> implements
 		IPerspective<Container, ActionListener, ActionEvent, Object> {
 
-	private List<IView<Container, ActionListener, ActionEvent, Object>> views = new ArrayList<IView<Container, ActionListener, ActionEvent, Object>>();
-	private List<IEditor<Container, ActionListener, ActionEvent, Object>> editors = new ArrayList<IEditor<Container, ActionListener, ActionEvent, Object>>();
 	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
 	private IObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver;
 	private final IComponentObserver<Container, ActionListener, ActionEvent, Object> componentObserver = new SwingComponentObserver(
@@ -50,7 +44,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 	private String id;
 	private String name;
 	private boolean active;
-	private volatile boolean blocked;
 
 	@Override
 	public void init() {
@@ -86,10 +79,10 @@ public abstract class ASwingPerspective<T extends Container> implements
 		component.setParentPerspective(this);
 
 	}
-	
+
 	/**
-	 * unregister component from current perspective
-	 *TODO add to api
+	 * unregister component from current perspective TODO add to api
+	 * 
 	 * @param component
 	 */
 	private void unregisterComponent(
@@ -97,8 +90,8 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
 		handler.removeComponent(component);
 		this.subcomponents.remove(component);
-		this.getEditors().remove(component);
-		this.getViews().remove(component);
+		// this.getEditors().remove(component);
+		// this.getViews().remove(component);
 		component.setParentPerspective(null);
 	}
 
@@ -147,9 +140,13 @@ public abstract class ASwingPerspective<T extends Container> implements
 		tmp.execute();
 
 	}
-	
-	public synchronized void addComponentUIValue(final Map<String, Container> targetComponents, final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		final ComponentAddWorker worker = new ComponentAddWorker(targetComponents, component);
+
+	@Override
+	public synchronized void addComponentUIValue(
+			final Map<String, Container> targetComponents,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		final ComponentAddWorker worker = new ComponentAddWorker(
+				targetComponents, component);
 		worker.execute();
 	}
 
@@ -166,8 +163,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 		}
 	}
-
-
 
 	@Override
 	public synchronized void delegateMassege(final String target,
@@ -215,38 +210,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 	@Override
 	public boolean isActive() {
 		return this.active;
-	}
-
-	public boolean isBlocked() {
-		return blocked;
-	}
-
-	public void setBlocked(final boolean blocked) {
-		this.blocked = blocked;
-	}
-
-	@Override
-	public void setViews(
-			final List<IView<Container, ActionListener, ActionEvent, Object>> views) {
-		this.views = views;
-		registerSubcomponents(this.views);
-	}
-
-	@Override
-	public List<IView<Container, ActionListener, ActionEvent, Object>> getViews() {
-		return views;
-	}
-
-	@Override
-	public void setEditors(
-			final List<IEditor<Container, ActionListener, ActionEvent, Object>> editors) {
-		this.editors = editors;
-		registerSubcomponents(this.editors);
-	}
-
-	@Override
-	public List<IEditor<Container, ActionListener, ActionEvent, Object>> getEditors() {
-		return this.editors;
 	}
 
 	@Override
@@ -331,7 +294,14 @@ public abstract class ASwingPerspective<T extends Container> implements
 		return false;
 	}
 
+	@Override
 	public List<ISubComponent<Container, ActionListener, ActionEvent, Object>> getSubcomponents() {
 		return subcomponents;
+	}
+
+	@Override
+	public void setSubcomponents(
+			final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subComponents) {
+		registerSubcomponents(subComponents);
 	}
 }

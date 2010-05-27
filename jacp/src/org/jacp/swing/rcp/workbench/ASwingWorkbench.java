@@ -30,7 +30,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IEditor;
 import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.IRootComponent;
 import org.jacp.api.base.ISubComponent;
@@ -173,7 +172,7 @@ public abstract class ASwingWorkbench extends JFrame
 	@Override
 	public void registerComponent(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> component) {
-		this.perspectiveObserver.addPerspective(component);
+		perspectiveObserver.addPerspective(component);
 
 	}
 

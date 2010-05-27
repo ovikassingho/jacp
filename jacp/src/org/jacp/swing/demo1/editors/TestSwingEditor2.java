@@ -34,8 +34,7 @@ public class TestSwingEditor2 extends ASwingEditor {
 	@Override
 	public Container handle(final IAction<ActionEvent, Object> action) {
 
-
-		if(action.getMessage().equals("test")) {
+		if (action.getMessage().equals("test")) {
 			Long j = 0L;
 
 			while (j < 100000000L) {
@@ -48,16 +47,16 @@ public class TestSwingEditor2 extends ASwingEditor {
 			setTarget("editor" + z);
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
-		} else if(action.getMessage().equals("testBLA")){
-			setTarget("id0"+p+".editor0");
-			if(p==2) {
-				p =1;
+		} else if (action.getMessage().equals("testBLA")) {
+			setTarget("id0" + p + ".editor0");
+			if (p == 2) {
+				p = 1;
 			} else {
-				p=2;
+				p = 2;
 			}
-			System.out.println("Editor2 CALL 2: "+p);
+			System.out.println("Editor2 CALL 2: " + p);
 		} else {
-			System.out.println("Editor2 CALL: "+action.getMessage());
+			System.out.println("Editor2 CALL: " + action.getMessage());
 		}
 
 		return handleViewLayout3();
@@ -71,15 +70,14 @@ public class TestSwingEditor2 extends ASwingEditor {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 
-					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-					System.out.println("action");
-					listener3.getAction().setMessage("testBLA");
-					listener3.getListener().actionPerformed(e);
-	
+				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
+				System.out.println("action");
+				listener3.getAction().setMessage("testBLA");
+				listener3.getListener().actionPerformed(e);
 
 			}
 		});
-		
+
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
 				"HAllo Welt Editor 2");
 		createNodes(top);

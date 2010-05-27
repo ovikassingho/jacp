@@ -33,7 +33,7 @@
 		<property name="name" value="testPerspective" />
 		<property name="id" value="id01" />
 		<property name="active" value="true" />
-		<property name="editors">
+		<property name="subcomponents">
 			<list>
 				<ref bean="editor1" />
 				<ref bean="editor2" />
@@ -46,7 +46,7 @@
 		<property name="name" value="testPerspective2" />
 		<property name="id" value="id02" />
 		<property name="active" value="false" />
-		<property name="editors">
+		<property name="subcomponents">
 			<list>
 				<ref bean="editor4" />
 				<ref bean="editor5" />
