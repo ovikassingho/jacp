@@ -33,13 +33,18 @@ public abstract class ASwingObserver implements
 		actionClone.setMessage(target, message);
 		return actionClone;
 	}
-
+	/**
+	 * when id has no separator it is a local message // TODO remove code duplication
+	 * 
+	 * @param messageId
+	 * @return
+	 */
 	protected boolean isLocalMessage(final String messageId) {
 		return !messageId.contains(".");
 	}
 
 	/**
-	 * returns target message with perspective and component name
+	 * returns target message with perspective and component name // TODO remove code duplication
 	 * 
 	 * @param messageId
 	 * @return
