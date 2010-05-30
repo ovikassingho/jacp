@@ -127,14 +127,26 @@ public abstract class AbstractComponentWorker
 			final Container parent, final String currentTaget) {
 		if (currentTaget.equals(component.getTarget())) {
 			addComponentByType(parent, component);
-		} else { // currentTarget.length < 2 Happens when component changed
-			// target from one perspective to an other
-			final String validId = currentTaget.length() < 2 ? getTargetComponentId(component
-					.getTarget())
-					: component.getTarget();
+		} else {
+			final String validId = getValidTargetId(currentTaget, component
+					.getTarget());
 			handleTargetChange(component, targetComponents, validId);
 
 		}
+	}
+
+	/**
+	 * currentTarget.length < 2 Happens when component changed target from one
+	 * perspective to an other
+	 * 
+	 * @param currentTaget
+	 * @param futureTarget
+	 * @return
+	 */
+	private String getValidTargetId(final String currentTaget,
+			final String futureTarget) {
+		return currentTaget.length() < 2 ? getTargetComponentId(futureTarget)
+				: futureTarget;
 	}
 
 	/**
