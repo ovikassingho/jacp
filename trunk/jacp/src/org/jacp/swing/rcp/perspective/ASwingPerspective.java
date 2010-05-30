@@ -93,8 +93,6 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
 		handler.removeComponent(component);
 		this.subcomponents.remove(component);
-		// this.getEditors().remove(component);
-		// this.getViews().remove(component);
 		component.setParentPerspective(null);
 	}
 

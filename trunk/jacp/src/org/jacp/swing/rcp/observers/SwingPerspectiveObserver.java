@@ -67,10 +67,12 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			if (perspective.isActive()) {
 				// if perspective already active handle perspective and replace
 				// with newly created layout component in workbench
+				log(" //1.1.1.1// perspective HIT handle ACTIVE: "+action.getTargetId());
 				handleActive(perspective, actionClone);
 
 			} else {
 				// perspective was not active and will be initialized
+				log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "+action.getTargetId());
 				handleInActive(perspective, actionClone);
 
 			}
