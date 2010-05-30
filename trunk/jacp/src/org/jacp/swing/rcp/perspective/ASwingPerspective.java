@@ -105,7 +105,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public synchronized void initSubcomponents(
+	public void initSubcomponents(
 			final IAction<ActionEvent, Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
@@ -126,29 +126,30 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public synchronized void initSubcomonent(
+	public void initSubcomonent(
 			final IAction<ActionEvent, Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		final ComponentInitWorker tmp = new ComponentInitWorker(layout
 				.getTargetLayoutComponents(), component, action);
 		tmp.execute();
-
+		System.out.println("DONE EXECUTE INIT:::"+component.getName());
 	}
 
 	@Override
-	public synchronized void handleAndReplaceSubcomponent(
+	public void handleAndReplaceSubcomponent(
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(layout
 				.getTargetLayoutComponents(), component, action);
 		tmp.execute();
+		System.out.println("DONE EXECUTE REPLACE:::"+component.getName());
 
 	}
 
 	@Override
-	public synchronized void addComponentUIValue(
+	public void addComponentUIValue(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		final ComponentAddWorker worker = new ComponentAddWorker(

@@ -37,12 +37,23 @@ public class TestSwingEditor2 extends ASwingEditor {
 		if (action.getMessage().equals("test")) {
 			Long j = 0L;
 
-			while (j < 100000000L) {
+			while (j < 1000000000L) {
 				j++;
-				// System.out.print("test"+j+" ");
 
 			}
+			System.out.println("DONE COUNT: ");
+			final int z = i % 3;
+			setTarget("editor" + z);
+			i = i + 1;
+			System.out.println("Editor2 CALL 1: ");
+		}else if (action.getMessage().equals("test1")) {
+			Long j = 0L;
 
+			while (j < 100000L) {
+				j++;
+
+			}
+			System.out.println("DONE COUNT111: ");
 			final int z = i % 3;
 			setTarget("editor" + z);
 			i = i + 1;

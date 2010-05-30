@@ -77,7 +77,7 @@ public class TestSwingEditor extends ASwingEditor {
 				while (p < 2) {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 					if (count == 4) {
-						listener3.getAction().setMessage("id04", "test");
+						listener3.getAction().setMessage("id04", "test1");
 						count = 5;
 					} else {
 						listener3.getAction().setMessage("id05", "test");
