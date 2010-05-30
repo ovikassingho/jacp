@@ -39,15 +39,21 @@ public class ComponentInitWorker extends AbstractComponentWorker {
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
+			log("3.4.4.2.1: subcomponent handle init START: "
+					+ component.getName());
 			final Container editorComponent = component.handle(action);
 			component.setRoot(editorComponent);
 			editorComponent.setVisible(true);
 			editorComponent.setEnabled(true);
+			log("3.4.4.2.2: subcomponent handle init get valid container: "
+					+ component.getName());
 			final Container validContainer = getValidContainerById(
 					targetComponents, component.getTarget());
-
+			log("3.4.4.2.3: subcomponent handle init add component by type: "
+					+ component.getName());
 			addComponentByType(validContainer, component);
-
+			log("3.4.4.2.4: subcomponent handle init END: "
+					+ component.getName());
 		}
 		return component;
 	}

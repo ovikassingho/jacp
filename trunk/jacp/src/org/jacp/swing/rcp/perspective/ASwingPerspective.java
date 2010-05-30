@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JMenu;
 
@@ -44,6 +46,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	private String id;
 	private String name;
 	private boolean active;
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Override
 	public void init() {
@@ -97,10 +100,9 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
-		if(meuneBar instanceof JMenu) {
+		if (meuneBar instanceof JMenu) {
 			this.addMenuEntries((JMenu) meuneBar);
 		}
-
 
 	}
 
@@ -110,11 +112,14 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
 		final String targetId = getTargetComponentId(action.getTargetId());
+		log("3.4.4.1: subcomponent targetId: " + targetId);
 		for (final ISubComponent<Container, ActionListener, ActionEvent, Object> component : perspective
 				.getSubcomponents()) {
 			if (component.getId().equals(targetId)) {
+				log("3.4.4.2: subcomponent init with custom action");
 				initSubcomonent(action, layout, component);
 			} else if (component.isActive()) {
+				log("3.4.4.2: subcomponent init with default action");
 				initSubcomonent(new SwingAction(component.getId(), component
 						.getId(), "init"), layout, component);
 			} // if END
@@ -306,5 +311,11 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public void setSubcomponents(
 			final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subComponents) {
 		registerSubcomponents(subComponents);
+	}
+
+	private void log(final String message) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(">> " + message);
+		}
 	}
 }

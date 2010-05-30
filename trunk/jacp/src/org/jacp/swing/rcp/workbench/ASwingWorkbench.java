@@ -70,6 +70,8 @@ public abstract class ASwingWorkbench extends JFrame
 	private final int inset = 50;
 	private final IWorkbenchLayout<LayoutManager2> layout = new SwingWorkbenchLayout();
 
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
+
 	public ASwingWorkbench(final String name) {
 		super(name);
 
@@ -77,15 +79,17 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public Container init() {
+		log("1: init workbench");
 		// init user defined worspace
 		this.handleInitialLayout(new SwingAction("TODO", "init"), layout);
 
-		// define basic content pane
+		log("2: set workspace mode");
 		handleWorkspaceMode();
 
 		final Container contentPane = getContentPane();
 
 		setBasicLayout(contentPane);
+		log("3: handle initialisation sequence");
 		handleInitialisationSequence();
 
 		return contentPane;
@@ -98,14 +102,17 @@ public abstract class ASwingWorkbench extends JFrame
 		// define basic content pane
 		switch (layout.getWorkspaceMode()) {
 		case WINDOWED_PAIN:
+			log("2.1: WINDOWED_PAIN");
 			final JDesktopPane desktop = new JDesktopPane();
 			setContentPane(desktop);
 			break;
 		case TABBED_PAIN:
+			log("2.1: TABBED_PAIN");
 			final JTabbedPane desktopTabs = new JTabbedPane();
 			setContentPane(desktopTabs);
 			break;
 		default:
+			log("2.1: SINGLE_PAIN");
 			;
 		}
 	}
@@ -125,17 +132,23 @@ public abstract class ASwingWorkbench extends JFrame
 				setBounds(inset, inset, screenSize.width - inset * 2,
 						screenSize.height - inset * 2);
 				initWorkbenchSize();
-				// init menue instance
+				// init menu instance#
+				log("3.1: workbench menu");
 				initMenuBar();
 				// init toolbar instance
+				log("3.2: workbench tool bar");
 				initToolBar();
 				// init bottom bar instance
+				log("3.3: workbench bottom bar");
 				initBottomBar();
 				// handle perspectives
+				log("3.4: workbench init perspectives");
 				initPerspectives();
 				// handle workspce bar entries
+				log("3.5: workbench handle bar entries");
 				handleBarEntries(getToolBar(), getBottomBar());
 				// handle default and defined workspace menu entries
+				log("3.6: workbench init menu");
 				initWorkbenchMenu();
 
 			}
@@ -182,20 +195,25 @@ public abstract class ASwingWorkbench extends JFrame
 			final IAction<ActionEvent, Object> action) {
 		final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 				.getIPerspectiveLayout();
-
+		log("3.4.3: perspective handle init");
 		handlePerspectiveInitMethod(action, perspectiveLayout, perspective);
+		log("3.4.4: perspective init subcomponents");
 		perspective.initSubcomponents(action, perspectiveLayout, perspective);
+		log("3.4.5: perspective init bar entries");
 		addPerspectiveBarEntries(perspective);
 
 		switch (layout.getWorkspaceMode()) {
 		case SINGLE_PAIN:
+			log("3.4.6: perspective init SINGLE_PAIN");
 			initPerspectiveInStackMode(perspectiveLayout);
 			break;
 		case TABBED_PAIN:
+			log("3.4.6: perspective init TABBED_PAIN");
 			initPerspectivesInTabbedMode(perspectiveLayout, perspective
 					.getName());
 			break;
 		default:
+			log("3.4.6: perspective init WINDOW_PAIN");
 			initPerspectiveInWindowMode(perspectiveLayout, perspective
 					.getName());
 		}
@@ -399,8 +417,10 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
 	private void initPerspectives() {
 		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
+			log("3.4.1: register component: " + perspective.getName());
 			registerComponent(perspective);
 			// TODO what if component removed an initialized later again?
+			log("3.4.2: create perspective menu");
 			createPerspectiveMenue(perspective);
 			if (perspective.isActive()) {
 				final Thread worker = new Thread() {
@@ -509,8 +529,10 @@ public abstract class ASwingWorkbench extends JFrame
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
 		if (getTargetPerspectiveId(action.getTargetId()).equals(
 				perspective.getId())) {
+			log("3.4.3.1: perspective handle with custom action");
 			perspective.handleInitialLayout(action, perspectiveLayout);
 		} else {
+			log("3.4.3.1: perspective handle with default >>init<< action");
 			perspective.handleInitialLayout(new SwingAction(
 					perspective.getId(), perspective.getId(), "init"),
 					perspectiveLayout);
@@ -660,6 +682,12 @@ public abstract class ASwingWorkbench extends JFrame
 		}
 
 		return false;
+	}
+
+	private void log(final String message) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(">> " + message);
+		}
 	}
 
 }
