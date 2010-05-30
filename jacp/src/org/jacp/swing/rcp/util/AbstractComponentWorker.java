@@ -10,14 +10,19 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+
+
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.ISubComponent;
-
+/**
+ * handles component methods in own thread; see http://bugs.sun.com/view_bug.do?bug_id=6880336
+ * @author Andy Moncsek
+ *
+ */
 public abstract class AbstractComponentWorker
 		extends
-		SwingWorker<ISubComponent<Container, ActionListener, ActionEvent, Object>, Container> {
+		org.jacp.swing.rcp.util.SwingWorker<ISubComponent<Container, ActionListener, ActionEvent, Object>, Container> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -229,5 +234,6 @@ public abstract class AbstractComponentWorker
 			logger.fine(">> " + message);
 		}
 	}
+	
 
 }
