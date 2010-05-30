@@ -148,23 +148,25 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		if (!responsiblePerspective.isActive()) {
-			// 1. init perspective (do not register component before perspective is active, otherwise component will be handled once again)
+			// 1. init perspective (do not register component before perspective
+			// is active, otherwise component will be handled once again)
 			handleInActive(responsiblePerspective, new SwingAction(
 					responsiblePerspective.getId(), responsiblePerspective
-					.getId(), "init"));
-		} 		
+							.getId(), "init"));
+		}
 		addToActivePerspective(responsiblePerspective, component);
 	}
-	
-	
-	private void addToActivePerspective(final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
+
+	private void addToActivePerspective(
+			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		// register new component at perspective
 		responsiblePerspective.registerComponent(component);
 		// add component root to correct target
-		responsiblePerspective.addComponentUIValue(responsiblePerspective
-				.getIPerspectiveLayout().getTargetLayoutComponents(),
-				component);
+		responsiblePerspective
+				.addComponentUIValue(responsiblePerspective
+						.getIPerspectiveLayout().getTargetLayoutComponents(),
+						component);
 	}
 
 	/**

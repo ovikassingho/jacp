@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -16,6 +18,8 @@ import org.jacp.api.base.ISubComponent;
 public abstract class AbstractComponentWorker
 		extends
 		SwingWorker<ISubComponent<Container, ActionListener, ActionEvent, Object>, Container> {
+
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * find valid target component in perspective
@@ -218,6 +222,12 @@ public abstract class AbstractComponentWorker
 	 */
 	protected String[] getTargetId(final String messageId) {
 		return messageId.split("\\.");
+	}
+
+	protected void log(final String message) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(">> " + message);
+		}
 	}
 
 }

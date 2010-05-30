@@ -105,7 +105,7 @@ public class TestSwingSplitPanePerspective extends
 			add2.putClientProperty("JButton.segmentPosition", "first");
 			add2.setFocusable(false);
 			final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-			listener2.getAction().setMessage("id01","tester");
+			listener2.getAction().setMessage("id01", "tester");
 			add2.addActionListener(listener2.getListener());
 			bottomBar.add(add2);
 		}
