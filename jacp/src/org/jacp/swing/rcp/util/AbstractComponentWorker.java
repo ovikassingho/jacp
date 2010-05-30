@@ -49,9 +49,10 @@ public abstract class AbstractComponentWorker
 		validContainer.setEnabled(true);
 		validContainer.setVisible(true);
 	}
-	
+
 	/**
 	 * enables component an add to container
+	 * 
 	 * @param validContainer
 	 * @param uiComponent
 	 * @param name
@@ -126,14 +127,12 @@ public abstract class AbstractComponentWorker
 			final Container parent, final String currentTaget) {
 		if (currentTaget.equals(component.getTarget())) {
 			addComponentByType(parent, component);
-		} else { // currentTarget.length < 2 happends when component changed target from one perspective to an other
-			if (currentTaget.length() < 2) {
-				handleTargetChange(component, targetComponents,
-						getTargetComponentId(component.getTarget()));
-			} else {
-				handleTargetChange(component, targetComponents, component
-						.getTarget());
-			}
+		} else { // currentTarget.length < 2 Happens when component changed
+			// target from one perspective to an other
+			final String validId = currentTaget.length() < 2 ? getTargetComponentId(component
+					.getTarget())
+					: component.getTarget();
+			handleTargetChange(component, targetComponents, validId);
 
 		}
 	}

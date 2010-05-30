@@ -16,6 +16,7 @@ import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.ISubComponent;
 import org.jacp.api.base.IWorkbench;
 import org.jacp.api.observers.IPerspectiveObserver;
+import org.jacp.swing.rcp.action.SwingAction;
 
 /**
  * Observe perspective actions and delegates message to correct component
@@ -146,20 +147,24 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	private void handleTargetHit(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		if (responsiblePerspective.isActive()) {
-			// register new component at perspective
-			responsiblePerspective.registerComponent(component);
-			// add component root to correct target
-			responsiblePerspective.addComponentUIValue(responsiblePerspective
-					.getIPerspectiveLayout().getTargetLayoutComponents(),
-					component);
-		} else {
-			// TODO
-			// 1. init perspective (do not register component before perspective
-			// init, otherwise component will be handled once again)
-			// 2. register new component
-			// 3. add component value to perspective
-		}
+		if (!responsiblePerspective.isActive()) {
+			// 1. init perspective (do not register component before perspective is active, otherwise component will be handled once again)
+			handleInActive(responsiblePerspective, new SwingAction(
+					responsiblePerspective.getId(), responsiblePerspective
+					.getId(), "init"));
+		} 		
+		addToActivePerspective(responsiblePerspective, component);
+	}
+	
+	
+	private void addToActivePerspective(final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		// register new component at perspective
+		responsiblePerspective.registerComponent(component);
+		// add component root to correct target
+		responsiblePerspective.addComponentUIValue(responsiblePerspective
+				.getIPerspectiveLayout().getTargetLayoutComponents(),
+				component);
 	}
 
 	/**
