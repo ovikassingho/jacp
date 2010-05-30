@@ -57,10 +57,13 @@ public class SwingComponentObserver extends ASwingObserver implements
 			final IAction<ActionEvent, Object> action) {
 		final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
 				getTargetComponentId(targetId), components);
+		log(" //1.1// component message to: "+action.getTargetId());
 		if (component != null) {
+			log(" //1.1.1// component HIT: "+action.getTargetId());
 			handleComponentHit(targetId, action, component);
 		} else {
 			// delegate message to parent perspective
+			log(" //1.1.1// component MISS: "+action.getTargetId());
 			handleComponentMiss(targetId, action);
 		}
 
@@ -109,8 +112,10 @@ public class SwingComponentObserver extends ASwingObserver implements
 		final IAction<ActionEvent, Object> actionClone = getValidAction(action,
 				targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
+			log(" //1.1.1.1// component HIT handle ACTIVE: "+action.getTargetId());
 			handleActive(component, actionClone);
 		} else {
+			log(" //1.1.1.1// component HIT handle IN-ACTIVE: "+action.getTargetId());
 			handleInActive(component, actionClone);
 		}
 	}

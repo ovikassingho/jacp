@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.IComponent;
@@ -18,6 +20,8 @@ import org.jacp.api.observers.IObserver;
  */
 public abstract class ASwingObserver implements
 		IObserver<Container, ActionListener, ActionEvent, Object> {
+	
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	/**
 	 * returns cloned action with valid message TODO add to interface
@@ -102,6 +106,12 @@ public abstract class ASwingObserver implements
 			handleMessage(targetId, action);
 		}
 
+	}
+	
+	protected void log(final String message) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(">> " + message);
+		}
 	}
 
 }
