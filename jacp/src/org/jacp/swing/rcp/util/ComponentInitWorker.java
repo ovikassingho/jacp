@@ -31,7 +31,6 @@ public class ComponentInitWorker extends AbstractComponentWorker {
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
 			throws Exception {
-		System.out.println("INIT COMONENT");
 		synchronized (component) {
 			log("3.4.4.2.1: subcomponent handle init START: "
 					+ component.getName());

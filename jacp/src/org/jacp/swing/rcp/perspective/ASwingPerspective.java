@@ -77,6 +77,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	@Override
 	public void registerComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		log("register component: "+component.getId());
 		componentObserver.addComponent(component);
 		this.subcomponents.add(component);
 		component.setParentPerspective(this);
@@ -91,6 +92,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	private void unregisterComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
+		log("unregister component: "+component.getId());
 		handler.removeComponent(component);
 		this.subcomponents.remove(component);
 		component.setParentPerspective(null);
@@ -133,7 +135,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 		final ComponentInitWorker tmp = new ComponentInitWorker(layout
 				.getTargetLayoutComponents(), component, action);
 		tmp.execute();
-		System.out.println("DONE EXECUTE INIT:::"+component.getName());
+		log("DONE EXECUTE INIT:::"+component.getName());
 	}
 
 	@Override
@@ -144,7 +146,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(layout
 				.getTargetLayoutComponents(), component, action);
 		tmp.execute();
-		System.out.println("DONE EXECUTE REPLACE:::"+component.getName());
+		log("DONE EXECUTE REPLACE:::"+component.getName());
 
 	}
 

@@ -39,7 +39,6 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
-		System.out.println("REPLACE COMONENT");
 		synchronized (component) {
 
 			log(" //1.1.1.1.1// handle replace component BEGIN: "+component.getName());
