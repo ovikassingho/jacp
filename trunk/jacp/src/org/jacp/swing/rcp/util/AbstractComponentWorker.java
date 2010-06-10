@@ -116,7 +116,10 @@ public abstract class AbstractComponentWorker
 					@Override
 					public void run() {
 						// run in EventDispatchThread
-						parent.remove(currentContainer);
+						if(parent!=null) {
+							parent.remove(currentContainer);
+						}
+
 					}
 				}); // SWING UTILS END
 			} // run end
@@ -135,14 +138,27 @@ public abstract class AbstractComponentWorker
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final Map<String, Container> targetComponents,
 			final Container parent, final String currentTaget) {
-		if (currentTaget.equals(component.getTarget())) {
-			addComponentByType(parent, component);
-		} else {
-			final String validId = getValidTargetId(currentTaget, component
-					.getTarget());
-			handleTargetChange(component, targetComponents, validId);
+		final Thread worker = new Thread() {
+			@Override
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						// run in EventDispatchThread
+						if (currentTaget.equals(component.getTarget())) {
+							addComponentByType(parent, component);
+						} else {
+							final String validId = getValidTargetId(
+									currentTaget, component.getTarget());
+							handleTargetChange(component, targetComponents,
+									validId);
 
-		}
+						}
+					}
+				}); // SWING UTILS END
+			} // run end
+		}; // Thread END
+		worker.start();
 	}
 
 	/**
