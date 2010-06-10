@@ -36,7 +36,8 @@ public class SwingActionListener implements ActionListener,
 	public void actionPerformed(final ActionEvent e) {
 		action.setActionEvent(e);
 		notifyComponents(action);
-		log(" //1// message send from / to: "+action.getSourceId()+" / "+action.getTargetId());
+		log(" //1// message send from / to: " + action.getSourceId() + " / "
+				+ action.getTargetId());
 	}
 
 	@Override
@@ -57,6 +58,7 @@ public class SwingActionListener implements ActionListener,
 	public ActionListener getListener() {
 		return this;
 	}
+
 	private void log(final String message) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine(">> " + message);

@@ -20,7 +20,7 @@ import org.jacp.api.observers.IObserver;
  */
 public abstract class ASwingObserver implements
 		IObserver<Container, ActionListener, ActionEvent, Object> {
-	
+
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	/**
@@ -103,12 +103,12 @@ public abstract class ASwingObserver implements
 	public synchronized void handle(final IAction<ActionEvent, Object> action) {
 		final Map<String, Object> messages = action.getMessageList();
 		for (final String targetId : messages.keySet()) {
-			log(" handle message to: "+targetId);
+			log(" handle message to: " + targetId);
 			handleMessage(targetId, action);
 		}
 
 	}
-	
+
 	protected void log(final String message) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine(">> " + message);

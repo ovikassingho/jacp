@@ -59,27 +59,62 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	public void handleMessage(final String target,
 			final IAction<ActionEvent, Object> action) {
 		final IPerspective<Container, ActionListener, ActionEvent, Object> perspective = getObserveableById(
-				target, perspectives);
+				getTargetPerspectiveId(target), perspectives);
 		if (perspective != null) {
-			handleWorkspaceModeSpecific();
 			final IAction<ActionEvent, Object> actionClone = getValidAction(
 					action, target, action.getMessageList().get(target));
-			if (perspective.isActive()) {
-				// if perspective already active handle perspective and replace
-				// with newly created layout component in workbench
-				log(" //1.1.1.1// perspective HIT handle ACTIVE: "+action.getTargetId());
-				handleActive(perspective, actionClone);
-
-			} else {
-				// perspective was not active and will be initialized
-				log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "+action.getTargetId());
-				handleInActive(perspective, actionClone);
-
-			}
+			handleComponentHit(target, actionClone, perspective);
 		} else {
-			// TODO implement missing perspective!!
+			// TODO implement missing perspective handling!!
 			throw new UnsupportedOperationException(
 					"No responsible perspective found. Handling not implemented yet.");
+		}
+	}
+
+	/**
+	 * handle message target hit
+	 * 
+	 * @param target
+	 * @param action
+	 */
+	private void handleComponentHit(
+			final String target,
+			final IAction<ActionEvent, Object> action,
+			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+		if (perspective.isActive()) {
+			handleMessageToActivePerspective(target, action, perspective);
+		} else {
+			// perspective was not active and will be initialized
+			log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "
+					+ action.getTargetId());
+			handleWorkspaceModeSpecific();
+			handleInActive(perspective, action);
+		}
+	}
+
+	/**
+	 * handle message to active perspective; check if target is perspective or
+	 * component
+	 * 
+	 * @param target
+	 * @param action
+	 * @param perspective
+	 */
+	private void handleMessageToActivePerspective(
+			final String target,
+			final IAction<ActionEvent, Object> action,
+			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+		// if perspective already active handle perspective and replace
+		// with newly created layout component in workbench
+		log(" //1.1.1.1// perspective HIT handle ACTIVE: "
+				+ action.getTargetId());
+		if (isLocalMessage(target)) {
+			// message is addressing perspective
+			handleWorkspaceModeSpecific();
+			handleActive(perspective, action);
+		} else {
+			// delegate to addressed component
+			perspective.delegateComponentMassege(target, action);
 		}
 	}
 

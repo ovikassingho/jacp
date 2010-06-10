@@ -46,7 +46,7 @@ public class TestSwingEditor2 extends ASwingEditor {
 			setTarget("editor" + z);
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
-		}else if (action.getMessage().equals("test1")) {
+		} else if (action.getMessage().equals("test1")) {
 			Long j = 0L;
 
 			while (j < 100000L) {
