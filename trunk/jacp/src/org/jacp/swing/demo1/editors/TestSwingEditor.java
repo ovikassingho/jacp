@@ -32,7 +32,7 @@ public class TestSwingEditor extends ASwingEditor {
 	@Override
 	public Container handle(final IAction<ActionEvent, Object> action) {
 
-		System.out.println("Editor1 CALL");
+		System.out.println("Editor1 CALL"+action.getMessage());
 		Long i = 0L;
 		while (i < 100000000L) {
 			i++;
@@ -61,13 +61,18 @@ public class TestSwingEditor extends ASwingEditor {
 		listener2.getAction().setMessage("id04", "test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 		listener3.getAction().setMessage("id02.id06", "test");
+		final IActionListener<ActionListener, ActionEvent, Object> listener4 = getActionListener();
+		listener4.getAction().setMessage("id01.id03", "test11");
 
 		final JButton button = new JButton("message to editor2");
 		final JButton button2 = new JButton("message test");
 		final JButton button3 = new JButton(
 				"message to Editor4 in Perspective2");
+		final JButton button4 = new JButton(
+		"local message");
 		button.addActionListener(listener2.getListener());
 		button3.addActionListener(listener3.getListener());
+		button4.addActionListener(listener4.getListener());
 		button2.addActionListener(new ActionListener() {
 
 			@Override
@@ -94,6 +99,7 @@ public class TestSwingEditor extends ASwingEditor {
 
 		panel.add(button);
 		panel.add(button2);
+		panel.add(button4);
 		panel.add(button3);
 		wrapper.getViewport().add(comp);
 		wrapper.getComponents();

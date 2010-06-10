@@ -92,9 +92,8 @@ public class SwingComponentObserver extends ASwingObserver implements
 				perspective.delegateMassege(targetId, action);
 			}
 		} else {
-			// TODO handle invalid id
-			throw new UnsupportedOperationException(
-					"invalid id handling not supported yet.");
+			// possible message to perspective
+			perspective.delegateMassege(targetId, action);
 		}
 	}
 
