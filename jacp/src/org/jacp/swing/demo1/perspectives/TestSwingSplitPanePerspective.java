@@ -100,7 +100,7 @@ public class TestSwingSplitPanePerspective extends
 		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
 		listener.getAction().setMessage("id02", "test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener_1 = getActionListener();
-		listener_1.getAction().setMessage("id01.id03", "test11");
+		listener_1.getAction().setMessage("id02.id06", "test");
 		add.addActionListener(listener.getListener());
 		add_1.addActionListener(listener_1.getListener());
 		toolBar.add(add);

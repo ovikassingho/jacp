@@ -49,7 +49,7 @@ public class ComponentInitWorker extends AbstractComponentWorker {
 					+ component.getName());
 		}
 		return component;
-		//return runHandleSubcomponent(editor, action);
+		// return runHandleSubcomponent(editor, action);
 	}
 
 	@Override

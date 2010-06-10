@@ -11,14 +11,15 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.ISubComponent;
+
 /**
- * handles component methods in own thread; see http://bugs.sun.com/view_bug.do?bug_id=6880336
+ * handles component methods in own thread; see
+ * http://bugs.sun.com/view_bug.do?bug_id=6880336
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 public abstract class AbstractComponentWorker
 		extends
@@ -234,6 +235,5 @@ public abstract class AbstractComponentWorker
 			logger.fine(">> " + message);
 		}
 	}
-	
 
 }
