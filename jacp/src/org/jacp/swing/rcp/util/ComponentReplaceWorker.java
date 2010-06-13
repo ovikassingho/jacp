@@ -40,9 +40,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
-			int i =0;
 			while (component.hasIncomingMessage()) {
-				System.out.print("Iteration :: " + i++);
 				final IAction<ActionEvent, Object> myAction = component.getNextIncomingMessage();
 				log(" //1.1.1.1.1// handle replace component BEGIN: "
 						+ component.getName());

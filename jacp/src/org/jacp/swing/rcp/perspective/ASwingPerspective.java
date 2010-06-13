@@ -144,18 +144,44 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		if (component.isBlocked()) {
-			component.putIncomingMessage(action);
+			prepareMessageHandling(component, action);
 			log("ADD TO QUEUE:::" + component.getName());
 		} else {
-			component.setBlocked(true);
-			component.putIncomingMessage(action);
-			final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
-					layout.getTargetLayoutComponents(), component, action);
-			tmp.execute();
+			prepareMessageHandling(component, action);
+			executeComponentReplaceThread(layout, component, action);
 			log("CREATE NEW THREAD:::" + component.getName());
 		}
 		log("DONE EXECUTE REPLACE:::" + component.getName());
 
+	}
+
+	/**
+	 * start component replace thread
+	 * 
+	 * @param layout
+	 * @param component
+	 * @param action
+	 */
+	private void executeComponentReplaceThread(
+			final IPerspectiveLayout<? extends Container, Container> layout,
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IAction<ActionEvent, Object> action) {
+		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(layout
+				.getTargetLayoutComponents(), component, action);
+		tmp.execute();
+	}
+
+	/**
+	 * set component blocked and add message to queue
+	 * 
+	 * @param component
+	 * @param action
+	 */
+	private void prepareMessageHandling(
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IAction<ActionEvent, Object> action) {
+		component.setBlocked(true);
+		component.putIncomingMessage(action);
 	}
 
 	@Override
