@@ -3,7 +3,10 @@ package org.jacp.swing.rcp.editor;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
+import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.base.IEditor;
 import org.jacp.api.base.IPerspective;
@@ -21,6 +24,8 @@ public abstract class ASwingEditor implements
 	private boolean active = false;
 	private IObserver<Container, ActionListener, ActionEvent, Object> componentObserver;
 	private Container root;
+	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions =
+	      new ArrayBlockingQueue<IAction<ActionEvent, Object>>(20);
 	private volatile boolean blocked;
 
 	@Override
@@ -108,6 +113,31 @@ public abstract class ASwingEditor implements
 
 	public void setBlocked(final boolean blocked) {
 		this.blocked = blocked;
+	}
+	
+	public boolean hasIncomingMessage() {
+		return !incomingActions.isEmpty();
+	}
+	
+	public void putIncomingMessage(final IAction<ActionEvent, Object> action) {
+		try {
+			incomingActions.put(action);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block; add logging!!
+			e.printStackTrace();
+		}
+	}
+	
+	public IAction<ActionEvent, Object> getNextIncomingMessage() {
+		if(hasIncomingMessage()) {
+			try {
+				return incomingActions.take();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block; add logging!!
+				e.printStackTrace();
+			}
+		}
+		return null;		
 	}
 
 }
