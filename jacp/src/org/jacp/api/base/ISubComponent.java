@@ -1,5 +1,7 @@
 package org.jacp.api.base;
 
+import org.jacp.api.action.IAction;
+
 /**
  * defines a subcomponent handled by a root component
  * 
@@ -57,4 +59,39 @@ public interface ISubComponent<C, L, A, M> extends IComponent<C, L, A, M> {
 	 * @return
 	 */
 	public abstract IPerspective<C, L, A, M> getParentPerspective();
+
+	/**
+	 * returns true if component has message in pipe
+	 * 
+	 * @return
+	 */
+	public abstract boolean hasIncomingMessage();
+
+	/**
+	 * add new message to component
+	 * 
+	 * @param action
+	 */
+	public abstract void putIncomingMessage(final IAction<A, M> action);
+
+	/**
+	 * returns next message in pipe
+	 * 
+	 * @return
+	 */
+	public IAction<A, M> getNextIncomingMessage();
+
+	/**
+	 * component is blocked when executed in thread
+	 * 
+	 * @return
+	 */
+	public boolean isBlocked();
+
+	/**
+	 * block component when run in thread
+	 * 
+	 * @param blocked
+	 */
+	public void setBlocked(final boolean blocked);
 }

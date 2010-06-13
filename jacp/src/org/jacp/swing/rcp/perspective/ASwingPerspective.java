@@ -143,9 +143,17 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
-		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(layout
-				.getTargetLayoutComponents(), component, action);
-		tmp.execute();
+		if (component.isBlocked()) {
+			component.putIncomingMessage(action);
+			log("ADD TO QUEUE:::" + component.getName());
+		} else {
+			component.setBlocked(true);
+			component.putIncomingMessage(action);
+			final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
+					layout.getTargetLayoutComponents(), component, action);
+			tmp.execute();
+			log("CREATE NEW THREAD:::" + component.getName());
+		}
 		log("DONE EXECUTE REPLACE:::" + component.getName());
 
 	}
