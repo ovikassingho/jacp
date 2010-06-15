@@ -88,19 +88,21 @@ public class TestSwingSplitPanePerspective extends
 			final Container bottomBar) {
 		final JButton add = new JButton(new ImageIcon(Toolkit
 				.getDefaultToolkit().getImage("NSImage://NSColorPanel")));
+		add.setText("perspective2");
 		final JButton add_1 = new JButton(new ImageIcon(Toolkit
 				.getDefaultToolkit().getImage("NSImage://NSColorPanel")));
+
+		add_1.setText("perspective3");
 		add_1.putClientProperty("JButton.segmentPosition", "first");
 		add_1.setFocusable(false);
 		add_1.setSize(new Dimension(10, 10));
-		// add.putClientProperty("JButton.buttonType", "segmentedTextured");
 		add.putClientProperty("JButton.segmentPosition", "first");
 		add.setFocusable(false);
 		add.setSize(new Dimension(10, 10));
 		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
 		listener.getAction().setMessage("id02", "test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener_1 = getActionListener();
-		listener_1.getAction().setMessage("id02.id06", "test");
+		listener_1.getAction().setMessage("id01_1", "test");
 		add.addActionListener(listener.getListener());
 		add_1.addActionListener(listener_1.getListener());
 		toolBar.add(add);
@@ -110,11 +112,13 @@ public class TestSwingSplitPanePerspective extends
 					.getDefaultToolkit().getImage("NSImage://NSColorPanel")));
 			// add2.putClientProperty("JButton.buttonType",
 			// "segmentedTextured");
-			add2.putClientProperty("JButton.segmentPosition", "first");
+			
 			add2.setFocusable(false);
 			final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
 			listener2.getAction().setMessage("id01", "tester");
 			add2.addActionListener(listener2.getListener());
+			add2.setText("perspective1");
+			add2.putClientProperty("JButton.segmentPosition", "first");
 			bottomBar.add(add2);
 		}
 	}

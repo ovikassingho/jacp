@@ -23,7 +23,7 @@ import org.jacp.api.base.ISubComponent;
  */
 public abstract class AbstractComponentWorker
 		extends
-		org.jacp.swing.rcp.util.SwingWorker<ISubComponent<Container, ActionListener, ActionEvent, Object>, Container> {
+		org.jacp.swing.rcp.util.SwingWorker<ISubComponent<Container, ActionListener, ActionEvent, Object>, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -73,7 +73,10 @@ public abstract class AbstractComponentWorker
 		uiComponent.setVisible(true);
 		validContainer.add(name, uiComponent);
 	}
-
+	/**
+	 * invalidate parent component
+	 * @param host
+	 */
 	protected void invalidateHost(final Container host) {
 		// run in EventDispatchThread
 		final Thread worker = new Thread() {
@@ -82,6 +85,7 @@ public abstract class AbstractComponentWorker
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
+						// run in EventDispatchThread
 						if (host instanceof JComponent) {
 							((JComponent) host).revalidate();
 						} else {
@@ -237,7 +241,7 @@ public abstract class AbstractComponentWorker
 	}
 
 	/**
-	 * returns target message with perspective and component name
+	 * returns target message with perspective and component name as array
 	 * 
 	 * @param messageId
 	 * @return
@@ -251,5 +255,32 @@ public abstract class AbstractComponentWorker
 			logger.fine(">> " + message);
 		}
 	}
+	
+	 public  final class ChunkDTO {
+			private final Container parent;
+			private final Map<String, Container> targetComponents;
+			private final String currentTaget;
+			private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
+			public ChunkDTO(final Container parent,final Map<String, Container> targetComponents,final String currentTaget,final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+				this.parent = parent;
+				this.targetComponents = targetComponents;
+				this.currentTaget = currentTaget;
+				this.component = component;
+			}
+			public Container getParent() {
+				return parent;
+			}
+			public Map<String, Container> getTargetComponents() {
+				return targetComponents;
+			}
+			public String getCurrentTaget() {
+				return currentTaget;
+			}
+			public ISubComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
+				return component;
+			}
+			
+			
+		}
 
 }
