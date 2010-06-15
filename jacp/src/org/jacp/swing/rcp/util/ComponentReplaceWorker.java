@@ -3,6 +3,7 @@ package org.jacp.swing.rcp.util;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Map;
 
 import org.jacp.api.action.IAction;
@@ -34,6 +35,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			throws Exception {
 		return runHandleSubcomponent(component, action);
 	}
+	
+
 
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
@@ -60,6 +63,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 						+ component.getName());
 				handleNewComponentValue(component, targetComponents, parent,
 						currentTaget);
+				//this.publish(parent);
 			}
 			component.setBlocked(false);
 			return component;
@@ -67,9 +71,14 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 		}
 
 	}
+	
+	@Override
+	protected void process(List chunks) {
+		
+	}
 
 	@Override
-	public void done() {
+	protected void done() {
 
 	}
 
