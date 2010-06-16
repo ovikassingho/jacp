@@ -71,35 +71,12 @@ public abstract class AbstractComponentWorker
 			final Container uiComponent, final String name) {
 		uiComponent.setEnabled(true);
 		uiComponent.setVisible(true);
-		validContainer.add(name, uiComponent);
+		if (validContainer!=null) {
+			validContainer.add(name, uiComponent);
+		}
+		
 	}
-	/**
-	 * invalidate parent component
-	 * @param host
-	 */
-	protected void invalidateHost(final Container host) {
-		// run in EventDispatchThread
-		final Thread worker = new Thread() {
-			@Override
-			public void run() {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						// run in EventDispatchThread
-						if (host instanceof JComponent) {
-							((JComponent) host).revalidate();
-						} else {
-							host.invalidate();
-						}
-						host.repaint();
-
-					}
-				}); // SWING UTILS END
-			} // run end
-		}; // Thread END
-		worker.start();
-
-	}
+	
 
 	protected abstract ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
@@ -261,11 +238,13 @@ public abstract class AbstractComponentWorker
 			private final Map<String, Container> targetComponents;
 			private final String currentTaget;
 			private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
-			public ChunkDTO(final Container parent,final Map<String, Container> targetComponents,final String currentTaget,final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			private final Container previousContainer;
+			public ChunkDTO(final Container parent,final Container previousContainer, final Map<String, Container> targetComponents,final String currentTaget,final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 				this.parent = parent;
 				this.targetComponents = targetComponents;
 				this.currentTaget = currentTaget;
 				this.component = component;
+				this.previousContainer = previousContainer;
 			}
 			public Container getParent() {
 				return parent;
@@ -278,6 +257,9 @@ public abstract class AbstractComponentWorker
 			}
 			public ISubComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
 				return component;
+			}
+			public Container getPreviousContainer() {
+				return previousContainer;
 			}
 			
 			
