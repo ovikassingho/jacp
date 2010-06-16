@@ -56,7 +56,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
 }}} 
 
 
-And now the "good" way of handling this message. In the following example the button sends a message to itself and then starting his message loop, so the complete loop tine will be executed in a thread.
+And now the *"good"* way of handling this message. In the following example the button sends a message to itself and then starting his message loop, so the complete loop time will be executed in a thread.
 
 {{{
 
