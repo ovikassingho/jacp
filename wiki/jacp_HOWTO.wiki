@@ -79,29 +79,29 @@ public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
 	@Override
 	public Container handle(final IAction<ActionEvent, Object> action) {
 
-		button.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				int p = 0;
-				final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-				listener.getAction().setMessage("id08", "begin");
-				listener.getListener().actionPerformed(e);
-				
-
-			}
-		});
-		
-               // react on message send by yourself
-		if(action.getMessage().equals("begin")) {
+               if(action.getMessage().equals("begin")) {
 			int p = 0;
-			while (p < 9999) {
+			while (p < 99) {
 				final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-				listener.getAction().setMessage("id09", "message");
+				listener.getAction().setMessage("id09", "test"+p);
 				listener.getListener().actionPerformed(action.getActionEvent());
 				p++;
 
 			}
+
+		} else {
+			button.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					int p = 0;
+					final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
+					listener.getAction().setMessage("id08", "begin");
+					listener.getListener().actionPerformed(e);
+					
+
+				}
+			});
 		}
 		
 		panel.add(button);
