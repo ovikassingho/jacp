@@ -11,9 +11,18 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.swing.rcp.editor.ASwingEditor;
 
+/**
+ * This demo editor acts as message producer; this demo shows an good and a bad variant of using components and their specific way of handling 
+ * Variant A: defines a while loop inside an "actionPerfomed" 
+ * 
+ * @author Andy Moncsek
+ *
+ */
 public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
 	
-	private JPanel panel=null;
+	private JPanel panel = new JPanel();
+	final JButton button = new JButton("send 1000 messages");
+	
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
@@ -30,30 +39,39 @@ public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
 
 	@Override
 	public Container handle(final IAction<ActionEvent, Object> action) {
-		if(panel==null) {
-			panel = new JPanel();
-		}
+
 		
-		final JButton button = new JButton("send 1000 messages");
-		button.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				int p = 0;
-
-				while (p < 1000) {
-					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-					listener3.getAction().setMessage("id09", "test1");
-					listener3.getListener().actionPerformed(e);
-					p++;
-
-				}
+		
+		if(action.getMessage().equals("begin")) {
+			int p = 0;
+			System.out.println("BEGIN_ACTION" + action.getMessage() + this.panel);
+			final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+			listener2.getAction().setMessage("id09", "start");
+			listener2.getListener().actionPerformed(action.getActionEvent());
+			while (p < 99) {
 				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-				listener3.getAction().setMessage("id09", "stop");
-				listener3.getListener().actionPerformed(e);
+				listener3.getAction().setMessage("id09", "test"+p);
+				listener3.getListener().actionPerformed(action.getActionEvent());
+				p++;
 
 			}
-		});
+			final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
+			listener3.getAction().setMessage("id09", "stop");
+			listener3.getListener().actionPerformed(action.getActionEvent());
+		} else {
+			button.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					int p = 0;
+					final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+					listener2.getAction().setMessage("id08", "begin");
+					listener2.getListener().actionPerformed(e);
+					
+
+				}
+			});
+		}
 		
 		panel.add(button);
 		return panel;

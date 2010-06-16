@@ -21,6 +21,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;
 
+	private volatile boolean block = false;
+
 	public ComponentReplaceWorker(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
@@ -35,8 +37,6 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			throws Exception {
 		return runHandleSubcomponent(component, action);
 	}
-	
-
 
 	@Override
 	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
@@ -44,26 +44,26 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
 			while (component.hasIncomingMessage()) {
-				final IAction<ActionEvent, Object> myAction = component.getNextIncomingMessage();
+				final IAction<ActionEvent, Object> myAction = component
+				.getNextIncomingMessage();
+				while(block) {
+					// wait for finish in EventDispatchThread
+				}
+
 				log(" //1.1.1.1.1// handle replace component BEGIN: "
 						+ component.getName());
 				final Map<String, Container> targetComponents = this.targetComponents;
-				final Container currentContainer = component.getRoot();
+				final Container previousContainer = component.getRoot();
 				final String currentTaget = component.getTarget();
 				// run code
 				log(" //1.1.1.1.2// handle component: " + component.getName());
+				// final ChunkDTO dto = new ChunkDTO(parent,previousContainer,
+				// targetComponents, currentTaget, component);
 				prepareAndHandleComponent(component, myAction);
-				// remove old view
-				log(" //1.1.1.1.3// handle old component remove: "
-						+ component.getName());
-				final Container parent = currentContainer.getParent();
-				handleOldComponentRemove(parent, currentContainer);
-				// add new view
-				log(" //1.1.1.1.4// handle new component insert: "
-						+ component.getName());
-				handleNewComponentValue(component, targetComponents, parent,
-						currentTaget);
-				//this.publish(parent);
+				final Container parent = previousContainer.getParent();
+				block = true;
+				this.publish(new ChunkDTO(parent,previousContainer, targetComponents, currentTaget, component));
+
 			}
 			component.setBlocked(false);
 			return component;
@@ -71,10 +71,29 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 		}
 
 	}
-	
+
 	@Override
-	protected void process(List chunks) {
-		
+	protected void process(final List<ChunkDTO> chunks) {
+		for (final ChunkDTO dto : chunks) {
+			final Container parent = dto.getParent();
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component = dto
+					.getComponent();
+			final Container previousContainer = dto.getPreviousContainer();
+			final String currentTaget = dto.getCurrentTaget();
+			if (!currentTaget.equals(component.getTarget()) || !previousContainer
+							.equals(component.getRoot())) {
+				// remove old view
+				log(" //1.1.1.1.3// handle old component remove: "
+						+ component.getName());
+				handleOldComponentRemove(parent, previousContainer);
+				// add new view
+				log(" //1.1.1.1.4// handle new component insert: "
+						+ component.getName());
+				handleNewComponentValue(component, targetComponents, parent,
+						currentTaget);
+			}
+			block = false;
+		}
 	}
 
 	@Override
