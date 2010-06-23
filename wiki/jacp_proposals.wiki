@@ -1,0 +1,8 @@
+#labels Featured
+
+= Proposals for future development in jacp =
+
+== committing tasks in a component ==
+Normally you can send a message to an background component or the component itself to achieve handling of a long running task in a thread. If you send a message to a background component the message sourceID (sending comonent) acts as message targetId for the return value of the background component.
+
+Possilbe enhancement: Submit a runnable to your component, the return value is handled by an message to you
