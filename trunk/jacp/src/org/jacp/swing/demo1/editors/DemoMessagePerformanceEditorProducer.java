@@ -48,7 +48,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
 			final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
 			listener2.getAction().setMessage("id09", "start");
 			listener2.getListener().actionPerformed(action.getActionEvent());
-			while (p < 99) {
+			while (p < 999) {
 				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 				listener3.getAction().setMessage("id09", "test"+p);
 				listener3.getListener().actionPerformed(action.getActionEvent());
