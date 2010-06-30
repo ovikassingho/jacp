@@ -16,8 +16,8 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingEditor {
 	private int counter = 0;
 	private final JTextField text1 = new JTextField();
 	private long startTime;
-	private JLabel label = new JLabel();
-	private JLabel label1 = new JLabel();
+	private final JLabel label = new JLabel();
+	private final JLabel label1 = new JLabel();
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
@@ -39,7 +39,7 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingEditor {
 		}
 
 		if (action.getMessage().equals("stop")) {
-			long stopTime = System.currentTimeMillis();
+			final long stopTime = System.currentTimeMillis();
 
 			label.setText("stop Time: " + (stopTime - startTime));
 			panel.add(label);

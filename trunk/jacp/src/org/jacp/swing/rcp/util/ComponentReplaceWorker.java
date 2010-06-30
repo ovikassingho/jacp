@@ -45,8 +45,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 		synchronized (component) {
 			while (component.hasIncomingMessage()) {
 				final IAction<ActionEvent, Object> myAction = component
-				.getNextIncomingMessage();
-				while(block) {
+						.getNextIncomingMessage();
+				while (block) {
 					// wait for finish in EventDispatchThread
 				}
 
@@ -62,7 +62,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 				prepareAndHandleComponent(component, myAction);
 				final Container parent = previousContainer.getParent();
 				block = true;
-				this.publish(new ChunkDTO(parent,previousContainer, targetComponents, currentTaget, component));
+				publish(new ChunkDTO(parent, previousContainer,
+						targetComponents, currentTaget, component));
 
 			}
 			component.setBlocked(false);
@@ -80,8 +81,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 					.getComponent();
 			final Container previousContainer = dto.getPreviousContainer();
 			final String currentTaget = dto.getCurrentTaget();
-			if (!currentTaget.equals(component.getTarget()) || !previousContainer
-							.equals(component.getRoot())) {
+			if (!currentTaget.equals(component.getTarget())
+					|| !previousContainer.equals(component.getRoot())) {
 				// remove old view
 				log(" //1.1.1.1.3// handle old component remove: "
 						+ component.getName());

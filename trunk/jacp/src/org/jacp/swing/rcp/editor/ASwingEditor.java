@@ -24,8 +24,8 @@ public abstract class ASwingEditor implements
 	private boolean active = false;
 	private IObserver<Container, ActionListener, ActionEvent, Object> componentObserver;
 	private Container root;
-	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions =
-	      new ArrayBlockingQueue<IAction<ActionEvent, Object>>(20);
+	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+			20);
 	private volatile boolean blocked;
 
 	@Override
@@ -114,30 +114,30 @@ public abstract class ASwingEditor implements
 	public void setBlocked(final boolean blocked) {
 		this.blocked = blocked;
 	}
-	
+
 	public boolean hasIncomingMessage() {
 		return !incomingActions.isEmpty();
 	}
-	
+
 	public void putIncomingMessage(final IAction<ActionEvent, Object> action) {
 		try {
 			incomingActions.put(action);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			// TODO Auto-generated catch block; add logging!!
 			e.printStackTrace();
 		}
 	}
-	
+
 	public IAction<ActionEvent, Object> getNextIncomingMessage() {
-		if(hasIncomingMessage()) {
+		if (hasIncomingMessage()) {
 			try {
 				return incomingActions.take();
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				// TODO Auto-generated catch block; add logging!!
 				e.printStackTrace();
 			}
 		}
-		return null;		
+		return null;
 	}
 
 }
