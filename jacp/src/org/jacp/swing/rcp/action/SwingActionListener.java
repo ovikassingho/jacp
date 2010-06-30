@@ -35,9 +35,10 @@ public class SwingActionListener implements ActionListener,
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		action.setActionEvent(e);
-		notifyComponents(action);
 		log(" //1// message send from / to: " + action.getSourceId() + " / "
 				+ action.getTargetId());
+		notifyComponents(action);
+
 	}
 
 	@Override

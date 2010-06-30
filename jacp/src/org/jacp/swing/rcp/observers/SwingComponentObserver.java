@@ -122,32 +122,40 @@ public class SwingComponentObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public synchronized void delegateMessage(final String target,
+	public void delegateMessage(final String target,
 			final IAction<ActionEvent, Object> action) {
-		handleMessage(target, action);
+		synchronized (action) {
+			handleMessage(target, action);
+		}
 
 	}
 
 	@Override
-	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
+	public <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
 			final P component, final IAction<ActionEvent, Object> action) {
-		perspective
-				.handleAndReplaceSubcomponent(
-						perspective.getIPerspectiveLayout(),
-						(ISubComponent<Container, ActionListener, ActionEvent, Object>) component,
-						action);
+		synchronized (action) {
+			log(" //1.1.1.1.1// component " + action.getTargetId()
+					+ " delegate to perspective: " + perspective.getId());
+			perspective
+					.handleAndReplaceSubcomponent(
+							perspective.getIPerspectiveLayout(),
+							(ISubComponent<Container, ActionListener, ActionEvent, Object>) component,
+							action);
+		}
 
 	}
 
 	@Override
-	public synchronized <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
+	public <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
 			final P component, final IAction<ActionEvent, Object> action) {
-		component.setActive(true);
-		perspective
-				.initSubcomonent(
-						action,
-						perspective.getIPerspectiveLayout(),
-						(ISubComponent<Container, ActionListener, ActionEvent, Object>) component);
+		synchronized (action) {
+			component.setActive(true);
+			perspective
+					.initSubcomonent(
+							action,
+							perspective.getIPerspectiveLayout(),
+							(ISubComponent<Container, ActionListener, ActionEvent, Object>) component);
+		}
 
 	}
 

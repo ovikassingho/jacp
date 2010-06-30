@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
@@ -71,12 +70,11 @@ public abstract class AbstractComponentWorker
 			final Container uiComponent, final String name) {
 		uiComponent.setEnabled(true);
 		uiComponent.setVisible(true);
-		if (validContainer!=null) {
+		if (validContainer != null) {
 			validContainer.add(name, uiComponent);
 		}
-		
+
 	}
-	
 
 	protected abstract ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
@@ -97,7 +95,7 @@ public abstract class AbstractComponentWorker
 					@Override
 					public void run() {
 						// run in EventDispatchThread
-						if(parent!=null) {
+						if (parent != null) {
 							parent.remove(currentContainer);
 						}
 
@@ -232,37 +230,47 @@ public abstract class AbstractComponentWorker
 			logger.fine(">> " + message);
 		}
 	}
-	
-	 public  final class ChunkDTO {
-			private final Container parent;
-			private final Map<String, Container> targetComponents;
-			private final String currentTaget;
-			private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
-			private final Container previousContainer;
-			public ChunkDTO(final Container parent,final Container previousContainer, final Map<String, Container> targetComponents,final String currentTaget,final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-				this.parent = parent;
-				this.targetComponents = targetComponents;
-				this.currentTaget = currentTaget;
-				this.component = component;
-				this.previousContainer = previousContainer;
-			}
-			public Container getParent() {
-				return parent;
-			}
-			public Map<String, Container> getTargetComponents() {
-				return targetComponents;
-			}
-			public String getCurrentTaget() {
-				return currentTaget;
-			}
-			public ISubComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
-				return component;
-			}
-			public Container getPreviousContainer() {
-				return previousContainer;
-			}
-			
-			
+
+	public static final class ChunkDTO {
+		private final Container parent;
+		private final Map<String, Container> targetComponents;
+		private final String currentTaget;
+		private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
+		private final Container previousContainer;
+
+		public ChunkDTO(
+				final Container parent,
+				final Container previousContainer,
+				final Map<String, Container> targetComponents,
+				final String currentTaget,
+				final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			this.parent = parent;
+			this.targetComponents = targetComponents;
+			this.currentTaget = currentTaget;
+			this.component = component;
+			this.previousContainer = previousContainer;
 		}
+
+		public Container getParent() {
+			return parent;
+		}
+
+		public Map<String, Container> getTargetComponents() {
+			return targetComponents;
+		}
+
+		public String getCurrentTaget() {
+			return currentTaget;
+		}
+
+		public ISubComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
+			return component;
+		}
+
+		public Container getPreviousContainer() {
+			return previousContainer;
+		}
+
+	}
 
 }

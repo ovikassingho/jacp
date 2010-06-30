@@ -100,11 +100,13 @@ public abstract class ASwingObserver implements
 	}
 
 	@Override
-	public synchronized void handle(final IAction<ActionEvent, Object> action) {
-		final Map<String, Object> messages = action.getMessageList();
-		for (final String targetId : messages.keySet()) {
-			log(" handle message to: " + targetId);
-			handleMessage(targetId, action);
+	public void handle(final IAction<ActionEvent, Object> action) {
+		synchronized (action) {
+			final Map<String, Object> messages = action.getMessageList();
+			for (final String targetId : messages.keySet()) {
+				log(" handle message to: " + targetId);
+				handleMessage(targetId, action);
+			}
 		}
 
 	}

@@ -6,31 +6,30 @@ import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
 public class DemoMessagePerformancePerspective extends
-ASwingPerspective<JSplitPane> {
+		ASwingPerspective<JSplitPane> {
 
 	@Override
-	public void addMenuEntries(JMenu menuBar) {
+	public void addMenuEntries(final JMenu menuBar) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void handleBarEntries(Container toolBar, Container bottomBar) {
+	public void handleBarEntries(final Container toolBar,
+			final Container bottomBar) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void handleInitialLayout(SwingAction action,
-			SwingPerspectiveLayout<JSplitPane> perspectiveLayout) {
-		final JSplitPane splitPane = new JSplitPane(
-				JSplitPane.HORIZONTAL_SPLIT);
+	public void handleInitialLayout(final SwingAction action,
+			final SwingPerspectiveLayout<JSplitPane> perspectiveLayout) {
+		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		final JScrollPane scrollPaneView = new JScrollPane();
 		splitPane.add(scrollPaneView, JSplitPane.BOTTOM);
 
@@ -42,9 +41,8 @@ ASwingPerspective<JSplitPane> {
 		perspectiveLayout.registerTargetLayoutComponent("editor0",
 				scrollPaneEditor);
 
-		
 		perspectiveLayout.setRootLayoutComponent(splitPane);
-		
+
 	}
 
 }

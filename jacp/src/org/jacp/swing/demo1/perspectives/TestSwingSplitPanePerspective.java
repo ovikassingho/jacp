@@ -112,7 +112,7 @@ public class TestSwingSplitPanePerspective extends
 					.getDefaultToolkit().getImage("NSImage://NSColorPanel")));
 			// add2.putClientProperty("JButton.buttonType",
 			// "segmentedTextured");
-			
+
 			add2.setFocusable(false);
 			final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
 			listener2.getAction().setMessage("id01", "tester");
