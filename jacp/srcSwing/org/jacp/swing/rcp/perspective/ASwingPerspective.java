@@ -50,6 +50,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void init() {
+		((SwingComponentObserver) componentObserver).execute();
 	}
 
 	public abstract void addMenuEntries(JMenu menuBar);
@@ -76,7 +77,8 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void registerComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
 		synchronized (component) {
 			log("register component: " + component.getId());
 			handler.addComponent(component);
@@ -100,10 +102,11 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void addMenuEntries(final Container meuneBar) {
-		if (meuneBar instanceof JMenu) {
-			this.addMenuEntries((JMenu) meuneBar);
+		synchronized (meuneBar) {
+			if (meuneBar instanceof JMenu) {
+				this.addMenuEntries((JMenu) meuneBar);
+			}
 		}
-
 	}
 
 	@Override
@@ -111,20 +114,22 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IAction<ActionEvent, Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		final String targetId = getTargetComponentId(action.getTargetId());
-		log("3.4.4.1: subcomponent targetId: " + targetId);
-		for (final ISubComponent<Container, ActionListener, ActionEvent, Object> component : perspective
-				.getSubcomponents()) {
-			if (component.getId().equals(targetId)) {
-				log("3.4.4.2: subcomponent init with custom action");
-				initSubcomonent(action, layout, component);
-			} else if (component.isActive()) {
-				log("3.4.4.2: subcomponent init with default action");
-				initSubcomonent(new SwingAction(component.getId(), component
-						.getId(), "init"), layout, component);
-			} // if END
+		synchronized (action) {
+			final String targetId = getTargetComponentId(action.getTargetId());
+			log("3.4.4.1: subcomponent targetId: " + targetId);
+			for (final ISubComponent<Container, ActionListener, ActionEvent, Object> component : perspective
+					.getSubcomponents()) {
+				if (component.getId().equals(targetId)) {
+					log("3.4.4.2: subcomponent init with custom action");
+					initSubcomonent(action, layout, component);
+				} else if (component.isActive()) {
+					log("3.4.4.2: subcomponent init with default action");
+					initSubcomonent(new SwingAction(component.getId(),
+							component.getId(), "init"), layout, component);
+				} // if END
 
-		} // for END
+			} // for END
+		}
 	}
 
 	@Override
@@ -132,10 +137,12 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IAction<ActionEvent, Object> action,
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		final ComponentInitWorker tmp = new ComponentInitWorker(layout
-				.getTargetLayoutComponents(), component, action);
-		tmp.execute();
-		log("DONE EXECUTE INIT:::" + component.getName());
+		synchronized (action) {
+			final ComponentInitWorker tmp = new ComponentInitWorker(layout
+					.getTargetLayoutComponents(), component, action);
+			tmp.execute();
+			log("DONE EXECUTE INIT:::" + component.getName());
+		}
 	}
 
 	@Override
@@ -143,6 +150,8 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
+		// TODO when "component" is synchronized execution is 30x times faster
+		// but will lock sometimes !!
 		synchronized (action) {
 			if (component.isBlocked()) {
 				prepareMessageHandling(component, action);
@@ -185,10 +194,11 @@ public abstract class ASwingPerspective<T extends Container> implements
 		component.setBlocked(true);
 		component.putIncomingMessage(action);
 	}
-	
+
 	@Override
-	public void addActiveComponent(final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		synchronized (this.componentObserver) {
+	public void addActiveComponent(
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		synchronized (component) {
 			// register new component at perspective
 			this.registerComponent(component, this.componentObserver);
 			// add component root to correct target
@@ -196,9 +206,14 @@ public abstract class ASwingPerspective<T extends Container> implements
 					.getTargetLayoutComponents(), component);
 		}
 	}
-	
 
-
+	/**
+	 * handles ui return value and it to perspective TODO check correctness of
+	 * implementation
+	 * 
+	 * @param targetComponents
+	 * @param component
+	 */
 	private void addComponentUIValue(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
@@ -301,7 +316,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	private <M extends ISubComponent<Container, ActionListener, ActionEvent, Object>> void registerSubcomponents(
 			final List<M> components) {
 		for (final M component : components) {
-			registerComponent(component,this.componentObserver);
+			registerComponent(component, this.componentObserver);
 		}
 	}
 

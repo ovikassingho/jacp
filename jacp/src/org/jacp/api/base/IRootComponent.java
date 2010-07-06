@@ -12,7 +12,7 @@ package org.jacp.api.base;
  * @param <H>
  *            handler where component have to be registered
  */
-public interface IRootComponent<T,H> {
+public interface IRootComponent<T, H> {
 
 	/**
 	 * register component at listener
@@ -20,7 +20,7 @@ public interface IRootComponent<T,H> {
 	 * @param component
 	 */
 	abstract public void registerComponent(final T component, final H handler);
-	
+
 	/**
 	 * unregister component from current perspective
 	 * 

@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,10 +21,42 @@ import org.jacp.api.observers.IObserver;
  * @author Andy Moncsek
  * 
  */
-public abstract class ASwingObserver implements
-		IObserver<Container, ActionListener, ActionEvent, Object> {
+public abstract class ASwingObserver
+		extends
+		org.jacp.swing.rcp.util.SwingWorker<IAction<ActionEvent, Object>, IAction<ActionEvent, Object>>
+		implements IObserver<Container, ActionListener, ActionEvent, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+	private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+			10000);
+
+	@Override
+	protected IAction<ActionEvent, Object> doInBackground() throws Exception {
+		while (true) {
+			log(" observer thread size" + messages.size());
+			final IAction<ActionEvent, Object> action = messages.take();
+			final Map<String, Object> messages = action.getMessageList();
+			for (final String targetId : messages.keySet()) {
+				log(" handle message to: " + targetId);
+				handleMessage(targetId, action);
+			}
+			log(" observer thread DONE");
+
+		}
+	}
+
+	@Override
+	protected void done() {
+		// TODO this should only happen when an error occurred
+		try {
+			this.get();
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		} catch (final ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * returns cloned action with valid message TODO add to interface
@@ -102,11 +137,7 @@ public abstract class ASwingObserver implements
 	@Override
 	public void handle(final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
-			final Map<String, Object> messages = action.getMessageList();
-			for (final String targetId : messages.keySet()) {
-				log(" handle message to: " + targetId);
-				handleMessage(targetId, action);
-			}
+			messages.add(action);
 		}
 
 	}

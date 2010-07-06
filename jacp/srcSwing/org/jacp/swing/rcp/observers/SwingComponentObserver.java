@@ -55,16 +55,18 @@ public class SwingComponentObserver extends ASwingObserver implements
 	@Override
 	public void handleMessage(final String targetId,
 			final IAction<ActionEvent, Object> action) {
-		final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
-				getTargetComponentId(targetId), components);
-		log(" //1.1// component message to: " + action.getTargetId());
-		if (component != null) {
-			log(" //1.1.1// component HIT: " + action.getTargetId());
-			handleComponentHit(targetId, action, component);
-		} else {
-			// delegate message to parent perspective
-			log(" //1.1.1// component MISS: " + action.getTargetId());
-			handleComponentMiss(targetId, action);
+		synchronized (action) {
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
+					getTargetComponentId(targetId), components);
+			log(" //1.1// component message to: " + action.getTargetId());
+			if (component != null) {
+				log(" //1.1.1// component HIT: " + action.getTargetId());
+				handleComponentHit(targetId, action, component);
+			} else {
+				// delegate message to parent perspective
+				log(" //1.1.1// component MISS: " + action.getTargetId());
+				handleComponentMiss(targetId, action);
+			}
 		}
 
 	}

@@ -22,7 +22,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
 	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;
-	private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(1);
+	private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
+			1);
 
 	public ComponentReplaceWorker(
 			final Map<String, Container> targetComponents,
@@ -50,8 +51,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 						.getNextIncomingMessage();
 				try {
 					lock.take();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+				} catch (final InterruptedException e) {
 					e.printStackTrace();
 				}
 
@@ -77,6 +77,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 
 	@Override
 	protected void process(final List<ChunkDTO> chunks) {
+		// process method runs in EventDispatchThread
 		for (final ChunkDTO dto : chunks) {
 			final Container parent = dto.getParent();
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component = dto
