@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.ISubComponent;
@@ -20,8 +22,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
 	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;
-
-	private volatile boolean block = false;
+	private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(1);
 
 	public ComponentReplaceWorker(
 			final Map<String, Container> targetComponents,
@@ -43,11 +44,15 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
+			lock.add(true);
 			while (component.hasIncomingMessage()) {
 				final IAction<ActionEvent, Object> myAction = component
 						.getNextIncomingMessage();
-				while (block) {
-					// wait for finish in EventDispatchThread
+				try {
+					lock.take();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 				log(" //1.1.1.1.1// handle replace component BEGIN: "
@@ -57,11 +62,8 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 				final String currentTaget = component.getTarget();
 				// run code
 				log(" //1.1.1.1.2// handle component: " + component.getName());
-				// final ChunkDTO dto = new ChunkDTO(parent,previousContainer,
-				// targetComponents, currentTaget, component);
 				prepareAndHandleComponent(component, myAction);
 				final Container parent = previousContainer.getParent();
-				block = true;
 				publish(new ChunkDTO(parent, previousContainer,
 						targetComponents, currentTaget, component));
 
@@ -93,7 +95,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 				handleNewComponentValue(component, targetComponents, parent,
 						currentTaget);
 			}
-			block = false;
+			lock.add(true);
 		}
 	}
 
