@@ -36,6 +36,7 @@ import org.jacp.api.base.ISubComponent;
 import org.jacp.api.base.IWorkbench;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
+import org.jacp.api.observers.IObserver;
 import org.jacp.api.observers.IPerspectiveObserver;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
@@ -53,7 +54,7 @@ import com.apple.mrj.MRJApplicationUtils;
 public abstract class ASwingWorkbench extends JFrame
 		implements
 		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>> {
+		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>,IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
 
 	/**
 	 * 
@@ -184,8 +185,15 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void registerComponent(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> component) {
-		perspectiveObserver.addPerspective(component);
+			final IPerspective<Container, ActionListener, ActionEvent, Object> component,IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+		handler.addPerspective(component);
+
+	}
+	
+	@Override
+	public void unregisterComponent(
+			final IPerspective<Container, ActionListener, ActionEvent, Object> component,IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+		handler.removePerspective(component);
 
 	}
 
@@ -418,7 +426,7 @@ public abstract class ASwingWorkbench extends JFrame
 	private void initPerspectives() {
 		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
 			log("3.4.1: register component: " + perspective.getName());
-			registerComponent(perspective);
+			registerComponent(perspective,this.perspectiveObserver);
 			// TODO what if component removed an initialized later again?
 			log("3.4.2: create perspective menu");
 			createPerspectiveMenue(perspective);

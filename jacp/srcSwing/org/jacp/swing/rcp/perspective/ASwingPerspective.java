@@ -76,26 +76,26 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void registerComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		log("register component: " + component.getId());
-		componentObserver.addComponent(component);
-		this.subcomponents.add(component);
-		component.setParentPerspective(this);
+			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
+		synchronized (component) {
+			log("register component: " + component.getId());
+			handler.addComponent(component);
+			this.subcomponents.add(component);
+			component.setParentPerspective(this);
+		}
 
 	}
 
-	/**
-	 * unregister component from current perspective TODO add to api
-	 * 
-	 * @param component
-	 */
-	private void unregisterComponent(
+	@Override
+	public void unregisterComponent(
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
-		log("unregister component: " + component.getId());
-		handler.removeComponent(component);
-		this.subcomponents.remove(component);
-		component.setParentPerspective(null);
+		synchronized (handler) {
+			log("unregister component: " + component.getId());
+			handler.removeComponent(component);
+			this.subcomponents.remove(component);
+			component.setParentPerspective(null);
+		}
 	}
 
 	@Override
@@ -143,15 +143,17 @@ public abstract class ASwingPerspective<T extends Container> implements
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
-		if (component.isBlocked()) {
-			prepareMessageHandling(component, action);
-			log("ADD TO QUEUE:::" + component.getName());
-		} else {
-			prepareMessageHandling(component, action);
-			executeComponentReplaceThread(layout, component, action);
-			log("CREATE NEW THREAD:::" + component.getName());
+		synchronized (action) {
+			if (component.isBlocked()) {
+				prepareMessageHandling(component, action);
+				log("ADD TO QUEUE:::" + component.getName());
+			} else {
+				prepareMessageHandling(component, action);
+				executeComponentReplaceThread(layout, component, action);
+				log("CREATE NEW THREAD:::" + component.getName());
+			}
+			log("DONE EXECUTE REPLACE:::" + component.getName());
 		}
-		log("DONE EXECUTE REPLACE:::" + component.getName());
 
 	}
 
@@ -183,9 +185,21 @@ public abstract class ASwingPerspective<T extends Container> implements
 		component.setBlocked(true);
 		component.putIncomingMessage(action);
 	}
-
+	
 	@Override
-	public void addComponentUIValue(
+	public void addActiveComponent(final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+		synchronized (this.componentObserver) {
+			// register new component at perspective
+			this.registerComponent(component, this.componentObserver);
+			// add component root to correct target
+			this.addComponentUIValue(this.getIPerspectiveLayout()
+					.getTargetLayoutComponents(), component);
+		}
+	}
+	
+
+
+	private void addComponentUIValue(
 			final Map<String, Container> targetComponents,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
 		final ComponentAddWorker worker = new ComponentAddWorker(
@@ -194,29 +208,36 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public synchronized void delegateTargetChange(
+	public void delegateTargetChange(
 			final String target,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		final String parentId = getTargetParentId(target);
-		if (!this.id.equals(parentId)) {
-			// unregister component in current perspective
-			unregisterComponent(component, this.componentObserver);
-			// delegate to perspective observer
-			this.perspectiveObserver.delegateTargetChange(target, component);
+		synchronized (target) {
+			final String parentId = getTargetParentId(target);
+			if (!this.id.equals(parentId)) {
+				// unregister component in current perspective
+				unregisterComponent(component, this.componentObserver);
+				// delegate to perspective observer
+				this.perspectiveObserver
+						.delegateTargetChange(target, component);
 
+			}
 		}
 	}
 
 	@Override
-	public synchronized void delegateMassege(final String target,
+	public void delegateMassege(final String target,
 			final IAction<ActionEvent, Object> action) {
-		this.perspectiveObserver.delegateMessage(target, action);
+		synchronized (action) {
+			this.perspectiveObserver.delegateMessage(target, action);
+		}
 	}
 
 	@Override
-	public synchronized void delegateComponentMassege(final String target,
+	public void delegateComponentMassege(final String target,
 			final IAction<ActionEvent, Object> action) {
-		this.componentObserver.delegateMessage(target, action);
+		synchronized (action) {
+			this.componentObserver.delegateMessage(target, action);
+		}
 	}
 
 	@Override
@@ -280,7 +301,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	private <M extends ISubComponent<Container, ActionListener, ActionEvent, Object>> void registerSubcomponents(
 			final List<M> components) {
 		for (final M component : components) {
-			registerComponent(component);
+			registerComponent(component,this.componentObserver);
 		}
 	}
 
