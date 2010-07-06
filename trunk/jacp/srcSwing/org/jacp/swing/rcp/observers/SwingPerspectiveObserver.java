@@ -200,13 +200,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	private void addToActivePerspective(
 			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
 			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		// register new component at perspective
-		responsiblePerspective.registerComponent(component);
-		// add component root to correct target
-		responsiblePerspective
-				.addComponentUIValue(responsiblePerspective
-						.getIPerspectiveLayout().getTargetLayoutComponents(),
-						component);
+		responsiblePerspective.addActiveComponent(component);
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
+import org.jacp.api.observers.IComponentObserver;
+import org.jacp.api.observers.IObserver;
 
 /**
  * a perspective is a root component, handled by an workbench and contains
@@ -22,7 +24,7 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  *            defines the basic message type
  */
 public interface IPerspective<C, L, A, M> extends IExtendedComponent<C>,
-		IComponent<C, L, A, M>, IRootComponent<ISubComponent<C, L, A, M>> {
+		IComponent<C, L, A, M>, IRootComponent<ISubComponent<C, L, A, M>,IComponentObserver<C, L, A, M>> {
 
 	/**
 	 * the initialization method
@@ -93,16 +95,13 @@ public interface IPerspective<C, L, A, M> extends IExtendedComponent<C>,
 			final ISubComponent<C, L, A, M> component,
 			final IAction<A, M> action);
 
+	
+	
 	/**
-	 * handles component ui return value and add to correct target at
-	 * perspective
-	 * 
-	 * @param targetComponents
+	 * add active component after component.handle was executed
 	 * @param component
 	 */
-	public abstract void addComponentUIValue(
-			final Map<String, C> targetComponents,
-			final ISubComponent<C, L, A, M> component);
+	public abstract void addActiveComponent(final ISubComponent<C, L, A, M> component);
 
 	/**
 	 * delegate target change to an other perspective
