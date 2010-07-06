@@ -36,7 +36,6 @@ import org.jacp.api.base.ISubComponent;
 import org.jacp.api.base.IWorkbench;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.observers.IObserver;
 import org.jacp.api.observers.IPerspectiveObserver;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
@@ -54,7 +53,7 @@ import com.apple.mrj.MRJApplicationUtils;
 public abstract class ASwingWorkbench extends JFrame
 		implements
 		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>,IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
+		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>, IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
 
 	/**
 	 * 
@@ -132,6 +131,11 @@ public abstract class ASwingWorkbench extends JFrame
 
 				setBounds(inset, inset, screenSize.width - inset * 2,
 						screenSize.height - inset * 2);
+				// start perspective Observer worker thread
+				// TODO create status daemon which observes thread component on
+				// failure and restarts if needed!!
+				((SwingPerspectiveObserver) perspectiveObserver).execute();
+				// init size
 				initWorkbenchSize();
 				// init menu instance#
 				log("3.1: workbench menu");
@@ -185,14 +189,17 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void registerComponent(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> component,IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+			final IPerspective<Container, ActionListener, ActionEvent, Object> component,
+			final IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+		component.init();
 		handler.addPerspective(component);
 
 	}
-	
+
 	@Override
 	public void unregisterComponent(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> component,IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+			final IPerspective<Container, ActionListener, ActionEvent, Object> component,
+			final IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
 		handler.removePerspective(component);
 
 	}
@@ -426,7 +433,7 @@ public abstract class ASwingWorkbench extends JFrame
 	private void initPerspectives() {
 		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
 			log("3.4.1: register component: " + perspective.getName());
-			registerComponent(perspective,this.perspectiveObserver);
+			registerComponent(perspective, perspectiveObserver);
 			// TODO what if component removed an initialized later again?
 			log("3.4.2: create perspective menu");
 			createPerspectiveMenue(perspective);
