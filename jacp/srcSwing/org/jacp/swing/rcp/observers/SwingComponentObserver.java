@@ -1,6 +1,5 @@
 package org.jacp.swing.rcp.observers;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -19,20 +18,20 @@ import org.jacp.api.observers.IComponentObserver;
  * 
  */
 public class SwingComponentObserver extends ASwingObserver implements
-		IComponentObserver<Container, ActionListener, ActionEvent, Object> {
+		IComponentObserver<ActionListener, ActionEvent, Object> {
 
-	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
+	private final List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
 
-	private final IPerspective<Container, ActionListener, ActionEvent, Object> perspective;
+	private final IPerspective<ActionListener, ActionEvent, Object> perspective;
 
 	public SwingComponentObserver(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		this.perspective = perspective;
 	}
 
 	@Override
 	public void addComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		component.setObserver(this);
 		components.add(component);
 
@@ -40,7 +39,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 
 	@Override
 	public void removeComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		component.setObserver(null);
 		components.remove(component);
 
@@ -56,7 +55,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 	public void handleMessage(final String targetId,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component = getObserveableById(
+			final ISubComponent<ActionListener, ActionEvent, Object> component = getObserveableById(
 					getTargetComponentId(targetId), components);
 			log(" //1.1// component message to: " + action.getTargetId());
 			if (component != null) {
@@ -106,10 +105,9 @@ public class SwingComponentObserver extends ASwingObserver implements
 	 * @param action
 	 * @param component
 	 */
-	private void handleComponentHit(
-			final String targetId,
+	private void handleComponentHit(final String targetId,
 			final IAction<ActionEvent, Object> action,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		final IAction<ActionEvent, Object> actionClone = getValidAction(action,
 				targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
@@ -133,38 +131,34 @@ public class SwingComponentObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
+	public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 			final P component, final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
 			log(" //1.1.1.1.1// component " + action.getTargetId()
 					+ " delegate to perspective: " + perspective.getId());
-			perspective
-					.handleAndReplaceSubcomponent(
-							perspective.getIPerspectiveLayout(),
-							(ISubComponent<Container, ActionListener, ActionEvent, Object>) component,
-							action);
+			perspective.handleAndReplaceSubcomponent(action,
+
+			(ISubComponent<ActionListener, ActionEvent, Object>) component);
 		}
 
 	}
 
 	@Override
-	public <P extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
+	public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 			final P component, final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
 			component.setActive(true);
 			perspective
 					.initSubcomonent(
 							action,
-							perspective.getIPerspectiveLayout(),
-							(ISubComponent<Container, ActionListener, ActionEvent, Object>) component);
+							(ISubComponent<ActionListener, ActionEvent, Object>) component);
 		}
 
 	}
 
 	@Override
-	public void delegateTargetChange(
-			final String target,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+	public void delegateTargetChange(final String target,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		// TODO Auto-generated method stub
 
 	}

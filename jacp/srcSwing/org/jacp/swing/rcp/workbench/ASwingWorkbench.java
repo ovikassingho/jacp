@@ -33,14 +33,17 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.IRootComponent;
 import org.jacp.api.base.ISubComponent;
+import org.jacp.api.base.IVComponent;
 import org.jacp.api.base.IWorkbench;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.observers.IPerspectiveObserver;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
+import org.jacp.swing.rcp.editor.ASwingComponent;
 import org.jacp.swing.rcp.handler.MacOSXController;
 import org.jacp.swing.rcp.observers.SwingPerspectiveObserver;
+import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
 import com.apple.mrj.MRJApplicationUtils;
 
@@ -53,7 +56,7 @@ import com.apple.mrj.MRJApplicationUtils;
 public abstract class ASwingWorkbench extends JFrame
 		implements
 		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<Container, ActionListener, ActionEvent, Object>, IPerspectiveObserver<Container, ActionListener, ActionEvent, Object>> {
+		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveObserver<ActionListener, ActionEvent, Object>> {
 
 	/**
 	 * 
@@ -62,8 +65,8 @@ public abstract class ASwingWorkbench extends JFrame
 	private JMenu menu;
 	private Container toolbar;
 	private Container bottombar;
-	private List<IPerspective<Container, ActionListener, ActionEvent, Object>> perspectives;
-	private final IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveObserver(
+	private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
+	private final IPerspectiveObserver<ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveObserver(
 			this);
 	private final Dimension screenSize = Toolkit.getDefaultToolkit()
 			.getScreenSize();
@@ -189,8 +192,8 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void registerComponent(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> component,
-			final IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+			final IPerspective<ActionListener, ActionEvent, Object> component,
+			final IPerspectiveObserver<ActionListener, ActionEvent, Object> handler) {
 		component.init();
 		handler.addPerspective(component);
 
@@ -198,22 +201,22 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void unregisterComponent(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> component,
-			final IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> handler) {
+			final IPerspective<ActionListener, ActionEvent, Object> component,
+			final IPerspectiveObserver<ActionListener, ActionEvent, Object> handler) {
 		handler.removePerspective(component);
 
 	}
 
 	@Override
 	public void initPerspective(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective,
+			final IPerspective<ActionListener, ActionEvent, Object> perspective,
 			final IAction<ActionEvent, Object> action) {
 		final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 				.getIPerspectiveLayout();
 		log("3.4.3: perspective handle init");
-		handlePerspectiveInitMethod(action, perspectiveLayout, perspective);
+		handlePerspectiveInitMethod(action, perspective);
 		log("3.4.4: perspective init subcomponents");
-		perspective.initSubcomponents(action, perspectiveLayout, perspective);
+		perspective.initSubcomponents(action, perspective);
 		log("3.4.5: perspective init bar entries");
 		addPerspectiveBarEntries(perspective);
 
@@ -236,14 +239,14 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void replacePerspective(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective,
+			final IPerspective<ActionListener, ActionEvent, Object> perspective,
 			final IAction<ActionEvent, Object> action) {
 		final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 				.getIPerspectiveLayout();
 		// backup old component
 		final Container componentOld = perspectiveLayout
 				.getRootLayoutComponent();
-		perspective.handleInitialLayout(action, perspectiveLayout);
+		perspective.handlePerspective(action);
 		final Container componentNew = getLayoutComponentFromPerspectiveLayout(
 				perspectiveLayout, componentOld.getPreferredSize());
 		final Container parent = getParentAndReplace(componentOld, componentNew);
@@ -330,12 +333,14 @@ public abstract class ASwingWorkbench extends JFrame
 	 * @param perspective
 	 */
 	private void createPerspectiveMenue(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		final JMenu tmp = new JMenu(perspective.getName());
-		perspective.addMenuEntries(tmp);
-		if (getJMenuBar() != null
-				&& tmp.getPopupMenu().getComponents().length > 0) {
-			getJMenuBar().add(tmp);
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+		if (perspective instanceof ASwingPerspective) {
+			final JMenu tmp = new JMenu(perspective.getName());
+			((ASwingPerspective) perspective).handleMenuEntries(tmp);
+			if (getJMenuBar() != null
+					&& tmp.getPopupMenu().getComponents().length > 0) {
+				getJMenuBar().add(tmp);
+			}
 		}
 	}
 
@@ -345,8 +350,11 @@ public abstract class ASwingWorkbench extends JFrame
 	 * @param perspective
 	 */
 	private void addPerspectiveBarEntries(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		perspective.handleBarEntries(getToolBar(), getBottomBar());
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+		if (perspective instanceof ASwingPerspective) {
+			((ASwingPerspective)perspective).handleBarEntries(
+					getToolBar(), getBottomBar());
+		}
 	}
 
 	@Override
@@ -405,7 +413,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
 	@Override
 	public void setPerspectives(
-			final List<IPerspective<Container, ActionListener, ActionEvent, Object>> perspectives) {
+			final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives) {
 		this.perspectives = perspectives;
 	}
 
@@ -415,7 +423,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 * @return
 	 */
 	@Override
-	public List<IPerspective<Container, ActionListener, ActionEvent, Object>> getPerspectives() {
+	public List<IPerspective<ActionListener, ActionEvent, Object>> getPerspectives() {
 		return perspectives;
 	}
 
@@ -431,7 +439,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 * parts together so they can be add to the workbench
 	 */
 	private void initPerspectives() {
-		for (final IPerspective<Container, ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
+		for (final IPerspective<ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
 			log("3.4.1: register component: " + perspective.getName());
 			registerComponent(perspective, perspectiveObserver);
 			// TODO what if component removed an initialized later again?
@@ -467,14 +475,17 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
 	private void reassignSubcomponents(
 			final IPerspectiveLayout<? extends Container, Container> layout,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
-		for (final ISubComponent<Container, ActionListener, ActionEvent, Object> editor : perspective
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+		for (final ISubComponent<ActionListener, ActionEvent, Object> editor : perspective
 				.getSubcomponents()) {
-			final Container editorComponent = editor.getRoot();
-			if (editorComponent != null) {
-				editorComponent.setVisible(true);
-				editorComponent.setEnabled(true);
-				addComponentByType(layout, editor);
+			if (editor instanceof ASwingComponent) {
+				final Container editorComponent = ((ASwingComponent) editor)
+						.getRoot();
+				if (editorComponent != null) {
+					editorComponent.setVisible(true);
+					editorComponent.setEnabled(true);
+					addComponentByType(layout, ((ASwingComponent) editor));
+				}
 			}
 		}
 	}
@@ -540,29 +551,27 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
 	private void handlePerspectiveInitMethod(
 			final IAction<ActionEvent, Object> action,
-			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		if (getTargetPerspectiveId(action.getTargetId()).equals(
 				perspective.getId())) {
 			log("3.4.3.1: perspective handle with custom action");
-			perspective.handleInitialLayout(action, perspectiveLayout);
+			perspective.handlePerspective(action);
 		} else {
 			log("3.4.3.1: perspective handle with default >>init<< action");
-			perspective.handleInitialLayout(new SwingAction(
-					perspective.getId(), perspective.getId(), "init"),
-					perspectiveLayout);
+			perspective.handlePerspective(new SwingAction(
+					perspective.getId(), perspective.getId(), "init"));
 		}
 	}
 
 	/**
-	 * find valid target and add type specific new component
+	 * find valid target and add type specific new ui component
 	 * 
 	 * @param layout
 	 * @param editor
 	 */
 	private void addComponentByType(
 			final IPerspectiveLayout<? extends Container, Container> layout,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor) {
+			final IVComponent<Container, ActionListener, ActionEvent, Object> editor) {
 		final Container validContainer = layout.getTargetLayoutComponents()
 				.get(editor.getTarget());
 		if (validContainer instanceof JScrollPane) {

@@ -11,6 +11,8 @@ import java.util.Map;
 import org.jacp.api.action.IAction;
 
 /**
+ * represents an action which is fired by an component, has a target and a
+ * message targeting the component itself or an other component
  * 
  * @author Andy Moncsek
  */

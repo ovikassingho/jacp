@@ -1,6 +1,5 @@
 package org.jacp.swing.rcp.observers;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -24,7 +23,7 @@ import org.jacp.api.observers.IObserver;
 public abstract class ASwingObserver
 		extends
 		org.jacp.swing.rcp.util.SwingWorker<IAction<ActionEvent, Object>, IAction<ActionEvent, Object>>
-		implements IObserver<Container, ActionListener, ActionEvent, Object> {
+		implements IObserver<ActionListener, ActionEvent, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -124,7 +123,7 @@ public abstract class ASwingObserver
 	}
 
 	@Override
-	public <M extends IComponent<Container, ActionListener, ActionEvent, Object>> M getObserveableById(
+	public <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
 			final String id, final List<M> components) {
 		for (final M p : components) {
 			if (p.getId().equals(id)) {

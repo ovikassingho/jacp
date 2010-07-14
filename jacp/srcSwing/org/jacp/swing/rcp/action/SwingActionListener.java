@@ -4,7 +4,6 @@
  */
 package org.jacp.swing.rcp.action;
 
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -22,12 +21,11 @@ public class SwingActionListener implements ActionListener,
 		IActionListener<ActionListener, ActionEvent, Object> {
 
 	private IAction<ActionEvent, Object> action;
-	private final IObserver<Container, ActionListener, ActionEvent, Object> observer;
+	private final IObserver<ActionListener, ActionEvent, Object> observer;
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-	public SwingActionListener(
-			final IAction<ActionEvent, Object> action,
-			final IObserver<Container, ActionListener, ActionEvent, Object> observer) {
+	public SwingActionListener(final IAction<ActionEvent, Object> action,
+			final IObserver<ActionListener, ActionEvent, Object> observer) {
 		this.action = action;
 		this.observer = observer;
 	}

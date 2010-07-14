@@ -7,8 +7,6 @@ import org.jacp.api.action.IAction;
  * 
  * @author Andy Moncsek
  * 
- * @param <C>
- *            defines the base component where others extend from
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -16,7 +14,7 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface ISubComponent<C, L, A, M> extends IComponent<C, L, A, M> {
+public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	/**
 	 * returns the ui target; defines the target container in perspective
 	 * 
@@ -32,33 +30,19 @@ public interface ISubComponent<C, L, A, M> extends IComponent<C, L, A, M> {
 	public abstract void setTarget(final String target);
 
 	/**
-	 * set the root ui component created by the handle method
-	 * 
-	 * @param root
-	 */
-	public abstract void setRoot(C root);
-
-	/**
-	 * returns 'root' ui component created by the handle method
-	 * 
-	 * @return
-	 */
-	public abstract C getRoot();
-
-	/**
 	 * set responsible perspective
 	 * 
 	 * @param perspective
 	 */
 	public abstract void setParentPerspective(
-			final IPerspective<C, L, A, M> perspective);
+			final IPerspective<L, A, M> perspective);
 
 	/**
 	 * returns responsible perspective
 	 * 
 	 * @return
 	 */
-	public abstract IPerspective<C, L, A, M> getParentPerspective();
+	public abstract IPerspective<L, A, M> getParentPerspective();
 
 	/**
 	 * returns true if component has message in pipe

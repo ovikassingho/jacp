@@ -14,7 +14,7 @@ public interface IExtendedComponent<C> {
 	 * 
 	 * @return
 	 */
-	public abstract void addMenuEntries(final C meuneBar);
+	public abstract void handleMenuEntries(final C meuneBar);
 
 	/**
 	 * add custom actions to toolbar

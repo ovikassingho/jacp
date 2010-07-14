@@ -8,12 +8,12 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jacp.api.action.IAction;
-import org.jacp.swing.rcp.editor.ASwingEditor;
+import org.jacp.swing.rcp.editor.ASwingComponent;
 
-public class TestEditor4 extends ASwingEditor {
+public class TestEditor4 extends ASwingComponent {
 
 	@Override
-	public void addMenuEntries(final Container meuneBar) {
+	public void handleMenuEntries(final Container meuneBar) {
 		// TODO Auto-generated method stub
 
 	}
@@ -26,7 +26,7 @@ public class TestEditor4 extends ASwingEditor {
 	}
 
 	@Override
-	public Container handle(final IAction<ActionEvent, Object> action) {
+	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
 		System.out.println("Editor4 CALL");
 		Long j = 0L;

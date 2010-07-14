@@ -6,7 +6,7 @@
 package org.jacp.api.base;
 
 /**
- * represents an editor handled by a perspective
+ * represents an ui component handled by a perspective
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -18,7 +18,21 @@ package org.jacp.api.base;
  * @param <M>
  *            defines the basic message type
  */
-public interface IEditor<C, L, A, M> extends IExtendedComponent<C>,
-		ISubComponent<C, L, A, M> {
+public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
+		ISubComponent<L, A, M> {
+
+	/**
+	 * set the root ui component created by the handle method
+	 * 
+	 * @param root
+	 */
+	public abstract void setRoot(C root);
+
+	/**
+	 * returns 'root' ui component created by the handle method
+	 * 
+	 * @return
+	 */
+	public abstract C getRoot();
 
 }

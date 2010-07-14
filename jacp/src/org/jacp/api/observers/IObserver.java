@@ -21,7 +21,7 @@ import org.jacp.api.base.ISubComponent;
  * @param <M>
  *            defines the basic message type
  */
-public interface IObserver<C, L, A, M> {
+public interface IObserver<L, A, M> {
 	/**
 	 * handles an action and delegate it to addressed perspective
 	 * 
@@ -52,7 +52,7 @@ public interface IObserver<C, L, A, M> {
 	 * @param id
 	 * @return
 	 */
-	public <P extends IComponent<C, L, A, M>> P getObserveableById(
+	public <P extends IComponent<L, A, M>> P getObserveableById(
 			final String id, final List<P> perspectives);
 
 	/**
@@ -62,8 +62,8 @@ public interface IObserver<C, L, A, M> {
 	 * @param component
 	 * @param action
 	 */
-	public <P extends IComponent<C, L, A, M>> void handleActive(
-			final P component, final IAction<A, M> action);
+	public <P extends IComponent<L, A, M>> void handleActive(final P component,
+			final IAction<A, M> action);
 
 	/**
 	 * handle message to inactive component
@@ -72,7 +72,7 @@ public interface IObserver<C, L, A, M> {
 	 * @param component
 	 * @param action
 	 */
-	public <P extends IComponent<C, L, A, M>> void handleInActive(
+	public <P extends IComponent<L, A, M>> void handleInActive(
 			final P component, final IAction<A, M> action);
 
 	/**
@@ -82,5 +82,5 @@ public interface IObserver<C, L, A, M> {
 	 * @param component
 	 */
 	public abstract void delegateTargetChange(final String target,
-			final ISubComponent<C, L, A, M> component);
+			final ISubComponent<L, A, M> component);
 }

@@ -93,14 +93,14 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param perspectives
 	 */
 	public abstract void setPerspectives(
-			final List<IPerspective<C, L, A, M>> perspectives);
+			final List<IPerspective<L, A, M>> perspectives);
 
 	/**
 	 * get perspectives in workbench
 	 * 
 	 * @return
 	 */
-	public abstract List<IPerspective<C, L, A, M>> getPerspectives();
+	public abstract List<IPerspective<L, A, M>> getPerspectives();
 
 	/**
 	 * init single perspective instance
@@ -109,7 +109,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param action
 	 */
 	public abstract void initPerspective(
-			final IPerspective<C, L, A, M> perspective, IAction<A, M> action);
+			final IPerspective<L, A, M> perspective, IAction<A, M> action);
 
 	/**
 	 * calls perspective handle method and replaces the old entry by new one
@@ -117,7 +117,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param perspective
 	 * @param action
 	 */
-	public void replacePerspective(final IPerspective<C, L, A, M> perspective,
+	public void replacePerspective(final IPerspective<L, A, M> perspective,
 			final IAction<A, M> action);
 
 	/**

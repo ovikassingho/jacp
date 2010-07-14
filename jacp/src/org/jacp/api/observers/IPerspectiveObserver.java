@@ -5,7 +5,6 @@
 package org.jacp.api.observers;
 
 import org.jacp.api.base.IPerspective;
-import org.jacp.api.base.IWorkbench;
 
 /**
  * notifies perspectives and components included in workbench C defines the base
@@ -14,15 +13,14 @@ import org.jacp.api.base.IWorkbench;
  * 
  * @author Andy Moncsek
  */
-public interface IPerspectiveObserver<C, L, A, M> extends IObserver<C, L, A, M> {
+public interface IPerspectiveObserver<L, A, M> extends IObserver<L, A, M> {
 
 	/**
 	 * add perspective to observe
 	 * 
 	 * @param perspective
 	 */
-	public abstract void addPerspective(
-			final IPerspective<C, L, A, M> perspective);
+	public abstract void addPerspective(final IPerspective<L, A, M> perspective);
 
 	/**
 	 * remove perspective; e.g. when perspective is deactivated
@@ -30,21 +28,6 @@ public interface IPerspectiveObserver<C, L, A, M> extends IObserver<C, L, A, M> 
 	 * @param perspective
 	 */
 	public abstract void removePerspective(
-			final IPerspective<C, L, A, M> perspective);
-
-	/**
-	 * returns the parent workbench
-	 * 
-	 * @return
-	 */
-	public abstract IWorkbench<?, C, L, A, M> getPerentWorkbench();
-
-	/**
-	 * set the parent workbench of observed perspectives
-	 * 
-	 * @param workbench
-	 */
-	public abstract void setParentWorkbench(
-			final IWorkbench<?, C, L, A, M> workbench);
+			final IPerspective<L, A, M> perspective);
 
 }
