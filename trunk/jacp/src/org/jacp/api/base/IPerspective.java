@@ -21,11 +21,8 @@ import org.jacp.api.observers.IComponentObserver;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<C, L, A, M>
-		extends
-		IExtendedComponent<C>,
-		IComponent<C, L, A, M>,
-		IRootComponent<ISubComponent<C, L, A, M>, IComponentObserver<C, L, A, M>> {
+public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
+		IRootComponent<ISubComponent<L, A, M>, IComponentObserver<L, A, M>> {
 
 	/**
 	 * the initialization method
@@ -37,7 +34,7 @@ public interface IPerspective<C, L, A, M>
 	 * 
 	 * @return
 	 */
-	public abstract List<ISubComponent<C, L, A, M>> getSubcomponents();
+	public abstract List<ISubComponent<L, A, M>> getSubcomponents();
 
 	/**
 	 * set all subcomponents of perspective
@@ -45,44 +42,40 @@ public interface IPerspective<C, L, A, M>
 	 * @param subComponents
 	 */
 	public abstract void setSubcomponents(
-			List<ISubComponent<C, L, A, M>> subComponents);
+			final List<ISubComponent<L, A, M>> subComponents);
 
 	/**
 	 * handle baselayout when perspective started
 	 * 
 	 * @param action
-	 * @param perspectiveLayout
 	 */
-	public abstract void handleInitialLayout(final IAction<A, M> action,
-			final IPerspectiveLayout<? extends C, C> perspectiveLayout);
+	public abstract void handlePerspective(final IAction<A, M> action);
 
 	/**
 	 * returns perspectives layout dto
 	 * 
 	 * @return
 	 */
-	public abstract IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
+	public abstract <C> IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
 
 	/**
 	 * handles init of subcomponents in perspective TODO move to IRootcomponent
 	 * 
-	 * @param layout
+	 * @param action
 	 * @param perspective
 	 */
 	public abstract void initSubcomponents(final IAction<A, M> action,
-			final IPerspectiveLayout<? extends C, C> layout,
-			final IPerspective<C, L, A, M> perspective);
+			final IPerspective<L, A, M> perspective);
 
 	/**
 	 * TODO move to IRoot component handles initialisation of a single
-	 * component; TODO change from IEditor to global interface
+	 * component; TODO change from IVComponent to global interface
 	 * 
-	 * @param layout
+	 * @param action
 	 * @param editor
 	 */
 	public abstract void initSubcomonent(final IAction<A, M> action,
-			final IPerspectiveLayout<? extends C, C> layout,
-			final ISubComponent<C, L, A, M> component);
+			final ISubComponent<L, A, M> component);
 
 	/**
 	 * runs 'handle' method and replace of subcomponent in perspective
@@ -92,9 +85,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param action
 	 */
 	public abstract void handleAndReplaceSubcomponent(
-			final IPerspectiveLayout<? extends C, C> layout,
-			final ISubComponent<C, L, A, M> component,
-			final IAction<A, M> action);
+			final IAction<A, M> action, final ISubComponent<L, A, M> component);
 
 	/**
 	 * add active component after component.handle was executed
@@ -102,7 +93,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param component
 	 */
 	public abstract void addActiveComponent(
-			final ISubComponent<C, L, A, M> component);
+			final ISubComponent<L, A, M> component);
 
 	/**
 	 * delegate target change to an other perspective
@@ -111,7 +102,7 @@ public interface IPerspective<C, L, A, M>
 	 * @param component
 	 */
 	public void delegateTargetChange(final String target,
-			final ISubComponent<C, L, A, M> component);
+			final ISubComponent<L, A, M> component);
 
 	/**
 	 * delegates massage to responsible componentObserver to notify target

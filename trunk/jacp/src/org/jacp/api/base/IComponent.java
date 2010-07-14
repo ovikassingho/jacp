@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.jacp.api.base;
 
 import org.jacp.api.action.IAction;
@@ -14,7 +9,9 @@ import org.jacp.api.observers.IObserver;
  * 
  * @author Andy Moncsek
  * @param <C>
- *            defines the base component where others extend from
+ *            defines the return type of component handling; when component is
+ *            an UI component C is the basic type where other elements extends
+ *            from
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -22,7 +19,7 @@ import org.jacp.api.observers.IObserver;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponent<C, L, A, M> {
+public interface IComponent<L, A, M> {
 
 	/**
 	 * handles component when called
@@ -30,7 +27,7 @@ public interface IComponent<C, L, A, M> {
 	 * @param action
 	 * @return view component
 	 */
-	public abstract C handle(final IAction<A, M> action);
+	public abstract <C> C handle(final IAction<A, M> action);
 
 	/**
 	 * returns action listener (for local, target and global use)
@@ -86,6 +83,6 @@ public interface IComponent<C, L, A, M> {
 	 * 
 	 * @return
 	 */
-	public abstract void setObserver(final IObserver<C, L, A, M> observer);
+	public abstract void setObserver(final IObserver<L, A, M> observer);
 
 }

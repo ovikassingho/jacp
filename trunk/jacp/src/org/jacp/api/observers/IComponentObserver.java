@@ -16,20 +16,20 @@ import org.jacp.api.base.ISubComponent;
  * 
  * @author Andy Moncsek
  */
-public interface IComponentObserver<C, L, A, M> extends IObserver<C, L, A, M> {
+public interface IComponentObserver<L, A, M> extends IObserver<L, A, M> {
 
 	/**
 	 * add component to observe
 	 * 
 	 * @param component
 	 */
-	public abstract void addComponent(ISubComponent<C, L, A, M> component);
+	public abstract void addComponent(ISubComponent<L, A, M> component);
 
 	/**
 	 * remove component; e.g. when component is deactivated
 	 * 
 	 * @param component
 	 */
-	public abstract void removeComponent(ISubComponent<C, L, A, M> component);
+	public abstract void removeComponent(ISubComponent<L, A, M> component);
 
 }

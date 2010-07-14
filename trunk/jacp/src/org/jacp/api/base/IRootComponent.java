@@ -3,7 +3,7 @@ package org.jacp.api.base;
 /**
  * all root components have containing sub components (workspace ->
  * perspectives; perspective - editors) and listeners; all sub components have
- * to be registerd
+ * to be registered
  * 
  * @author Andy Moncsek
  * 

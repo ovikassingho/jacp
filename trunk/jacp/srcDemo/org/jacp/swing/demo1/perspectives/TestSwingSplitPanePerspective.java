@@ -31,8 +31,7 @@ import org.jacp.swing.rcp.perspective.ASwingPerspective;
  * 
  * @author amo
  */
-public class TestSwingSplitPanePerspective extends
-		ASwingPerspective<JSplitPane> {
+public class TestSwingSplitPanePerspective extends ASwingPerspective {
 
 	private Container handleEditorLayout() {
 		final JTabbedPane pane = new JTabbedPane();
@@ -67,7 +66,7 @@ public class TestSwingSplitPanePerspective extends
 	}
 
 	@Override
-	public void addMenuEntries(final JMenu meuBar) {
+	public void handleMenuEntries(final JMenu meuBar) {
 		// meuBar.setText("blubber");
 		final JMenuItem quitItem = new JMenuItem("Test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
@@ -124,8 +123,8 @@ public class TestSwingSplitPanePerspective extends
 	}
 
 	@Override
-	public void handleInitialLayout(final SwingAction action,
-			final SwingPerspectiveLayout<JSplitPane> perspectiveLayout) {
+	public void handlePerspective(final SwingAction action,
+			final SwingPerspectiveLayout perspectiveLayout) {
 
 		if (action.getMessage().equals("test")) {
 			final JSplitPane splitPane = new JSplitPane(

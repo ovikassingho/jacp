@@ -12,12 +12,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.swing.rcp.editor.ASwingEditor;
+import org.jacp.swing.rcp.editor.ASwingComponent;
 
-public class TestSwingEditor extends ASwingEditor {
+public class TestSwingEditor extends ASwingComponent {
 
 	@Override
-	public void addMenuEntries(final Container meuneBar) {
+	public void handleMenuEntries(final Container meuneBar) {
 		// TODO Auto-generated method stub
 
 	}
@@ -30,7 +30,7 @@ public class TestSwingEditor extends ASwingEditor {
 	}
 
 	@Override
-	public Container handle(final IAction<ActionEvent, Object> action) {
+	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
 		System.out.println("Editor1 CALL" + action.getMessage());
 		Long i = 0L;

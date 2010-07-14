@@ -24,10 +24,10 @@ import org.jacp.swing.rcp.action.SwingAction;
  * @author Andy Moncsek
  */
 public class SwingPerspectiveObserver extends ASwingObserver implements
-		IPerspectiveObserver<Container, ActionListener, ActionEvent, Object> {
+		IPerspectiveObserver<ActionListener, ActionEvent, Object> {
 
-	private final List<IPerspective<Container, ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<Container, ActionListener, ActionEvent, Object>>();
-	private IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
+	private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();
+	private final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
 
 	public SwingPerspectiveObserver(
 			final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
@@ -36,14 +36,14 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 
 	@Override
 	public void addPerspective(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		perspective.setObserver(this);
 		perspectives.add(perspective);
 	}
 
 	@Override
 	public void removePerspective(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		perspective.setObserver(null);
 		perspectives.remove(perspective);
 	}
@@ -58,7 +58,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	@Override
 	public void handleMessage(final String target,
 			final IAction<ActionEvent, Object> action) {
-		final IPerspective<Container, ActionListener, ActionEvent, Object> perspective = getObserveableById(
+		final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		if (perspective != null) {
 			final IAction<ActionEvent, Object> actionClone = getValidAction(
@@ -77,10 +77,9 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	 * @param target
 	 * @param action
 	 */
-	private void handleComponentHit(
-			final String target,
+	private void handleComponentHit(final String target,
 			final IAction<ActionEvent, Object> action,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		if (perspective.isActive()) {
 			handleMessageToActivePerspective(target, action, perspective);
 		} else {
@@ -100,10 +99,9 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	 * @param action
 	 * @param perspective
 	 */
-	private void handleMessageToActivePerspective(
-			final String target,
+	private void handleMessageToActivePerspective(final String target,
 			final IAction<ActionEvent, Object> action,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		// if perspective already active handle perspective and replace
 		// with newly created layout component in workbench
 		log(" //1.1.1.1// perspective HIT handle ACTIVE: "
@@ -135,17 +133,6 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public IWorkbench<?, Container, ActionListener, ActionEvent, Object> getPerentWorkbench() {
-		return workbench;
-	}
-
-	@Override
-	public void setParentWorkbench(
-			final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
-		this.workbench = workbench;
-	}
-
-	@Override
 	public void delegateMessage(final String target,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
@@ -162,11 +149,10 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public synchronized void delegateTargetChange(
-			final String target,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+	public synchronized void delegateTargetChange(final String target,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		// find responsible perspective
-		final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
+		final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
@@ -185,8 +171,8 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	 * @param component
 	 */
 	private void handleTargetHit(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		if (!responsiblePerspective.isActive()) {
 			// 1. init perspective (do not register component before perspective
 			// is active, otherwise component will be handled once again)
@@ -198,8 +184,8 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	private void addToActivePerspective(
-			final IPerspective<Container, ActionListener, ActionEvent, Object> responsiblePerspective,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		responsiblePerspective.addActiveComponent(component);
 	}
 
@@ -219,7 +205,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	 */
 	private void callComponentDelegate(final String target,
 			final IAction<ActionEvent, Object> action) {
-		final IPerspective<Container, ActionListener, ActionEvent, Object> perspective = getObserveableById(
+		final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		// TODO REMOVE null handling... use DUMMY instead (maybe like
 		// Collections.EMPTY...)
@@ -235,25 +221,25 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	@Override
-	public <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleActive(
+	public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 			final M component, final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
 			workbench
 					.replacePerspective(
-							(IPerspective<Container, ActionListener, ActionEvent, Object>) component,
+							(IPerspective<ActionListener, ActionEvent, Object>) component,
 							action);
 		}
 
 	}
 
 	@Override
-	public <M extends IComponent<Container, ActionListener, ActionEvent, Object>> void handleInActive(
+	public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 			final M component, final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
 			component.setActive(true);
 			workbench
 					.initPerspective(
-							(IPerspective<Container, ActionListener, ActionEvent, Object>) component,
+							(IPerspective<ActionListener, ActionEvent, Object>) component,
 							action);
 		}
 

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.base.IVComponent;
 
 /**
  * Background Worker to execute components; handle method to init component
@@ -16,12 +16,12 @@ import org.jacp.api.base.ISubComponent;
  */
 public class ComponentInitWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
-	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
+	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;
 
 	public ComponentInitWorker(
 			final Map<String, Container> targetComponents,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		this.targetComponents = targetComponents;
 		this.component = component;
@@ -29,7 +29,7 @@ public class ComponentInitWorker extends AbstractComponentWorker {
 	}
 
 	@Override
-	protected ISubComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
+	protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
 			throws Exception {
 		synchronized (component) {
 			log("3.4.4.2.1: subcomponent handle init START: "
@@ -53,8 +53,8 @@ public class ComponentInitWorker extends AbstractComponentWorker {
 	}
 
 	@Override
-	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+	protected IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
 			log("3.4.4.2.1: subcomponent handle init START: "

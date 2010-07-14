@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.base.IExtendedComponent;
 import org.jacp.api.base.IPerspective;
 import org.jacp.api.base.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -25,6 +26,7 @@ import org.jacp.api.observers.IObserver;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
+import org.jacp.swing.rcp.editor.ASwingComponent;
 import org.jacp.swing.rcp.observers.SwingComponentObserver;
 import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
@@ -35,14 +37,15 @@ import org.jacp.swing.rcp.util.ComponentReplaceWorker;
  * 
  * @author Andy Moncsek
  */
-public abstract class ASwingPerspective<T extends Container> implements
-		IPerspective<Container, ActionListener, ActionEvent, Object> {
+public abstract class ASwingPerspective implements
+		IPerspective<ActionListener, ActionEvent, Object>,
+		IExtendedComponent<Container> {
 
-	private final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<Container, ActionListener, ActionEvent, Object>>();
-	private IObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver;
-	private final IComponentObserver<Container, ActionListener, ActionEvent, Object> componentObserver = new SwingComponentObserver(
+	private final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
+	private IObserver<ActionListener, ActionEvent, Object> perspectiveObserver;
+	private final IComponentObserver<ActionListener, ActionEvent, Object> componentObserver = new SwingComponentObserver(
 			this);
-	private final IPerspectiveLayout<T, Container> perspectiveLayout = new SwingPerspectiveLayout<T>();
+	private final IPerspectiveLayout<Container, Container> perspectiveLayout = new SwingPerspectiveLayout();
 	private String id;
 	private String name;
 	private boolean active;
@@ -52,37 +55,43 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public void init() {
 		((SwingComponentObserver) componentObserver).execute();
 	}
-
-	public abstract void addMenuEntries(JMenu menuBar);
+	
+	/**
+	 * add menu entries to perspective specific menu
+	 * @param menuBar
+	 */
+	public abstract void handleMenuEntries(final JMenu menuBar);
 
 	@Override
-	public abstract void handleBarEntries(Container toolBar, Container bottomBar);
+	public abstract void handleBarEntries(final Container toolBar, final Container bottomBar);
 
 	@Override
-	public Container handle(final IAction<ActionEvent, Object> action) {
+	public <C> C handle(final IAction<ActionEvent, Object> action) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
-
-	public abstract void handleInitialLayout(SwingAction action,
-			SwingPerspectiveLayout<T> perspectiveLayout);
+	/**
+	 * handle perspective call, create structure of perspective, set base layout and register component containers
+	 * @param action
+	 * @param perspectiveLayout
+	 */
+	public abstract void handlePerspective(final SwingAction action,
+			final SwingPerspectiveLayout perspectiveLayout);
 
 	@Override
-	public void handleInitialLayout(
-			final IAction<ActionEvent, Object> action,
-			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout) {
-		handleInitialLayout((SwingAction) action,
-				(SwingPerspectiveLayout<T>) perspectiveLayout);
+	public void handlePerspective(final IAction<ActionEvent, Object> action) {
+		handlePerspective((SwingAction) action,
+				(SwingPerspectiveLayout) perspectiveLayout);
 
 	}
 
 	@Override
 	public void registerComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
-		synchronized (component) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component,
+			final IComponentObserver<ActionListener, ActionEvent, Object> handler) {
+		synchronized (handler) {
 			log("register component: " + component.getId());
 			handler.addComponent(component);
-			this.subcomponents.add(component);
+			subcomponents.add(component);
 			component.setParentPerspective(this);
 		}
 
@@ -90,42 +99,40 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void unregisterComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IComponentObserver<Container, ActionListener, ActionEvent, Object> handler) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component,
+			final IComponentObserver<ActionListener, ActionEvent, Object> handler) {
 		synchronized (handler) {
 			log("unregister component: " + component.getId());
 			handler.removeComponent(component);
-			this.subcomponents.remove(component);
+			subcomponents.remove(component);
 			component.setParentPerspective(null);
 		}
 	}
 
 	@Override
-	public void addMenuEntries(final Container meuneBar) {
+	public void handleMenuEntries(final Container meuneBar) {
 		synchronized (meuneBar) {
 			if (meuneBar instanceof JMenu) {
-				this.addMenuEntries((JMenu) meuneBar);
+				this.handleMenuEntries((JMenu)meuneBar);
 			}
 		}
 	}
 
 	@Override
-	public void initSubcomponents(
-			final IAction<ActionEvent, Object> action,
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final IPerspective<Container, ActionListener, ActionEvent, Object> perspective) {
+	public void initSubcomponents(final IAction<ActionEvent, Object> action,
+			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		synchronized (action) {
 			final String targetId = getTargetComponentId(action.getTargetId());
 			log("3.4.4.1: subcomponent targetId: " + targetId);
-			for (final ISubComponent<Container, ActionListener, ActionEvent, Object> component : perspective
+			for (final ISubComponent<ActionListener, ActionEvent, Object> component : perspective
 					.getSubcomponents()) {
 				if (component.getId().equals(targetId)) {
 					log("3.4.4.2: subcomponent init with custom action");
-					initSubcomonent(action, layout, component);
+					initSubcomonent(action, component);
 				} else if (component.isActive()) {
 					log("3.4.4.2: subcomponent init with default action");
 					initSubcomonent(new SwingAction(component.getId(),
-							component.getId(), "init"), layout, component);
+							component.getId(), "init"), component);
 				} // if END
 
 			} // for END
@@ -133,23 +140,24 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public void initSubcomonent(
-			final IAction<ActionEvent, Object> action,
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+	public void initSubcomonent(final IAction<ActionEvent, Object> action,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		synchronized (action) {
-			final ComponentInitWorker tmp = new ComponentInitWorker(layout
-					.getTargetLayoutComponents(), component, action);
-			tmp.execute();
-			log("DONE EXECUTE INIT:::" + component.getName());
+			if (component instanceof ASwingComponent) {
+				final ComponentInitWorker tmp = new ComponentInitWorker(
+						perspectiveLayout.getTargetLayoutComponents(),
+						((ASwingComponent) component), action);
+				tmp.execute();
+				log("DONE EXECUTE INIT:::" + component.getName());
+			}
+
 		}
 	}
 
 	@Override
 	public void handleAndReplaceSubcomponent(
-			final IPerspectiveLayout<? extends Container, Container> layout,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
-			final IAction<ActionEvent, Object> action) {
+			final IAction<ActionEvent, Object> action,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		// TODO when "component" is synchronized execution is 30x times faster
 		// but will lock sometimes !!
 		synchronized (action) {
@@ -158,7 +166,8 @@ public abstract class ASwingPerspective<T extends Container> implements
 				log("ADD TO QUEUE:::" + component.getName());
 			} else {
 				prepareMessageHandling(component, action);
-				executeComponentReplaceThread(layout, component, action);
+				executeComponentReplaceThread(perspectiveLayout, component,
+						action);
 				log("CREATE NEW THREAD:::" + component.getName());
 			}
 			log("DONE EXECUTE REPLACE:::" + component.getName());
@@ -175,11 +184,15 @@ public abstract class ASwingPerspective<T extends Container> implements
 	 */
 	private void executeComponentReplaceThread(
 			final IPerspectiveLayout<? extends Container, Container> layout,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final ISubComponent<ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
-		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(layout
-				.getTargetLayoutComponents(), component, action);
-		tmp.execute();
+		if (component instanceof ASwingComponent) {
+			final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
+					layout.getTargetLayoutComponents(),
+					((ASwingComponent) component), action);
+			tmp.execute();
+		}
+
 	}
 
 	/**
@@ -189,7 +202,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	 * @param action
 	 */
 	private void prepareMessageHandling(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final ISubComponent<ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		component.setBlocked(true);
 		component.putIncomingMessage(action);
@@ -197,12 +210,12 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public void addActiveComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		synchronized (component) {
 			// register new component at perspective
-			this.registerComponent(component, this.componentObserver);
+			registerComponent(component, componentObserver);
 			// add component root to correct target
-			this.addComponentUIValue(this.getIPerspectiveLayout()
+			addComponentUIValue(getIPerspectiveLayout()
 					.getTargetLayoutComponents(), component);
 		}
 	}
@@ -216,24 +229,24 @@ public abstract class ASwingPerspective<T extends Container> implements
 	 */
 	private void addComponentUIValue(
 			final Map<String, Container> targetComponents,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
-		final ComponentAddWorker worker = new ComponentAddWorker(
-				targetComponents, component);
-		worker.execute();
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
+		if (component instanceof ASwingComponent) {
+			final ComponentAddWorker worker = new ComponentAddWorker(
+					targetComponents, ((ASwingComponent) component));
+			worker.execute();
+		}
 	}
 
 	@Override
-	public void delegateTargetChange(
-			final String target,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+	public void delegateTargetChange(final String target,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		synchronized (target) {
 			final String parentId = getTargetParentId(target);
-			if (!this.id.equals(parentId)) {
+			if (!id.equals(parentId)) {
 				// unregister component in current perspective
-				unregisterComponent(component, this.componentObserver);
+				unregisterComponent(component, componentObserver);
 				// delegate to perspective observer
-				this.perspectiveObserver
-						.delegateTargetChange(target, component);
+				perspectiveObserver.delegateTargetChange(target, component);
 
 			}
 		}
@@ -243,7 +256,7 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public void delegateMassege(final String target,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
-			this.perspectiveObserver.delegateMessage(target, action);
+			perspectiveObserver.delegateMessage(target, action);
 		}
 	}
 
@@ -251,24 +264,24 @@ public abstract class ASwingPerspective<T extends Container> implements
 	public void delegateComponentMassege(final String target,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (action) {
-			this.componentObserver.delegateMessage(target, action);
+			componentObserver.delegateMessage(target, action);
 		}
 	}
 
 	@Override
 	public String getName() {
-		if (this.id == null) {
+		if (id == null) {
 			throw new UnsupportedOperationException("No name set");
 		}
-		return this.name;
+		return name;
 	}
 
 	@Override
 	public String getId() {
-		if (this.id == null) {
+		if (id == null) {
 			throw new UnsupportedOperationException("No id set");
 		}
-		return this.id;
+		return id;
 	}
 
 	@Override
@@ -288,12 +301,12 @@ public abstract class ASwingPerspective<T extends Container> implements
 
 	@Override
 	public boolean isActive() {
-		return this.active;
+		return active;
 	}
 
 	@Override
 	public void setObserver(
-			final IObserver<Container, ActionListener, ActionEvent, Object> perspectiveObserver) {
+			final IObserver<ActionListener, ActionEvent, Object> perspectiveObserver) {
 		this.perspectiveObserver = perspectiveObserver;
 	}
 
@@ -303,8 +316,8 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public IPerspectiveLayout<T, Container> getIPerspectiveLayout() {
-		return this.perspectiveLayout;
+	public IPerspectiveLayout<Container, Container> getIPerspectiveLayout() {
+		return perspectiveLayout;
 	}
 
 	/**
@@ -313,10 +326,10 @@ public abstract class ASwingPerspective<T extends Container> implements
 	 * @param <M>
 	 * @param components
 	 */
-	private <M extends ISubComponent<Container, ActionListener, ActionEvent, Object>> void registerSubcomponents(
+	private <M extends ISubComponent<ActionListener, ActionEvent, Object>> void registerSubcomponents(
 			final List<M> components) {
 		for (final M component : components) {
-			registerComponent(component, this.componentObserver);
+			registerComponent(component, componentObserver);
 		}
 	}
 
@@ -374,13 +387,13 @@ public abstract class ASwingPerspective<T extends Container> implements
 	}
 
 	@Override
-	public List<ISubComponent<Container, ActionListener, ActionEvent, Object>> getSubcomponents() {
+	public List<ISubComponent<ActionListener, ActionEvent, Object>> getSubcomponents() {
 		return subcomponents;
 	}
 
 	@Override
 	public void setSubcomponents(
-			final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> subComponents) {
+			final List<ISubComponent<ActionListener, ActionEvent, Object>> subComponents) {
 		registerSubcomponents(subComponents);
 	}
 

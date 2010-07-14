@@ -10,11 +10,10 @@ import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
-public class DemoMessagePerformancePerspective extends
-		ASwingPerspective<JSplitPane> {
+public class DemoMessagePerformancePerspective extends ASwingPerspective {
 
 	@Override
-	public void addMenuEntries(final JMenu menuBar) {
+	public void handleMenuEntries(final JMenu menuBar) {
 		// TODO Auto-generated method stub
 
 	}
@@ -27,8 +26,8 @@ public class DemoMessagePerformancePerspective extends
 	}
 
 	@Override
-	public void handleInitialLayout(final SwingAction action,
-			final SwingPerspectiveLayout<JSplitPane> perspectiveLayout) {
+	public void handlePerspective(final SwingAction action,
+			final SwingPerspectiveLayout perspectiveLayout) {
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		final JScrollPane scrollPaneView = new JScrollPane();
 		splitPane.add(scrollPaneView, JSplitPane.BOTTOM);

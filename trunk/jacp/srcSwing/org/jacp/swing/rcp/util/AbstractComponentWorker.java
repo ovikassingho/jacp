@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.base.IVComponent;
 
 /**
  * handles component methods in own thread; see
@@ -22,7 +22,7 @@ import org.jacp.api.base.ISubComponent;
  */
 public abstract class AbstractComponentWorker
 		extends
-		org.jacp.swing.rcp.util.SwingWorker<ISubComponent<Container, ActionListener, ActionEvent, Object>, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
+		org.jacp.swing.rcp.util.SwingWorker<IVComponent<Container, ActionListener, ActionEvent, Object>, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -47,7 +47,7 @@ public abstract class AbstractComponentWorker
 	 */
 	protected void addComponentByType(
 			final Container validContainer,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> editor) {
+			final IVComponent<Container, ActionListener, ActionEvent, Object> editor) {
 		if (validContainer instanceof JScrollPane) {
 			((JScrollPane) validContainer).getViewport().add(editor.getName(),
 					editor.getRoot());
@@ -76,8 +76,8 @@ public abstract class AbstractComponentWorker
 
 	}
 
-	protected abstract ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+	protected abstract IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action);
 
 	/**
@@ -114,7 +114,7 @@ public abstract class AbstractComponentWorker
 	 * @param currentTaget
 	 */
 	protected void handleNewComponentValue(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final Map<String, Container> targetComponents,
 			final Container parent, final String currentTaget) {
 		final Thread worker = new Thread() {
@@ -161,7 +161,7 @@ public abstract class AbstractComponentWorker
 	 * @param targetComponents
 	 */
 	private void handleTargetChange(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final Map<String, Container> targetComponents, final String target) {
 		final Container validContainer = getValidContainerById(
 				targetComponents, target);
@@ -182,7 +182,7 @@ public abstract class AbstractComponentWorker
 	 * @return
 	 */
 	protected Container prepareAndHandleComponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		final Container editorComponent = component.handle(action);
 		component.setRoot(editorComponent);
@@ -235,7 +235,7 @@ public abstract class AbstractComponentWorker
 		private final Container parent;
 		private final Map<String, Container> targetComponents;
 		private final String currentTaget;
-		private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
+		private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
 		private final Container previousContainer;
 
 		public ChunkDTO(
@@ -243,7 +243,7 @@ public abstract class AbstractComponentWorker
 				final Container previousContainer,
 				final Map<String, Container> targetComponents,
 				final String currentTaget,
-				final ISubComponent<Container, ActionListener, ActionEvent, Object> component) {
+				final IVComponent<Container, ActionListener, ActionEvent, Object> component) {
 			this.parent = parent;
 			this.targetComponents = targetComponents;
 			this.currentTaget = currentTaget;
@@ -263,7 +263,7 @@ public abstract class AbstractComponentWorker
 			return currentTaget;
 		}
 
-		public ISubComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
+		public IVComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
 			return component;
 		}
 

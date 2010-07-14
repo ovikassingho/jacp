@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.swing.rcp.editor.ASwingEditor;
+import org.jacp.swing.rcp.editor.ASwingComponent;
 
 /**
  * This demo editor acts as message producer; this demo shows an good and a bad
@@ -19,13 +19,13 @@ import org.jacp.swing.rcp.editor.ASwingEditor;
  * @author Andy Moncsek
  * 
  */
-public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
+public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 
 	private final JPanel panel = new JPanel();
 	final JButton button = new JButton("send 1000 messages");
 
 	@Override
-	public void addMenuEntries(final Container meuneBar) {
+	public void handleMenuEntries(final Container meuneBar) {
 		// TODO Auto-generated method stub
 
 	}
@@ -38,7 +38,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingEditor {
 	}
 
 	@Override
-	public Container handle(final IAction<ActionEvent, Object> action) {
+	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
 		if (action.getMessage().equals("begin")) {
 			int p = 0;

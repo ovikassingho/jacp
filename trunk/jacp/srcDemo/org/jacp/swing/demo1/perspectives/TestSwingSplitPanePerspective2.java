@@ -28,8 +28,7 @@ import org.jacp.swing.rcp.perspective.ASwingPerspective;
  * 
  * @author amo
  */
-public class TestSwingSplitPanePerspective2 extends
-		ASwingPerspective<JSplitPane> {
+public class TestSwingSplitPanePerspective2 extends ASwingPerspective {
 
 	private final JTextField text1 = new JTextField();
 	int i = 0;
@@ -38,8 +37,8 @@ public class TestSwingSplitPanePerspective2 extends
 		final JTabbedPane pane = new JTabbedPane();
 		pane.setTabPlacement(SwingConstants.BOTTOM);
 		final JPanel panel = new JPanel();
-		final List<ISubComponent<Container, ActionListener, ActionEvent, Object>> myeditors = getSubcomponents();
-		for (final ISubComponent<Container, ActionListener, ActionEvent, Object> e : myeditors) {
+		final List<ISubComponent<ActionListener, ActionEvent, Object>> myeditors = getSubcomponents();
+		for (final ISubComponent<ActionListener, ActionEvent, Object> e : myeditors) {
 			final JTextField field = new JTextField(e.getName());
 			panel.add(field);
 
@@ -59,7 +58,7 @@ public class TestSwingSplitPanePerspective2 extends
 	}
 
 	@Override
-	public void addMenuEntries(final JMenu meuBar) {
+	public void handleMenuEntries(final JMenu meuBar) {
 		// meuBar.setText("blubber");
 		final JMenuItem quitItem = new JMenuItem("Test2");
 
@@ -76,8 +75,8 @@ public class TestSwingSplitPanePerspective2 extends
 	}
 
 	@Override
-	public void handleInitialLayout(final SwingAction action,
-			final SwingPerspectiveLayout<JSplitPane> perspectiveLayout) {
+	public void handlePerspective(final SwingAction action,
+			final SwingPerspectiveLayout perspectiveLayout) {
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.setDividerLocation(300);
 

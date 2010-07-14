@@ -18,10 +18,10 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  * 
  * @author Andy Moncsek
  */
-public class SwingPerspectiveLayout<T> implements
-		IPerspectiveLayout<T, Container> {
+public class SwingPerspectiveLayout implements
+		IPerspectiveLayout<Container, Container> {
 
-	private T layoutComponent;
+	private Container layoutComponent;
 	private final boolean scrollable = true;
 	private boolean replaceMode = true;
 	private final Map<String, Container> targetComponents = new HashMap<String, Container>();
@@ -31,7 +31,7 @@ public class SwingPerspectiveLayout<T> implements
 
 	@Override
 	public void setReplaceMode(final boolean replace) {
-		this.replaceMode = replace;
+		replaceMode = replace;
 	}
 
 	@Override
@@ -40,13 +40,13 @@ public class SwingPerspectiveLayout<T> implements
 	}
 
 	@Override
-	public void setRootLayoutComponent(final T comp) {
-		this.layoutComponent = comp;
+	public void setRootLayoutComponent(final Container comp) {
+		layoutComponent = comp;
 	}
 
 	@Override
-	public T getRootLayoutComponent() {
-		return this.layoutComponent;
+	public Container getRootLayoutComponent() {
+		return layoutComponent;
 	}
 
 	public boolean isScrollable() {
@@ -56,12 +56,12 @@ public class SwingPerspectiveLayout<T> implements
 	@Override
 	public void registerTargetLayoutComponent(final String id,
 			final Container target) {
-		this.targetComponents.put(id, target);
+		targetComponents.put(id, target);
 	}
 
 	@Override
 	public Map<String, Container> getTargetLayoutComponents() {
-		return this.targetComponents;
+		return targetComponents;
 	}
 
 }

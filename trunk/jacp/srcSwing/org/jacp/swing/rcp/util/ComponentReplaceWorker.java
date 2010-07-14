@@ -9,7 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.base.IVComponent;
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -20,14 +20,14 @@ import org.jacp.api.base.ISubComponent;
  */
 public class ComponentReplaceWorker extends AbstractComponentWorker {
 	private final Map<String, Container> targetComponents;
-	private final ISubComponent<Container, ActionListener, ActionEvent, Object> component;
+	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;
 	private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public ComponentReplaceWorker(
 			final Map<String, Container> targetComponents,
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		this.targetComponents = targetComponents;
 		this.component = component;
@@ -35,14 +35,14 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 	}
 
 	@Override
-	protected ISubComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
+	protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
 			throws Exception {
 		return runHandleSubcomponent(component, action);
 	}
 
 	@Override
-	protected ISubComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component,
+	protected IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
 			lock.add(true);
@@ -80,7 +80,7 @@ public class ComponentReplaceWorker extends AbstractComponentWorker {
 		// process method runs in EventDispatchThread
 		for (final ChunkDTO dto : chunks) {
 			final Container parent = dto.getParent();
-			final ISubComponent<Container, ActionListener, ActionEvent, Object> component = dto
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component = dto
 					.getComponent();
 			final Container previousContainer = dto.getPreviousContainer();
 			final String currentTaget = dto.getCurrentTaget();

@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jacp.api.action.IAction;
-import org.jacp.swing.rcp.editor.ASwingEditor;
+import org.jacp.swing.rcp.editor.ASwingComponent;
 
-public class DemoMessagePerformanceEditorConsumer extends ASwingEditor {
+public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 
 	private JPanel panel = null;
 	private int counter = 0;
@@ -20,7 +20,7 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingEditor {
 	private final JLabel label1 = new JLabel();
 
 	@Override
-	public void addMenuEntries(final Container meuneBar) {
+	public void handleMenuEntries(final Container meuneBar) {
 		// TODO Auto-generated method stub
 
 	}
@@ -33,7 +33,7 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingEditor {
 	}
 
 	@Override
-	public Container handle(final IAction<ActionEvent, Object> action) {
+	public Container handleAction(final IAction<ActionEvent, Object> action) {
 		if (panel == null) {
 			panel = new JPanel();
 		}
