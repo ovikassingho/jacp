@@ -19,6 +19,10 @@ import org.jacp.api.action.IAction;
 public final class SwingAction implements IAction<ActionEvent, Object> {
 
 	private final Map<String, Object> messages = new HashMap<String, Object>();
+	private final ThreadLocal<Map<String, Object>> tMessages = new ThreadLocal<Map<String, Object>>() 
+	  { 
+	    @Override protected Map<String, Object> initialValue() { return messages; } 
+	  }; 
 	private Object message;
 	private final String sourceId;
 	private ActionEvent event;
@@ -66,7 +70,7 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
 
 	@Override
 	public Map<String, Object> getMessageList() {
-		return messages;
+		return tMessages.get();
 	}
 
 	@Override
