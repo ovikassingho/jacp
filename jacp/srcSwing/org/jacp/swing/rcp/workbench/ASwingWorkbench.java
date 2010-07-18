@@ -352,8 +352,8 @@ public abstract class ASwingWorkbench extends JFrame
 	private void addPerspectiveBarEntries(
 			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		if (perspective instanceof ASwingPerspective) {
-			((ASwingPerspective)perspective).handleBarEntries(
-					getToolBar(), getBottomBar());
+			((ASwingPerspective) perspective).handleBarEntries(getToolBar(),
+					getBottomBar());
 		}
 	}
 
@@ -558,8 +558,8 @@ public abstract class ASwingWorkbench extends JFrame
 			perspective.handlePerspective(action);
 		} else {
 			log("3.4.3.1: perspective handle with default >>init<< action");
-			perspective.handlePerspective(new SwingAction(
-					perspective.getId(), perspective.getId(), "init"));
+			perspective.handlePerspective(new SwingAction(perspective.getId(),
+					perspective.getId(), "init"));
 		}
 	}
 

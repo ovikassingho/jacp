@@ -4,18 +4,11 @@
  */
 package org.jacp.swing.rcp.observers;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.base.IComponent;
@@ -77,7 +70,6 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 					"No responsible perspective found. Handling not implemented yet.");
 		}
 	}
-	
 
 	/**
 	 * handle message target hit

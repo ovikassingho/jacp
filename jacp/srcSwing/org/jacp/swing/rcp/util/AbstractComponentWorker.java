@@ -20,9 +20,9 @@ import org.jacp.api.base.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public abstract class AbstractComponentWorker
+public abstract class AbstractComponentWorker<T>
 		extends
-		org.jacp.swing.rcp.util.SwingWorker<IVComponent<Container, ActionListener, ActionEvent, Object>, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
+		org.jacp.swing.rcp.util.SwingWorker<T, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -76,8 +76,7 @@ public abstract class AbstractComponentWorker
 
 	}
 
-	protected abstract IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+	protected abstract T runHandleSubcomponent(final T component,
 			final IAction<ActionEvent, Object> action);
 
 	/**
