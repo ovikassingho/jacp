@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.swing.rcp.editor.ASwingComponent;
+import org.jacp.swing.rcp.component.ASwingComponent;
 
 /**
  * This demo editor acts as message producer; this demo shows an good and a bad
