@@ -11,7 +11,7 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 	public Object handleAction(final IAction<ActionEvent, Object> action) {
 		System.out.println("Hallo Welt BG Component!!");
 		int i = 0;
-		while (i < 1000) {
+		while (i < 100000) {
 			System.out.println("wait");
 			try {
 				Thread.sleep(100);
@@ -23,5 +23,6 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 		}
 		return null;
 	}
+
 
 }

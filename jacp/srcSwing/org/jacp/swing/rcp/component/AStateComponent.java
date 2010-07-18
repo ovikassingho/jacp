@@ -7,24 +7,30 @@ import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.IBGComponent;
 import org.jacp.api.observers.IObserver;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 
+/**
+ * represents a basic, stateful background component 
+ * @author Andy Moncsek
+ *
+ */
 public abstract class AStateComponent implements
-		ISubComponent<ActionListener, ActionEvent, Object> {
+		IBGComponent<ActionListener, ActionEvent, Object> {
 
 	private String id;
 	private String target;
 	private String name;
+	private volatile String handleComponentTarget;
+	private volatile boolean active;
+	private volatile boolean blocked;
 	private IObserver<ActionListener, ActionEvent, Object> componentObserver;
+	private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
 	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 			20);
-	private volatile boolean active = false;
-	private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
-	private volatile boolean blocked;
 
 	@Override
 	public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
@@ -130,6 +136,17 @@ public abstract class AStateComponent implements
 	@Override
 	public void setTarget(final String target) {
 		this.target = target;
+	}
+
+	@Override
+	public String getHandleComponentTarget() {
+		return handleComponentTarget;
+	}
+
+	@Override
+	public void setHandleComponentTarget(String componentTargetId) {
+		this.handleComponentTarget = componentTargetId;
+
 	}
 
 	@Override

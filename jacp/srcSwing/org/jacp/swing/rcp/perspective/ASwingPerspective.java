@@ -161,7 +161,7 @@ public abstract class ASwingPerspective implements
 				log("BACKGROUND COMPONENT EXECUTE INIT:::"
 						+ component.getName());
 				final StateComponentInitWorker worker = new StateComponentInitWorker(
-						component, action);
+						((AStateComponent)component), action);
 				worker.execute();
 				log("BACKGROUND COMPONENT DONE EXECUTE INIT:::"
 						+ component.getName());

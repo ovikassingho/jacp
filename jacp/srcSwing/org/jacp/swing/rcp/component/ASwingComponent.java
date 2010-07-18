@@ -23,16 +23,16 @@ import org.jacp.swing.rcp.action.SwingActionListener;
 public abstract class ASwingComponent implements
 		IVComponent<Container, ActionListener, ActionEvent, Object> {
 
-	private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
 	private String id;
 	private String target;
 	private String name;
-	private boolean active = false;
-	private IObserver<ActionListener, ActionEvent, Object> componentObserver;
 	private Container root;
+	private boolean active;
+	private volatile boolean blocked;
+	private IObserver<ActionListener, ActionEvent, Object> componentObserver;
+	private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
 	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 			20);
-	private volatile boolean blocked;
 
 	@Override
 	public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
@@ -153,7 +153,12 @@ public abstract class ASwingComponent implements
 	public <C> C handle(final IAction<ActionEvent, Object> action) {
 		return (C) handleAction(action);
 	}
-
+	
+	/**
+	 * handle component
+	 * @param action
+	 * @return java.awt.Container
+	 */
 	public abstract Container handleAction(IAction<ActionEvent, Object> action);
 
 }
