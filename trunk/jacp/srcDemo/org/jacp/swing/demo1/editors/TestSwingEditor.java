@@ -12,7 +12,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.swing.rcp.editor.ASwingComponent;
+import org.jacp.swing.rcp.component.ASwingComponent;
 
 public class TestSwingEditor extends ASwingComponent {
 

@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jacp.api.action.IAction;
-import org.jacp.swing.rcp.editor.ASwingComponent;
+import org.jacp.swing.rcp.component.ASwingComponent;
 
 public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 

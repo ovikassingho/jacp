@@ -8,7 +8,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jacp.api.action.IAction;
-import org.jacp.swing.rcp.editor.ASwingComponent;
+import org.jacp.swing.rcp.component.ASwingComponent;
 
 public class TestEditor5 extends ASwingComponent {
 
