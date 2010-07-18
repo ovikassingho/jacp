@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IComponent;
+import org.jacp.api.component.IComponent;
 import org.jacp.api.observers.IObserver;
 
 /**

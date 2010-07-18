@@ -1,9 +1,10 @@
-package org.jacp.api.base;
+package org.jacp.api.workbench;
 
 import java.util.List;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * base component for an application, handles perspectives and containing

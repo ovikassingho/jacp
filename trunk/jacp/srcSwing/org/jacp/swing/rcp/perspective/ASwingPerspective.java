@@ -17,12 +17,12 @@ import javax.swing.JMenu;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.base.IExtendedComponent;
-import org.jacp.api.base.IPerspective;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.component.IExtendedComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.observers.IComponentObserver;
 import org.jacp.api.observers.IObserver;
+import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.component.AStateComponent;
@@ -157,11 +157,14 @@ public abstract class ASwingPerspective implements
 						((ASwingComponent) component), action);
 				tmp.execute();
 				log("COMPONENT DONE EXECUTE INIT:::" + component.getName());
-			} else if(component instanceof AStateComponent) {
-				log("BACKGROUND COMPONENT EXECUTE INIT:::" + component.getName());
-				final StateComponentInitWorker worker = new StateComponentInitWorker(component, action);
+			} else if (component instanceof AStateComponent) {
+				log("BACKGROUND COMPONENT EXECUTE INIT:::"
+						+ component.getName());
+				final StateComponentInitWorker worker = new StateComponentInitWorker(
+						component, action);
 				worker.execute();
-				log("BACKGROUND COMPONENT DONE EXECUTE INIT:::" + component.getName());
+				log("BACKGROUND COMPONENT DONE EXECUTE INIT:::"
+						+ component.getName());
 			}
 
 		}

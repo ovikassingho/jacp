@@ -1,6 +1,7 @@
-package org.jacp.api.base;
+package org.jacp.api.component;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * defines a subcomponent handled by a root component

@@ -4,7 +4,7 @@
  */
 package org.jacp.api.observers;
 
-import org.jacp.api.base.IPerspective;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * notifies perspectives and components included in workbench C defines the base

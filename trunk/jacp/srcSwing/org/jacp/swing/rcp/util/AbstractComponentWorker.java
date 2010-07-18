@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IVComponent;
+import org.jacp.api.component.IVComponent;
 
 /**
  * handles component methods in own thread; see

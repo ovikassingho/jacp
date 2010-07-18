@@ -6,10 +6,10 @@ package org.jacp.swing.rcp.componentLayout;
 
 import java.awt.LayoutManager2;
 
-import org.jacp.api.base.Tupel;
-import org.jacp.api.base.WorkspaceMode;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.util.Tupel;
+import org.jacp.api.util.WorkspaceMode;
 
 /**
  * 

@@ -1,8 +1,11 @@
-package org.jacp.api.base;
+package org.jacp.api.perspective;
 
 import java.util.List;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IRootComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.observers.IComponentObserver;
 

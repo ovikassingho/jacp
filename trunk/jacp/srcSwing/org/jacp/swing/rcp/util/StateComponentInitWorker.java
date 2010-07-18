@@ -1,9 +1,10 @@
 package org.jacp.swing.rcp.util;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.component.ISubComponent;
 
 public class StateComponentInitWorker
 		extends
@@ -21,8 +22,8 @@ public class StateComponentInitWorker
 
 	@Override
 	protected ISubComponent<ActionListener, ActionEvent, Object> runHandleSubcomponent(
-			ISubComponent<ActionListener, ActionEvent, Object> component,
-			IAction<ActionEvent, Object> action) {
+			final ISubComponent<ActionListener, ActionEvent, Object> component,
+			final IAction<ActionEvent, Object> action) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -31,9 +32,9 @@ public class StateComponentInitWorker
 	protected ISubComponent<ActionListener, ActionEvent, Object> doInBackground()
 			throws Exception {
 		synchronized (component) {
-			this.component.handle(this.action);
+			component.handle(action);
 		}
-		return this.component;
+		return component;
 	}
 
 }

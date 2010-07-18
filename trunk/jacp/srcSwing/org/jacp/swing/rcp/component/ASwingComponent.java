@@ -8,9 +8,9 @@ import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.base.IPerspective;
-import org.jacp.api.base.IVComponent;
+import org.jacp.api.component.IVComponent;
 import org.jacp.api.observers.IObserver;
+import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 

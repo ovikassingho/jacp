@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IVComponent;
+import org.jacp.api.component.IVComponent;
 
 /**
  * Handles ui return value of component and add to correct perspective target
@@ -14,7 +14,9 @@ import org.jacp.api.base.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public class ComponentAddWorker extends AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
+public class ComponentAddWorker
+		extends
+		AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
 
 	private final Map<String, Container> targetComponents;
 	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;

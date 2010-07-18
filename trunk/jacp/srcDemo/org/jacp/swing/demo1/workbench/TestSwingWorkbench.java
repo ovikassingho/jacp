@@ -17,8 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.jacp.api.base.WorkspaceMode;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.util.WorkspaceMode;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
 import org.jacp.swing.rcp.workbench.ASwingWorkbench;

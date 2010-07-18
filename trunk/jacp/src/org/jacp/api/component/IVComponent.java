@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.jacp.api.base;
+package org.jacp.api.component;
 
 /**
  * represents an ui component handled by a perspective

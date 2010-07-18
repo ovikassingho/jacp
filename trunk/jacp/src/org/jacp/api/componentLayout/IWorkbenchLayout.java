@@ -4,8 +4,8 @@
  */
 package org.jacp.api.componentLayout;
 
-import org.jacp.api.base.Tupel;
-import org.jacp.api.base.WorkspaceMode;
+import org.jacp.api.util.Tupel;
+import org.jacp.api.util.WorkspaceMode;
 
 /**
  * defines the base layout of a workbench and the application

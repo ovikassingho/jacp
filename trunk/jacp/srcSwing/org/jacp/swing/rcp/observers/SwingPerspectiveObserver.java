@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IComponent;
-import org.jacp.api.base.IPerspective;
-import org.jacp.api.base.ISubComponent;
-import org.jacp.api.base.IWorkbench;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.observers.IPerspectiveObserver;
+import org.jacp.api.perspective.IPerspective;
+import org.jacp.api.workbench.IWorkbench;
 import org.jacp.swing.rcp.action.SwingAction;
 
 /**

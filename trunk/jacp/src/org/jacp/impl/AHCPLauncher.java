@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.jacp.api.base.IWorkbench;
+import org.jacp.api.workbench.IWorkbench;
 import org.jacp.swing.demo1.workbench.TestSwingWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
