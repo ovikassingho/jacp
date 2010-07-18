@@ -25,12 +25,14 @@ import org.jacp.api.observers.IComponentObserver;
 import org.jacp.api.observers.IObserver;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
+import org.jacp.swing.rcp.component.AStateComponent;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.observers.SwingComponentObserver;
 import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
+import org.jacp.swing.rcp.util.StateComponentInitWorker;
 
 /**
  * represents a basic swing perspective that handles subcomponents
@@ -55,22 +57,27 @@ public abstract class ASwingPerspective implements
 	public void init() {
 		((SwingComponentObserver) componentObserver).execute();
 	}
-	
+
 	/**
 	 * add menu entries to perspective specific menu
+	 * 
 	 * @param menuBar
 	 */
 	public abstract void handleMenuEntries(final JMenu menuBar);
 
 	@Override
-	public abstract void handleBarEntries(final Container toolBar, final Container bottomBar);
+	public abstract void handleBarEntries(final Container toolBar,
+			final Container bottomBar);
 
 	@Override
 	public <C> C handle(final IAction<ActionEvent, Object> action) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
 	/**
-	 * handle perspective call, create structure of perspective, set base layout and register component containers
+	 * handle perspective call, create structure of perspective, set base layout
+	 * and register component containers
+	 * 
 	 * @param action
 	 * @param perspectiveLayout
 	 */
@@ -113,7 +120,7 @@ public abstract class ASwingPerspective implements
 	public void handleMenuEntries(final Container meuneBar) {
 		synchronized (meuneBar) {
 			if (meuneBar instanceof JMenu) {
-				this.handleMenuEntries((JMenu)meuneBar);
+				this.handleMenuEntries((JMenu) meuneBar);
 			}
 		}
 	}
@@ -144,11 +151,17 @@ public abstract class ASwingPerspective implements
 			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		synchronized (action) {
 			if (component instanceof ASwingComponent) {
+				log("COMPONENT EXECUTE INIT:::" + component.getName());
 				final ComponentInitWorker tmp = new ComponentInitWorker(
 						perspectiveLayout.getTargetLayoutComponents(),
 						((ASwingComponent) component), action);
 				tmp.execute();
-				log("DONE EXECUTE INIT:::" + component.getName());
+				log("COMPONENT DONE EXECUTE INIT:::" + component.getName());
+			} else if(component instanceof AStateComponent) {
+				log("BACKGROUND COMPONENT EXECUTE INIT:::" + component.getName());
+				final StateComponentInitWorker worker = new StateComponentInitWorker(component, action);
+				worker.execute();
+				log("BACKGROUND COMPONENT DONE EXECUTE INIT:::" + component.getName());
 			}
 
 		}

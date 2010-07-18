@@ -18,7 +18,7 @@ import org.jacp.api.base.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public class ComponentReplaceWorker extends AbstractComponentWorker {
+public class ComponentReplaceWorker extends AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
 	private final Map<String, Container> targetComponents;
 	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;

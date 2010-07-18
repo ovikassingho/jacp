@@ -62,7 +62,6 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 
 				@Override
 				public void actionPerformed(final ActionEvent e) {
-					final int p = 0;
 					final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
 					listener2.getAction().setMessage("id08", "begin");
 					listener2.getListener().actionPerformed(e);

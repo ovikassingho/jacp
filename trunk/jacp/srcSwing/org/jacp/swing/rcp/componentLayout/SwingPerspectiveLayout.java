@@ -25,10 +25,12 @@ public class SwingPerspectiveLayout implements
 	private final boolean scrollable = true;
 	private boolean replaceMode = true;
 	private final Map<String, Container> targetComponents = new HashMap<String, Container>();
-	private final ThreadLocal<Map<String, Container>> tComponents = new ThreadLocal<Map<String, Container>>() 
-	  { 
-	    @Override protected Map<String, Container> initialValue() { return targetComponents; } 
-	  }; 
+	private final ThreadLocal<Map<String, Container>> tComponents = new ThreadLocal<Map<String, Container>>() {
+		@Override
+		protected Map<String, Container> initialValue() {
+			return targetComponents;
+		}
+	};
 
 	public SwingPerspectiveLayout() {
 	}

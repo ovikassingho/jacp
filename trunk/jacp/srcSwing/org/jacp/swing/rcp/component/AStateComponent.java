@@ -70,7 +70,7 @@ public abstract class AStateComponent implements
 	@Override
 	public void setObserver(
 			final IObserver<ActionListener, ActionEvent, Object> observer) {
-		this.componentObserver = observer;
+		componentObserver = observer;
 
 	}
 
