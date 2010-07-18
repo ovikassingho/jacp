@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;

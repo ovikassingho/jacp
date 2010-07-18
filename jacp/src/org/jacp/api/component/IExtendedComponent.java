@@ -1,4 +1,4 @@
-package org.jacp.api.base;
+package org.jacp.api.component;
 
 /**
  * represents a extended component with menu entries and tool bar access

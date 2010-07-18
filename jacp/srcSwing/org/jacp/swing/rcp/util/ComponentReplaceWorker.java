@@ -9,7 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IVComponent;
+import org.jacp.api.component.IVComponent;
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -18,7 +18,9 @@ import org.jacp.api.base.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public class ComponentReplaceWorker extends AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
+public class ComponentReplaceWorker
+		extends
+		AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
 	private final Map<String, Container> targetComponents;
 	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;

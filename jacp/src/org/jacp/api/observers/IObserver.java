@@ -3,8 +3,8 @@ package org.jacp.api.observers;
 import java.util.List;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IComponent;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.ISubComponent;
 
 /**
  * Defines a basic observer for component messages; handles the message and

@@ -1,4 +1,4 @@
-package org.jacp.api.base;
+package org.jacp.api.component;
 
 /**
  * all root components have containing sub components (workspace ->

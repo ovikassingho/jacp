@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.base.IComponent;
-import org.jacp.api.base.IPerspective;
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.observers.IComponentObserver;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * observe component actions and delegates to correct component

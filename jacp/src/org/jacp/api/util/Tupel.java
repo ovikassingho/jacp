@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.jacp.api.base;
+package org.jacp.api.util;
 
 /**
  * helper class... TODO remove!!!

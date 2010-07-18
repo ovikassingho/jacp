@@ -1,6 +1,6 @@
 package org.jacp.api.observers;
 
-import org.jacp.api.base.ISubComponent;
+import org.jacp.api.component.ISubComponent;
 
 /**
  * notifies components included in perspective
