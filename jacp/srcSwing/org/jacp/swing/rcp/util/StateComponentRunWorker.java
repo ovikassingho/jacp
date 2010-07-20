@@ -4,17 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.swing.rcp.action.SwingAction;
 
-public class StateComponentInitWorker
+public class StateComponentRunWorker
 		extends
 		AbstractComponentWorker<IBGComponent<ActionListener, ActionEvent, Object>> {
 
 	private final IBGComponent<ActionListener, ActionEvent, Object> component;
 	private final IAction<ActionEvent, Object> action;
 
-	public StateComponentInitWorker(
+	public StateComponentRunWorker(
 			final IBGComponent<ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		this.component = component;
@@ -34,17 +35,23 @@ public class StateComponentInitWorker
 			throws Exception {
 		final IBGComponent<ActionListener, ActionEvent, Object> comp = component;
 		synchronized (comp) {
-			final Object value = comp.handle(action);
-			final String targetId = comp.getHandleComponentTarget();
-			if (value != null && targetId != null) {
-				IAction<ActionEvent, Object> action2 = new SwingAction(comp
-						.getId(), targetId, value);
-				// TODO delegate directly to observer !!
-				comp.getActionListener().setAction(action2);
-				comp.getActionListener().getListener().actionPerformed(
-						action.getActionEvent());
+			while (comp.hasIncomingMessage()) {
+				final IAction<ActionEvent, Object> myAction = component
+				.getNextIncomingMessage();
+				final Object value = comp.handle(myAction);
+				final String targetId = comp.getHandleComponentTarget();
+				if (value != null && targetId != null) {
+					// delegate components handle return value to specified target
+					final IActionListener<ActionListener, ActionEvent, Object> listener = comp
+							.getActionListener();
+					final IAction<ActionEvent, Object> returnAction = new SwingAction(
+							comp.getId(), targetId, value);
+					listener.setAction(returnAction);
+					listener.notifyComponents(returnAction);
+				}
 			}
 		}
+		comp.setBlocked(false);
 		return comp;
 	}
 

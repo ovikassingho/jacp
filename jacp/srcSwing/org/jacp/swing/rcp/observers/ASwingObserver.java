@@ -142,9 +142,7 @@ public abstract class ASwingObserver
 	}
 
 	protected void log(final String message) {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine(">> " + message);
-		}
+		logger.fine(message);
 	}
 
 }

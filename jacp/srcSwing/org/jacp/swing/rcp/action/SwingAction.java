@@ -18,8 +18,9 @@ import org.jacp.api.action.IAction;
  */
 public final class SwingAction implements IAction<ActionEvent, Object> {
 
-	private final Map<String, Object> messages = new HashMap<String, Object>();
 	private final ThreadLocal<Map<String, Object>> tMessages = new ThreadLocal<Map<String, Object>>() {
+		private final Map<String, Object> messages = new HashMap<String, Object>();
+
 		@Override
 		protected Map<String, Object> initialValue() {
 			return messages;
@@ -42,22 +43,23 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
 	public SwingAction(final String sourceId, final String target,
 			final Object message) {
 		this.sourceId = sourceId;
-		setMessage(message);
 		this.target = target;
+		setMessage(message);
+
 	}
 
 	@Override
 	public void setMessage(final Object message) {
 		this.message = message;
-		target = getSourceId();
-		messages.put(getSourceId(), message);
+		target = target != null ? target : getSourceId();
+		getMessageList().put(target, message);
 	}
 
 	@Override
 	public void setMessage(final String id, final Object message) {
 		target = id;
 		this.message = message;
-		messages.put(id, message);
+		getMessageList().put(id, message);
 	}
 
 	@Override

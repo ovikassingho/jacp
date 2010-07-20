@@ -9,9 +9,11 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 
 	@Override
 	public Object handleAction(final IAction<ActionEvent, Object> action) {
+
 		System.out.println("Hallo Welt BG Component!!");
+		System.out.println("BGComponent: "+action.getMessage());
 		int i = 0;
-		while (i < 100000) {
+		while (i < 10) {
 			System.out.println("wait");
 			try {
 				Thread.sleep(100);
@@ -21,7 +23,8 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 			}
 			i++;
 		}
-		return null;
+		this.setHandleComponentTarget("id03");
+		return "Hallo, viele Gruesse";
 	}
 
 
