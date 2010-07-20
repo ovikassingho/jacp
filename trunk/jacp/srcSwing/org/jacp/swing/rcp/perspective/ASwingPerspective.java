@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.component.IBGComponent;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -32,7 +33,7 @@ import org.jacp.swing.rcp.observers.SwingComponentObserver;
 import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
-import org.jacp.swing.rcp.util.StateComponentInitWorker;
+import org.jacp.swing.rcp.util.StateComponentRunWorker;
 
 /**
  * represents a basic swing perspective that handles subcomponents
@@ -160,14 +161,20 @@ public abstract class ASwingPerspective implements
 			} else if (component instanceof AStateComponent) {
 				log("BACKGROUND COMPONENT EXECUTE INIT:::"
 						+ component.getName());
-				final StateComponentInitWorker worker = new StateComponentInitWorker(
-						((AStateComponent)component), action);
-				worker.execute();
+				prepareMessageHandling(component, action);
+				runStateComponent(action,((AStateComponent)component));	
 				log("BACKGROUND COMPONENT DONE EXECUTE INIT:::"
 						+ component.getName());
 			}
 
 		}
+	}
+	
+	private void runStateComponent(final IAction<ActionEvent, Object> action,
+			final IBGComponent<ActionListener, ActionEvent, Object> component) {
+		final StateComponentRunWorker worker = new StateComponentRunWorker(
+				component, action);
+		worker.execute();
 	}
 
 	@Override
@@ -207,8 +214,10 @@ public abstract class ASwingPerspective implements
 					layout.getTargetLayoutComponents(),
 					((ASwingComponent) component), action);
 			tmp.execute();
+		} else if(component instanceof AStateComponent) {
+			runStateComponent(action,((AStateComponent)component));
 		}
-
+		
 	}
 
 	/**
