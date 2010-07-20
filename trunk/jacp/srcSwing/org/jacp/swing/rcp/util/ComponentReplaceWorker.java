@@ -70,11 +70,10 @@ public class ComponentReplaceWorker
 						targetComponents, currentTaget, component));
 
 			}
-			component.setBlocked(false);
-			return component;
 
 		}
-
+		component.setBlocked(false);
+		return component;
 	}
 
 	@Override
