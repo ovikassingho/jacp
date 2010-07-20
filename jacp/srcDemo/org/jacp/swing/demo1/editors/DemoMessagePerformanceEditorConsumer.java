@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 import org.jacp.api.action.IAction;
@@ -18,6 +19,8 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 	private long startTime;
 	private final JLabel label = new JLabel();
 	private final JLabel label1 = new JLabel();
+	private final JLabel label2 = new JLabel();
+	final JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
 	@Override
 	public void handleMenuEntries(final Container meuneBar) {
@@ -37,24 +40,30 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 		if (panel == null) {
 			panel = new JPanel();
 		}
+		if (action.getMessage() instanceof String) {
+			if (action.getMessage().equals("stop")) {
+				final long stopTime = System.currentTimeMillis();
 
-		if (action.getMessage().equals("stop")) {
-			final long stopTime = System.currentTimeMillis();
+				label.setText("stop Time: " + (stopTime - startTime));
+				panel.add(label);
+			} else if (action.getMessage().equals("start")) {
+				startTime = System.currentTimeMillis();
+				text1.setText("count: " + counter);
+				counter++;
+				panel.add(text1);
+			} else {
+				text1.setText("count: " + counter);
+				counter++;
+				panel.add(text1);
+			}
+			label1.setText("message: " + action.getMessage());
+			panel.add(label1);
+		} else if(action.getMessage() instanceof Long){
+			System.out.println("LLLOOONNNGGG" +action.getMessage());
+			label2.setText("stop Time bg component: " + action.getMessage());
 
-			label.setText("stop Time: " + (stopTime - startTime));
-			panel.add(label);
-		} else if (action.getMessage().equals("start")) {
-			startTime = System.currentTimeMillis();
-			text1.setText("count: " + counter);
-			counter++;
-			panel.add(text1);
-		} else {
-			text1.setText("count: " + counter);
-			counter++;
-			panel.add(text1);
+			panel.add(label2);
 		}
-		label1.setText("message: " + action.getMessage());
-		panel.add(label1);
 		return panel;
 	}
 

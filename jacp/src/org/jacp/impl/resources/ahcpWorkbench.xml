@@ -66,6 +66,7 @@
 			<list>
 				<ref bean="editor6" />
 				<ref bean="editor7" />
+				<ref bean="editor9" />
 			</list>
 		</property>
 	</bean>
@@ -123,6 +124,13 @@
 		<property name="name" value="testEditor8" />
 		<property name="active" value="true" />
 		<property name="id" value="id10" />
+		<!--  <property name="target" value="editor1" /> -->
+	</bean>
+	<bean id="editor9"
+		class="org.jacp.swing.demo1.editors.DemoBackgroundMessagePerformanceEditor2">
+		<property name="name" value="testEditor9" />
+		<property name="active" value="true" />
+		<property name="id" value="id11" />
 		<!--  <property name="target" value="editor1" /> -->
 	</bean>
 </beans>

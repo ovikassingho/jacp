@@ -50,6 +50,7 @@ public class StateComponentRunWorker
 					listener.notifyComponents(returnAction);
 				}
 			}
+
 		}
 		comp.setBlocked(false);
 		return comp;

@@ -170,6 +170,11 @@ public abstract class ASwingPerspective implements
 		}
 	}
 	
+	/**
+	 * run background components thread
+	 * @param action
+	 * @param component
+	 */
 	private void runStateComponent(final IAction<ActionEvent, Object> action,
 			final IBGComponent<ActionListener, ActionEvent, Object> component) {
 		final StateComponentRunWorker worker = new StateComponentRunWorker(
