@@ -4,6 +4,13 @@
 A jacp Application consists of one workbench and at least one perspective containing an ui component. The platform uses spring IoC to define and handle all declared beans (workbench, perspective, component). Create a spring context xml file (resources.xml) and put it into "org.jacp.impl.resource" package folder.
 
 = Creating a workbench =
+A workbench defines the basic application layout. The defined layout is the structure for all containing perspectives an components. At the moment there are three different base structures, a tabbed mode, a window mode and a modal mode. 
+
+* The tabbed mode defines that every perspective is opend in a single tab of your application.
+* The window mode create for each perspective a new frame in our application
+* At the modal mode only one perspective is visible at once. Here you can use perspective like stacks where the top perspective is visible 
+
+Although the workbench isn't a typical component like perspective or subcomponent its behavior is the same. A workbench can add menu entries (if you declare a menu structure) and can be notified by any component to change the structure of defined layout. That means that you can change the complete look of your application (defined in a workbench) at runntime of your application without need to restart it.    
 
 == create the workbench bean ==
 
