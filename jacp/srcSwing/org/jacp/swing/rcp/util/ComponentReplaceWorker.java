@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
@@ -47,6 +48,7 @@ public class ComponentReplaceWorker
 			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
 		synchronized (component) {
+			component.setBlocked(true);
 			lock.add(true);
 			while (component.hasIncomingMessage()) {
 				final IAction<ActionEvent, Object> myAction = component
@@ -70,10 +72,11 @@ public class ComponentReplaceWorker
 						targetComponents, currentTaget, component));
 
 			}
+			component.setBlocked(false);
+			return component;
 
 		}
-		component.setBlocked(false);
-		return component;
+
 	}
 
 	@Override
@@ -97,13 +100,23 @@ public class ComponentReplaceWorker
 				handleNewComponentValue(component, targetComponents, parent,
 						currentTaget);
 			}
-			lock.add(true);
+			
 		}
+		lock.add(true);
 	}
 
 	@Override
 	protected void done() {
-
+			try {
+				this.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				//TODO add to error queue and restart thread if messages in queue 
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+				//TODO add to error queue and restart thread if messages in queue 
+			}
+			component.setBlocked(false);
 	}
 
 }
