@@ -178,7 +178,7 @@ public abstract class ASwingPerspective implements
 	private void runStateComponent(final IAction<ActionEvent, Object> action,
 			final IBGComponent<ActionListener, ActionEvent, Object> component) {
 		final StateComponentRunWorker worker = new StateComponentRunWorker(
-				component, action);
+				component);
 		worker.execute();
 	}
 
@@ -234,7 +234,6 @@ public abstract class ASwingPerspective implements
 	private void prepareMessageHandling(
 			final ISubComponent<ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
-		component.setBlocked(true);
 		component.putIncomingMessage(action);
 	}
 

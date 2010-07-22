@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
@@ -36,6 +37,20 @@ public abstract class AbstractComponentWorker<T>
 	protected Container getValidContainerById(
 			final Map<String, Container> targetComponents, final String id) {
 		return targetComponents.get(id);
+	}
+	
+	/**
+	 * invalidate swing host after changes
+	 * 
+	 * @param host
+	 */
+	protected void invalidateHost(final Container host) {
+		if (host instanceof JComponent) {
+			((JComponent) host).revalidate();
+		} else {
+			host.invalidate();
+		}
+		host.repaint();
 	}
 
 	/**

@@ -34,6 +34,7 @@ public class ComponentInitWorker
 	protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
 			throws Exception {
 		synchronized (component) {
+			component.setBlocked(true);
 			log("3.4.4.2.1: subcomponent handle init START: "
 					+ component.getName());
 			final Container editorComponent = component.handle(action);
@@ -49,8 +50,9 @@ public class ComponentInitWorker
 			addComponentByType(validContainer, component);
 			log("3.4.4.2.4: subcomponent handle init END: "
 					+ component.getName());
+			return component;
 		}
-		return component;
+
 		// return runHandleSubcomponent(editor, action);
 	}
 
@@ -80,7 +82,7 @@ public class ComponentInitWorker
 
 	@Override
 	public void done() {
-
+		component.setBlocked(false);
 	}
 
 }
