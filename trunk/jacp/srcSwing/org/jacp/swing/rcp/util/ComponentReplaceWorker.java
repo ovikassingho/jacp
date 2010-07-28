@@ -63,7 +63,7 @@ public class ComponentReplaceWorker
 						+ component.getName());
 				final Map<String, Container> targetComponents = this.targetComponents;
 				final Container previousContainer = component.getRoot();
-				final String currentTaget = component.getTarget();
+				final String currentTaget = component.getExecutionTarget();
 				// run code
 				log(" //1.1.1.1.2// handle component: " + component.getName());
 				prepareAndHandleComponent(component, myAction);
@@ -88,7 +88,7 @@ public class ComponentReplaceWorker
 					.getComponent();
 			final Container previousContainer = dto.getPreviousContainer();
 			final String currentTaget = dto.getCurrentTaget();
-			if (!currentTaget.equals(component.getTarget())
+			if (!currentTaget.equals(component.getExecutionTarget())
 					|| !previousContainer.equals(component.getRoot())) {
 				// remove old view
 				log(" //1.1.1.1.3// handle old component remove: "

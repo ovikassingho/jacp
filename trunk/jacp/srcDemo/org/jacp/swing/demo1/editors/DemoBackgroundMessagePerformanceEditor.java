@@ -23,7 +23,7 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 			}
 			i++;
 		}
-		this.setHandleComponentTarget("id03");
+		this.setHandleTarget("id03");
 		return "Hallo, viele Gruesse";
 	}
 

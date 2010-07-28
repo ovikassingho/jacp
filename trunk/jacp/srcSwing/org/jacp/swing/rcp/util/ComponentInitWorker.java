@@ -44,7 +44,7 @@ public class ComponentInitWorker
 			log("3.4.4.2.2: subcomponent handle init get valid container: "
 					+ component.getName());
 			final Container validContainer = getValidContainerById(
-					targetComponents, component.getTarget());
+					targetComponents, component.getExecutionTarget());
 			log("3.4.4.2.3: subcomponent handle init add component by type: "
 					+ component.getName());
 			addComponentByType(validContainer, component);
@@ -70,7 +70,7 @@ public class ComponentInitWorker
 			log("3.4.4.2.2: subcomponent handle init get valid container: "
 					+ component.getName());
 			final Container validContainer = getValidContainerById(
-					targetComponents, component.getTarget());
+					targetComponents, component.getExecutionTarget());
 			log("3.4.4.2.3: subcomponent handle init add component by type: "
 					+ component.getName());
 			addComponentByType(validContainer, component);

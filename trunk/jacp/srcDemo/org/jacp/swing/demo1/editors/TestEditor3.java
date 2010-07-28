@@ -40,7 +40,7 @@ public class TestEditor3 extends ASwingComponent {
 		}
 
 		final int z = i % 3;
-		setTarget("editor" + z);
+		setExecutionTarget("editor" + z);
 		i = i + 1;
 		return handleViewLayout3();
 	}

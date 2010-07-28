@@ -116,7 +116,6 @@ public abstract class ASwingWorkbench extends JFrame
 			break;
 		default:
 			log("2.1: SINGLE_PAIN");
-			;
 		}
 	}
 
@@ -573,7 +572,7 @@ public abstract class ASwingWorkbench extends JFrame
 			final IPerspectiveLayout<? extends Container, Container> layout,
 			final IVComponent<Container, ActionListener, ActionEvent, Object> editor) {
 		final Container validContainer = layout.getTargetLayoutComponents()
-				.get(editor.getTarget());
+				.get(editor.getExecutionTarget());
 		if (validContainer instanceof JScrollPane) {
 			((JScrollPane) validContainer).setViewportView(editor.getRoot());
 		} else {

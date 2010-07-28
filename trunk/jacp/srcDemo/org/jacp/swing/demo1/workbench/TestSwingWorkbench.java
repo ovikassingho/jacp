@@ -34,7 +34,7 @@ public class TestSwingWorkbench extends ASwingWorkbench {
 	 */
 	private static final long serialVersionUID = -3314308084499117301L;
 
-	public TestSwingWorkbench() throws ClassNotFoundException {
+	public TestSwingWorkbench() {
 		super("my Test Workbench");
 
 	}
