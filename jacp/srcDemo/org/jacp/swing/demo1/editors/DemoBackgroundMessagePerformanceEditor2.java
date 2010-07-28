@@ -17,7 +17,8 @@ public class DemoBackgroundMessagePerformanceEditor2 extends AStateComponent {
 			final long stopTime = System.currentTimeMillis();
 
 			System.out.println("stop Time: " + (stopTime - startTime));
-			this.setHandleComponentTarget("id09");
+			this.setHandleTarget("id09");
+			this.setExecutionTarget("id02");
 			return (stopTime - startTime);
 		} else if (action.getMessage().equals("start")) {
 			startTime = System.currentTimeMillis();

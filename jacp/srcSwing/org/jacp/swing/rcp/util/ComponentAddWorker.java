@@ -43,7 +43,7 @@ public class ComponentAddWorker
 
 	@Override
 	public void done() {
-		component.setTarget(getTargetComponentId(component.getTarget()));
+		component.setExecutionTarget(getTargetComponentId(component.getExecutionTarget()));
 		handleNewComponentValue(component, targetComponents, null, "");
 	}
 

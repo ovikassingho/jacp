@@ -21,14 +21,14 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	 * 
 	 * @param target
 	 */
-	public abstract String getTarget();
+	public abstract String getExecutionTarget();
 
 	/**
 	 * set the ui target; defines the target container in perspective
 	 * 
 	 * @param target
 	 */
-	public abstract void setTarget(final String target);
+	public abstract void setExecutionTarget(final String target);
 
 	/**
 	 * set responsible perspective

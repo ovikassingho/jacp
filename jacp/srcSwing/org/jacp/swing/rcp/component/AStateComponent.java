@@ -22,7 +22,7 @@ public abstract class AStateComponent implements
 		IBGComponent<ActionListener, ActionEvent, Object> {
 
 	private String id;
-	private String target;
+	private String target="";
 	private String name;
 	private volatile String handleComponentTarget;
 	private volatile boolean active;
@@ -98,7 +98,7 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public String getTarget() {
+	public String getExecutionTarget() {
 		return target;
 	}
 
@@ -134,17 +134,17 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public void setTarget(final String target) {
+	public void setExecutionTarget(final String target) {
 		this.target = target;
 	}
 
 	@Override
-	public String getHandleComponentTarget() {
+	public String getHandleTarget() {
 		return handleComponentTarget;
 	}
 
 	@Override
-	public void setHandleComponentTarget(String componentTargetId) {
+	public void setHandleTarget(String componentTargetId) {
 		this.handleComponentTarget = componentTargetId;
 
 	}

@@ -71,12 +71,12 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
-	public String getTarget() {
+	public String getExecutionTarget() {
 		return target;
 	}
 
 	@Override
-	public void setTarget(final String target) {
+	public void setExecutionTarget(final String target) {
 		this.target = target;
 	}
 

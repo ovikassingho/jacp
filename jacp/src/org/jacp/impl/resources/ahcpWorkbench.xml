@@ -75,32 +75,32 @@
 		<property name="name" value="testEditor1" />
 		<property name="active" value="true" />
 		<property name="id" value="id03" />
-		<property name="target" value="editor1" />
+		<property name="executionTarget" value="editor1" />
 	</bean>
 
 	<bean id="editor2" class="org.jacp.swing.demo1.editors.TestSwingEditor2">
 		<property name="name" value="testEditor2" />
 		<property name="active" value="true" />
 		<property name="id" value="id04" />
-		<property name="target" value="editor0" />
+		<property name="executionTarget" value="editor0" />
 	</bean>
 	<bean id="editor3" class="org.jacp.swing.demo1.editors.TestEditor3">
 		<property name="name" value="testEditor3" />
 		<property name="active" value="true" />
 		<property name="id" value="id05" />
-		<property name="target" value="editor0" />
+		<property name="executionTarget" value="editor0" />
 	</bean>
 	<bean id="editor4" class="org.jacp.swing.demo1.editors.TestEditor4">
 		<property name="name" value="testEditor4" />
 		<property name="active" value="true" />
 		<property name="id" value="id06" />
-		<property name="target" value="view" />
+		<property name="executionTarget" value="view" />
 	</bean>
 	<bean id="editor5" class="org.jacp.swing.demo1.editors.TestEditor5">
 		<property name="name" value="testEditor5" />
 		<property name="active" value="false" />
 		<property name="id" value="id07" />
-		<property name="target" value="editor0" />
+		<property name="executionTarget" value="editor0" />
 	</bean>
 
 	<bean id="editor6"
@@ -108,7 +108,7 @@
 		<property name="name" value="testEditor6" />
 		<property name="active" value="true" />
 		<property name="id" value="id08" />
-		<property name="target" value="editor0" />
+		<property name="executionTarget" value="editor0" />
 	</bean>
 
 	<bean id="editor7"
@@ -116,7 +116,7 @@
 		<property name="name" value="testEditor7" />
 		<property name="active" value="true" />
 		<property name="id" value="id09" />
-		<property name="target" value="editor1" />
+		<property name="executionTarget" value="editor1" />
 	</bean>
 
 	<bean id="editor8"
@@ -124,14 +124,14 @@
 		<property name="name" value="testEditor8" />
 		<property name="active" value="true" />
 		<property name="id" value="id10" />
-		<!--  <property name="target" value="editor1" /> -->
+		<!--  <property name="executionTarget" value="editor1" /> -->
 	</bean>
 	<bean id="editor9"
 		class="org.jacp.swing.demo1.editors.DemoBackgroundMessagePerformanceEditor2">
 		<property name="name" value="testEditor9" />
 		<property name="active" value="true" />
 		<property name="id" value="id11" />
-		<!--  <property name="target" value="editor1" /> -->
+		<!--  <property name="executionTarget" value="editor1" /> -->
 	</bean>
 </beans>
 
