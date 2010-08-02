@@ -139,6 +139,7 @@ public abstract class AbstractComponentWorker<T>
 		    @Override
 		    public void run() {
 			// run in EventDispatchThread
+			//TODO move "handleTargetChange to thread!!
 			if (currentTaget.equals(component.getExecutionTarget())) {
 			    addComponentByType(parent, component);
 			} else {
