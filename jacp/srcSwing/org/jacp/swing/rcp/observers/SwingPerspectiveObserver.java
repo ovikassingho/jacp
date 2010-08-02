@@ -133,9 +133,9 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	@Override
+	//TODO former synchronized
 	public void delegateMessage(final String target,
 			final IAction<ActionEvent, Object> action) {
-		synchronized (action) {
 			// Find local Target; if target is perspective handle target or
 			// delegate
 			// message to responsible component observer
@@ -144,12 +144,12 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			} else {
 				callComponentDelegate(target, action);
 			}
-		}
 
 	}
 
 	@Override
-	public synchronized void delegateTargetChange(final String target,
+	//TODO former synchronized
+	public void delegateTargetChange(final String target,
 			final ISubComponent<ActionListener, ActionEvent, Object> component) {
 		// find responsible perspective
 		final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
@@ -221,27 +221,25 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 	}
 
 	@Override
+	//TODO former synchronized
 	public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 			final M component, final IAction<ActionEvent, Object> action) {
-		synchronized (action) {
 			workbench
 					.replacePerspective(
 							(IPerspective<ActionListener, ActionEvent, Object>) component,
 							action);
-		}
 
 	}
 
 	@Override
+	//TODO former synchronized
 	public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 			final M component, final IAction<ActionEvent, Object> action) {
-		synchronized (action) {
 			component.setActive(true);
 			workbench
 					.initPerspective(
 							(IPerspective<ActionListener, ActionEvent, Object>) component,
 							action);
-		}
 
 	}
 

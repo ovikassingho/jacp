@@ -47,7 +47,7 @@ public class ComponentReplaceWorker
 	protected IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 			final IAction<ActionEvent, Object> action) {
-		synchronized (component) {
+		//synchronized (component) {
 			component.setBlocked(true);
 			lock.add(true);
 			while (component.hasIncomingMessage()) {
@@ -75,7 +75,7 @@ public class ComponentReplaceWorker
 			component.setBlocked(false);
 			return component;
 
-		}
+		//}
 
 	}
 
