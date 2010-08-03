@@ -4,12 +4,12 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
@@ -27,6 +27,8 @@ public abstract class AbstractComponentWorker<T>
 	org.jacp.swing.rcp.util.SwingWorker<T, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    
+    private ReentrantLock myLock = new ReentrantLock();
 
     /**
      * find valid target component in perspective
@@ -103,22 +105,7 @@ public abstract class AbstractComponentWorker<T>
      */
     protected void handleOldComponentRemove(final Container parent,
 	    final Container currentContainer) {
-	final Thread worker = new Thread() {
-	    @Override
-	    public void run() {
-		SwingUtilities.invokeLater(new Runnable() {
-		    @Override
-		    public void run() {
-			// run in EventDispatchThread
-			if (parent != null) {
-			    parent.remove(currentContainer);
-			}
-
-		    }
-		}); // SWING UTILS END
-	    } // run end
-	}; // Thread END
-	worker.start();
+	parent.remove(currentContainer);
     }
 
     /**
@@ -132,28 +119,14 @@ public abstract class AbstractComponentWorker<T>
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 	    final Map<String, Container> targetComponents,
 	    final Container parent, final String currentTaget) {
-	final Thread worker = new Thread() {
-	    @Override
-	    public void run() {
-		SwingUtilities.invokeLater(new Runnable() {
-		    @Override
-		    public void run() {
-			// run in EventDispatchThread
-			//TODO move "handleTargetChange to thread!!
-			if (currentTaget.equals(component.getExecutionTarget())) {
-			    addComponentByType(parent, component);
-			} else {
-			    final String validId = getValidTargetId(
-				    currentTaget, component.getExecutionTarget());
-			    handleTargetChange(component, targetComponents,
-				    validId);
+	if (currentTaget.equals(component.getExecutionTarget())) {
+	    addComponentByType(parent, component);
+	} else {
+	    final String validId = getValidTargetId(currentTaget, component
+		    .getExecutionTarget());
+	    handleTargetChange(component, targetComponents, validId);
 
-			}
-		    }
-		}); // SWING UTILS END
-	    } // run end
-	}; // Thread END
-	worker.start();
+	}
     }
 
     /**
@@ -210,10 +183,16 @@ public abstract class AbstractComponentWorker<T>
     protected Container prepareAndHandleComponent(
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 	    final IAction<ActionEvent, Object> action) {
-	final Container editorComponent = component.handle(action);
-	component.setRoot(editorComponent);
-	editorComponent.setVisible(true);
-	editorComponent.setEnabled(true);
+	final Container editorComponent;
+	    synchronized (component) {
+		System.out.println("-------1");
+		System.out.println("-------1" + Thread.currentThread());
+		editorComponent = component.handle(action);
+		System.out.println("-------2");
+		component.setRoot(editorComponent);
+		editorComponent.setVisible(true);
+		editorComponent.setEnabled(true);
+	 }
 	return editorComponent;
     }
 

@@ -26,6 +26,7 @@ public class SwingComponentObserver extends ASwingObserver implements
 
     public SwingComponentObserver(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	this.setDaemon(true);
 	this.perspective = perspective;
     }
 

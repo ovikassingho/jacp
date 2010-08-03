@@ -56,7 +56,7 @@ public abstract class ASwingPerspective implements
 
     @Override
     public void init() {
-	((SwingComponentObserver) componentObserver).execute();
+	((SwingComponentObserver) componentObserver).start();
     }
 
     /**
@@ -184,8 +184,6 @@ public abstract class ASwingPerspective implements
     public void handleAndReplaceSubcomponent(
 	    final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
-	// TODO when "component" is synchronized execution is 30x times faster
-	// but will lock sometimes !!
 	if (component.isBlocked()) {
 	    putMessageToQueue(component, action);
 	    log("ADD TO QUEUE:::" + component.getName());
