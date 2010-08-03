@@ -39,30 +39,37 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
 		if (panel == null) {
 			panel = new JPanel();
+			panel.add(label);
+			panel.add(text1);
+			panel.add(label1);
+			panel.add(label2);
 		}
 		if (action.getMessage() instanceof String) {
 			if (action.getMessage().equals("stop")) {
 				final long stopTime = System.currentTimeMillis();
 
 				label.setText("stop Time: " + (stopTime - startTime));
-				panel.add(label);
 			} else if (action.getMessage().equals("start")) {
 				startTime = System.currentTimeMillis();
 				text1.setText("count: " + counter);
 				counter++;
-				panel.add(text1);
 			} else {
 				text1.setText("count: " + counter);
 				counter++;
-				panel.add(text1);
 			}
 			label1.setText("message: " + action.getMessage());
-			panel.add(label1);
+
 		} else if(action.getMessage() instanceof Long){
 			System.out.println("LLLOOONNNGGG" +action.getMessage());
 			label2.setText("stop Time bg component: " + action.getMessage());
 
-			panel.add(label2);
+
+		}
+		try {
+		    Thread.currentThread().sleep(10);
+		} catch (InterruptedException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
 		}
 		return panel;
 	}
