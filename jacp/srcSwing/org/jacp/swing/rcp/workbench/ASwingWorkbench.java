@@ -136,7 +136,7 @@ public abstract class ASwingWorkbench extends JFrame
 				// start perspective Observer worker thread
 				// TODO create status daemon which observes thread component on
 				// failure and restarts if needed!!
-				((SwingPerspectiveObserver) perspectiveObserver).execute();
+				((SwingPerspectiveObserver) perspectiveObserver).start();
 				// init size
 				initWorkbenchSize();
 				// init menu instance#

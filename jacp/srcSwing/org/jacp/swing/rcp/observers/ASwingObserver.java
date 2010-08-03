@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
@@ -21,7 +20,7 @@ import org.jacp.api.observers.IObserver;
  */
 public abstract class ASwingObserver
 	extends
-	org.jacp.swing.rcp.util.SwingWorker<IAction<ActionEvent, Object>, IAction<ActionEvent, Object>>
+	Thread
 	implements IObserver<ActionListener, ActionEvent, Object> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -30,10 +29,15 @@ public abstract class ASwingObserver
 	    10000);
 
     @Override
-    protected IAction<ActionEvent, Object> doInBackground() throws Exception {
+    public void run() {
 	while (true) {
 	    log(" observer thread size" + messages.size());
-	    final IAction<ActionEvent, Object> action = messages.take();
+	    IAction<ActionEvent, Object> action = null;
+	    try {
+		action = messages.take();
+	    } catch (InterruptedException e) {
+		e.printStackTrace();
+	    }
 	    final Map<String, Object> messages = action.getMessageList();
 	    for (final String targetId : messages.keySet()) {
 		log(" handle message to: " + targetId);
@@ -44,17 +48,7 @@ public abstract class ASwingObserver
 	}
     }
 
-    @Override
-    protected void done() {
-	// TODO this should only happen when an error occurred
-	try {
-	    this.get();
-	} catch (final InterruptedException e) {
-	    e.printStackTrace();
-	} catch (final ExecutionException e) {
-	    e.printStackTrace();
-	}
-    }
+   
 
     /**
      * returns cloned action with valid message TODO add to interface

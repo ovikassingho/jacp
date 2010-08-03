@@ -31,6 +31,7 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 
 	public SwingPerspectiveObserver(
 			final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
+	    	this.setDaemon(true);
 		this.workbench = workbench;
 	}
 
@@ -128,7 +129,6 @@ public class SwingPerspectiveObserver extends ASwingObserver implements
 			break;
 		default:
 			workbench.disableComponents();
-			;
 		}
 	}
 
