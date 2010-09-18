@@ -19,15 +19,23 @@ import org.jacp.api.perspective.IPerspective;
  */
 public class SwingComponentObserver extends ASwingObserver implements
 	IComponentObserver<ActionListener, ActionEvent, Object> {
-
-    private final List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
+    // TODO remove instantiation!!
+    private List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
 
     private final IPerspective<ActionListener, ActionEvent, Object> perspective;
-
+    
+    @Deprecated
     public SwingComponentObserver(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	this.setDaemon(true);
 	this.perspective = perspective;
+    }
+    
+    public SwingComponentObserver(
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective,final List<ISubComponent<ActionListener, ActionEvent, Object>> components) {
+	this.setDaemon(true);
+	this.perspective = perspective;
+	this.components = components;
     }
 
     @Override
