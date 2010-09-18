@@ -10,13 +10,17 @@ import org.jacp.api.observers.IComponentObserver;
 import org.jacp.api.perspective.IPerspective;
 
 
-
-public class ComponentObserverHandler  {
+/**
+ * This Handler coordinates observers and components in perspectives; each added component get his own observer; handler instantiates an observer set the parent perspective an the component list
+ * @author Andy Moncsek
+ *
+ */
+public class ComponentObserverCoordinator  {
     private final List<ISubComponent<ActionListener, ActionEvent, Object>> components;
     
     private final IPerspective<ActionListener, ActionEvent, Object> perspective;
     
-    public ComponentObserverHandler(final IPerspective<ActionListener, ActionEvent, Object> perspective,final List<ISubComponent<ActionListener, ActionEvent, Object>> components) {
+    public ComponentObserverCoordinator(final IPerspective<ActionListener, ActionEvent, Object> perspective,final List<ISubComponent<ActionListener, ActionEvent, Object>> components) {
 	this.perspective = perspective;
 	this.components = components;
     }
