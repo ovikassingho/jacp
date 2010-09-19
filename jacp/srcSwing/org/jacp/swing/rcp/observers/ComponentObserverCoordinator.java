@@ -3,8 +3,10 @@ package org.jacp.swing.rcp.observers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
+import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.observers.IComponentObserver;
 import org.jacp.api.perspective.IPerspective;
@@ -16,13 +18,17 @@ import org.jacp.api.perspective.IPerspective;
  *
  */
 public class ComponentObserverCoordinator  {
-    private final List<ISubComponent<ActionListener, ActionEvent, Object>> components;
+    private List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
     
     private final IPerspective<ActionListener, ActionEvent, Object> perspective;
     
     public ComponentObserverCoordinator(final IPerspective<ActionListener, ActionEvent, Object> perspective,final List<ISubComponent<ActionListener, ActionEvent, Object>> components) {
 	this.perspective = perspective;
 	this.components = components;
+    }
+    
+    public ComponentObserverCoordinator(final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	this.perspective = perspective;
     }
     
     /**
@@ -46,6 +52,12 @@ public class ComponentObserverCoordinator  {
 	component.setObserver(null);
 	components.remove(component);
 
+    }
+    
+    // TODO create correct implementation; don  not create always a new observer; add message to queue
+    public void delegateMessage(final String target,
+	    final IAction<ActionEvent, Object> action) {
+	getObserverInstance().delegateMessage(target, action);
     }
    
 }
