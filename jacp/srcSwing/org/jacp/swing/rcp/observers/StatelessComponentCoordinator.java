@@ -15,7 +15,7 @@ import org.jacp.api.component.IBGComponent;
  */
 public class StatelessComponentCoordinator {
 
-    public static final int MAX_THREAD_COUNT = 10;
+    public static final int MAX_INCTANCE_COUNT = 10;
     
     private AtomicInteger threadCount=new AtomicInteger(0);
 
@@ -29,13 +29,35 @@ public class StatelessComponentCoordinator {
     }
 
     public void incomingMessage(IAction<ActionEvent, Object> message) {
+	if(!baseComponent.isBlocked()) {
+	    // handle component worker
+	} else {
+	    // get active instance
+	    IBGComponent<ActionListener, ActionEvent, Object> comp= getActiveComponent();
+	    if(comp!=null) {
+		 // handle component worker
+	    } else {
+		// check if new instances can be created
+		if(componentInstances.size()<MAX_INCTANCE_COUNT) {
+		    comp = this.baseComponent.getNewInstance();
+		    componentInstances.add(comp);
+		} else {
+		    // if max count reached, seek through components and add message to queue of oldest component
+		    Integer seek = Integer.valueOf(threadCount.incrementAndGet()) %componentInstances.size();
+		    comp = componentInstances.get(seek);
+		   // put message to queue
+		    comp.putIncomingMessage(message);
+		}
+	    }
+	    // if instance is NULL get first element in list and put message to queue (an increment position counter (counter = counter mod instances.size()))
+	}
 	int count = 0;
 	IBGComponent<ActionListener, ActionEvent, Object> instanceTemp = null;
 	for (final IBGComponent<ActionListener, ActionEvent, Object> instance : componentInstances) {
 	    count++;
 	    if (instance.isBlocked()) {
-		if (componentInstances.size() <= MAX_THREAD_COUNT
-			|| count <= MAX_THREAD_COUNT) {
+		if (componentInstances.size() <= MAX_INCTANCE_COUNT
+			|| count <= MAX_INCTANCE_COUNT) {
 
 		} else {
 		    handleWorkerCallToPostbox();
@@ -51,6 +73,14 @@ public class StatelessComponentCoordinator {
 	if(instanceTemp!=null) {
 	    componentInstances.add(instanceTemp);
 	}
+    }
+    
+    private IBGComponent<ActionListener, ActionEvent, Object> getActiveComponent() {
+	for(IBGComponent<ActionListener, ActionEvent, Object> comp: componentInstances) {
+	    if(!comp.isBlocked())return comp;
+	}
+	
+	return null;
     }
     
     public void flushInstances() {
@@ -72,6 +102,7 @@ public class StatelessComponentCoordinator {
     public void setBaseComponent(
     	IBGComponent<ActionListener, ActionEvent, Object> baseComponent) {
         this.baseComponent = baseComponent;
+        componentInstances.add(baseComponent.getNewInstance());
     }
 
 }

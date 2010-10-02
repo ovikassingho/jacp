@@ -19,18 +19,20 @@ import org.jacp.swing.rcp.action.SwingActionListener;
  *
  */
 public abstract class AStatelessComponent implements
-	IBGComponent<ActionListener, ActionEvent, Object>, Cloneable {
+	IBGComponent<ActionListener, ActionEvent, Object>{
 
     private String id;
     private String target = "";
     private String name;
     private volatile String handleComponentTarget;
-    private volatile boolean active;
-    private volatile boolean blocked;
+    private volatile boolean active=true;
+    private volatile boolean blocked=false;
     private IObserver<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
-    private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+    private BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
+    
+     
 
     @Override
     public String getExecutionTarget() {
@@ -146,11 +148,36 @@ public abstract class AStatelessComponent implements
     public void setHandleTarget(String componentTargetId) {
 	this.handleComponentTarget = componentTargetId;
     }
+    
+    public IBGComponent<ActionListener, ActionEvent, Object> getNewInstance() {
+	return (IBGComponent<ActionListener, ActionEvent, Object>) this.clone();
+    }
+    
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-	// TODO Auto-generated method stub
-	return super.clone();
+    protected Object clone() {
+	try {
+	    AStatelessComponent comp = (AStatelessComponent) super.clone();
+	    comp.setId(this.id);
+	    comp.setActive(this.active);
+	    comp.setName(this.name);
+	    comp.setExecutionTarget(this.target);
+	    comp.setHandleTarget(this.handleComponentTarget);
+	    comp.setObserver(this.componentObserver);
+	    comp.setParentPerspective(this.parentPerspective);
+	    comp.setIncomingMessages(new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+		    20));
+	    
+	    return comp;
+	} catch (CloneNotSupportedException e) {
+	    e.printStackTrace();
+	}
+	
+	return null;
+    }
+    
+    private void setIncomingMessages(final BlockingQueue<IAction<ActionEvent, Object>> incomingActions) {
+	this.incomingActions = incomingActions;
     }
 
     @Override
