@@ -8,7 +8,7 @@ package org.jacp.api.component;
  * @param <A>
  * @param <M>
  */
-public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M> {
+public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>, Cloneable {
 	
 	
 	/**
@@ -22,5 +22,7 @@ public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M> {
 	 * @param componentTargetId
 	 */
 	public abstract void setHandleTarget(final String componentTargetId);
+	
+	public abstract IBGComponent<L, A, M> getNewInstance();
 
 }

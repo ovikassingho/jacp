@@ -17,6 +17,7 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  *
  */
+@Deprecated
 public class ComponentObserverCoordinator  {
     private List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
     
