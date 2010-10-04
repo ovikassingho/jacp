@@ -1,8 +1,10 @@
 package org.jacp.swing.demo1.editors;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IBGComponent;
 import org.jacp.swing.rcp.component.AStateComponent;
 
 public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
@@ -26,6 +28,8 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 		this.setHandleTarget("id03");
 		return "Hallo, viele Gruesse";
 	}
+
+	
 
 
 }

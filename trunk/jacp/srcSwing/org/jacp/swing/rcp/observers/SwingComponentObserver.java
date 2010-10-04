@@ -64,6 +64,7 @@ public class SwingComponentObserver extends ASwingObserver implements
     public void handleMessage(final String targetId,
 	    final IAction<ActionEvent, Object> action) {
 	synchronized (action) {
+	    
 	    final ISubComponent<ActionListener, ActionEvent, Object> component = getObserveableById(
 		    getTargetComponentId(targetId), components);
 	    log(" //1.1// component message to: " + action.getTargetId());

@@ -52,6 +52,12 @@ public abstract class AStateComponent implements
 		}
 		return name;
 	}
+	
+	// TODO remove from interface; only for sate less components!
+	@Override
+	public IBGComponent<ActionListener, ActionEvent, Object> getNewInstance() {
+	    throw new UnsupportedOperationException("...");
+	}
 
 	@Override
 	public boolean isActive() {

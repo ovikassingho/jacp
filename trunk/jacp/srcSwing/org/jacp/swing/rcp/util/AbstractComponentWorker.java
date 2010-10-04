@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,11 +23,10 @@ import org.jacp.api.component.IVComponent;
  */
 public abstract class AbstractComponentWorker<T>
 	extends
-	org.jacp.swing.rcp.util.SwingWorker<T, org.jacp.swing.rcp.util.AbstractComponentWorker.ChunkDTO> {
+	org.jacp.swing.rcp.util.SwingWorker<T, ChunkDTO> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     
-    private ReentrantLock myLock = new ReentrantLock();
 
     /**
      * find valid target component in perspective
@@ -236,46 +234,5 @@ public abstract class AbstractComponentWorker<T>
 	}
     }
 
-    public static final class ChunkDTO {
-	private final Container parent;
-	private final Map<String, Container> targetComponents;
-	private final String currentTaget;
-	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
-	private final Container previousContainer;
-
-	public ChunkDTO(
-		final Container parent,
-		final Container previousContainer,
-		final Map<String, Container> targetComponents,
-		final String currentTaget,
-		final IVComponent<Container, ActionListener, ActionEvent, Object> component) {
-	    this.parent = parent;
-	    this.targetComponents = targetComponents;
-	    this.currentTaget = currentTaget;
-	    this.component = component;
-	    this.previousContainer = previousContainer;
-	}
-
-	public Container getParent() {
-	    return parent;
-	}
-
-	public Map<String, Container> getTargetComponents() {
-	    return targetComponents;
-	}
-
-	public String getCurrentTaget() {
-	    return currentTaget;
-	}
-
-	public IVComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
-	    return component;
-	}
-
-	public Container getPreviousContainer() {
-	    return previousContainer;
-	}
-
-    }
 
 }
