@@ -32,19 +32,21 @@ public class StateComponentRunWorker
     protected IBGComponent<ActionListener, ActionEvent, Object> doInBackground()
 	    throws Exception {
 	final IBGComponent<ActionListener, ActionEvent, Object> comp = component;
-	    comp.setBlocked(true);
-	    while (comp.hasIncomingMessage()) {
-		final IAction<ActionEvent, Object> myAction = comp
-			.getNextIncomingMessage();
-		synchronized (myAction) {
-		    final String targetCurrent = comp.getExecutionTarget();
-		    final Object value = comp.handle(myAction);
-		    final String targetId = comp.getHandleTarget();
-		    delegateReturnValue(comp, targetId, value);
-		    checkAndHandleTargetChange(comp, targetCurrent);
+	    synchronized (comp) {
+		comp.setBlocked(true);
+		while (comp.hasIncomingMessage()) {
+		    final IAction<ActionEvent, Object> myAction = comp
+			    .getNextIncomingMessage();
+		    synchronized (myAction) {
+			final String targetCurrent = comp.getExecutionTarget();
+			final Object value = comp.handle(myAction);
+			final String targetId = comp.getHandleTarget();
+			delegateReturnValue(comp, targetId, value);
+			checkAndHandleTargetChange(comp, targetCurrent);
+		    }
 		}
+		comp.setBlocked(false);
 	    }
-	    comp.setBlocked(false);
 	    return comp;
 
     }

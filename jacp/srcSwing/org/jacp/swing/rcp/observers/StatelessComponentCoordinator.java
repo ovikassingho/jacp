@@ -51,7 +51,7 @@ public class StatelessComponentCoordinator {
 	    }
 	    // if instance is NULL get first element in list and put message to queue (an increment position counter (counter = counter mod instances.size()))
 	}
-	int count = 0;
+/*	int count = 0;
 	IBGComponent<ActionListener, ActionEvent, Object> instanceTemp = null;
 	for (final IBGComponent<ActionListener, ActionEvent, Object> instance : componentInstances) {
 	    count++;
@@ -72,7 +72,7 @@ public class StatelessComponentCoordinator {
 	}
 	if(instanceTemp!=null) {
 	    componentInstances.add(instanceTemp);
-	}
+	}*/
     }
     
     private IBGComponent<ActionListener, ActionEvent, Object> getActiveComponent() {

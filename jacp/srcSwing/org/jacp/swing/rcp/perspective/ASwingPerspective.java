@@ -184,12 +184,15 @@ public abstract class ASwingPerspective implements
     public void handleAndReplaceSubcomponent(
 	    final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
+
 	if (component.isBlocked()) {
 	    putMessageToQueue(component, action);
+		System.out.println("messagePerspective: " + action.getMessage());
 	    log("ADD TO QUEUE:::" + component.getName());
 	} else {
 	    putMessageToQueue(component, action);
 	    executeComponentReplaceThread(perspectiveLayout, component, action);
+		System.out.println("messagePerspectiveNEW: " + action.getMessage());
 	    log("CREATE NEW THREAD:::" + component.getName());
 	}
 	log("DONE EXECUTE REPLACE:::" + component.getName());

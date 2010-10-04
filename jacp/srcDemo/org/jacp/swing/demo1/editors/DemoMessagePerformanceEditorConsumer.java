@@ -21,6 +21,7 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 	private final JLabel label1 = new JLabel();
 	private final JLabel label2 = new JLabel();
 	final JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+	private boolean block = false;
 
 	@Override
 	public void handleMenuEntries(final Container meuneBar) {
@@ -49,15 +50,21 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 				final long stopTime = System.currentTimeMillis();
 
 				label.setText("stop Time: " + (stopTime - startTime));
+				text1.setText("count: " + counter);
+				block = true;
 			} else if (action.getMessage().equals("start")) {
 				startTime = System.currentTimeMillis();
 				text1.setText("count: " + counter);
 				counter++;
+				block = false;
 			} else {
-				text1.setText("count: " + counter);
-				counter++;
+				text1.setText("count: " + counter + " block:"+block);
+				if (!block) {
+				    counter++;
+				}
 			}
 			label1.setText("message: " + action.getMessage());
+			System.out.println("message: " + action.getMessage());
 
 		} else if(action.getMessage() instanceof Long){
 			System.out.println("LLLOOONNNGGG" +action.getMessage());
@@ -65,12 +72,12 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 
 
 		}
-		try {
+/*		try {
 		    Thread.currentThread().sleep(10);
 		} catch (InterruptedException e) {
 		    // TODO Auto-generated catch block
 		    e.printStackTrace();
-		}
+		}*/
 		return panel;
 	}
 

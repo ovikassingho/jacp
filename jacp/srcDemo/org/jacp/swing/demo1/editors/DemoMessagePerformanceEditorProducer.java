@@ -51,11 +51,13 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 				listener2.getAction().setMessage("id09", "start");
 				listener2.getListener()
 						.actionPerformed(action.getActionEvent());
-				while (p < 999) {
+				while (p < 9999) {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-					listener3.getAction().setMessage("id09", "test" + p);
+					String val = "test" + p;
+					listener3.getAction().setMessage("id09", val);
+					//System.out.println("Producer Val.: "+val);
 					listener3.getListener().actionPerformed(
-							action.getActionEvent());
+						listener3.getAction().getActionEvent());
 					p++;
 
 				}
@@ -74,7 +76,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 					listener3.getAction().setMessage("id11", "test" + p);
 					listener3.getListener().actionPerformed(
-							action.getActionEvent());
+						listener3.getAction().getActionEvent());
 					p++;
 
 				}
