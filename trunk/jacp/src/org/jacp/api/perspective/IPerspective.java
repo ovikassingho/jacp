@@ -7,7 +7,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
-import org.jacp.api.observers.IComponentObserver;
+import org.jacp.api.coordinator.IComponentCoordinator;
 
 /**
  * a perspective is a root component, handled by an workbench and contains
@@ -25,7 +25,7 @@ import org.jacp.api.observers.IComponentObserver;
  *            defines the basic message type
  */
 public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
-		IRootComponent<ISubComponent<L, A, M>, IComponentObserver<L, A, M>> {
+		IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>> {
 
 	/**
 	 * the initialization method
