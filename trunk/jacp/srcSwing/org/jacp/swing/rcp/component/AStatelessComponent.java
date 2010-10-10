@@ -4,11 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IBGComponent;
-import org.jacp.api.observers.IObserver;
+import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
@@ -26,8 +27,8 @@ public abstract class AStatelessComponent implements
     private String name;
     private volatile String handleComponentTarget;
     private volatile boolean active=true;
-    private volatile boolean blocked=false;
-    private IObserver<ActionListener, ActionEvent, Object> componentObserver;
+    private volatile AtomicBoolean blocked= new AtomicBoolean(false);
+    private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
     private BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
@@ -84,12 +85,12 @@ public abstract class AStatelessComponent implements
 
     @Override
     public boolean isBlocked() {
-	return this.blocked;
+	return this.blocked.get();
     }
 
     @Override
     public void setBlocked(boolean blocked) {
-	this.blocked = blocked;
+	this.blocked.set(blocked);
     }
 
     @Override
@@ -135,7 +136,7 @@ public abstract class AStatelessComponent implements
 
     @Override
     public void setObserver(
-	    IObserver<ActionListener, ActionEvent, Object> observer) {
+	    ICoordinator<ActionListener, ActionEvent, Object> observer) {
 	componentObserver = observer;
     }
 

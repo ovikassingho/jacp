@@ -5,11 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.observers.IObserver;
+import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
@@ -28,8 +29,8 @@ public abstract class ASwingComponent implements
 	private String name;
 	private Container root;
 	private boolean active;
-	private volatile boolean blocked;
-	private IObserver<ActionListener, ActionEvent, Object> componentObserver;
+	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
+	private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
 	private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
 	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 			20);
@@ -53,7 +54,7 @@ public abstract class ASwingComponent implements
 
 	@Override
 	public void setObserver(
-			final IObserver<ActionListener, ActionEvent, Object> componentObserver) {
+			final ICoordinator<ActionListener, ActionEvent, Object> componentObserver) {
 		this.componentObserver = componentObserver;
 	}
 
@@ -115,12 +116,12 @@ public abstract class ASwingComponent implements
 
 	@Override
 	public boolean isBlocked() {
-		return blocked;
+		return blocked.get();
 	}
 
 	@Override
 	public void setBlocked(final boolean blocked) {
-		this.blocked = blocked;
+		this.blocked.set(blocked);
 	}
 
 	@Override

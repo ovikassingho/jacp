@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.observers.IObserver;
+import org.jacp.api.coordinator.ICoordinator;
 
 /**
  * 
@@ -21,11 +21,11 @@ public class SwingActionListener implements ActionListener,
 		IActionListener<ActionListener, ActionEvent, Object> {
 
 	private IAction<ActionEvent, Object> action;
-	private final IObserver<ActionListener, ActionEvent, Object> observer;
+	private final ICoordinator<ActionListener, ActionEvent, Object> observer;
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	public SwingActionListener(final IAction<ActionEvent, Object> action,
-			final IObserver<ActionListener, ActionEvent, Object> observer) {
+			final ICoordinator<ActionListener, ActionEvent, Object> observer) {
 		this.action = action;
 		this.observer = observer;
 	}
