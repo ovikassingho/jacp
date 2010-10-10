@@ -1,4 +1,4 @@
-package org.jacp.api.observers;
+package org.jacp.api.coordinator;
 
 import org.jacp.api.component.ISubComponent;
 
@@ -16,7 +16,7 @@ import org.jacp.api.component.ISubComponent;
  * 
  * @author Andy Moncsek
  */
-public interface IComponentObserver<L, A, M> extends IObserver<L, A, M> {
+public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
 
 	/**
 	 * add component to observe

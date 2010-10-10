@@ -1,5 +1,7 @@
 package org.jacp.api.component;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.perspective.IPerspective;
 

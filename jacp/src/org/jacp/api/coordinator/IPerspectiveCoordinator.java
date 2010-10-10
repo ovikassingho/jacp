@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.jacp.api.observers;
+package org.jacp.api.coordinator;
 
 import org.jacp.api.perspective.IPerspective;
 
@@ -13,7 +13,7 @@ import org.jacp.api.perspective.IPerspective;
  * 
  * @author Andy Moncsek
  */
-public interface IPerspectiveObserver<L, A, M> extends IObserver<L, A, M> {
+public interface IPerspectiveCoordinator<L, A, M> extends ICoordinator<L, A, M> {
 
 	/**
 	 * add perspective to observe

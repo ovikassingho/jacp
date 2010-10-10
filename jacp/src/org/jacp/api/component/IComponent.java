@@ -2,7 +2,7 @@ package org.jacp.api.component;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.observers.IObserver;
+import org.jacp.api.coordinator.ICoordinator;
 
 /**
  * represents a basic component
@@ -83,6 +83,6 @@ public interface IComponent<L, A, M> {
 	 * 
 	 * @return
 	 */
-	public abstract void setObserver(final IObserver<L, A, M> observer);
+	public abstract void setObserver(final ICoordinator<L, A, M> observer);
 
 }

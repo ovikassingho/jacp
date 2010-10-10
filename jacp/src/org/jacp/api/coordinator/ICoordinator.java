@@ -1,4 +1,4 @@
-package org.jacp.api.observers;
+package org.jacp.api.coordinator;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import org.jacp.api.component.ISubComponent;
  * @param <M>
  *            defines the basic message type
  */
-public interface IObserver<L, A, M> {
+public interface ICoordinator<L, A, M> {
 	/**
 	 * handles an action and delegate it to addressed perspective
 	 * 
