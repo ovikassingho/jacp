@@ -21,15 +21,15 @@ import org.jacp.api.component.IBGComponent;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
-import org.jacp.api.observers.IComponentObserver;
-import org.jacp.api.observers.IObserver;
+import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.component.AStateComponent;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
-import org.jacp.swing.rcp.observers.SwingComponentObserver;
+import org.jacp.swing.rcp.coordinator.SwingComponentCoordinator;
 import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
@@ -45,8 +45,8 @@ public abstract class ASwingPerspective implements
 	IExtendedComponent<Container> {
 
     private final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
-    private IObserver<ActionListener, ActionEvent, Object> perspectiveObserver;
-    private final IComponentObserver<ActionListener, ActionEvent, Object> componentObserver = new SwingComponentObserver(
+    private ICoordinator<ActionListener, ActionEvent, Object> perspectiveObserver;
+    private final IComponentCoordinator<ActionListener, ActionEvent, Object> componentObserver = new SwingComponentCoordinator(
 	    this);
     private final IPerspectiveLayout<Container, Container> perspectiveLayout = new SwingPerspectiveLayout();
     private String id;
@@ -56,7 +56,7 @@ public abstract class ASwingPerspective implements
 
     @Override
     public void init() {
-	((SwingComponentObserver) componentObserver).start();
+	((SwingComponentCoordinator) componentObserver).start();
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class ASwingPerspective implements
     // TODO former synchronized
     public void registerComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,
-	    final IComponentObserver<ActionListener, ActionEvent, Object> handler) {
+	    final IComponentCoordinator<ActionListener, ActionEvent, Object> handler) {
 	log("register component: " + component.getId());
 	handler.addComponent(component);
 	subcomponents.add(component);
@@ -108,7 +108,7 @@ public abstract class ASwingPerspective implements
     // TODO former synchronized
     public void unregisterComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,
-	    final IComponentObserver<ActionListener, ActionEvent, Object> handler) {
+	    final IComponentCoordinator<ActionListener, ActionEvent, Object> handler) {
 	log("unregister component: " + component.getId());
 	handler.removeComponent(component);
 	subcomponents.remove(component);
@@ -329,7 +329,7 @@ public abstract class ASwingPerspective implements
 
     @Override
     public void setObserver(
-	    final IObserver<ActionListener, ActionEvent, Object> perspectiveObserver) {
+	    final ICoordinator<ActionListener, ActionEvent, Object> perspectiveObserver) {
 	this.perspectiveObserver = perspectiveObserver;
     }
 

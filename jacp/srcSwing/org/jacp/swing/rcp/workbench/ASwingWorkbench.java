@@ -35,14 +35,14 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.observers.IPerspectiveObserver;
+import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
+import org.jacp.swing.rcp.coordinator.SwingPerspectiveCoordinator;
 import org.jacp.swing.rcp.handler.MacOSXController;
-import org.jacp.swing.rcp.observers.SwingPerspectiveObserver;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
 import com.apple.mrj.MRJApplicationUtils;
@@ -56,7 +56,7 @@ import com.apple.mrj.MRJApplicationUtils;
 public abstract class ASwingWorkbench extends JFrame
 		implements
 		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveObserver<ActionListener, ActionEvent, Object>> {
+		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<ActionListener, ActionEvent, Object>> {
 
 	/**
 	 * 
@@ -66,7 +66,7 @@ public abstract class ASwingWorkbench extends JFrame
 	private Container toolbar;
 	private Container bottombar;
 	private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
-	private final IPerspectiveObserver<ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveObserver(
+	private final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
 			this);
 	private final Dimension screenSize = Toolkit.getDefaultToolkit()
 			.getScreenSize();
@@ -136,7 +136,7 @@ public abstract class ASwingWorkbench extends JFrame
 				// start perspective Observer worker thread
 				// TODO create status daemon which observes thread component on
 				// failure and restarts if needed!!
-				((SwingPerspectiveObserver) perspectiveObserver).start();
+				((SwingPerspectiveCoordinator) perspectiveObserver).start();
 				// init size
 				initWorkbenchSize();
 				// init menu instance#
@@ -192,7 +192,7 @@ public abstract class ASwingWorkbench extends JFrame
 	@Override
 	public void registerComponent(
 			final IPerspective<ActionListener, ActionEvent, Object> component,
-			final IPerspectiveObserver<ActionListener, ActionEvent, Object> handler) {
+			final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> handler) {
 		component.init();
 		handler.addPerspective(component);
 
@@ -201,7 +201,7 @@ public abstract class ASwingWorkbench extends JFrame
 	@Override
 	public void unregisterComponent(
 			final IPerspective<ActionListener, ActionEvent, Object> component,
-			final IPerspectiveObserver<ActionListener, ActionEvent, Object> handler) {
+			final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> handler) {
 		handler.removePerspective(component);
 
 	}
