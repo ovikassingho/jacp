@@ -11,9 +11,6 @@ import org.jacp.api.component.ISubComponent;
  * delegate to responsible component
  * 
  * @author Andy Moncsek
- * 
- * @param <C>
- *            defines the base component where others extend from
  * @param <L>
  *            defines the action listener type
  * @param <A>
