@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,10 +24,12 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.component.AStateComponent;
+import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.coordinator.SwingComponentCoordinator;
@@ -45,6 +48,7 @@ public abstract class ASwingPerspective implements
 	IExtendedComponent<Container> {
 
     private final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
+
     private ICoordinator<ActionListener, ActionEvent, Object> perspectiveObserver;
     private final IComponentCoordinator<ActionListener, ActionEvent, Object> componentObserver = new SwingComponentCoordinator(
 	    this);
@@ -160,6 +164,11 @@ public abstract class ASwingPerspective implements
 	    runStateComponent(action, ((AStateComponent) component));
 	    log("BACKGROUND COMPONENT DONE EXECUTE INIT:::"
 		    + component.getName());
+	}else if (component instanceof AStatelessComponent) {
+	    log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::" + component.getName());
+	    ((AStatelessComponent) component).addMessage(action);
+	    log("SATELESS BACKGROUND COMPONENT DONE EXECUTE INIT:::"
+		    + component.getName());
 	}
 
     }
@@ -190,10 +199,16 @@ public abstract class ASwingPerspective implements
 		System.out.println("messagePerspective: " + action.getMessage());
 	    log("ADD TO QUEUE:::" + component.getName());
 	} else {
-	    putMessageToQueue(component, action);
-	    executeComponentReplaceThread(perspectiveLayout, component, action);
-		System.out.println("messagePerspectiveNEW: " + action.getMessage());
-	    log("CREATE NEW THREAD:::" + component.getName());
+	    if (component instanceof AStatelessComponent) {
+		 log("RUN STATELESS COMPONENTS:::" + component.getName());
+		((AStatelessComponent) component).addMessage(action);
+	    } else {
+		    putMessageToQueue(component, action);
+		    executeComponentReplaceThread(perspectiveLayout, component, action);
+			System.out.println("messagePerspectiveNEW: " + action.getMessage());
+		    log("CREATE NEW THREAD:::" + component.getName());
+	    }
+
 	}
 	log("DONE EXECUTE REPLACE:::" + component.getName());
 

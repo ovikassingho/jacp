@@ -10,9 +10,11 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
+import org.jacp.swing.rcp.coordinator.StatelessComponentCoordinator;
 
 /**
  * Represents a state less background component
@@ -32,6 +34,7 @@ public abstract class AStatelessComponent implements
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
     private BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
+    private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> coordinator;
     
      
 
@@ -59,6 +62,17 @@ public abstract class AStatelessComponent implements
     @Override
     public boolean hasIncomingMessage() {
 	return !incomingActions.isEmpty();
+    }
+    
+    private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> getCooridinator() {
+	if(coordinator==null) {
+		coordinator = new StatelessComponentCoordinator(this);
+	}
+	return 	coordinator;
+    }
+    
+    public void addMessage(IAction<ActionEvent, Object> message) {
+	getCooridinator().incomingMessage(message);
     }
 
     @Override
