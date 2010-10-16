@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -25,6 +27,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 	private final JPanel panel = new JPanel();
 	final JButton button = new JButton("send 1000 messages");
 	final JButton button2 = new JButton("send 1000 bg messages");
+	final JButton button3 = new JButton("send 1000 stateless");
 	final JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
 	@Override
@@ -84,7 +87,26 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 				listener3.getAction().setMessage("id11", "stop");
 				listener3.getListener()
 						.actionPerformed(action.getActionEvent());
-			} else {
+			} else if (action.getMessage().equals("begin2")) {
+				int p = 0;
+				System.out.println("BEGIN_ACTION3" + action.getMessage());
+				final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+				listener2.getAction().setMessage("id12", "start");
+				listener2.getListener()
+						.actionPerformed(action.getActionEvent());
+				while (p < 50) {
+					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
+					listener3.getAction().setMessage("id12", p*1000);
+					listener3.getListener().actionPerformed(
+						listener3.getAction().getActionEvent());
+					p++;
+
+				}
+				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
+				listener3.getAction().setMessage("id11", "stop");
+				listener3.getListener()
+						.actionPerformed(action.getActionEvent());
+			}else {
 				button.addActionListener(new ActionListener() {
 
 					@Override
@@ -108,9 +130,25 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 
 					}
 				});
+				button3.addActionListener(new ActionListener() {
+					
+					
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						System.out.println("blocked"+isBlocked);
+						final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+						listener2.getAction().setMessage("id08", "begin2");
+						listener2.getListener().actionPerformed(e);
+
+					}
+				});
 
 				pane.add(button);
-				pane.add(button2);
+				JSplitPane frame=  new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+				frame.add(button2);
+				frame.add(button3);
+				pane.add(frame);
+				//pane.add(button3);
 
 				panel.add(pane);
 			} 

@@ -1,9 +1,11 @@
 package org.jacp.swing.demo1.editors;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IActionListener;
 import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.springframework.jmx.export.annotation.ManagedResource;
 @ManagedResource(objectName = "org.jacp:name=StatelessDemoConsumer", description = "a state ful swing component")
@@ -15,15 +17,22 @@ public class StatelessDemoConsumer extends AStatelessComponent{
 
     @Override
     public Object handleAction(IAction<ActionEvent, Object> action) {
-	System.out.println("Hello state less world : "+this + " "+testBean.getTest() );
-	test="dfgfg";
-	Long j = 0L;
-
-	while (j < 100000000L) {
+	if (action.getMessage() instanceof Integer) {
+	    int max = (Integer) action.getMessage();
+	    test = "dfgfg";
+	    int j = 0;
+	    while (j < 100000) {
 		j++;
-		// System.out.print("test"+j+" ");
+		Math.abs(Math.abs(Math.abs(Double.valueOf(j+"")*Math.PI)*Math.PI)*Math.PI);
+		//System.out.println(j);
 
+	    }
+	    final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
+	    listener.getAction().setMessage("id09", j);
+	    listener.getListener().actionPerformed(
+		    listener.getAction().getActionEvent());
 	}
+	System.out.println("Hello state less world : "+this + " "+testBean.getTest() );
 	return null;
     }
 

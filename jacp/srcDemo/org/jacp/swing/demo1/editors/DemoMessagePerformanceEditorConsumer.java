@@ -72,6 +72,13 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 			label2.setText("stop Time bg component: " + action.getMessage());
 
 
+		}else if(action.getMessage() instanceof Integer){
+			System.out.println("Integer" +action.getMessage());
+			counter=counter + ((Integer)action.getMessage());
+			text1.setText("count: " + counter);
+			
+
+
 		}
 /*		try {
 		    Thread.currentThread().sleep(10);

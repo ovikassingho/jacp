@@ -182,8 +182,8 @@ public abstract class AStatelessComponent implements
 	    comp.setHandleTarget(this.handleComponentTarget);
 	    comp.setObserver(this.componentObserver);
 	    comp.setParentPerspective(this.parentPerspective);
-	    comp.setIncomingMessages(new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-		    20));
+	//    comp.setIncomingMessages(new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+	//	    20));
 	    
 	    return comp;
 	} catch (CloneNotSupportedException e) {
@@ -192,6 +192,21 @@ public abstract class AStatelessComponent implements
 	
 	return null;
     }
+    
+    public synchronized IBGComponent<ActionListener, ActionEvent, Object> init(IBGComponent<ActionListener, ActionEvent, Object> comp) {
+	    comp.setId(this.id);
+	    comp.setActive(this.active);
+	    comp.setName(this.name);
+	    comp.setExecutionTarget(this.target);
+	    comp.setHandleTarget(this.handleComponentTarget);
+	    comp.setObserver(this.componentObserver);
+	    comp.setParentPerspective(this.parentPerspective);
+	   ((AStatelessComponent) comp).setIncomingMessages(new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+		    20));
+	    
+	    return comp;
+    }
+    
     
     private void setIncomingMessages(final BlockingQueue<IAction<ActionEvent, Object>> incomingActions) {
 	this.incomingActions = incomingActions;
