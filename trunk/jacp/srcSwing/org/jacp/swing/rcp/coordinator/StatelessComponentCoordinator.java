@@ -12,6 +12,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.impl.AHCPLauncher;
+import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jacp.swing.rcp.util.StateLessComponentRunWorker;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -67,6 +68,7 @@ public class StatelessComponentCoordinator implements
 		    componentInstances.add(getBean((Class<? extends IBGComponent<ActionListener, ActionEvent, Object>>) this.baseComponent.getClass()));
 		}
 		// run component in thread
+		comp.setBlocked(true);
 		comp.putIncomingMessage(message);
 		StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 			comp);
@@ -77,6 +79,7 @@ public class StatelessComponentCoordinator implements
 		    comp = getBean((Class<? extends IBGComponent<ActionListener, ActionEvent, Object>>) this.baseComponent.getClass());
 		    componentInstances.add(comp);
 		    // run component in thread
+		    comp.setBlocked(true);
 		    comp.putIncomingMessage(message);
 		    StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 			    comp);
@@ -102,7 +105,7 @@ public class StatelessComponentCoordinator implements
 	ClassPathXmlApplicationContext context = AHCPLauncher.getContext();
 	 String[] name = context.getBeanNamesForType(class1);
 	 if(name.length>0) {
-	    return (IBGComponent<ActionListener, ActionEvent, Object>) context.getBean(name[0]);
+	    return  ((AStatelessComponent)baseComponent).init((IBGComponent<ActionListener, ActionEvent, Object>) context.getBean(name[0]));
 	 }
 	return null;
     }
