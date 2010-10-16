@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -35,6 +36,7 @@ public abstract class AStatelessComponent implements
     private BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
     private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> coordinator;
+
     
      
 

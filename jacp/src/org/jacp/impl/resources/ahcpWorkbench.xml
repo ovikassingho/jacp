@@ -16,7 +16,9 @@
        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
-
+ 	<context:component-scan base-package="org.jacp.*" />
+    
+    <context:mbean-export/>
 
 	<bean id="workbench" class="org.jacp.swing.demo1.workbench.TestSwingWorkbench">
 
@@ -67,6 +69,7 @@
 				<ref bean="editor6" />
 				<ref bean="editor7" />
 				<ref bean="editor9" />
+				<ref bean="editor10" />
 			</list>
 		</property>
 	</bean>
@@ -124,14 +127,27 @@
 		<property name="name" value="testEditor8" />
 		<property name="active" value="true" />
 		<property name="id" value="id10" />
-		<!--  <property name="executionTarget" value="editor1" /> -->
+		<!-- <property name="executionTarget" value="editor1" /> -->
 	</bean>
 	<bean id="editor9"
 		class="org.jacp.swing.demo1.editors.DemoBackgroundMessagePerformanceEditor2">
 		<property name="name" value="testEditor9" />
 		<property name="active" value="true" />
 		<property name="id" value="id11" />
-		<!--  <property name="executionTarget" value="editor1" /> -->
+		<!-- <property name="executionTarget" value="editor1" /> -->
 	</bean>
+	<bean id="editor10" class="org.jacp.swing.demo1.editors.StatelessDemoConsumer"
+		scope="prototype">
+		<property name="name" value="testEditor10" />
+		<property name="active" value="true" />
+		<property name="id" value="id12" />
+		<property name="testBean" ref="testBean" />
+	</bean>
+
+	<bean id="testBean" class="org.jacp.swing.demo1.editors.TestBean"
+		scope="prototype">
+	</bean>
+	
+	
 </beans>
 

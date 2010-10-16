@@ -14,6 +14,8 @@ import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
+import org.springframework.jmx.export.annotation.ManagedResource;
 
 /**
  * represents a basic swing component to extend from
@@ -21,6 +23,7 @@ import org.jacp.swing.rcp.action.SwingActionListener;
  * @author Andy Moncsek
  * 
  */
+@ManagedResource(objectName = "org.jacp:name=ASwingComponent", description = "a state ful swing component")
 public abstract class ASwingComponent implements
 		IVComponent<Container, ActionListener, ActionEvent, Object> {
 
@@ -41,6 +44,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public IPerspective<ActionListener, ActionEvent, Object> getParentPerspective() {
 		return parentPerspective;
 	}
@@ -59,6 +63,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public String getId() {
 		if (id == null) {
 			throw new UnsupportedOperationException("No id set");
@@ -72,6 +77,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public String getExecutionTarget() {
 		return target;
 	}
@@ -82,6 +88,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public Container getRoot() {
 		return root;
 	}
@@ -92,6 +99,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public String getName() {
 		if (name == null) {
 			throw new UnsupportedOperationException("No name set");
@@ -105,6 +113,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public boolean isActive() {
 		return active;
 	}
@@ -115,6 +124,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public boolean isBlocked() {
 		return blocked.get();
 	}
@@ -125,6 +135,7 @@ public abstract class ASwingComponent implements
 	}
 
 	@Override
+	@ManagedAttribute
 	public boolean hasIncomingMessage() {
 		return !incomingActions.isEmpty();
 	}
