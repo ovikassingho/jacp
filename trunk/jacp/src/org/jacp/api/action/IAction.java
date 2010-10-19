@@ -81,6 +81,6 @@ public interface IAction<A, M> extends Cloneable {
 	 * 
 	 * @return
 	 */
-	public abstract String getTargetId();
+	public abstract String getTargetId(); 
 
 }
