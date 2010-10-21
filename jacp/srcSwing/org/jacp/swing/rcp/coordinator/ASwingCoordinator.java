@@ -18,10 +18,8 @@ import org.jacp.api.coordinator.ICoordinator;
  * @author Andy Moncsek
  * 
  */
-public abstract class ASwingCoordinator
-	extends
-	Thread
-	implements ICoordinator<ActionListener, ActionEvent, Object> {
+public abstract class ASwingCoordinator extends Thread implements
+	ICoordinator<ActionListener, ActionEvent, Object> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -35,7 +33,7 @@ public abstract class ASwingCoordinator
 	    IAction<ActionEvent, Object> action = null;
 	    try {
 		action = messages.take();
-	    } catch (InterruptedException e) {
+	    } catch (final InterruptedException e) {
 		e.printStackTrace();
 	    }
 	    final Map<String, Object> messages = action.getMessageList();
@@ -47,8 +45,6 @@ public abstract class ASwingCoordinator
 
 	}
     }
-
-   
 
     /**
      * returns cloned action with valid message TODO add to interface

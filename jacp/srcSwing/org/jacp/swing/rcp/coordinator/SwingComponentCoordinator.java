@@ -23,17 +23,18 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     private List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
 
     private final IPerspective<ActionListener, ActionEvent, Object> perspective;
-    
+
     @Deprecated
     public SwingComponentCoordinator(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
-	this.setDaemon(true);
+	setDaemon(true);
 	this.perspective = perspective;
     }
-    
+
     public SwingComponentCoordinator(
-	    final IPerspective<ActionListener, ActionEvent, Object> perspective,final List<ISubComponent<ActionListener, ActionEvent, Object>> components) {
-	this.setDaemon(true);
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective,
+	    final List<ISubComponent<ActionListener, ActionEvent, Object>> components) {
+	setDaemon(true);
 	this.perspective = perspective;
 	this.components = components;
     }
@@ -64,7 +65,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     public void handleMessage(final String targetId,
 	    final IAction<ActionEvent, Object> action) {
 	synchronized (action) {
-	    
+
 	    final ISubComponent<ActionListener, ActionEvent, Object> component = getObserveableById(
 		    getTargetComponentId(targetId), components);
 	    log(" //1.1// component message to: " + action.getTargetId());
@@ -132,34 +133,32 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    //TODO former synchronized
+    // TODO former synchronized
     public void delegateMessage(final String target,
 	    final IAction<ActionEvent, Object> action) {
-	    handleMessage(target, action);
+	handleMessage(target, action);
 
     }
 
     @Override
-	//TODO former synchronized
+    // TODO former synchronized
     public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
-	    log(" //1.1.1.1.1// component " + action.getTargetId()
-		    + " delegate to perspective: " + perspective.getId());
-	    perspective.handleAndReplaceSubcomponent(action,
+	log(" //1.1.1.1.1// component " + action.getTargetId()
+		+ " delegate to perspective: " + perspective.getId());
+	perspective.handleAndReplaceSubcomponent(action,
 
-	    (ISubComponent<ActionListener, ActionEvent, Object>) component);
+	(ISubComponent<ActionListener, ActionEvent, Object>) component);
 
     }
 
     @Override
-	//TODO former synchronized
+    // TODO former synchronized
     public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
-	    component.setActive(true);
-	    perspective
-		    .initSubcomonent(
-			    action,
-			    (ISubComponent<ActionListener, ActionEvent, Object>) component);
+	component.setActive(true);
+	perspective.initSubcomonent(action,
+		(ISubComponent<ActionListener, ActionEvent, Object>) component);
 
     }
 
