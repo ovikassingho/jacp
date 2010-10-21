@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -19,70 +18,68 @@ import org.jacp.swing.rcp.coordinator.StatelessComponentCoordinator;
 
 /**
  * Represents a state less background component
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 public abstract class AStatelessComponent implements
-	IBGComponent<ActionListener, ActionEvent, Object>{
+	IBGComponent<ActionListener, ActionEvent, Object> {
 
     private String id;
     private String target = "";
     private String name;
     private volatile String handleComponentTarget;
-    private volatile boolean active=true;
-    private volatile AtomicBoolean blocked= new AtomicBoolean(false);
+    private volatile boolean active = true;
+    private volatile AtomicBoolean blocked = new AtomicBoolean(false);
     private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
-    private BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+    private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
     private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> coordinator;
 
-    
-     
-
     @Override
     public String getExecutionTarget() {
-	return this.target;
+	return target;
     }
 
     @Override
-    public void setExecutionTarget(String target) {
+    public void setExecutionTarget(final String target) {
 	this.target = target;
     }
 
     @Override
     public void setParentPerspective(
-	    IPerspective<ActionListener, ActionEvent, Object> perspective) {
-	this.parentPerspective = perspective;
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	parentPerspective = perspective;
     }
 
     @Override
     public IPerspective<ActionListener, ActionEvent, Object> getParentPerspective() {
-	return this.parentPerspective;
+	return parentPerspective;
     }
 
     @Override
     public boolean hasIncomingMessage() {
 	return !incomingActions.isEmpty();
     }
-    
-    private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> getCooridinator() {
-	if(coordinator==null) {
-		coordinator = new StatelessComponentCoordinator(this);
+
+    private synchronized IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> getCooridinator() {
+	if (coordinator == null) {
+	    coordinator = new StatelessComponentCoordinator(this);
 	}
-	return 	coordinator;
+	return coordinator;
     }
-    
-    public void addMessage(IAction<ActionEvent, Object> message) {
+
+    public void addMessage(final IAction<ActionEvent, Object> message) {
 	getCooridinator().incomingMessage(message);
     }
 
     @Override
-    public void putIncomingMessage(IAction<ActionEvent, Object> action) {
+    public void putIncomingMessage(final IAction<ActionEvent, Object> action) {
 	try {
-		incomingActions.put(action);
+	    incomingActions.put(action);
 	} catch (final InterruptedException e) {
-		e.printStackTrace();
+	    e.printStackTrace();
 	}
 
     }
@@ -90,22 +87,22 @@ public abstract class AStatelessComponent implements
     @Override
     public IAction<ActionEvent, Object> getNextIncomingMessage() {
 	if (hasIncomingMessage()) {
-		try {
-			return incomingActions.take();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
+	    try {
+		return incomingActions.take();
+	    } catch (final InterruptedException e) {
+		e.printStackTrace();
+	    }
 	}
 	return null;
     }
 
     @Override
     public boolean isBlocked() {
-	return this.blocked.get();
+	return blocked.get();
     }
 
     @Override
-    public void setBlocked(boolean blocked) {
+    public void setBlocked(final boolean blocked) {
 	this.blocked.set(blocked);
     }
 
@@ -117,99 +114,92 @@ public abstract class AStatelessComponent implements
     @Override
     public String getId() {
 	if (id == null) {
-		throw new UnsupportedOperationException("No id set");
+	    throw new UnsupportedOperationException("No id set");
 	}
 	return id;
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(final String id) {
 	this.id = id;
     }
 
     @Override
     public boolean isActive() {
-	return this.active;
+	return active;
     }
 
     @Override
-    public void setActive(boolean active) {
+    public void setActive(final boolean active) {
 	this.active = active;
     }
 
     @Override
     public String getName() {
 	if (name == null) {
-		throw new UnsupportedOperationException("No name set");
+	    throw new UnsupportedOperationException("No name set");
 	}
 	return name;
     }
 
     @Override
-    public void setName(String name) {
+    public void setName(final String name) {
 	this.name = name;
     }
 
     @Override
     public void setObserver(
-	    ICoordinator<ActionListener, ActionEvent, Object> observer) {
+	    final ICoordinator<ActionListener, ActionEvent, Object> observer) {
 	componentObserver = observer;
     }
 
     @Override
     public String getHandleTarget() {
-	return this.handleComponentTarget;
+	return handleComponentTarget;
     }
 
     @Override
-    public void setHandleTarget(String componentTargetId) {
-	this.handleComponentTarget = componentTargetId;
+    public void setHandleTarget(final String componentTargetId) {
+	handleComponentTarget = componentTargetId;
     }
-    
-    public IBGComponent<ActionListener, ActionEvent, Object> getNewInstance() {
-	return (IBGComponent<ActionListener, ActionEvent, Object>) this.clone();
-    }
-    
+
 
     @Override
     protected Object clone() {
 	try {
-	    AStatelessComponent comp = (AStatelessComponent) super.clone();
-	    comp.setId(this.id);
-	    comp.setActive(this.active);
-	    comp.setName(this.name);
-	    comp.setExecutionTarget(this.target);
-	    comp.setHandleTarget(this.handleComponentTarget);
-	    comp.setObserver(this.componentObserver);
-	    comp.setParentPerspective(this.parentPerspective);
-	//    comp.setIncomingMessages(new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-	//	    20));
-	    
+	    final AStatelessComponent comp = (AStatelessComponent) super
+		    .clone();
+	    comp.setId(id);
+	    comp.setActive(active);
+	    comp.setName(name);
+	    comp.setExecutionTarget(target);
+	    comp.setHandleTarget(handleComponentTarget);
+	    comp.setObserver(componentObserver);
+	    comp.setParentPerspective(parentPerspective);
 	    return comp;
-	} catch (CloneNotSupportedException e) {
+	} catch (final CloneNotSupportedException e) {
 	    e.printStackTrace();
 	}
-	
+
 	return null;
     }
-    
-    public synchronized IBGComponent<ActionListener, ActionEvent, Object> init(IBGComponent<ActionListener, ActionEvent, Object> comp) {
-	    comp.setId(this.id);
-	    comp.setActive(this.active);
-	    comp.setName(this.name);
-	    comp.setExecutionTarget(this.target);
-	    comp.setHandleTarget(this.handleComponentTarget);
-	    comp.setObserver(this.componentObserver);
-	    comp.setParentPerspective(this.parentPerspective);
-	   ((AStatelessComponent) comp).setIncomingMessages(new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-		    20));
-	    
-	    return comp;
-    }
-    
-    
-    private void setIncomingMessages(final BlockingQueue<IAction<ActionEvent, Object>> incomingActions) {
-	this.incomingActions = incomingActions;
+
+    /**
+     * init cloned instance with values of blueprint
+     * 
+     * @param comp
+     * @return
+     */
+    public synchronized IBGComponent<ActionListener, ActionEvent, Object> init(
+	    final IBGComponent<ActionListener, ActionEvent, Object> comp) {
+	comp.setId(id);
+	comp.setActive(active);
+	comp.setName(name);
+	comp.setExecutionTarget(target);
+	comp.setHandleTarget(handleComponentTarget);
+	comp.setObserver(componentObserver);
+	comp.setParentPerspective(parentPerspective);
+	return comp;
     }
 
     @Override

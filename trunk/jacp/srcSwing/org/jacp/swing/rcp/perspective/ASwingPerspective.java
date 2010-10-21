@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +23,6 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.coordinator.ICoordinator;
-import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
@@ -140,8 +138,9 @@ public abstract class ASwingPerspective implements
 		initSubcomonent(action, component);
 	    } else if (component.isActive()) {
 		log("3.4.4.2: subcomponent init with default action");
-		initSubcomonent(new SwingAction(component.getId(), component
-			.getId(), "init"), component);
+		initSubcomonent(
+			new SwingAction(component.getId(), component.getId(),
+				"init"), component);
 	    } // if END
 
 	} // for END
@@ -164,8 +163,9 @@ public abstract class ASwingPerspective implements
 	    runStateComponent(action, ((AStateComponent) component));
 	    log("BACKGROUND COMPONENT DONE EXECUTE INIT:::"
 		    + component.getName());
-	}else if (component instanceof AStatelessComponent) {
-	    log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::" + component.getName());
+	} else if (component instanceof AStatelessComponent) {
+	    log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
+		    + component.getName());
 	    ((AStatelessComponent) component).addMessage(action);
 	    log("SATELESS BACKGROUND COMPONENT DONE EXECUTE INIT:::"
 		    + component.getName());
@@ -196,17 +196,19 @@ public abstract class ASwingPerspective implements
 
 	if (component.isBlocked()) {
 	    putMessageToQueue(component, action);
-		System.out.println("messagePerspective: " + action.getMessage());
+	    System.out.println("messagePerspective: " + action.getMessage());
 	    log("ADD TO QUEUE:::" + component.getName());
 	} else {
 	    if (component instanceof AStatelessComponent) {
-		 log("RUN STATELESS COMPONENTS:::" + component.getName());
+		log("RUN STATELESS COMPONENTS:::" + component.getName());
 		((AStatelessComponent) component).addMessage(action);
 	    } else {
-		    putMessageToQueue(component, action);
-		    executeComponentReplaceThread(perspectiveLayout, component, action);
-			System.out.println("messagePerspectiveNEW: " + action.getMessage());
-		    log("CREATE NEW THREAD:::" + component.getName());
+		putMessageToQueue(component, action);
+		executeComponentReplaceThread(perspectiveLayout, component,
+			action);
+		System.out.println("messagePerspectiveNEW: "
+			+ action.getMessage());
+		log("CREATE NEW THREAD:::" + component.getName());
 	    }
 
 	}
@@ -221,6 +223,7 @@ public abstract class ASwingPerspective implements
      * @param component
      * @param action
      */
+    // TODO component instanceof AStatelessComponent !!
     private void executeComponentReplaceThread(
 	    final IPerspectiveLayout<? extends Container, Container> layout,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,

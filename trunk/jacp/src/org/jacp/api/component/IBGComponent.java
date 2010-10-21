@@ -22,7 +22,6 @@ public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>, Cloneable
 	 * @param componentTargetId
 	 */
 	public abstract void setHandleTarget(final String componentTargetId);
-	
-	public abstract IBGComponent<L, A, M> getNewInstance();
+
 
 }

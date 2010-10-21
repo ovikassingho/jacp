@@ -19,55 +19,55 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  * @author Andy Moncsek
  */
 public class SwingPerspectiveLayout implements
-		IPerspectiveLayout<Container, Container> {
+	IPerspectiveLayout<Container, Container> {
 
-	private Container layoutComponent;
-	private final boolean scrollable = true;
-	private boolean replaceMode = true;
-	private final Map<String, Container> targetComponents = new HashMap<String, Container>();
-	private final ThreadLocal<Map<String, Container>> tComponents = new ThreadLocal<Map<String, Container>>() {
-		@Override
-		protected Map<String, Container> initialValue() {
-			return targetComponents;
-		}
-	};
-
-	public SwingPerspectiveLayout() {
-	}
-
+    private Container layoutComponent;
+    private final boolean scrollable = true;
+    private boolean replaceMode = true;
+    private final Map<String, Container> targetComponents = new HashMap<String, Container>();
+    private final ThreadLocal<Map<String, Container>> tComponents = new ThreadLocal<Map<String, Container>>() {
 	@Override
-	public void setReplaceMode(final boolean replace) {
-		replaceMode = replace;
+	protected Map<String, Container> initialValue() {
+	    return targetComponents;
 	}
+    };
 
-	@Override
-	public boolean isReplaceMode() {
-		return replaceMode;
-	}
+    public SwingPerspectiveLayout() {
+    }
 
-	@Override
-	public void setRootLayoutComponent(final Container comp) {
-		layoutComponent = comp;
-	}
+    @Override
+    public void setReplaceMode(final boolean replace) {
+	replaceMode = replace;
+    }
 
-	@Override
-	public Container getRootLayoutComponent() {
-		return layoutComponent;
-	}
+    @Override
+    public boolean isReplaceMode() {
+	return replaceMode;
+    }
 
-	public boolean isScrollable() {
-		return scrollable;
-	}
+    @Override
+    public void setRootLayoutComponent(final Container comp) {
+	layoutComponent = comp;
+    }
 
-	@Override
-	public void registerTargetLayoutComponent(final String id,
-			final Container target) {
-		targetComponents.put(id, target);
-	}
+    @Override
+    public Container getRootLayoutComponent() {
+	return layoutComponent;
+    }
 
-	@Override
-	public Map<String, Container> getTargetLayoutComponents() {
-		return tComponents.get();
-	}
+    public boolean isScrollable() {
+	return scrollable;
+    }
+
+    @Override
+    public void registerTargetLayoutComponent(final String id,
+	    final Container target) {
+	targetComponents.put(id, target);
+    }
+
+    @Override
+    public Map<String, Container> getTargetLayoutComponents() {
+	return tComponents.get();
+    }
 
 }

@@ -32,7 +32,7 @@ public class StatelessComponentCoordinator implements
 
     public static final int MAX_INCTANCE_COUNT = 10;
 
-    private AtomicInteger threadCount = new AtomicInteger(0);
+    private final AtomicInteger threadCount = new AtomicInteger(0);
 
     private final List<IBGComponent<ActionListener, ActionEvent, Object>> componentInstances = new CopyOnWriteArrayList<IBGComponent<ActionListener, ActionEvent, Object>>();
 
@@ -40,7 +40,7 @@ public class StatelessComponentCoordinator implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     public StatelessComponentCoordinator(
-	    IBGComponent<ActionListener, ActionEvent, Object> baseComponent) {
+	    final IBGComponent<ActionListener, ActionEvent, Object> baseComponent) {
 	setBaseComponent(baseComponent);
     }
 
@@ -56,38 +56,40 @@ public class StatelessComponentCoordinator implements
      * (org.jacp.api.action.IAction)
      */
     @Override
-    public void incomingMessage(IAction<ActionEvent, Object> message) {
+    public void incomingMessage(final IAction<ActionEvent, Object> message) {
 	synchronized (baseComponent) {
-
 	    // get active instance
 	    IBGComponent<ActionListener, ActionEvent, Object> comp = getActiveComponent();
 	    if (comp != null) {
 
 		if (componentInstances.size() < MAX_INCTANCE_COUNT) {
 		    // create new instance
-		    componentInstances.add(getBean((Class<? extends IBGComponent<ActionListener, ActionEvent, Object>>) this.baseComponent.getClass()));
+		    componentInstances
+			    .add(getCloneBean(((AStatelessComponent) baseComponent)
+				    .getClass()));
 		}
 		// run component in thread
 		comp.setBlocked(true);
 		comp.putIncomingMessage(message);
-		StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
+		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 			comp);
 		worker.execute();
 	    } else {
 		// check if new instances can be created
 		if (componentInstances.size() < MAX_INCTANCE_COUNT) {
-		    comp = getBean((Class<? extends IBGComponent<ActionListener, ActionEvent, Object>>) this.baseComponent.getClass());
+		    comp = getCloneBean(((AStatelessComponent) baseComponent)
+			    .getClass());
 		    componentInstances.add(comp);
 		    // run component in thread
 		    comp.setBlocked(true);
 		    comp.putIncomingMessage(message);
-		    StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
+		    final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 			    comp);
 		    worker.execute();
 		} else {
 		    // if max count reached, seek through components and add
 		    // message to queue of oldest component
-		    Integer seek = Integer.valueOf(threadCount
+		    final Integer seek = Integer.valueOf(threadCount
 			    .incrementAndGet()) % componentInstances.size();
 		    comp = componentInstances.get(seek);
 		    // put message to queue
@@ -101,19 +103,24 @@ public class StatelessComponentCoordinator implements
 	}
     }
     
-    private IBGComponent<ActionListener, ActionEvent, Object> getBean(Class<? extends IBGComponent<ActionListener, ActionEvent, Object>> class1) {
-	ClassPathXmlApplicationContext context = AHCPLauncher.getContext();
-	 String[] name = context.getBeanNamesForType(class1);
-	 if(name.length>0) {
-	    return  ((AStatelessComponent)baseComponent).init((IBGComponent<ActionListener, ActionEvent, Object>) context.getBean(name[0]));
-	 }
+    @Override
+    public <T extends IBGComponent<ActionListener, ActionEvent, Object>>IBGComponent<ActionListener, ActionEvent, Object> getCloneBean(final Class<T> clazz) {
+	final ClassPathXmlApplicationContext context = AHCPLauncher
+		.getContext();
+	final String[] name = context.getBeanNamesForType(clazz);
+	if (name.length > 0) {
+	    return ((AStatelessComponent) baseComponent)
+		    .init((T)context
+			    .getBean(name[0]));
+	}
 	return null;
     }
 
     private IBGComponent<ActionListener, ActionEvent, Object> getActiveComponent() {
-	for (IBGComponent<ActionListener, ActionEvent, Object> comp : componentInstances) {
-	    if (!comp.isBlocked())
+	for (final IBGComponent<ActionListener, ActionEvent, Object> comp : componentInstances) {
+	    if (!comp.isBlocked()) {
 		return comp;
+	    }
 	}
 
 	return null;
@@ -136,9 +143,11 @@ public class StatelessComponentCoordinator implements
     }
 
     public void setBaseComponent(
-	    IBGComponent<ActionListener, ActionEvent, Object> baseComponent) {
+	    final IBGComponent<ActionListener, ActionEvent, Object> baseComponent) {
 	this.baseComponent = baseComponent;
-	componentInstances.add(getBean((Class<? extends IBGComponent<ActionListener, ActionEvent, Object>>) this.baseComponent.getClass()));
+	componentInstances
+		.add(getCloneBean(((AStatelessComponent) baseComponent)
+			    .getClass()));
     }
 
     private void log(final String message) {
@@ -146,8 +155,9 @@ public class StatelessComponentCoordinator implements
 	    logger.fine(">> " + message);
 	}
     }
+
     @ManagedAttribute
     protected List<IBGComponent<ActionListener, ActionEvent, Object>> getComponentInstances() {
-        return componentInstances;
+	return componentInstances;
     }
 }

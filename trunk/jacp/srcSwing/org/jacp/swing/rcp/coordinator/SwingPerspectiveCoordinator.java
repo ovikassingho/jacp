@@ -24,223 +24,221 @@ import org.jacp.swing.rcp.action.SwingAction;
  * @author Andy Moncsek
  */
 public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
-		IPerspectiveCoordinator<ActionListener, ActionEvent, Object> {
+	IPerspectiveCoordinator<ActionListener, ActionEvent, Object> {
 
-	private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();
-	private final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
+    private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();
+    private final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
 
-	public SwingPerspectiveCoordinator(
-			final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
-	    	this.setDaemon(true);
-		this.workbench = workbench;
+    public SwingPerspectiveCoordinator(
+	    final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
+	setDaemon(true);
+	this.workbench = workbench;
+    }
+
+    @Override
+    public void addPerspective(
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	perspective.setObserver(this);
+	perspectives.add(perspective);
+    }
+
+    @Override
+    public void removePerspective(
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	perspective.setObserver(null);
+	perspectives.remove(perspective);
+    }
+
+    /**
+     * handles message to perspective be perspective or subcomponent !! watch
+     * out
+     * 
+     * @param message
+     * @param action
+     */
+    @Override
+    public void handleMessage(final String target,
+	    final IAction<ActionEvent, Object> action) {
+	final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
+		getTargetPerspectiveId(target), perspectives);
+	if (perspective != null) {
+	    final IAction<ActionEvent, Object> actionClone = getValidAction(
+		    action, target, action.getMessageList().get(target));
+	    handleComponentHit(target, actionClone, perspective);
+	} else {
+	    // TODO implement missing perspective handling!!
+	    throw new UnsupportedOperationException(
+		    "No responsible perspective found. Handling not implemented yet.");
+	}
+    }
+
+    /**
+     * handle message target hit
+     * 
+     * @param target
+     * @param action
+     */
+    private void handleComponentHit(final String target,
+	    final IAction<ActionEvent, Object> action,
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	if (perspective.isActive()) {
+	    handleMessageToActivePerspective(target, action, perspective);
+	} else {
+	    // perspective was not active and will be initialized
+	    log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "
+		    + action.getTargetId());
+	    handleWorkspaceModeSpecific();
+	    handleInActive(perspective, action);
+	}
+    }
+
+    /**
+     * handle message to active perspective; check if target is perspective or
+     * component
+     * 
+     * @param target
+     * @param action
+     * @param perspective
+     */
+    private void handleMessageToActivePerspective(final String target,
+	    final IAction<ActionEvent, Object> action,
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+	// if perspective already active handle perspective and replace
+	// with newly created layout component in workbench
+	log(" //1.1.1.1// perspective HIT handle ACTIVE: "
+		+ action.getTargetId());
+	if (isLocalMessage(target)) {
+	    // message is addressing perspective
+	    handleWorkspaceModeSpecific();
+	    handleActive(perspective, action);
+	} else {
+	    // delegate to addressed component
+	    perspective.delegateComponentMassege(target, action);
+	}
+    }
+
+    /**
+     * handle workspace mode specific actions. When working in single pain mode
+     * all components are deactivated and only one (the active) will be
+     * activated; when working in window mode all components must be visible
+     */
+    private void handleWorkspaceModeSpecific() {
+	switch (workbench.getWorkbenchLayout().getWorkspaceMode()) {
+	case WINDOWED_PAIN:
+	    workbench.enableComponents();
+	    break;
+	default:
+	    workbench.disableComponents();
+	}
+    }
+
+    @Override
+    // TODO former synchronized
+    public void delegateMessage(final String target,
+	    final IAction<ActionEvent, Object> action) {
+	// Find local Target; if target is perspective handle target or
+	// delegate
+	// message to responsible component observer
+	if (isLocalMessage(target)) {
+	    handleMessage(target, action);
+	} else {
+	    callComponentDelegate(target, action);
 	}
 
-	@Override
-	public void addPerspective(
-			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
-		perspective.setObserver(this);
-		perspectives.add(perspective);
+    }
+
+    @Override
+    // TODO former synchronized
+    public void delegateTargetChange(final String target,
+	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
+	// find responsible perspective
+	final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
+		getTargetPerspectiveId(target), perspectives);
+	// find correct target in perspective
+	if (responsiblePerspective != null) {
+	    handleTargetHit(responsiblePerspective, component);
+
+	} else {
+	    handleTargetMiss();
 	}
 
-	@Override
-	public void removePerspective(
-			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
-		perspective.setObserver(null);
-		perspectives.remove(perspective);
+    }
+
+    /**
+     * handle component delegate when target was found
+     * 
+     * @param responsiblePerspective
+     * @param component
+     */
+    private void handleTargetHit(
+	    final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
+	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
+	if (!responsiblePerspective.isActive()) {
+	    // 1. init perspective (do not register component before perspective
+	    // is active, otherwise component will be handled once again)
+	    handleInActive(responsiblePerspective,
+		    new SwingAction(responsiblePerspective.getId(),
+			    responsiblePerspective.getId(), "init"));
 	}
+	addToActivePerspective(responsiblePerspective, component);
+    }
 
-	/**
-	 * handles message to perspective be perspective or subcomponent !! watch
-	 * out
-	 * 
-	 * @param message
-	 * @param action
-	 */
-	@Override
-	public void handleMessage(final String target,
-			final IAction<ActionEvent, Object> action) {
-		final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
-				getTargetPerspectiveId(target), perspectives);
-		if (perspective != null) {
-			final IAction<ActionEvent, Object> actionClone = getValidAction(
-					action, target, action.getMessageList().get(target));
-			handleComponentHit(target, actionClone, perspective);
-		} else {
-			// TODO implement missing perspective handling!!
-			throw new UnsupportedOperationException(
-					"No responsible perspective found. Handling not implemented yet.");
-		}
-	}
+    private void addToActivePerspective(
+	    final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
+	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
+	responsiblePerspective.addActiveComponent(component);
+    }
 
-	/**
-	 * handle message target hit
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	private void handleComponentHit(final String target,
-			final IAction<ActionEvent, Object> action,
-			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
-		if (perspective.isActive()) {
-			handleMessageToActivePerspective(target, action, perspective);
-		} else {
-			// perspective was not active and will be initialized
-			log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "
-					+ action.getTargetId());
-			handleWorkspaceModeSpecific();
-			handleInActive(perspective, action);
-		}
-	}
+    /**
+     * handle component delegate when no target found
+     */
+    private void handleTargetMiss() {
+	throw new UnsupportedOperationException(
+		"No responsible perspective found. Handling not implemented yet.");
+    }
 
-	/**
-	 * handle message to active perspective; check if target is perspective or
-	 * component
-	 * 
-	 * @param target
-	 * @param action
-	 * @param perspective
-	 */
-	private void handleMessageToActivePerspective(final String target,
-			final IAction<ActionEvent, Object> action,
-			final IPerspective<ActionListener, ActionEvent, Object> perspective) {
-		// if perspective already active handle perspective and replace
-		// with newly created layout component in workbench
-		log(" //1.1.1.1// perspective HIT handle ACTIVE: "
-				+ action.getTargetId());
-		if (isLocalMessage(target)) {
-			// message is addressing perspective
-			handleWorkspaceModeSpecific();
-			handleActive(perspective, action);
-		} else {
-			// delegate to addressed component
-			perspective.delegateComponentMassege(target, action);
-		}
-	}
-
-	/**
-	 * handle workspace mode specific actions. When working in single pain mode
-	 * all components are deactivated and only one (the active) will be
-	 * activated; when working in window mode all components must be visible
-	 */
-	private void handleWorkspaceModeSpecific() {
-		switch (workbench.getWorkbenchLayout().getWorkspaceMode()) {
-		case WINDOWED_PAIN:
-			workbench.enableComponents();
-			break;
-		default:
-			workbench.disableComponents();
-		}
-	}
-
-	@Override
-	//TODO former synchronized
-	public void delegateMessage(final String target,
-			final IAction<ActionEvent, Object> action) {
-			// Find local Target; if target is perspective handle target or
-			// delegate
-			// message to responsible component observer
-			if (isLocalMessage(target)) {
-				handleMessage(target, action);
-			} else {
-				callComponentDelegate(target, action);
-			}
-
-	}
-
-	@Override
-	//TODO former synchronized
-	public void delegateTargetChange(final String target,
-			final ISubComponent<ActionListener, ActionEvent, Object> component) {
-		// find responsible perspective
-		final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
-				getTargetPerspectiveId(target), perspectives);
-		// find correct target in perspective
-		if (responsiblePerspective != null) {
-			handleTargetHit(responsiblePerspective, component);
-
-		} else {
-			handleTargetMiss();
-		}
-
-	}
-
-	/**
-	 * handle component delegate when target was found
-	 * 
-	 * @param responsiblePerspective
-	 * @param component
-	 */
-	private void handleTargetHit(
-			final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
-			final ISubComponent<ActionListener, ActionEvent, Object> component) {
-		if (!responsiblePerspective.isActive()) {
-			// 1. init perspective (do not register component before perspective
-			// is active, otherwise component will be handled once again)
-			handleInActive(responsiblePerspective, new SwingAction(
-					responsiblePerspective.getId(), responsiblePerspective
-							.getId(), "init"));
-		}
-		addToActivePerspective(responsiblePerspective, component);
-	}
-
-	private void addToActivePerspective(
-			final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
-			final ISubComponent<ActionListener, ActionEvent, Object> component) {
-		responsiblePerspective.addActiveComponent(component);
-	}
-
-	/**
-	 *handle component delegate when no target found
-	 */
-	private void handleTargetMiss() {
-		throw new UnsupportedOperationException(
-				"No responsible perspective found. Handling not implemented yet.");
-	}
-
-	/**
-	 * delegate to responsible componentObserver in correct perspective
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	private void callComponentDelegate(final String target,
-			final IAction<ActionEvent, Object> action) {
-		final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
-				getTargetPerspectiveId(target), perspectives);
-		// TODO REMOVE null handling... use DUMMY instead (maybe like
-		// Collections.EMPTY...)
-		if (perspective != null) {
-			if (!perspective.isActive()) {
-				handleInActive(perspective, action);
-			} else {
-				perspective.delegateComponentMassege(target, action);
-			}
-
-		}
-
-	}
-
-	@Override
-	//TODO former synchronized
-	public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
-			final M component, final IAction<ActionEvent, Object> action) {
-			workbench
-					.replacePerspective(
-							(IPerspective<ActionListener, ActionEvent, Object>) component,
-							action);
+    /**
+     * delegate to responsible componentObserver in correct perspective
+     * 
+     * @param target
+     * @param action
+     */
+    private void callComponentDelegate(final String target,
+	    final IAction<ActionEvent, Object> action) {
+	final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
+		getTargetPerspectiveId(target), perspectives);
+	// TODO REMOVE null handling... use DUMMY instead (maybe like
+	// Collections.EMPTY...)
+	if (perspective != null) {
+	    if (!perspective.isActive()) {
+		handleInActive(perspective, action);
+	    } else {
+		perspective.delegateComponentMassege(target, action);
+	    }
 
 	}
 
-	@Override
-	//TODO former synchronized
-	public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
-			final M component, final IAction<ActionEvent, Object> action) {
-			component.setActive(true);
-			workbench
-					.initPerspective(
-							(IPerspective<ActionListener, ActionEvent, Object>) component,
-							action);
+    }
 
-	}
+    @Override
+    // TODO former synchronized
+    public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
+	    final M component, final IAction<ActionEvent, Object> action) {
+	workbench.replacePerspective(
+		(IPerspective<ActionListener, ActionEvent, Object>) component,
+		action);
+
+    }
+
+    @Override
+    // TODO former synchronized
+    public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
+	    final M component, final IAction<ActionEvent, Object> action) {
+	component.setActive(true);
+	workbench.initPerspective(
+		(IPerspective<ActionListener, ActionEvent, Object>) component,
+		action);
+
+    }
 
 }
