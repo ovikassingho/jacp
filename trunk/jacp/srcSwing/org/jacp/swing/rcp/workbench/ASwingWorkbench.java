@@ -1,7 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2010,2011.
+ * AHCP Project
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
+
 package org.jacp.swing.rcp.workbench;
 
 import java.awt.BorderLayout;
@@ -104,18 +118,18 @@ public abstract class ASwingWorkbench extends JFrame
     private void handleWorkspaceMode() {
 	// define basic content pane
 	switch (layout.getWorkspaceMode()) {
-	case WINDOWED_PAIN:
-	    log("2.1: WINDOWED_PAIN");
+	case WINDOWED_PANE:
+	    log("2.1: WINDOWED_PANE");
 	    final JDesktopPane desktop = new JDesktopPane();
 	    setContentPane(desktop);
 	    break;
-	case TABBED_PAIN:
-	    log("2.1: TABBED_PAIN");
+	case TABBED_PANE:
+	    log("2.1: TABBED_PANE");
 	    final JTabbedPane desktopTabs = new JTabbedPane();
 	    setContentPane(desktopTabs);
 	    break;
 	default:
-	    log("2.1: SINGLE_PAIN");
+	    log("2.1: SINGLE_PANE");
 	}
     }
 
@@ -220,12 +234,12 @@ public abstract class ASwingWorkbench extends JFrame
 	addPerspectiveBarEntries(perspective);
 
 	switch (layout.getWorkspaceMode()) {
-	case SINGLE_PAIN:
-	    log("3.4.6: perspective init SINGLE_PAIN");
+	case SINGLE_PANE:
+	    log("3.4.6: perspective init SINGLE_PANE");
 	    initPerspectiveInStackMode(perspectiveLayout);
 	    break;
-	case TABBED_PAIN:
-	    log("3.4.6: perspective init TABBED_PAIN");
+	case TABBED_PANE:
+	    log("3.4.6: perspective init TABBED_PANE");
 	    initPerspectivesInTabbedMode(perspectiveLayout,
 		    perspective.getName());
 	    break;
