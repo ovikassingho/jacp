@@ -2,12 +2,14 @@ package org.jacp.swing.demo1.editors;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.component.ASwingComponent;
 
 public class TestEditor5 extends ASwingComponent {
@@ -18,12 +20,7 @@ public class TestEditor5 extends ASwingComponent {
 
 	}
 
-	@Override
-	public void handleBarEntries(final Container toolBar,
-			final Container bottomBar) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
@@ -59,6 +56,14 @@ public class TestEditor5 extends ASwingComponent {
 		book = new DefaultMutableTreeNode("rrkhiu");
 		category.add(book);
 
+	}
+
+
+
+	@Override
+	public void handleBarEntries(Map<Layout, Container> bars) {
+	    // TODO Auto-generated method stub
+	    
 	}
 
 }

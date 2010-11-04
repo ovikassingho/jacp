@@ -1,11 +1,13 @@
 package org.jacp.swing.demo1.perspectives;
 
 import java.awt.Container;
+import java.util.Map;
 
 import javax.swing.JMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
@@ -18,12 +20,7 @@ public class DemoMessagePerformancePerspective extends ASwingPerspective {
 
 	}
 
-	@Override
-	public void handleBarEntries(final Container toolBar,
-			final Container bottomBar) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void handlePerspective(final SwingAction action,
@@ -40,8 +37,19 @@ public class DemoMessagePerformancePerspective extends ASwingPerspective {
 		perspectiveLayout.registerTargetLayoutComponent("editor0",
 				scrollPaneEditor);
 
-		perspectiveLayout.setRootLayoutComponent(splitPane);
+		perspectiveLayout.setRootComponent(splitPane);
 
+	}
+
+
+
+
+
+
+	@Override
+	public void handleBarEntries(Map<Layout, Container> bars) {
+	    // TODO Auto-generated method stub
+	    
 	}
 
 }
