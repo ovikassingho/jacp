@@ -31,6 +31,7 @@ import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.swing.rcp.action.SwingAction;
+import org.jacp.swing.rcp.workbench.ASwingWorkbench;
 
 /**
  * Observe perspective actions and delegates message to correct component
@@ -238,9 +239,8 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     // TODO former synchronized
     public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 	    final M component, final IAction<ActionEvent, Object> action) {
-	workbench.replacePerspective(
-		(IPerspective<ActionListener, ActionEvent, Object>) component,
-		action);
+	((ASwingWorkbench)workbench).handleAndReplaceComponent(action,
+		(IPerspective<ActionListener, ActionEvent, Object>) component);
 
     }
 
@@ -249,9 +249,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final M component, final IAction<ActionEvent, Object> action) {
 	component.setActive(true);
-	workbench.initPerspective(
-		(IPerspective<ActionListener, ActionEvent, Object>) component,
-		action);
+	((ASwingWorkbench)workbench).initComponent(action,(IPerspective<ActionListener, ActionEvent, Object>) component);
 
     }
 

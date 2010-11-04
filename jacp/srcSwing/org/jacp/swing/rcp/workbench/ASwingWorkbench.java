@@ -71,7 +71,7 @@ import com.apple.mrj.MRJApplicationUtils;
 public abstract class ASwingWorkbench extends JFrame
 	implements
 	IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-	IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<ActionListener, ActionEvent, Object>> {
+	IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<ActionListener, ActionEvent, Object>,IAction<ActionEvent, Object>> {
 
     /**
 	 * 
@@ -134,7 +134,7 @@ public abstract class ASwingWorkbench extends JFrame
 		initToolBars();
 		// handle perspectives
 		log("3.3: workbench init perspectives");
-		initPerspectives();
+		initComponents(null);
 		// handle workspce bar entries
 		log("3.4: workbench handle bar entries");
 		handleBarEntries(layout.getToolBars());
@@ -191,15 +191,14 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public void initPerspective(
-	    final IPerspective<ActionListener, ActionEvent, Object> perspective,
-	    final IAction<ActionEvent, Object> action) {
+    public void initComponent(final IAction<ActionEvent, Object> action,
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = ((ASwingPerspective) perspective)
 		.getIPerspectiveLayout();
 	log("3.4.3: perspective handle init");
 	handlePerspectiveInitMethod(action, perspective);
 	log("3.4.4: perspective init subcomponents");
-	perspective.initSubcomponents(action, perspective);
+	perspective.initComponents(action);
 	log("3.4.5: perspective init bar entries");
 	addPerspectiveBarEntries(perspective);
 
@@ -221,9 +220,8 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public void replacePerspective(
-	    final IPerspective<ActionListener, ActionEvent, Object> perspective,
-	    final IAction<ActionEvent, Object> action) {
+    public void handleAndReplaceComponent(final IAction<ActionEvent, Object> action,
+	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	final IPerspectiveLayout<Container, Container> perspectiveLayout = ((ASwingPerspective) perspective)
 		.getIPerspectiveLayout();
 	// backup old component
@@ -384,7 +382,8 @@ public abstract class ASwingWorkbench extends JFrame
      * editorContainer. The initPerspective method should stick these three
      * parts together so they can be add to the workbench
      */
-    private void initPerspectives() {
+    @Override
+    public void initComponents(final IAction<ActionEvent, Object> action) {
 	for (final IPerspective<ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
 	    log("3.4.1: register component: " + perspective.getName());
 	    registerComponent(perspective, perspectiveObserver);
@@ -395,9 +394,9 @@ public abstract class ASwingWorkbench extends JFrame
 		SwingUtilities.invokeLater(new Runnable() {
 		    @Override
 		    public void run() {
-			initPerspective(perspective, new SwingAction(
+			initComponent( new SwingAction(
 				perspective.getId(), perspective.getId(),
-				"init"));
+				"init"),perspective);
 
 		    }
 		}); // SWING UTILS END

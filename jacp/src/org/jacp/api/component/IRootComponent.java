@@ -17,6 +17,8 @@
  */
 package org.jacp.api.component;
 
+import org.jacp.api.action.IAction;
+
 /**
  * all root components have containing sub components (workspace ->
  * perspectives; perspective - editors) and listeners; all sub components have
@@ -28,21 +30,48 @@ package org.jacp.api.component;
  *            component to register
  * @param <H>
  *            handler where component have to be registered
+ * @param <A>
+ *            action to use in registration process
  */
-public interface IRootComponent<T, H> {
+public interface IRootComponent<T, H, A> {
 
-	/**
-	 * register component at listener
-	 * 
-	 * @param component
-	 */
-	abstract public void registerComponent(final T component, final H handler);
+    /**
+     * register component at listener
+     * 
+     * @param component
+     */
+    abstract public void registerComponent(final T component, final H handler);
 
-	/**
-	 * unregister component from current perspective
-	 * 
-	 * @param component
-	 */
-	abstract public void unregisterComponent(final T component, final H handler);
+    /**
+     * unregister component from current perspective
+     * 
+     * @param component
+     */
+    abstract public void unregisterComponent(final T component, final H handler);
+
+    /**
+     * handles initialization of subcomponents
+     * 
+     * @param action
+     */
+    public abstract void initComponents(final A action);
+
+    /**
+     * handles initialization of a single component;
+     * 
+     * @param action
+     * @param editor
+     */
+    public abstract void initComponent(final A action, final T component);
+
+    /**
+     * runs 'handle' method and replace of subcomponent in perspective
+     * 
+     * @param layout
+     * @param component
+     * @param action
+     */
+    public abstract void handleAndReplaceComponent(final A action,
+	    final T component);
 
 }

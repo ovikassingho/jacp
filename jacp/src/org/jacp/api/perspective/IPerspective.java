@@ -39,7 +39,7 @@ import org.jacp.api.coordinator.IComponentCoordinator;
  *            defines the basic message type
  */
 public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
-		IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>> {
+		IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>,IAction<A, M>> {
 
 	/**
 	 * the initialization method
@@ -68,35 +68,6 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	public abstract void handlePerspective(final IAction<A, M> action);
 
-
-	/**
-	 * handles init of subcomponents in perspective TODO move to IRootcomponent
-	 * 
-	 * @param action
-	 * @param perspective
-	 */
-	public abstract void initSubcomponents(final IAction<A, M> action,
-			final IPerspective<L, A, M> perspective);
-
-	/**
-	 * TODO move to IRoot component handles initialisation of a single
-	 * component; TODO change from IVComponent to global interface
-	 * 
-	 * @param action
-	 * @param editor
-	 */
-	public abstract void initSubcomonent(final IAction<A, M> action,
-			final ISubComponent<L, A, M> component);
-
-	/**
-	 * runs 'handle' method and replace of subcomponent in perspective
-	 * 
-	 * @param layout
-	 * @param component
-	 * @param action
-	 */
-	public abstract void handleAndReplaceSubcomponent(
-			final IAction<A, M> action, final ISubComponent<L, A, M> component);
 
 	/**
 	 * add active component after component.handle was executed

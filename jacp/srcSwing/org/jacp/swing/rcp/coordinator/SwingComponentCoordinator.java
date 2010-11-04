@@ -162,7 +162,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
 	    final P component, final IAction<ActionEvent, Object> action) {
 	log(" //1.1.1.1.1// component " + action.getTargetId()
 		+ " delegate to perspective: " + perspective.getId());
-	perspective.handleAndReplaceSubcomponent(action,
+	perspective.handleAndReplaceComponent(action,
 
 	(ISubComponent<ActionListener, ActionEvent, Object>) component);
 
@@ -173,7 +173,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
 	component.setActive(true);
-	perspective.initSubcomonent(action,
+	perspective.initComponent(action,
 		(ISubComponent<ActionListener, ActionEvent, Object>) component);
 
     }

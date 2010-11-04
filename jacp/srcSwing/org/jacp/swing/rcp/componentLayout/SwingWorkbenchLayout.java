@@ -28,18 +28,14 @@ import org.jacp.api.util.Tupel;
 import org.jacp.api.util.WorkspaceMode;
 
 /**
- * 
+ * defines basic layout of workbench; define if menus are enabled; declare tool bars; set workbench size
  * @author Andy Moncsek
  */
 public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2> {
 
     private LayoutManager2 layoutManager;
-    private boolean bottomBarEnabled;
-    private boolean toolBarEnabled;
     private boolean menuEnabled;
     private WorkspaceMode workspaceMode;
-    private Layout toolBarLayout;
-    private Layout bottomBarLayout;
     private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
 
     private final Map<Layout, Container> toolBars = new ConcurrentHashMap<Layout, Container>();
@@ -66,18 +62,6 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2> {
     }
 
     @Override
-    public void setToolBarEnabled(final boolean enabled, final Layout position) {
-	toolBarEnabled = enabled;
-	toolBarLayout = position;
-    }
-
-    @Override
-    public void setBottomBarEnabled(final boolean enabled, final Layout position) {
-	bottomBarEnabled = enabled;
-	bottomBarLayout = position;
-    }
-
-    @Override
     public void setLayoutManager(final LayoutManager2 layout) {
 	layoutManager = layout;
     }
@@ -87,25 +71,6 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2> {
 	return layoutManager;
     }
 
-    @Override
-    public boolean isToolbarEnabled() {
-	return toolBarEnabled;
-    }
-
-    @Override
-    public Layout getToolBarLayout() {
-	return toolBarLayout;
-    }
-
-    @Override
-    public boolean isBottomBarEnabled() {
-	return bottomBarEnabled;
-    }
-
-    @Override
-    public Layout getBottomBarLayout() {
-	return bottomBarLayout;
-    }
 
     @Override
     public void setWorkbenchXYSize(final int x, final int y) {
