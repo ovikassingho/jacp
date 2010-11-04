@@ -138,18 +138,17 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    public void initSubcomponents(final IAction<ActionEvent, Object> action,
-	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+    public void initComponents(final IAction<ActionEvent, Object> action) {
 	final String targetId = getTargetComponentId(action.getTargetId());
 	log("3.4.4.1: subcomponent targetId: " + targetId);
-	for (final ISubComponent<ActionListener, ActionEvent, Object> component : perspective
+	for (final ISubComponent<ActionListener, ActionEvent, Object> component : this
 		.getSubcomponents()) {
 	    if (component.getId().equals(targetId)) {
 		log("3.4.4.2: subcomponent init with custom action");
-		initSubcomonent(action, component);
+		initComponent(action, component);
 	    } else if (component.isActive()) {
 		log("3.4.4.2: subcomponent init with default action");
-		initSubcomonent(
+		initComponent(
 			new SwingAction(component.getId(), component.getId(),
 				"init"), component);
 	    } // if END
@@ -158,7 +157,7 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    public void initSubcomonent(final IAction<ActionEvent, Object> action,
+    public void initComponent(final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
 	    log("COMPONENT EXECUTE INIT:::" + component.getName());
@@ -200,7 +199,7 @@ public abstract class ASwingPerspective implements
 
     @Override
 
-    public void handleAndReplaceSubcomponent(
+    public void handleAndReplaceComponent(
 	    final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 

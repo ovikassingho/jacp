@@ -38,7 +38,7 @@ public interface IWorkbenchLayout<L> {
     public abstract WorkspaceMode getWorkspaceMode();
 
     /**
-     * set workspace layout to window or stack mode
+     * set workspace layout to window-, stack- or tabbed-mode
      * 
      * @param mode
      */
@@ -58,51 +58,6 @@ public interface IWorkbenchLayout<L> {
      */
     public abstract void setMenuEnabled(boolean enabled);
 
-    /**
-     * set toolbar enabled and define position in workspace
-     * 
-     * @param enabled
-     * @param position
-     */
-    // TODO allow use of greneric list of hints like P... p
-    public abstract void setToolBarEnabled(boolean enabled, Layout position);
-
-    /**
-     * check if toolbar is enabled
-     * 
-     * @return
-     */
-    public abstract boolean isToolbarEnabled();
-
-    /**
-     * get defined toolbar layout
-     * 
-     * @return
-     */
-    public abstract Layout getToolBarLayout();
-
-    /**
-     * set bottom bar enabled and define position
-     * 
-     * @param enabled
-     * @param position
-     */
-    // TODO allow use of greneric list of hints like P... p
-    public abstract void setBottomBarEnabled(boolean enabled, Layout position);
-
-    /**
-     * check if bottom bar is enabled
-     * 
-     * @return
-     */
-    public abstract boolean isBottomBarEnabled();
-
-    /**
-     * get defined bottom bar layout
-     * 
-     * @return
-     */
-    public abstract Layout getBottomBarLayout();
 
     /**
      * set default layout manager to workspace

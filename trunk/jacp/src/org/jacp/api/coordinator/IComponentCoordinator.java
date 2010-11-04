@@ -40,13 +40,13 @@ public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
 	 * 
 	 * @param component
 	 */
-	public abstract void addComponent(ISubComponent<L, A, M> component);
+	public abstract void addComponent(final ISubComponent<L, A, M> component);
 
 	/**
 	 * remove component; e.g. when component is deactivated
 	 * 
 	 * @param component
 	 */
-	public abstract void removeComponent(ISubComponent<L, A, M> component);
+	public abstract void removeComponent(final ISubComponent<L, A, M> component);
 
 }

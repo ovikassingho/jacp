@@ -100,23 +100,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 */
 	public abstract List<IPerspective<L, A, M>> getPerspectives();
 
-	/**
-	 * init single perspective instance
-	 * 
-	 * @param perspective
-	 * @param action
-	 */
-	public abstract void initPerspective(
-			final IPerspective<L, A, M> perspective, IAction<A, M> action);
 
-	/**
-	 * calls perspective handle method and replaces the old entry by new one
-	 * 
-	 * @param perspective
-	 * @param action
-	 */
-	public void replacePerspective(final IPerspective<L, A, M> perspective,
-			final IAction<A, M> action);
 
 	/**
 	 * set visibility of all components in workspace wrapper to false

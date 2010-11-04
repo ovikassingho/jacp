@@ -31,20 +31,6 @@ import java.util.Map;
  */
 public interface IPerspectiveLayout<M, B> {
 
-	/**
-	 * set behaviour of perspective if container can't handle parralel
-	 * subcomponents; decide if subcomponents are replaced or not
-	 * 
-	 * @param replace
-	 */
-	public abstract void setReplaceMode(boolean replace);
-
-	/**
-	 * cheack replacement of subcomponents behaviour
-	 * 
-	 * @return
-	 */
-	public abstract boolean isReplaceMode();
 
 	/**
 	 * set Layoutwrapper for perspective; this wrapper contains wrappers for
@@ -52,7 +38,7 @@ public interface IPerspectiveLayout<M, B> {
 	 * 
 	 * @param comp
 	 */
-	public abstract void setRootComponent(M comp);
+	public abstract void setRootComponent(final M comp);
 
 	/**
 	 * getLayoutwrapper for perspective

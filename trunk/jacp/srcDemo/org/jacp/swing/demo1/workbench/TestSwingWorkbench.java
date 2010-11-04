@@ -19,7 +19,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.util.WorkspaceMode;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
@@ -93,5 +95,7 @@ public class TestSwingWorkbench extends ASwingWorkbench {
 	layout.registerToolBar(Layout.SOUTH, new JToolBar());
 	layout.setWorkbenchXYSize(1024, 600);
     }
+
+
 
 }

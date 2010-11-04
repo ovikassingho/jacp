@@ -35,20 +35,8 @@ public class SwingPerspectiveLayout implements
 	IPerspectiveLayout<Container, Container> {
 
     private Container rootComponent;
-    private boolean replaceMode = true;
     private final Map<String, Container> targetComponents = new ConcurrentHashMap<String, Container>();
-    public SwingPerspectiveLayout() {
-    }
-
-    @Override
-    public void setReplaceMode(final boolean replace) {
-	replaceMode = replace;
-    }
-
-    @Override
-    public boolean isReplaceMode() {
-	return replaceMode;
-    }
+    
 
     @Override
     public void setRootComponent(final Container comp) {

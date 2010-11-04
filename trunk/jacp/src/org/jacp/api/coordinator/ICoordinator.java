@@ -41,7 +41,7 @@ public interface ICoordinator<L, A, M> {
 	 * 
 	 * @param action
 	 */
-	public abstract void handle(IAction<A, M> action);
+	public abstract void handle(final IAction<A, M> action);
 
 	/**
 	 * handles message to specific component addressed by id

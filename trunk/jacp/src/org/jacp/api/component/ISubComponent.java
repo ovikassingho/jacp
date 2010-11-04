@@ -35,14 +35,14 @@ import org.jacp.api.perspective.IPerspective;
  */
 public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	/**
-	 * returns the ui target; defines the target container in perspective
+	 * returns the target; defines the target perspective
 	 * 
 	 * @param target
 	 */
 	public abstract String getExecutionTarget();
 
 	/**
-	 * set the ui target; defines the target container in perspective
+	 * set the target; defines the target container in perspective
 	 * 
 	 * @param target
 	 */
