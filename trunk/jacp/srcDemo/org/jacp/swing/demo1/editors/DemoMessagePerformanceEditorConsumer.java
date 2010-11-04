@@ -2,6 +2,7 @@ package org.jacp.swing.demo1.editors;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,6 +10,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.springframework.jmx.export.annotation.ManagedResource;
 @ManagedResource(objectName = "org.jacp:name=DemoMessagePerformanceEditorConsumer", description = "a state ful swing component")
@@ -30,12 +32,7 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 
 	}
 
-	@Override
-	public void handleBarEntries(final Container toolBar,
-			final Container bottomBar) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
@@ -87,6 +84,12 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 		    e.printStackTrace();
 		}*/
 		return panel;
+	}
+
+	@Override
+	public void handleBarEntries(Map<Layout, Container> bars) {
+	    // TODO Auto-generated method stub
+	    
 	}
 
 }

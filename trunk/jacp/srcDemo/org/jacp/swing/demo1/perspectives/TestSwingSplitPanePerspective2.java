@@ -8,6 +8,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -20,6 +21,8 @@ import javax.swing.SwingConstants;
 
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.componentLayout.IPerspectiveLayout;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
@@ -91,13 +94,16 @@ public class TestSwingSplitPanePerspective2 extends ASwingPerspective {
 		perspectiveLayout.registerTargetLayoutComponent("view", viewTabs);
 		perspectiveLayout.registerTargetLayoutComponent("editor0", editorTabs);
 		// splitPane.setDividerLocation(100);
-		perspectiveLayout.setRootLayoutComponent(splitPane);
+		perspectiveLayout.setRootComponent(splitPane);
 		System.out.println("perspective2");
 	}
 
-	@Override
-	public void handleBarEntries(final Container toolBar,
-			final Container bottomBar) {
 
+	@Override
+	public void handleBarEntries(Map<Layout, Container> bars) {
+	    // TODO Auto-generated method stub
+	    
 	}
+
+
 }

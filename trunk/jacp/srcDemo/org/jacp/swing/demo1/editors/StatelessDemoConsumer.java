@@ -11,15 +11,14 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 @ManagedResource(objectName = "org.jacp:name=StatelessDemoConsumer", description = "a state ful swing component")
 public class StatelessDemoConsumer extends AStatelessComponent{
     
-    private String test;
     
     private TestBean testBean;
 
     @Override
     public Object handleAction(IAction<ActionEvent, Object> action) {
 	if (action.getMessage() instanceof Integer) {
-	    int max = (Integer) action.getMessage();
-	    test = "dfgfg";
+
+	
 	    int j = 0;
 	    while (j < 100000) {
 		j++;
