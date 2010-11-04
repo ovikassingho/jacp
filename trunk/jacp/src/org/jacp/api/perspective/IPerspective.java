@@ -23,7 +23,6 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 
 /**
@@ -32,8 +31,6 @@ import org.jacp.api.coordinator.IComponentCoordinator;
  * 
  * @author Andy Moncsek
  * 
- * @param <C>
- *            defines the base component where others extend from
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -71,12 +68,6 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	public abstract void handlePerspective(final IAction<A, M> action);
 
-	/**
-	 * returns perspectives layout dto
-	 * 
-	 * @return
-	 */
-	public abstract <C> IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
 
 	/**
 	 * handles init of subcomponents in perspective TODO move to IRootcomponent
