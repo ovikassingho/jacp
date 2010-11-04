@@ -42,7 +42,6 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
 
     private final IPerspective<ActionListener, ActionEvent, Object> perspective;
 
-
     public SwingComponentCoordinator(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	setDaemon(true);
@@ -116,11 +115,11 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
 		// found previously
 		throw new UnsupportedOperationException(
 			"invalid component id handling not supported yet.");
-	    } else {
-		// delegate to parent perspective, then find responsible
-		// perspective
-		perspective.delegateMassege(targetId, action);
 	    }
+	    // delegate to parent perspective, then find responsible
+	    // perspective
+	    perspective.delegateMassege(targetId, action);
+
 	} else {
 	    // possible message to perspective
 	    perspective.delegateMassege(targetId, action);
@@ -151,7 +150,6 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    // TODO former synchronized
     public void delegateMessage(final String target,
 	    final IAction<ActionEvent, Object> action) {
 	handleMessage(target, action);

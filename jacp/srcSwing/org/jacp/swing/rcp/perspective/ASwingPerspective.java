@@ -33,6 +33,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.api.component.IExtendedComponent;
+import org.jacp.api.component.ILayoutAbleComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.Layout;
@@ -58,7 +59,7 @@ import org.jacp.swing.rcp.util.StateComponentRunWorker;
  */
 public abstract class ASwingPerspective implements
 	IPerspective<ActionListener, ActionEvent, Object>,
-	IExtendedComponent<Container> {
+	IExtendedComponent<Container>, ILayoutAbleComponent<Container> {
 
     private final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
 

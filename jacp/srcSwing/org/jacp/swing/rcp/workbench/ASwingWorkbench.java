@@ -194,7 +194,7 @@ public abstract class ASwingWorkbench extends JFrame
     public void initPerspective(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective,
 	    final IAction<ActionEvent, Object> action) {
-	final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
+	final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = ((ASwingPerspective) perspective)
 		.getIPerspectiveLayout();
 	log("3.4.3: perspective handle init");
 	handlePerspectiveInitMethod(action, perspective);
@@ -224,7 +224,7 @@ public abstract class ASwingWorkbench extends JFrame
     public void replacePerspective(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective,
 	    final IAction<ActionEvent, Object> action) {
-	final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
+	final IPerspectiveLayout<Container, Container> perspectiveLayout = ((ASwingPerspective) perspective)
 		.getIPerspectiveLayout();
 	// backup old component
 	final Container componentOld = perspectiveLayout.getRootComponent();
