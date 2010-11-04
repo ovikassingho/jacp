@@ -52,14 +52,14 @@ public interface IPerspectiveLayout<M, B> {
 	 * 
 	 * @param comp
 	 */
-	public abstract void setRootLayoutComponent(M comp);
+	public abstract void setRootComponent(M comp);
 
 	/**
 	 * getLayoutwrapper for perspective
 	 * 
 	 * @return
 	 */
-	public abstract M getRootLayoutComponent();
+	public abstract M getRootComponent();
 
 	/**
 	 * returns map of target components and ids key - id value - target

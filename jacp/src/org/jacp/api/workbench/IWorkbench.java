@@ -18,9 +18,11 @@
 package org.jacp.api.workbench;
 
 import java.util.List;
+import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.perspective.IPerspective;
 
 /**
@@ -72,31 +74,8 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * 
 	 * @return
 	 */
-	public abstract C handleMenuEntries(C meuBar);
+	public abstract C handleMenuEntries(final C meuBar);
 
-	/**
-	 * set toolBar to workspace
-	 */
-	public abstract void initToolBar();
-
-	/**
-	 * returns default toolbar implementation
-	 * 
-	 * @return
-	 */
-	public abstract C getToolBar();
-
-	/**
-	 * set bottomBar to workspace
-	 */
-	public abstract void initBottomBar();
-
-	/**
-	 * returns default bottom bar implementation
-	 * 
-	 * @return
-	 */
-	public abstract C getBottomBar();
 
 	/**
 	 * add default workbench actions to tool bar
@@ -104,7 +83,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param toolBar
 	 * @param bottomBar
 	 */
-	public abstract void handleBarEntries(C toolBar, C bottomBar);
+	public abstract void handleBarEntries(final Map<Layout,C> bars);
 
 	/**
 	 * set perspectives to workbench
@@ -158,8 +137,8 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param action
 	 * @param layout
 	 */
-	public abstract void handleInitialLayout(IAction<A, M> action,
-			IWorkbenchLayout<P> layout);
+	public abstract void handleInitialLayout(final IAction<A, M> action,
+			final IWorkbenchLayout<P> layout);
 
 	/**
 	 * returns workbench layout object
@@ -167,5 +146,6 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @return
 	 */
 	public abstract IWorkbenchLayout<P> getWorkbenchLayout();
+
 
 }
