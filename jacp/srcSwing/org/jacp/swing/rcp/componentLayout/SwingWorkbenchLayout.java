@@ -17,7 +17,10 @@
  */
 package org.jacp.swing.rcp.componentLayout;
 
+import java.awt.Container;
 import java.awt.LayoutManager2;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
@@ -38,6 +41,9 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2> {
     private Layout toolBarLayout;
     private Layout bottomBarLayout;
     private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
+
+    private final Map<Layout, Container> toolBars = new ConcurrentHashMap<Layout, Container>();
+
 
     @Override
     public WorkspaceMode getWorkspaceMode() {
@@ -110,6 +116,16 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2> {
     @Override
     public Tupel<Integer, Integer> getWorkbenchSize() {
 	return size;
+    }
+
+   
+    
+    public void registerToolBar(final Layout name, final Container toolBar) {
+	toolBars.put(name, toolBar);
+    }
+    
+    public Map<Layout, Container> getToolBars() {
+	return this.toolBars;
     }
 
 }

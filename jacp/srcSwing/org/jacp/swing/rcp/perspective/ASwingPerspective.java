@@ -35,6 +35,7 @@ import org.jacp.api.component.IBGComponent;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
@@ -83,8 +84,7 @@ public abstract class ASwingPerspective implements
     public abstract void handleMenuEntries(final JMenu menuBar);
 
     @Override
-    public abstract void handleBarEntries(final Container toolBar,
-	    final Container bottomBar);
+    public abstract void handleBarEntries(final Map<Layout, Container> bars);
 
     @Override
     public <C> C handle(final IAction<ActionEvent, Object> action) {
@@ -109,7 +109,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void registerComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,
 	    final IComponentCoordinator<ActionListener, ActionEvent, Object> handler) {
@@ -121,7 +120,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void unregisterComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,
 	    final IComponentCoordinator<ActionListener, ActionEvent, Object> handler) {
@@ -132,7 +130,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void handleMenuEntries(final Container meuneBar) {
 	if (meuneBar instanceof JMenu) {
 	    this.handleMenuEntries((JMenu) meuneBar);
@@ -140,7 +137,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void initSubcomponents(final IAction<ActionEvent, Object> action,
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	final String targetId = getTargetComponentId(action.getTargetId());
@@ -161,7 +157,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void initSubcomonent(final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
@@ -203,7 +198,7 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
+
     public void handleAndReplaceSubcomponent(
 	    final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
@@ -268,7 +263,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void addActiveComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	// register new component at perspective
@@ -296,7 +290,6 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void delegateTargetChange(final String target,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	final String parentId = getTargetParentId(target);
@@ -310,14 +303,12 @@ public abstract class ASwingPerspective implements
     }
 
     @Override
-    // TODO former synchronized
     public void delegateMassege(final String target,
 	    final IAction<ActionEvent, Object> action) {
 	perspectiveObserver.delegateMessage(target, action);
     }
 
     @Override
-    // TODO former synchronized
     public void delegateComponentMassege(final String target,
 	    final IAction<ActionEvent, Object> action) {
 	componentObserver.delegateMessage(target, action);

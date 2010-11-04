@@ -18,8 +18,8 @@
 package org.jacp.swing.rcp.componentLayout;
 
 import java.awt.Container;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 
@@ -34,17 +34,9 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 public class SwingPerspectiveLayout implements
 	IPerspectiveLayout<Container, Container> {
 
-    private Container layoutComponent;
-    private final boolean scrollable = true;
+    private Container rootComponent;
     private boolean replaceMode = true;
-    private final Map<String, Container> targetComponents = new HashMap<String, Container>();
-    private final ThreadLocal<Map<String, Container>> tComponents = new ThreadLocal<Map<String, Container>>() {
-	@Override
-	protected Map<String, Container> initialValue() {
-	    return targetComponents;
-	}
-    };
-
+    private final Map<String, Container> targetComponents = new ConcurrentHashMap<String, Container>();
     public SwingPerspectiveLayout() {
     }
 
@@ -59,18 +51,15 @@ public class SwingPerspectiveLayout implements
     }
 
     @Override
-    public void setRootLayoutComponent(final Container comp) {
-	layoutComponent = comp;
+    public void setRootComponent(final Container comp) {
+	rootComponent = comp;
     }
 
     @Override
-    public Container getRootLayoutComponent() {
-	return layoutComponent;
+    public Container getRootComponent() {
+	return rootComponent;
     }
 
-    public boolean isScrollable() {
-	return scrollable;
-    }
 
     @Override
     public void registerTargetLayoutComponent(final String id,
@@ -80,7 +69,7 @@ public class SwingPerspectiveLayout implements
 
     @Override
     public Map<String, Container> getTargetLayoutComponents() {
-	return tComponents.get();
+	return targetComponents;
     }
 
 }
