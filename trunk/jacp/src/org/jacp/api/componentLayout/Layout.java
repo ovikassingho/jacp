@@ -19,7 +19,7 @@ package org.jacp.api.componentLayout;
 
 /**
  * 
- * @author amo
+ * @author Andy Moncsek
  */
 public enum Layout {
 

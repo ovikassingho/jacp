@@ -17,6 +17,10 @@
  */
 package org.jacp.api.component;
 
+import java.util.Map;
+
+import org.jacp.api.componentLayout.Layout;
+
 /**
  * represents a extended component with menu entries and tool bar access
  * 
@@ -38,6 +42,6 @@ public interface IExtendedComponent<C> {
 	 * 
 	 * @param toolBar
 	 */
-	public abstract void handleBarEntries(final C toolBar, final C bottomBar);
+	public abstract void handleBarEntries(final Map<Layout,C> bars);
 
 }
