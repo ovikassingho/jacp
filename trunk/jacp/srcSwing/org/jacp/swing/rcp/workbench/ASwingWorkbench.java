@@ -27,20 +27,20 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
@@ -49,6 +49,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
@@ -77,8 +78,6 @@ public abstract class ASwingWorkbench extends JFrame
 	 */
     private static final long serialVersionUID = -1740398352308498810L;
     private JMenu menu;
-    private Container toolbar;
-    private Container bottombar;
     private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
     private final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
 	    this);
@@ -97,40 +96,14 @@ public abstract class ASwingWorkbench extends JFrame
     @Override
     public Container init() {
 	log("1: init workbench");
-	// init user defined worspace
+	// init user defined workspace
 	this.handleInitialLayout(new SwingAction("TODO", "init"), layout);
-
-	log("2: set workspace mode");
-	handleWorkspaceMode();
-
 	final Container contentPane = getContentPane();
-
 	setBasicLayout(contentPane);
 	log("3: handle initialisation sequence");
 	handleInitialisationSequence();
 
 	return contentPane;
-    }
-
-    /**
-     * set workspace type specific content wrapper
-     */
-    private void handleWorkspaceMode() {
-	// define basic content pane
-	switch (layout.getWorkspaceMode()) {
-	case WINDOWED_PANE:
-	    log("2.1: WINDOWED_PANE");
-	    final JDesktopPane desktop = new JDesktopPane();
-	    setContentPane(desktop);
-	    break;
-	case TABBED_PANE:
-	    log("2.1: TABBED_PANE");
-	    final JTabbedPane desktopTabs = new JTabbedPane();
-	    setContentPane(desktopTabs);
-	    break;
-	default:
-	    log("2.1: SINGLE_PANE");
-	}
     }
 
     /**
@@ -157,19 +130,16 @@ public abstract class ASwingWorkbench extends JFrame
 		log("3.1: workbench menu");
 		initMenuBar();
 		// init toolbar instance
-		log("3.2: workbench tool bar");
-		initToolBar();
-		// init bottom bar instance
-		log("3.3: workbench bottom bar");
-		initBottomBar();
+		log("3.2: workbench tool bars");
+		initToolBars();
 		// handle perspectives
-		log("3.4: workbench init perspectives");
+		log("3.3: workbench init perspectives");
 		initPerspectives();
 		// handle workspce bar entries
-		log("3.5: workbench handle bar entries");
-		handleBarEntries(getToolBar(), getBottomBar());
+		log("3.4: workbench handle bar entries");
+		handleBarEntries(layout.getToolBars());
 		// handle default and defined workspace menu entries
-		log("3.6: workbench init menu");
+		log("3.5: workbench init menu");
 		initWorkbenchMenu();
 
 	    }
@@ -244,7 +214,7 @@ public abstract class ASwingWorkbench extends JFrame
 		    perspective.getName());
 	    break;
 	default:
-	    log("3.4.6: perspective init WINDOW_PAIN");
+	    log("3.4.6: perspective init WINDOW_PANE");
 	    initPerspectiveInWindowMode(perspectiveLayout,
 		    perspective.getName());
 	}
@@ -257,8 +227,7 @@ public abstract class ASwingWorkbench extends JFrame
 	final IPerspectiveLayout<? extends Container, Container> perspectiveLayout = perspective
 		.getIPerspectiveLayout();
 	// backup old component
-	final Container componentOld = perspectiveLayout
-		.getRootLayoutComponent();
+	final Container componentOld = perspectiveLayout.getRootComponent();
 	perspective.handlePerspective(action);
 	final Container componentNew = getLayoutComponentFromPerspectiveLayout(
 		perspectiveLayout, componentOld.getPreferredSize());
@@ -274,12 +243,11 @@ public abstract class ASwingWorkbench extends JFrame
      */
     @Override
     public void disableComponents() {
-	final Component dummy = new JComponent() {
-	    private static final long serialVersionUID = 7974987150114729381L;
-	};
+	// do not disable tool bar entries!!
+	final Collection<Container> toolBars = this.layout.getToolBars()
+		.values();
 	for (final Component comp : getContentPane().getComponents()) {
-	    if (!comp.equals(toolbar != null ? toolbar : dummy)
-		    & !comp.equals(bottombar != null ? bottombar : dummy)) {
+	    if (!toolBars.contains(comp)) {
 		comp.setVisible(false);
 	    }
 	}
@@ -323,21 +291,14 @@ public abstract class ASwingWorkbench extends JFrame
 	setJMenuBar(new JMenuBar());
     }
 
-    @Override
-    public void initToolBar() {
-	if (layout.isToolbarEnabled()) {
-	    getContentPane().add(getToolBar(),
-		    layout.getToolBarLayout().getLayout());
+    private void initToolBars() {
+	final Iterator<Entry<Layout, Container>> it = layout.getToolBars()
+		.entrySet().iterator();
+	while (it.hasNext()) {
+	    Entry<Layout, Container> entry = it.next();
+	    getContentPane().add(entry.getValue(), entry.getKey().getLayout());
 	}
 
-    }
-
-    @Override
-    public void initBottomBar() {
-	if (layout.isBottomBarEnabled()) {
-	    getContentPane().add(getBottomBar(),
-		    layout.getBottomBarLayout().getLayout());
-	}
     }
 
     /**
@@ -365,8 +326,8 @@ public abstract class ASwingWorkbench extends JFrame
     private void addPerspectiveBarEntries(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	if (perspective instanceof ASwingPerspective) {
-	    ((ASwingPerspective) perspective).handleBarEntries(getToolBar(),
-		    getBottomBar());
+	    ((ASwingPerspective) perspective).handleBarEntries(this.layout
+		    .getToolBars());
 	}
     }
 
@@ -389,34 +350,6 @@ public abstract class ASwingWorkbench extends JFrame
 	    MRJApplicationUtils.registerQuitHandler(macController);
 	}
 
-	/**
-	 * JMenuItem quitItem = new JMenuItem("Quit"); quitItem.setAccelerator(
-	 * KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET,
-	 * (java.awt.event.InputEvent.SHIFT_MASK |
-	 * (Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()))));
-	 * quitItem.addActionListener(new ActionListener() {
-	 * 
-	 * public void actionPerformed(ActionEvent e) {
-	 * System.out.println("Quit"); System.exit(0); } });
-	 * 
-	 * ((JMenu) getDefaultMenu()).add(quitItem);
-	 **/
-    }
-
-    @Override
-    public Container getToolBar() {
-	if (toolbar == null && layout.isToolbarEnabled()) {
-	    toolbar = new JToolBar();
-	}
-	return toolbar;
-    }
-
-    @Override
-    public Container getBottomBar() {
-	if (bottombar == null && layout.isBottomBarEnabled()) {
-	    bottombar = new JToolBar();
-	}
-	return bottombar;
     }
 
     /**
@@ -459,22 +392,15 @@ public abstract class ASwingWorkbench extends JFrame
 	    log("3.4.2: create perspective menu");
 	    createPerspectiveMenue(perspective);
 	    if (perspective.isActive()) {
-		final Thread worker = new Thread() {
+		SwingUtilities.invokeLater(new Runnable() {
 		    @Override
 		    public void run() {
-			SwingUtilities.invokeLater(new Runnable() {
-			    @Override
-			    public void run() {
-				initPerspective(perspective,
-					new SwingAction(perspective.getId(),
-						perspective.getId(), "init"));
+			initPerspective(perspective, new SwingAction(
+				perspective.getId(), perspective.getId(),
+				"init"));
 
-			    }
-			}); // SWING UTILS END
-		    } // run end
-		}; // thred END
-		worker.start();
-
+		    }
+		}); // SWING UTILS END
 	    }
 
 	}
@@ -540,6 +466,33 @@ public abstract class ASwingWorkbench extends JFrame
 	internalFrame.setContentPane(frame);
 	getContentPane().add(internalFrame);
 	invalidateHost(this);
+    }
+
+    /**
+     * initialize perspective in tabbed mode; creates an tab an add perspective
+     * 
+     * @param layout
+     */
+    private void initPerspectivesInTabbedMode(
+	    final IPerspectiveLayout<? extends Container, Container> layout,
+	    final String name) {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * initialize perspective in stacked mode; creates an panel an add
+     * perspective
+     * 
+     * @param layout
+     */
+    private void initPerspectiveInStackMode(
+	    final IPerspectiveLayout<? extends Container, Container> layout) {
+	disableComponents();
+	final JComponent wrapper = new JPanel(true);
+	final Container comp = layout.getRootComponent();
+	comp.setVisible(true);
+	getContentPane().add(wrapper.add(layout.getRootComponent()));
+	invalidateHost(getContentPane());
     }
 
     /**
@@ -640,37 +593,10 @@ public abstract class ASwingWorkbench extends JFrame
     private Container getLayoutComponentFromPerspectiveLayout(
 	    final IPerspectiveLayout<? extends Container, Container> layout,
 	    final Dimension dimension) {
-	final Container comp = layout.getRootLayoutComponent();
+	final Container comp = layout.getRootComponent();
 	comp.setVisible(true);
 	comp.setPreferredSize(dimension);
 	return comp;
-    }
-
-    /**
-     * initialize perspective in tabbed mode; creates an tab an add perspective
-     * 
-     * @param layout
-     */
-    private void initPerspectivesInTabbedMode(
-	    final IPerspectiveLayout<? extends Container, Container> layout,
-	    final String name) {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * initialize perspective in stacked mode; creates an panel an add
-     * perspective
-     * 
-     * @param layout
-     */
-    private void initPerspectiveInStackMode(
-	    final IPerspectiveLayout<? extends Container, Container> layout) {
-	disableComponents();
-	final JComponent wrapper = new JPanel(true);
-	final Container comp = layout.getRootLayoutComponent();
-	comp.setVisible(true);
-	getContentPane().add(wrapper.add(layout.getRootLayoutComponent()));
-	invalidateHost(getContentPane());
     }
 
     /**

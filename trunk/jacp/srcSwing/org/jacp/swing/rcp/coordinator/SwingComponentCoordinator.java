@@ -37,12 +37,12 @@ import org.jacp.api.perspective.IPerspective;
  */
 public class SwingComponentCoordinator extends ASwingCoordinator implements
 	IComponentCoordinator<ActionListener, ActionEvent, Object> {
-    // TODO remove instantiation!!
+
     private List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
 
     private final IPerspective<ActionListener, ActionEvent, Object> perspective;
 
-    @Deprecated
+
     public SwingComponentCoordinator(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	setDaemon(true);
