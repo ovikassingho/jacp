@@ -13,7 +13,7 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 	public Object handleAction(final IAction<ActionEvent, Object> action) {
 
 		System.out.println("Hallo Welt BG Component!!");
-		System.out.println("BGComponent: "+action.getMessage());
+		System.out.println("BGComponent: "+ this.getParentPerspective().getId());
 		int i = 0;
 		while (i < 10) {
 			System.out.println("wait");
@@ -25,8 +25,11 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 			}
 			i++;
 		}
+		// send return value to component id03
 		this.setHandleTarget("id03");
-		return "Hallo, viele Gruesse";
+		// move this component to perspective id02
+		this.setExecutionTarget("id02");
+		return "Hallo, viele Gruesse von Editor:"+this.getId();
 	}
 
 	

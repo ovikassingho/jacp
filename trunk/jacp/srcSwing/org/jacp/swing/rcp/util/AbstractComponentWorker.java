@@ -71,8 +71,7 @@ public abstract class AbstractComponentWorker<T> extends
     }
 
     /**
-     * find valid target and add type specific new component TODO add to
-     * abstract worker
+     * find valid target and add type specific new component 
      * 
      * @param layout
      * @param editor

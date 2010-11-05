@@ -157,7 +157,6 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    // TODO former synchronized
     public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
 	log(" //1.1.1.1.1// component " + action.getTargetId()
@@ -169,7 +168,6 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    // TODO former synchronized
     public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
 	component.setActive(true);

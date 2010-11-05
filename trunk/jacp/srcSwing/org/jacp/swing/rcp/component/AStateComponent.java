@@ -159,8 +159,10 @@ public abstract class AStateComponent implements
     }
 
     @Override
-    public String getHandleTarget() {
-	return handleComponentTarget;
+    public String getHandleTargetAndClear() {
+	final String tempTarget = String.valueOf(handleComponentTarget);
+	handleComponentTarget = null;
+	return tempTarget;
     }
 
     @Override

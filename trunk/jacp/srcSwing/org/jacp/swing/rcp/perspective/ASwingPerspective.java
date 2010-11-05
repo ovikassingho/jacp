@@ -190,11 +190,8 @@ public abstract class ASwingPerspective implements
      */
     private void runStateComponent(final IAction<ActionEvent, Object> action,
 	    final IBGComponent<ActionListener, ActionEvent, Object> component) {
-	synchronized (component) {
-	    final StateComponentRunWorker worker = new StateComponentRunWorker(
-		    component);
-	    worker.execute();
-	}
+	    new StateComponentRunWorker(
+		    component).execute();
     }
 
     @Override
@@ -238,12 +235,10 @@ public abstract class ASwingPerspective implements
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,
 	    final IAction<ActionEvent, Object> action) {
 	if (component instanceof ASwingComponent) {
-	    synchronized (component) {
-		final ComponentReplaceWorker tmp = new ComponentReplaceWorker(
+		new ComponentReplaceWorker(
 			layout.getTargetLayoutComponents(),
-			((ASwingComponent) component), action);
-		tmp.execute();
-	    }
+			((ASwingComponent) component), action).execute();
+
 	} else if (component instanceof AStateComponent) {
 	    runStateComponent(action, ((AStateComponent) component));
 	}
@@ -267,9 +262,11 @@ public abstract class ASwingPerspective implements
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	// register new component at perspective
 	registerComponent(component, componentObserver);
-	// add component root to correct target
-	addComponentUIValue(
-		getIPerspectiveLayout().getTargetLayoutComponents(), component);
+	if (component instanceof ASwingComponent) {
+	    // add component ui root to correct target
+	    addComponentUIValue(getIPerspectiveLayout()
+		    .getTargetLayoutComponents(), component);
+	}
     }
 
     /**
@@ -283,9 +280,8 @@ public abstract class ASwingPerspective implements
 	    final Map<String, Container> targetComponents,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
-	    final ComponentAddWorker worker = new ComponentAddWorker(
-		    targetComponents, ((ASwingComponent) component));
-	    worker.execute();
+	    new ComponentAddWorker(
+		    targetComponents, ((ASwingComponent) component)).execute();
 	}
     }
 

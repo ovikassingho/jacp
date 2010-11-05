@@ -17,12 +17,11 @@
  */
 package org.jacp.api.component;
 
-import org.jacp.api.action.IAction;
 
 /**
  * all root components have containing sub components (workspace ->
  * perspectives; perspective - editors) and listeners; all sub components have
- * to be registered
+ * to be initialized, registered and handled
  * 
  * @author Andy Moncsek
  * 

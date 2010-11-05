@@ -55,13 +55,11 @@ public class StateComponentRunWorker
 	    while (comp.hasIncomingMessage()) {
 		final IAction<ActionEvent, Object> myAction = comp
 			.getNextIncomingMessage();
-		synchronized (myAction) {
 		    final String targetCurrent = comp.getExecutionTarget();
 		    final Object value = comp.handle(myAction);
-		    final String targetId = comp.getHandleTarget();
+		    final String targetId = comp.getHandleTargetAndClear();
 		    delegateReturnValue(comp, targetId, value);
 		    checkAndHandleTargetChange(comp, targetCurrent);
-		}
 	    }
 	    comp.setBlocked(false);
 	}

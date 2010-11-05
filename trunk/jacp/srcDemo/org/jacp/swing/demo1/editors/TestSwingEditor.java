@@ -29,7 +29,7 @@ public class TestSwingEditor extends ASwingComponent {
 	@Override
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
-		System.out.println("Editor1 CALL" + action.getMessage());
+		System.out.println("Editor1 CALL::" + action.getMessage()+" : source: "+action.getSourceId());
 		Long i = 0L;
 		while (i < 100000000L) {
 			i++;
