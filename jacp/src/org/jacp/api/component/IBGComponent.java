@@ -29,10 +29,10 @@ public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>, Cloneable
 	
 	
 	/**
-	 * returns component target id which is targeted by bg component return value; the return value will be handled like an average message and will be delivered to targeted component
+	 * returns component id which is targeted by bg component return value; the return value will be handled like an average message and will be delivered to targeted component
 	 * @return
 	 */
-	public abstract String getHandleTarget();
+	public abstract String getHandleTargetAndClear();
 	
 	/**
 	 * set component target id which is targeted by bg component return value; the return value will be handled like an average message and will be delivered to targeted component

@@ -171,7 +171,7 @@ public abstract class AStatelessComponent implements
     }
 
     @Override
-    public String getHandleTarget() {
+    public String getHandleTargetAndClear() {
 	return handleComponentTarget;
     }
 

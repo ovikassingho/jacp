@@ -79,7 +79,6 @@ public class StatelessComponentCoordinator implements
 	    // get active instance
 	    IBGComponent<ActionListener, ActionEvent, Object> comp = getActiveComponent();
 	    if (comp != null) {
-
 		if (componentInstances.size() < MAX_INCTANCE_COUNT) {
 		    // create new instance
 		    componentInstances
@@ -87,49 +86,77 @@ public class StatelessComponentCoordinator implements
 				    .getClass()));
 		}
 		// run component in thread
-		comp.setBlocked(true);
-		comp.putIncomingMessage(message);
-		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
-			comp);
-		worker.execute();
+		instanceRun(comp, message);
 	    } else {
 		// check if new instances can be created
 		if (componentInstances.size() < MAX_INCTANCE_COUNT) {
-		    comp = getCloneBean(((AStatelessComponent) baseComponent)
-			    .getClass());
-		    componentInstances.add(comp);
-		    // run component in thread
-		    comp.setBlocked(true);
-		    comp.putIncomingMessage(message);
-		    final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
-			    comp);
-		    worker.execute();
+		    createInstanceAndRun(message);
 		} else {
-		    // if max count reached, seek through components and add
-		    // message to queue of oldest component
-		    final Integer seek = Integer.valueOf(threadCount
-			    .incrementAndGet()) % componentInstances.size();
-		    comp = componentInstances.get(seek);
-		    // put message to queue
-		    comp.putIncomingMessage(message);
+		    seekAndPutMessage(message);
 		}
 	    }
 	    // if instance is NULL get first element in list and put message to
-	    // queue (an increment position counter (counter = counter mod
+	    // queue (increment position counter (counter = counter mod
 	    // instances.size()))
 
 	}
     }
-    
+
+    /**
+     * block component, put message to component's queue and run in thread
+     * 
+     * @param comp
+     * @param message
+     */
+    private void instanceRun(
+	    final IBGComponent<ActionListener, ActionEvent, Object> comp,
+	    final IAction<ActionEvent, Object> message) {
+	comp.setBlocked(true);
+	comp.putIncomingMessage(message);
+	final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
+		comp);
+	worker.execute();
+    }
+
+    /**
+     * if max thread count is not reached and all available component instances
+     * are blocked create a new one, block it an run in thread
+     * 
+     * @param message
+     */
+    private void createInstanceAndRun(final IAction<ActionEvent, Object> message) {
+	final IBGComponent<ActionListener, ActionEvent, Object> comp = getCloneBean(((AStatelessComponent) baseComponent)
+		.getClass());
+	componentInstances.add(comp);
+	instanceRun(comp, message);
+    }
+
+    /**
+     * seek to first running component in instance list and add message to queue
+     * of selected component
+     * 
+     * @param message
+     */
+    private void seekAndPutMessage(final IAction<ActionEvent, Object> message) {
+	// if max count reached, seek through components and add
+	// message to queue of oldest component
+	final Integer seek = Integer.valueOf(threadCount.incrementAndGet())
+		% componentInstances.size();
+	final IBGComponent<ActionListener, ActionEvent, Object> comp = componentInstances
+		.get(seek);
+	// put message to queue
+	comp.putIncomingMessage(message);
+    }
+
     @Override
-    public <T extends IBGComponent<ActionListener, ActionEvent, Object>>IBGComponent<ActionListener, ActionEvent, Object> getCloneBean(final Class<T> clazz) {
+    public <T extends IBGComponent<ActionListener, ActionEvent, Object>> IBGComponent<ActionListener, ActionEvent, Object> getCloneBean(
+	    final Class<T> clazz) {
 	final ClassPathXmlApplicationContext context = AHCPLauncher
 		.getContext();
 	final String[] name = context.getBeanNamesForType(clazz);
 	if (name.length > 0) {
-	    return ((AStatelessComponent) baseComponent)
-		    .init((T)context
-			    .getBean(name[0]));
+	    return ((AStatelessComponent) baseComponent).init((T) context
+		    .getBean(name[0]));
 	}
 	return null;
     }
@@ -165,7 +192,7 @@ public class StatelessComponentCoordinator implements
 	this.baseComponent = baseComponent;
 	componentInstances
 		.add(getCloneBean(((AStatelessComponent) baseComponent)
-			    .getClass()));
+			.getClass()));
     }
 
     private void log(final String message) {

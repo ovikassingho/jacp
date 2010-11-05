@@ -45,7 +45,7 @@ public abstract class ASwingCoordinator extends Thread implements
 
     @Override
     public void run() {
-	while (true) {
+	while (!Thread.interrupted()) {
 	    log(" observer thread size" + messages.size());
 	    IAction<ActionEvent, Object> action = null;
 	    try {
@@ -139,7 +139,7 @@ public abstract class ASwingCoordinator extends Thread implements
 	return null;
     }
 
-    // TODO former synchronized
+
     @Override
     public void handle(final IAction<ActionEvent, Object> action) {
 	messages.add(action);

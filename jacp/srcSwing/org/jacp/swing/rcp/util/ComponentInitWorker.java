@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
+import org.jacp.swing.rcp.component.ASwingComponent;
 
 /**
  * Background Worker to execute components; handle method to init component
@@ -68,6 +69,7 @@ public class ComponentInitWorker
 	    addComponentByType(validContainer, component);
 	    log("3.4.4.2.4: subcomponent handle init END: "
 		    + component.getName());
+	    component.setBlocked(false);
 	    return component;
 	}
 
@@ -101,6 +103,12 @@ public class ComponentInitWorker
     @Override
     public void done() {
 	component.setBlocked(false);
+	// check if news messages received while handled in initialization worker; if so then start replace worker
+	if(component.hasIncomingMessage()) {
+		new ComponentReplaceWorker(
+			targetComponents,
+			component, action).execute();
+	}
     }
 
 }
