@@ -202,7 +202,6 @@ public abstract class ASwingPerspective implements
 
 	if (component.isBlocked()) {
 	    putMessageToQueue(component, action);
-	    System.out.println("messagePerspective: " + action.getMessage());
 	    log("ADD TO QUEUE:::" + component.getName());
 	} else {
 	    if (component instanceof AStatelessComponent) {
@@ -212,8 +211,6 @@ public abstract class ASwingPerspective implements
 		putMessageToQueue(component, action);
 		executeComponentReplaceThread(perspectiveLayout, component,
 			action);
-		System.out.println("messagePerspectiveNEW: "
-			+ action.getMessage());
 		log("CREATE NEW THREAD:::" + component.getName());
 	    }
 

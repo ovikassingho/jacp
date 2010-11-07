@@ -55,6 +55,7 @@ public class StateComponentRunWorker
 	    while (comp.hasIncomingMessage()) {
 		final IAction<ActionEvent, Object> myAction = comp
 			.getNextIncomingMessage();
+		    comp.setHandleTarget(myAction.getSourceId());
 		    final String targetCurrent = comp.getExecutionTarget();
 		    final Object value = comp.handle(myAction);
 		    final String targetId = comp.getHandleTargetAndClear();

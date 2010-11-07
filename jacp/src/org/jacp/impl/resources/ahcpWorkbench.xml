@@ -16,9 +16,9 @@
        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
- 	<context:component-scan base-package="org.jacp.*" />
-    
-    <context:mbean-export/>
+	<context:component-scan base-package="org.jacp.*" />
+
+	<context:mbean-export />
 
 	<bean id="workbench" class="org.jacp.swing.demo1.workbench.TestSwingWorkbench">
 
@@ -42,6 +42,8 @@
 				<ref bean="editor2" />
 				<ref bean="editor3" />
 				<ref bean="editor8" />
+				<ref bean="ping" />
+				<ref bean="pong" />
 			</list>
 		</property>
 	</bean>
@@ -144,10 +146,22 @@
 		<property name="testBean" ref="testBean" />
 	</bean>
 
+	<bean id="ping" class="org.jacp.swing.demo1.editors.BGPing" scope="prototype">
+		<property name="name" value="ping" />
+		<property name="active" value="true" />
+		<property name="id" value="id13" />
+	</bean>
+
+	<bean id="pong" class="org.jacp.swing.demo1.editors.BGPong" scope="prototype">
+		<property name="name" value="pong" />
+		<property name="active" value="true" />
+		<property name="id" value="id14" />
+	</bean>
+
 	<bean id="testBean" class="org.jacp.swing.demo1.editors.TestBean"
 		scope="prototype">
 	</bean>
-	
-	
+
+
 </beans>
 
