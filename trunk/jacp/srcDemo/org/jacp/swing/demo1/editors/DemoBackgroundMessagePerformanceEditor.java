@@ -28,7 +28,7 @@ public class DemoBackgroundMessagePerformanceEditor extends AStateComponent {
 		// send return value to component id03
 		this.setHandleTarget("id03");
 		// move this component to perspective id02
-		this.setExecutionTarget("id02");
+		//this.setExecutionTarget("id02");
 		return "Hallo, viele Gruesse von Editor:"+this.getId();
 	}
 

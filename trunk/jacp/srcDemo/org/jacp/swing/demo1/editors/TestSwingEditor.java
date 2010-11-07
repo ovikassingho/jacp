@@ -60,15 +60,23 @@ public class TestSwingEditor extends ASwingComponent {
 		listener3.getAction().setMessage("id02.id06", "test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener4 = getActionListener();
 		listener4.getAction().setMessage("id01.id03", "test11");
+		final IActionListener<ActionListener, ActionEvent, Object> listener5 = getActionListener();
+		listener5.getAction().setMessage("id01.id13", "start");
+		final IActionListener<ActionListener, ActionEvent, Object> listener6 = getActionListener();
+		listener6.getAction().setMessage("id01.id13", "stop");
 
 		final JButton button = new JButton("message to editor2");
 		final JButton button2 = new JButton("message test");
 		final JButton button3 = new JButton(
 				"message to Editor4 in Perspective2");
 		final JButton button4 = new JButton("local message");
+		final JButton button5 = new JButton("start ping/pong");
+		final JButton button6 = new JButton("stop ping/pong");
 		button.addActionListener(listener2.getListener());
 		button3.addActionListener(listener3.getListener());
 		button4.addActionListener(listener4.getListener());
+		button5.addActionListener(listener5.getListener());
+		button6.addActionListener(listener6.getListener());
 		button2.addActionListener(new ActionListener() {
 
 			@Override
@@ -94,6 +102,8 @@ public class TestSwingEditor extends ASwingComponent {
 		});
 
 		panel.add(button);
+		panel.add(button5);
+		panel.add(button6);
 		panel.add(button2);
 		panel.add(button4);
 		panel.add(button3);
