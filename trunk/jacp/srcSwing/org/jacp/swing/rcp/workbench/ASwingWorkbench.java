@@ -84,7 +84,7 @@ public abstract class ASwingWorkbench extends JFrame
     private final Dimension screenSize = Toolkit.getDefaultToolkit()
 	    .getScreenSize();
     private final int inset = 50;
-    private final IWorkbenchLayout<LayoutManager2> layout = new SwingWorkbenchLayout();
+    private final IWorkbenchLayout<LayoutManager2,Container> layout = new SwingWorkbenchLayout();
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -159,7 +159,7 @@ public abstract class ASwingWorkbench extends JFrame
 
     @Override
     public void handleInitialLayout(final IAction<ActionEvent, Object> action,
-	    final IWorkbenchLayout<LayoutManager2> layout) {
+	    final IWorkbenchLayout<LayoutManager2,Container> layout) {
 	handleInitialLayout((SwingAction) action, (SwingWorkbenchLayout) layout);
 
     }
@@ -372,7 +372,7 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public IWorkbenchLayout<LayoutManager2> getWorkbenchLayout() {
+    public IWorkbenchLayout<LayoutManager2,Container> getWorkbenchLayout() {
 	return layout;
     }
 
@@ -501,7 +501,7 @@ public abstract class ASwingWorkbench extends JFrame
      * @return
      */
     private Dimension getPanelDimension(
-	    final IWorkbenchLayout<LayoutManager2> layout) {
+	    final IWorkbenchLayout<LayoutManager2,Container> layout) {
 	return new Dimension(layout.getWorkbenchSize().getX() - 15, layout
 		.getWorkbenchSize().getY() - 15);
     }

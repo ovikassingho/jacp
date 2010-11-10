@@ -17,7 +17,6 @@
  */
 package org.jacp.api.componentLayout;
 
-import java.awt.Container;
 import java.util.Map;
 
 import org.jacp.api.util.Tupel;
@@ -28,7 +27,7 @@ import org.jacp.api.util.WorkspaceMode;
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbenchLayout<L> {
+public interface IWorkbenchLayout<L,C> {
 
     /**
      * get defined workspace layout
@@ -96,13 +95,13 @@ public interface IWorkbenchLayout<L> {
      * @param toolBar
      */
     public abstract void registerToolBar(final Layout name,
-	    final Container toolBar);
+	    final C toolBar);
 
     /**
      * returns all registered tool bars of workbench
      * 
      * @return
      */
-    public abstract Map<Layout, Container> getToolBars();
+    public abstract Map<Layout, C> getToolBars();
 
 }

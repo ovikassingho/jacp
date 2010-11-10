@@ -31,7 +31,7 @@ import org.jacp.api.util.WorkspaceMode;
  * defines basic layout of workbench; define if menus are enabled; declare tool bars; set workbench size
  * @author Andy Moncsek
  */
-public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2> {
+public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2,Container> {
 
     private LayoutManager2 layoutManager;
     private boolean menuEnabled;

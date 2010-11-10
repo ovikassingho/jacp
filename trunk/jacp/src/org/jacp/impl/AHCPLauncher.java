@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jacp.api.workbench.IWorkbench;
@@ -79,7 +80,7 @@ public class AHCPLauncher {
 	}
 
 	private static void setDefault() throws ClassNotFoundException {
-		try {
+		/*try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final InstantiationException ex) {
 			Logger.getLogger(AHCPLauncher.class.getName()).log(Level.SEVERE,
@@ -90,7 +91,25 @@ public class AHCPLauncher {
 		} catch (final UnsupportedLookAndFeelException ex) {
 			Logger.getLogger(AHCPLauncher.class.getName()).log(
 					Level.SEVERE, null, ex);
-		}
+		}*/
+	    
+		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            try {
+				UIManager.setLookAndFeel(info.getClassName());
+			    } catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			    } catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			    } catch (UnsupportedLookAndFeelException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			    }
+		            break;
+		        }
+		    }
 
 	}
 }
