@@ -122,14 +122,14 @@ public interface IWorkbench<P, C, L, A, M> {
 	 * @param layout
 	 */
 	public abstract void handleInitialLayout(final IAction<A, M> action,
-			final IWorkbenchLayout<P> layout);
+			final IWorkbenchLayout<P,C> layout);
 
 	/**
 	 * returns workbench layout object
 	 * 
 	 * @return
 	 */
-	public abstract IWorkbenchLayout<P> getWorkbenchLayout();
+	public abstract IWorkbenchLayout<P,C> getWorkbenchLayout();
 
 
 }
