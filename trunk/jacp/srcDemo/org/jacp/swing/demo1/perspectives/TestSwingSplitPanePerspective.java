@@ -35,6 +35,7 @@ import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
 import com.explodingpixels.macwidgets.IAppWidgetFactory;
+import com.explodingpixels.macwidgets.MacWidgetFactory;
 import com.explodingpixels.macwidgets.SourceList;
 import com.explodingpixels.macwidgets.SourceListCategory;
 import com.explodingpixels.macwidgets.SourceListClickListener;
@@ -195,7 +196,7 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 				if (comp.getName().equals(arg0.getText())) {
 				    final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 				    listener3.getAction().setMessage(
-					    comp.getId(), "test");
+					    getId()+"."+comp.getId(), "test");
 				    listener3.getListener().actionPerformed(
 					    null);
 				}
@@ -214,6 +215,7 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 	    // panelTest.add(handleViewLayout1());
 	    final JScrollPane scrollPaneView = new JScrollPane(
 		    sourceList.getComponent());
+
 	    IAppWidgetFactory.makeIAppScrollPane(scrollPaneView);
 	    splitPane.add(scrollPaneView, JSplitPane.LEFT);
 
