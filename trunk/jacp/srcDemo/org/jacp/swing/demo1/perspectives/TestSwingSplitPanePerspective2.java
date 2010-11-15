@@ -27,6 +27,8 @@ import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
+import com.explodingpixels.macwidgets.IAppWidgetFactory;
+
 /**
  * 
  * @author amo
@@ -87,7 +89,8 @@ public class TestSwingSplitPanePerspective2 extends ASwingPerspective {
 		final JTabbedPane viewTabs = (JTabbedPane) handleViewLayout();
 		final JScrollPane scrollPaneEditor = new JScrollPane(editorTabs);
 		final JScrollPane scrollPaneView = new JScrollPane(viewTabs);
-
+		IAppWidgetFactory.makeIAppScrollPane(scrollPaneView);
+		IAppWidgetFactory.makeIAppScrollPane(scrollPaneEditor);
 		splitPane.add(scrollPaneView, JSplitPane.LEFT);
 
 		splitPane.add(scrollPaneEditor, JSplitPane.RIGHT);

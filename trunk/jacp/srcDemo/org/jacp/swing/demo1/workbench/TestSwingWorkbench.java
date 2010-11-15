@@ -25,6 +25,8 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.util.WorkspaceMode;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
+import org.jacp.swing.rcp.util.OSXBottomBarPanel;
+import org.jacp.swing.rcp.util.OSXToolBar;
 import org.jacp.swing.rcp.workbench.ASwingWorkbench;
 
 /**
@@ -91,8 +93,8 @@ public class TestSwingWorkbench extends ASwingWorkbench {
 	    final SwingWorkbenchLayout layout) {
 	layout.setWorkspaceMode(WorkspaceMode.SINGLE_PANE);
 	layout.setLayoutManager(new BorderLayout());
-	layout.registerToolBar(Layout.NORTH, new JToolBar());
-	layout.registerToolBar(Layout.SOUTH, new JToolBar());
+	layout.registerToolBar(Layout.NORTH, new OSXToolBar());
+	layout.registerToolBar(Layout.SOUTH, new OSXBottomBarPanel());
 	layout.setWorkbenchXYSize(1024, 600);
     }
 

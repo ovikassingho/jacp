@@ -14,7 +14,7 @@ import org.jacp.swing.rcp.component.ASwingComponent;
 
 public class TestEditor3 extends ASwingComponent {
 
-	int i = 0;
+	int i =0;
 
 	@Override
 	public void handleMenuEntries(final Container meuneBar) {
@@ -36,7 +36,7 @@ public class TestEditor3 extends ASwingComponent {
 
 		}
 
-		final int z = i % 3;
+		final int z = i % 2;
 		setExecutionTarget("editor" + z);
 		i = i + 1;
 		return handleViewLayout3();

@@ -12,6 +12,8 @@ import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
+import com.explodingpixels.macwidgets.IAppWidgetFactory;
+
 public class DemoMessagePerformancePerspective extends ASwingPerspective {
 
 	@Override
@@ -27,6 +29,7 @@ public class DemoMessagePerformancePerspective extends ASwingPerspective {
 			final SwingPerspectiveLayout perspectiveLayout) {
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		final JScrollPane scrollPaneView = new JScrollPane();
+		IAppWidgetFactory.makeIAppScrollPane(scrollPaneView);
 		splitPane.add(scrollPaneView, JSplitPane.BOTTOM);
 
 		final JScrollPane scrollPaneEditor = new JScrollPane();

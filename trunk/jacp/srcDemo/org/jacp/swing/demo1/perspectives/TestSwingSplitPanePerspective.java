@@ -9,6 +9,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
@@ -24,11 +27,20 @@ import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
+
+import com.explodingpixels.macwidgets.IAppWidgetFactory;
+import com.explodingpixels.macwidgets.SourceList;
+import com.explodingpixels.macwidgets.SourceListCategory;
+import com.explodingpixels.macwidgets.SourceListClickListener;
+import com.explodingpixels.macwidgets.SourceListItem;
+import com.explodingpixels.macwidgets.SourceListModel;
+import com.explodingpixels.macwidgets.SourceListClickListener.Button;
 
 /**
  * 
@@ -137,9 +149,11 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 	    final JSplitPane test = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 	    final JScrollPane scrollPaneView = new JScrollPane(
 		    handleViewLayout1());
+	    IAppWidgetFactory.makeIAppScrollPane(scrollPaneView);
 	    splitPane.add(scrollPaneView, JSplitPane.BOTTOM);
 	    final JTabbedPane editorTabs = (JTabbedPane) handleEditorLayout();
 	    final JScrollPane scrollPaneEditor = new JScrollPane(editorTabs);
+	    IAppWidgetFactory.makeIAppScrollPane(scrollPaneEditor);
 	    test.add(scrollPaneEditor, JSplitPane.RIGHT);
 	    splitPane.add(test, JSplitPane.TOP);
 	    perspectiveLayout.registerTargetLayoutComponent("view",
@@ -153,27 +167,72 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 
 	    final JSplitPane splitPane = new JSplitPane(
 		    JSplitPane.HORIZONTAL_SPLIT);
-	    splitPane.setDividerLocation(300);
+	    splitPane.setDividerLocation(200);
 	    final JSplitPane test = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 	    final JTabbedPane panelTest = new JTabbedPane();
 	    panelTest.setTabPlacement(SwingConstants.LEFT);
-	    // panelTest.add(handleViewLayout1());
-	    final JScrollPane scrollPaneView = new JScrollPane(panelTest);
 
+	    SourceListModel model = new SourceListModel();
+	    SourceListCategory category = new SourceListCategory("Editoren");
+	    model.addCategory(category);
+	    final List<ISubComponent<ActionListener, ActionEvent, Object>> components = this
+		    .getSubcomponents();
+	    for (final ISubComponent<ActionListener, ActionEvent, Object> comp : components) {
+		SourceListItem item = new SourceListItem(comp.getName());
+
+		model.addItemToCategory(item, category);
+
+	    }
+
+	    SourceList sourceList = new SourceList(model);
+	    sourceList
+		    .addSourceListClickListener(new SourceListClickListener() {
+
+			@Override
+			public void sourceListItemClicked(SourceListItem arg0,
+				Button arg1, int arg2) {
+			    for (final ISubComponent<ActionListener, ActionEvent, Object> comp : components) {
+				if (comp.getName().equals(arg0.getText())) {
+				    final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
+				    listener3.getAction().setMessage(
+					    comp.getId(), "test");
+				    listener3.getListener().actionPerformed(
+					    null);
+				}
+			    }
+
+			}
+
+			@Override
+			public void sourceListCategoryClicked(
+				SourceListCategory arg0, Button arg1, int arg2) {
+			    // TODO Auto-generated method stub
+
+			}
+		    });
+
+	    // panelTest.add(handleViewLayout1());
+	    final JScrollPane scrollPaneView = new JScrollPane(
+		    sourceList.getComponent());
+	    IAppWidgetFactory.makeIAppScrollPane(scrollPaneView);
 	    splitPane.add(scrollPaneView, JSplitPane.LEFT);
 
 	    final JTabbedPane editorTabs = (JTabbedPane) handleEditorLayout();
 	    final JTabbedPane editorTabs2 = (JTabbedPane) handleEditorLayout();
 	    final JScrollPane scrollPaneEditor = new JScrollPane(editorTabs);
+	    IAppWidgetFactory.makeIAppScrollPane(scrollPaneEditor);
 	    final JScrollPane scrollPaneEditor2 = new JScrollPane(editorTabs2);
+	    IAppWidgetFactory.makeIAppScrollPane(scrollPaneEditor2);
 	    test.add(scrollPaneEditor, JSplitPane.TOP);
 	    test.add(scrollPaneEditor2, JSplitPane.BOTTOM);
 	    splitPane.add(test, JSplitPane.RIGHT);
+	    /*
+	     * perspectiveLayout.registerTargetLayoutComponent("editor0",
+	     * panelTest);
+	     */
 	    perspectiveLayout.registerTargetLayoutComponent("editor0",
-		    panelTest);
-	    perspectiveLayout.registerTargetLayoutComponent("editor1",
 		    editorTabs);
-	    perspectiveLayout.registerTargetLayoutComponent("editor2",
+	    perspectiveLayout.registerTargetLayoutComponent("editor1",
 		    editorTabs2);
 	    test.setDividerLocation(200);
 	    perspectiveLayout.setRootComponent(splitPane);
@@ -183,7 +242,5 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 	// splitPane.setVisible(false);
 
     }
-
-
 
 }
