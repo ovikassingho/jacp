@@ -80,20 +80,20 @@
 		<property name="name" value="testEditor1" />
 		<property name="active" value="true" />
 		<property name="id" value="id03" />
-		<property name="executionTarget" value="editor1" />
+		<property name="executionTarget" value="editor0" />
 	</bean>
 
 	<bean id="editor2" class="org.jacp.swing.demo1.editors.TestSwingEditor2">
 		<property name="name" value="testEditor2" />
 		<property name="active" value="true" />
 		<property name="id" value="id04" />
-		<property name="executionTarget" value="editor0" />
+		<property name="executionTarget" value="editor1" />
 	</bean>
 	<bean id="editor3" class="org.jacp.swing.demo1.editors.TestEditor3">
 		<property name="name" value="testEditor3" />
 		<property name="active" value="true" />
 		<property name="id" value="id05" />
-		<property name="executionTarget" value="editor0" />
+		<property name="executionTarget" value="editor1" />
 	</bean>
 	<bean id="editor4" class="org.jacp.swing.demo1.editors.TestEditor4">
 		<property name="name" value="testEditor4" />

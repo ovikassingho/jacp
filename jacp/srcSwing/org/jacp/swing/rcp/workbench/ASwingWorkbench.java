@@ -61,6 +61,7 @@ import org.jacp.swing.rcp.handler.MacOSXController;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
 
 import com.apple.mrj.MRJApplicationUtils;
+import com.explodingpixels.macwidgets.MacUtils;
 
 /**
  * represents the basic swing workbench instance; handles perspectives and
@@ -153,8 +154,18 @@ public abstract class ASwingWorkbench extends JFrame
      */
     private void setBasicLayout(final Container contentPane) {
 	// set layout manager
+	final String osName = System.getProperty("os.name");
+	if (osName.toLowerCase().trim().contains("mac")) {
+		setOSXspecific();
+	} else {
+		
+	}
 	contentPane.setLayout(layout.getLayoutManager() != null ? layout
 		.getLayoutManager() : new BorderLayout());
+    }
+    
+    private void setOSXspecific() {
+	MacUtils.makeWindowLeopardStyle(this.getRootPane());
     }
 
     @Override

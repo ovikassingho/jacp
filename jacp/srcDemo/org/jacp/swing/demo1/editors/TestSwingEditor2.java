@@ -40,7 +40,7 @@ public class TestSwingEditor2 extends ASwingComponent {
 
 			}
 			System.out.println("DONE COUNT: ");
-			final int z = i % 3;
+			final int z = i % 2;
 			setExecutionTarget("editor" + z);
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
@@ -52,16 +52,16 @@ public class TestSwingEditor2 extends ASwingComponent {
 
 			}
 			System.out.println("DONE COUNT111: ");
-			final int z = i % 3;
+			final int z = i % 2;
 			setExecutionTarget("editor" + z);
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
 		} else if (action.getMessage().equals("testBLA")) {
 			setExecutionTarget("id0" + p + ".editor0");
 			if (p == 2) {
-				p = 1;
+				p = 0;
 			} else {
-				p = 2;
+				p = 1;
 			}
 			System.out.println("Editor2 CALL 2: " + p);
 		} else {
