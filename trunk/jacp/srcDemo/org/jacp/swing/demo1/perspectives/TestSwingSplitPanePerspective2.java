@@ -68,7 +68,7 @@ public class TestSwingSplitPanePerspective2 extends ASwingPerspective {
 		final JMenuItem quitItem = new JMenuItem("Test2");
 
 		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-		listener.getAction().setMessage("id01", "test");
+		listener.getAction().addMessage("id01", "test");
 		quitItem.addActionListener(listener.getListener());
 		meuBar.add(quitItem);
 

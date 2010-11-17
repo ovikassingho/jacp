@@ -10,22 +10,22 @@ public class BGPing extends AStateComponent{
 
     @Override
     public Object handleAction(IAction<ActionEvent, Object> action) {
-	if(action.getMessage().equals("pong") && start) {
+	if(action.getLastMessage().equals("pong") && start) {
 	    try {
 		Thread.sleep(100);
 	    } catch (InterruptedException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
-	    System.out.println(action.getMessage()+" : "+this);
+	    System.out.println(action.getLastMessage()+" : "+this);
 	    return "ping";
 	    
-	} else if(action.getMessage().equals("start")) {
+	} else if(action.getLastMessage().equals("start")) {
 	    start=true;
-	    System.out.println(action.getMessage());
+	    System.out.println(action.getLastMessage());
 	    this.setHandleTarget("id14");
 	    return "ping";
-	}else if(action.getMessage().equals("stop")) {
+	}else if(action.getLastMessage().equals("stop")) {
 	    start=false;
 	    return null;
 	}

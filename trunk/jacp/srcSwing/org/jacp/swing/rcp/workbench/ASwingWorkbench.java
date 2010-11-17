@@ -497,10 +497,9 @@ public abstract class ASwingWorkbench extends JFrame
     private void initPerspectiveInStackMode(
 	    final IPerspectiveLayout<? extends Container, Container> layout) {
 	disableComponents();
-	final JComponent wrapper = new JPanel(true);
 	final Container comp = layout.getRootComponent();
 	comp.setVisible(true);
-	getContentPane().add(wrapper.add(layout.getRootComponent()));
+	getContentPane().add(comp);
 	invalidateHost(getContentPane());
     }
 

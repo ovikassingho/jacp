@@ -74,7 +74,7 @@ public abstract class ASwingCoordinator extends Thread implements
 	    final IAction<ActionEvent, Object> action, final String target,
 	    final Object message) {
 	final IAction<ActionEvent, Object> actionClone = action.clone();
-	actionClone.setMessage(target, message);
+	actionClone.addMessage(target, message);
 	return actionClone;
     }
 

@@ -62,7 +62,7 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
     }
 
     @Override
-    public void setMessage(final String id, final Object message) {
+    public void addMessage(final String id, final Object message) {
 	target = id;
 	this.message = message;
 	getMessageList().put(id, message);
@@ -73,10 +73,7 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
 	return sourceId;
     }
 
-    @Override
-    public Object getMessage() {
-	return message;
-    }
+
 
     @Override
     public Map<String, Object> getMessageList() {
@@ -103,5 +100,10 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
 	final IAction<ActionEvent, Object> clone = new SwingAction(sourceId);
 	clone.setActionEvent(event);
 	return clone;
+    }
+
+    @Override
+    public Object getLastMessage() {
+	return this.message;
     }
 }

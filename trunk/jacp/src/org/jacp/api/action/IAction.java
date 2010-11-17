@@ -45,14 +45,14 @@ public interface IAction<A, M> extends Cloneable {
      * @param targetId
      * @param message
      */
-    public abstract void setMessage(final String targetId, final M message);
+    public abstract void addMessage(final String targetId, final M message);
 
     /**
      * get action message
      * 
      * @return
      */
-    public abstract M getMessage();
+    public abstract M getLastMessage();
 
     /**
      * returns message list with target id's

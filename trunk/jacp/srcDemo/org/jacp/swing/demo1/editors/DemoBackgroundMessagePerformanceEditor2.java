@@ -12,20 +12,20 @@ public class DemoBackgroundMessagePerformanceEditor2 extends AStateComponent {
 	public Object handleAction(final IAction<ActionEvent, Object> action) {
 
 
-		System.out.println("BGComponent2: "+action.getMessage());
-		if (action.getMessage().equals("stop")) {
+		System.out.println("BGComponent2: "+action.getLastMessage());
+		if (action.getLastMessage().equals("stop")) {
 			final long stopTime = System.currentTimeMillis();
 
 			System.out.println("stop Time: " + (stopTime - startTime));
 			this.setHandleTarget("id09");
 			//this.setExecutionTarget("id02");
 			return (stopTime - startTime);
-		} else if (action.getMessage().equals("start")) {
+		} else if (action.getLastMessage().equals("start")) {
 			startTime = System.currentTimeMillis();
 			System.out.println("count: " + counter);
 			counter++;
 
-		} else if(action.getMessage().equals("init")) {
+		} else if(action.getLastMessage().equals("init")) {
 			
 		}
 		else {

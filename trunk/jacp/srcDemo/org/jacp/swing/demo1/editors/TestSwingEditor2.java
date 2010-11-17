@@ -32,7 +32,7 @@ public class TestSwingEditor2 extends ASwingComponent {
 	@Override
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
-		if (action.getMessage().equals("test")) {
+		if (action.getLastMessage().equals("test")) {
 			Long j = 0L;
 
 			while (j < 1000000000L) {
@@ -44,7 +44,7 @@ public class TestSwingEditor2 extends ASwingComponent {
 			setExecutionTarget("editor" + z);
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
-		} else if (action.getMessage().equals("test1")) {
+		} else if (action.getLastMessage().equals("test1")) {
 			Long j = 0L;
 
 			while (j < 100000L) {
@@ -56,7 +56,7 @@ public class TestSwingEditor2 extends ASwingComponent {
 			setExecutionTarget("editor" + z);
 			i = i + 1;
 			System.out.println("Editor2 CALL 1: ");
-		} else if (action.getMessage().equals("testBLA")) {
+		} else if (action.getLastMessage().equals("testBLA")) {
 			setExecutionTarget("id0" + p + ".editor0");
 			if (p == 2) {
 				p = 0;
@@ -65,7 +65,7 @@ public class TestSwingEditor2 extends ASwingComponent {
 			}
 			System.out.println("Editor2 CALL 2: " + p);
 		} else {
-			System.out.println("Editor2 CALL: " + action.getMessage());
+			System.out.println("Editor2 CALL: " + action.getLastMessage());
 		}
 
 		return handleViewLayout3();
@@ -97,7 +97,7 @@ public class TestSwingEditor2 extends ASwingComponent {
 
 				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 				System.out.println("action");
-				listener3.getAction().setMessage("id10","hello");
+				listener3.getAction().addMessage("id10","hello");
 				listener3.getListener().actionPerformed(e);
 
 			}

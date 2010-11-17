@@ -16,7 +16,7 @@ public class StatelessDemoConsumer extends AStatelessComponent{
 
     @Override
     public Object handleAction(IAction<ActionEvent, Object> action) {
-	if (action.getMessage() instanceof Integer) {
+	if (action.getLastMessage() instanceof Integer) {
 
 	
 	    int j = 0;
@@ -27,7 +27,7 @@ public class StatelessDemoConsumer extends AStatelessComponent{
 
 	    }
 	    final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-	    listener.getAction().setMessage("id09", j);
+	    listener.getAction().addMessage("id09", j);
 	    listener.getListener().actionPerformed(
 		    listener.getAction().getActionEvent());
 	}

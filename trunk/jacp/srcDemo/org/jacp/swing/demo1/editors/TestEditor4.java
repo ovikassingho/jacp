@@ -33,8 +33,8 @@ public class TestEditor4 extends ASwingComponent {
 			// System.out.print("test"+j+" ");
 
 		}
-		System.out.println("Editor4 got message: " + action.getMessage());
-		if (action.getMessage().equals("test")) {
+		System.out.println("Editor4 got message: " + action.getLastMessage());
+		if (action.getLastMessage().equals("test")) {
 			return handleViewLayout4();
 		} else {
 			return handleViewLayout3();
