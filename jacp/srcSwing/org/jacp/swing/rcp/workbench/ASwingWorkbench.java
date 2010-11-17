@@ -72,7 +72,7 @@ import com.explodingpixels.macwidgets.MacUtils;
 public abstract class ASwingWorkbench extends JFrame
 	implements
 	IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-	IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<ActionListener, ActionEvent, Object>,IAction<ActionEvent, Object>> {
+	IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object>,IAction<ActionEvent, Object>> {
 
     /**
 	 * 
@@ -80,7 +80,7 @@ public abstract class ASwingWorkbench extends JFrame
     private static final long serialVersionUID = -1740398352308498810L;
     private JMenu menu;
     private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
-    private final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
+    private final IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
 	    this);
     private final Dimension screenSize = Toolkit.getDefaultToolkit()
 	    .getScreenSize();
@@ -187,7 +187,7 @@ public abstract class ASwingWorkbench extends JFrame
     @Override
     public void registerComponent(
 	    final IPerspective<ActionListener, ActionEvent, Object> component,
-	    final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> handler) {
+	    final IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object> handler) {
 	component.init();
 	handler.addPerspective(component);
 
@@ -196,7 +196,7 @@ public abstract class ASwingWorkbench extends JFrame
     @Override
     public void unregisterComponent(
 	    final IPerspective<ActionListener, ActionEvent, Object> component,
-	    final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> handler) {
+	    final IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object> handler) {
 	handler.removePerspective(component);
 
     }

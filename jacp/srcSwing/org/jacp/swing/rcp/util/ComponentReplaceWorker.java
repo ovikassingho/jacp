@@ -27,8 +27,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JMenu;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
+import org.jacp.api.componentLayout.Layout;
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -43,16 +46,20 @@ public class ComponentReplaceWorker
     private final Map<String, Container> targetComponents;
     private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
     private final IAction<ActionEvent, Object> action;
+    private final JMenu menu;
+    private final Map<Layout, Container> bars;
     private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
 	    1);
 
     public ComponentReplaceWorker(
 	    final Map<String, Container> targetComponents,
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action) {
+	    final IAction<ActionEvent, Object> action,final Map<Layout, Container> bars,final JMenu menu) {
 	this.targetComponents = targetComponents;
 	this.component = component;
 	this.action = action;
+	this.bars = bars;
+	this.menu = menu;
     }
 
     @Override
@@ -90,7 +97,7 @@ public class ComponentReplaceWorker
 		if (!currentTaget.equals(component.getExecutionTarget())
 			|| !previousContainer.equals(component.getRoot())) {
 		    publish(new ChunkDTO(parent, previousContainer,
-			    targetComponents, currentTaget, component));
+			    targetComponents, currentTaget, component,bars,menu));
 		} else {
 		    lock.add(true);
 		}
@@ -109,6 +116,9 @@ public class ComponentReplaceWorker
 	    final Container parent = dto.getParent();
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component = dto
 		    .getComponent();
+	    //TODO decide if menu and bars are always handled or only at start time
+	  //  component.handleBarEntries(dto.getBars());
+	  //  component.handleMenuEntries(dto.getMenu());
 	    final Container previousContainer = dto.getPreviousContainer();
 	    final String currentTaget = dto.getCurrentTaget();
 	    // remove old view

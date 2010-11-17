@@ -21,16 +21,25 @@ package org.jacp.swing.rcp.util;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
+import javax.swing.JMenu;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
+import org.jacp.api.componentLayout.Layout;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * handles component methods in own thread; see
@@ -43,6 +52,8 @@ public abstract class AbstractComponentWorker<T> extends
 	org.jacp.swing.rcp.util.SwingWorker<T, ChunkDTO> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    
+    private final Map<Layout, Container> empty = new HashMap<Layout, Container>();
 
     /**
      * find valid target component in perspective
@@ -71,23 +82,43 @@ public abstract class AbstractComponentWorker<T> extends
     }
 
     /**
-     * find valid target and add type specific new component 
+     * find valid target and add type specific new component
      * 
      * @param layout
      * @param editor
      */
     protected void addComponentByType(
 	    final Container validContainer,
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> editor) {
-	if (validContainer instanceof JScrollPane) {
-	    ((JScrollPane) validContainer).getViewport().add(editor.getName(),
-		    editor.getRoot());
-	} else {
-	    handleAdd(validContainer, editor.getRoot(), editor.getName());
+	    final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
+	    final Map<Layout, Container> bars, final JMenu menu) {
 
-	}
-	validContainer.setEnabled(true);
-	validContainer.setVisible(true);
+	SwingUtilities.invokeLater(new Runnable() {
+	    @Override
+	    public void run() {
+		if (validContainer instanceof JScrollPane) {
+		    ((JScrollPane) validContainer).getViewport().add(
+			    editor.getName(), editor.getRoot());
+		} else {
+		    handleAdd(validContainer, editor.getRoot(),
+			    editor.getName());
+
+		}
+		if (menu!=null) {
+		    editor.handleMenuEntries(menu);
+		}
+		if (!bars.isEmpty()) {
+		    editor.handleBarEntries(bars);
+		    final Collection<Container> container = bars.values();
+		    for (final Container c : container) {
+			invalidateHost(c);
+		    }
+		}
+		validContainer.setEnabled(true);
+		validContainer.setVisible(true);
+
+	    }
+	});
+
     }
 
     /**
@@ -133,7 +164,7 @@ public abstract class AbstractComponentWorker<T> extends
 	    final Map<String, Container> targetComponents,
 	    final Container parent, final String currentTaget) {
 	if (currentTaget.equals(component.getExecutionTarget())) {
-	    addComponentByType(parent, component);
+	    addComponentByType(parent, component, empty, null);
 	} else {
 	    final String validId = getValidTargetId(currentTaget,
 		    component.getExecutionTarget());
@@ -168,7 +199,7 @@ public abstract class AbstractComponentWorker<T> extends
 	final Container validContainer = getValidContainerById(
 		targetComponents, target);
 	if (validContainer != null) {
-	    addComponentByType(validContainer, component);
+	    addComponentByType(validContainer, component, empty, null);
 	} else {
 	    // handle target outside current perspective
 	    changeComponentTarget(component);

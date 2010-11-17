@@ -39,6 +39,12 @@ public class OSXBottomBarPanel extends JPanel {
         setBorder(BorderFactory.createMatteBorder(1,0,0,0,
                OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR));
     }
+    
+    public OSXBottomBarPanel(final int hint) {
+        this.setLayout(new FlowLayout(hint, 5,5));
+        setBorder(BorderFactory.createMatteBorder(1,0,0,0,
+               OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR));
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -23,9 +23,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+import javax.swing.JMenu;
+
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
-import org.jacp.swing.rcp.component.ASwingComponent;
+import org.jacp.api.componentLayout.Layout;
+
 
 /**
  * Background Worker to execute components; handle method to init component
@@ -38,15 +42,19 @@ public class ComponentInitWorker
 	AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
     private final Map<String, Container> targetComponents;
     private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
+    private final Map<Layout, Container> bars;
     private final IAction<ActionEvent, Object> action;
+    private final JMenu menu;
 
     public ComponentInitWorker(
 	    final Map<String, Container> targetComponents,
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action) {
+	    final IAction<ActionEvent, Object> action,final Map<Layout, Container> bars, final JMenu menu) {
 	this.targetComponents = targetComponents;
 	this.component = component;
 	this.action = action;
+	this.bars = bars;
+	this.menu = menu;
     }
 
     @Override
@@ -66,48 +74,31 @@ public class ComponentInitWorker
 		    targetComponents, component.getExecutionTarget());
 	    log("3.4.4.2.3: subcomponent handle init add component by type: "
 		    + component.getName());
-	    addComponentByType(validContainer, component);
+	    addComponentByType(validContainer, component,bars,menu);
 	    log("3.4.4.2.4: subcomponent handle init END: "
 		    + component.getName());
 	    component.setBlocked(false);
 	    return component;
 	}
-
-	// return runHandleSubcomponent(editor, action);
     }
 
     @Override
     protected IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 	    final IAction<ActionEvent, Object> action) {
-	synchronized (component) {
-	    log("3.4.4.2.1: subcomponent handle init START: "
-		    + component.getName());
-	    final Container editorComponent = component.handle(action);
-	    component.setRoot(editorComponent);
-	    editorComponent.setVisible(true);
-	    editorComponent.setEnabled(true);
-	    log("3.4.4.2.2: subcomponent handle init get valid container: "
-		    + component.getName());
-	    final Container validContainer = getValidContainerById(
-		    targetComponents, component.getExecutionTarget());
-	    log("3.4.4.2.3: subcomponent handle init add component by type: "
-		    + component.getName());
-	    addComponentByType(validContainer, component);
-	    log("3.4.4.2.4: subcomponent handle init END: "
-		    + component.getName());
-	}
+
 	return component;
     }
 
     @Override
     public void done() {
-	component.setBlocked(false);
-	// check if news messages received while handled in initialization worker; if so then start replace worker
-	if(component.hasIncomingMessage()) {
-		new ComponentReplaceWorker(
-			targetComponents,
-			component, action).execute();
+	synchronized (component) {
+	    component.setBlocked(false);
+	    // check if news messages received while handled in initialization worker; if so then start replace worker
+	    if (component.hasIncomingMessage()) {
+		new ComponentReplaceWorker(targetComponents, component, action,bars,menu)
+			.execute();
+	    }
 	}
     }
 
