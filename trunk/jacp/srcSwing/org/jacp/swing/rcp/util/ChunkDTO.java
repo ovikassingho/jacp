@@ -24,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
@@ -50,7 +49,8 @@ public final class ChunkDTO {
 	    final Container previousContainer,
 	    final Map<String, Container> targetComponents,
 	    final String currentTaget,
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,final Map<Layout, Container> bars, final JMenu menu) {
+	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+	    final Map<Layout, Container> bars, final JMenu menu) {
 	this.parent = parent;
 	this.targetComponents = targetComponents;
 	this.currentTaget = currentTaget;
@@ -81,10 +81,10 @@ public final class ChunkDTO {
     }
 
     public Map<Layout, Container> getBars() {
-        return bars;
+	return bars;
     }
 
     public JMenu getMenu() {
-        return menu;
+	return menu;
     }
 }

@@ -139,7 +139,6 @@ public abstract class ASwingCoordinator extends Thread implements
 	return null;
     }
 
-
     @Override
     public void handle(final IAction<ActionEvent, Object> action) {
 	messages.add(action);

@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -143,8 +142,7 @@ public abstract class ASwingPerspective implements
     public void initComponents(final IAction<ActionEvent, Object> action) {
 	final String targetId = getTargetComponentId(action.getTargetId());
 	log("3.4.4.1: subcomponent targetId: " + targetId);
-	for (final ISubComponent<ActionListener, ActionEvent, Object> component : this
-		.getSubcomponents()) {
+	for (final ISubComponent<ActionListener, ActionEvent, Object> component : getSubcomponents()) {
 	    if (component.getId().equals(targetId)) {
 		log("3.4.4.2: subcomponent init with custom action");
 		initComponent(action, component);
@@ -163,10 +161,14 @@ public abstract class ASwingPerspective implements
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
 	    log("COMPONENT EXECUTE INIT:::" + component.getName());
-	   // this.perspectiveObserver.
+	    // this.perspectiveObserver.
 	    final ComponentInitWorker tmp = new ComponentInitWorker(
 		    perspectiveLayout.getTargetLayoutComponents(),
-		    ((ASwingComponent) component), action,((SwingPerspectiveCoordinator)this.perspectiveObserver).getBars(),(JMenu) ((SwingPerspectiveCoordinator)this.perspectiveObserver).getMenu());
+		    ((ASwingComponent) component), action,
+		    ((SwingPerspectiveCoordinator) perspectiveObserver)
+			    .getBars(),
+		    (JMenu) ((SwingPerspectiveCoordinator) perspectiveObserver)
+			    .getMenu());
 	    tmp.execute();
 	    log("COMPONENT DONE EXECUTE INIT:::" + component.getName());
 	} else if (component instanceof AStateComponent) {
@@ -193,12 +195,10 @@ public abstract class ASwingPerspective implements
      */
     private void runStateComponent(final IAction<ActionEvent, Object> action,
 	    final IBGComponent<ActionListener, ActionEvent, Object> component) {
-	    new StateComponentRunWorker(
-		    component).execute();
+	new StateComponentRunWorker(component).execute();
     }
 
     @Override
-
     public void handleAndReplaceComponent(
 	    final IAction<ActionEvent, Object> action,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
@@ -235,9 +235,12 @@ public abstract class ASwingPerspective implements
 	    final ISubComponent<ActionListener, ActionEvent, Object> component,
 	    final IAction<ActionEvent, Object> action) {
 	if (component instanceof ASwingComponent) {
-		new ComponentReplaceWorker(
-			layout.getTargetLayoutComponents(),
-			((ASwingComponent) component), action,((SwingPerspectiveCoordinator)this.perspectiveObserver).getBars(),(JMenu) ((SwingPerspectiveCoordinator)this.perspectiveObserver).getMenu()).execute();
+	    new ComponentReplaceWorker(layout.getTargetLayoutComponents(),
+		    ((ASwingComponent) component), action,
+		    ((SwingPerspectiveCoordinator) perspectiveObserver)
+			    .getBars(),
+		    (JMenu) ((SwingPerspectiveCoordinator) perspectiveObserver)
+			    .getMenu()).execute();
 
 	} else if (component instanceof AStateComponent) {
 	    runStateComponent(action, ((AStateComponent) component));
@@ -280,8 +283,8 @@ public abstract class ASwingPerspective implements
 	    final Map<String, Container> targetComponents,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
-	    new ComponentAddWorker(
-		    targetComponents, ((ASwingComponent) component)).execute();
+	    new ComponentAddWorker(targetComponents,
+		    ((ASwingComponent) component)).execute();
 	}
     }
 

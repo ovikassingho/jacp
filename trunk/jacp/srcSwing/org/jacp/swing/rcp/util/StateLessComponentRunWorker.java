@@ -55,11 +55,11 @@ public class StateLessComponentRunWorker
 	    while (comp.hasIncomingMessage()) {
 		final IAction<ActionEvent, Object> myAction = comp
 			.getNextIncomingMessage();
-		    // final String targetCurrent = comp.getExecutionTarget();
-		    final Object value = comp.handle(myAction);
-		    final String targetId = comp.getHandleTargetAndClear();
-		    delegateReturnValue(comp, targetId, value);
-		    // checkAndHandleTargetChange(comp, targetCurrent);
+		// final String targetCurrent = comp.getExecutionTarget();
+		final Object value = comp.handle(myAction);
+		final String targetId = comp.getHandleTargetAndClear();
+		delegateReturnValue(comp, targetId, value);
+		// checkAndHandleTargetChange(comp, targetCurrent);
 	    }
 	    comp.setBlocked(false);
 	}

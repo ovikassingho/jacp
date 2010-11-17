@@ -72,7 +72,7 @@ import com.explodingpixels.macwidgets.MacUtils;
 public abstract class ASwingWorkbench extends JFrame
 	implements
 	IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-	IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object>,IAction<ActionEvent, Object>> {
+	IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object>, IAction<ActionEvent, Object>> {
 
     /**
 	 * 
@@ -80,12 +80,12 @@ public abstract class ASwingWorkbench extends JFrame
     private static final long serialVersionUID = -1740398352308498810L;
     private JMenu menu;
     private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
-    private final IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
+    private final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
 	    this);
     private final Dimension screenSize = Toolkit.getDefaultToolkit()
 	    .getScreenSize();
     private final int inset = 50;
-    private final IWorkbenchLayout<LayoutManager2,Container> layout = new SwingWorkbenchLayout();
+    private final IWorkbenchLayout<LayoutManager2, Container> layout = new SwingWorkbenchLayout();
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -156,21 +156,21 @@ public abstract class ASwingWorkbench extends JFrame
 	// set layout manager
 	final String osName = System.getProperty("os.name");
 	if (osName.toLowerCase().trim().contains("mac")) {
-		setOSXspecific();
+	    setOSXspecific();
 	} else {
-		
+
 	}
 	contentPane.setLayout(layout.getLayoutManager() != null ? layout
 		.getLayoutManager() : new BorderLayout());
     }
-    
+
     private void setOSXspecific() {
-	MacUtils.makeWindowLeopardStyle(this.getRootPane());
+	MacUtils.makeWindowLeopardStyle(getRootPane());
     }
 
     @Override
     public void handleInitialLayout(final IAction<ActionEvent, Object> action,
-	    final IWorkbenchLayout<LayoutManager2,Container> layout) {
+	    final IWorkbenchLayout<LayoutManager2, Container> layout) {
 	handleInitialLayout((SwingAction) action, (SwingWorkbenchLayout) layout);
 
     }
@@ -187,7 +187,7 @@ public abstract class ASwingWorkbench extends JFrame
     @Override
     public void registerComponent(
 	    final IPerspective<ActionListener, ActionEvent, Object> component,
-	    final IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object> handler) {
+	    final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> handler) {
 	component.init();
 	handler.addPerspective(component);
 
@@ -196,7 +196,7 @@ public abstract class ASwingWorkbench extends JFrame
     @Override
     public void unregisterComponent(
 	    final IPerspective<ActionListener, ActionEvent, Object> component,
-	    final IPerspectiveCoordinator<Container,ActionListener, ActionEvent, Object> handler) {
+	    final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> handler) {
 	handler.removePerspective(component);
 
     }
@@ -231,7 +231,8 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public void handleAndReplaceComponent(final IAction<ActionEvent, Object> action,
+    public void handleAndReplaceComponent(
+	    final IAction<ActionEvent, Object> action,
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	final IPerspectiveLayout<Container, Container> perspectiveLayout = ((ASwingPerspective) perspective)
 		.getIPerspectiveLayout();
@@ -253,8 +254,7 @@ public abstract class ASwingWorkbench extends JFrame
     @Override
     public void disableComponents() {
 	// do not disable tool bar entries!!
-	final Collection<Container> toolBars = this.layout.getToolBars()
-		.values();
+	final Collection<Container> toolBars = layout.getToolBars().values();
 	for (final Component comp : getContentPane().getComponents()) {
 	    if (!toolBars.contains(comp)) {
 		comp.setVisible(false);
@@ -304,7 +304,7 @@ public abstract class ASwingWorkbench extends JFrame
 	final Iterator<Entry<Layout, Container>> it = layout.getToolBars()
 		.entrySet().iterator();
 	while (it.hasNext()) {
-	    Entry<Layout, Container> entry = it.next();
+	    final Entry<Layout, Container> entry = it.next();
 	    getContentPane().add(entry.getValue(), entry.getKey().getLayout());
 	}
 
@@ -335,7 +335,7 @@ public abstract class ASwingWorkbench extends JFrame
     private void addPerspectiveBarEntries(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	if (perspective instanceof ASwingPerspective) {
-	    ((ASwingPerspective) perspective).handleBarEntries(this.layout
+	    ((ASwingPerspective) perspective).handleBarEntries(layout
 		    .getToolBars());
 	}
     }
@@ -383,7 +383,7 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public IWorkbenchLayout<LayoutManager2,Container> getWorkbenchLayout() {
+    public IWorkbenchLayout<LayoutManager2, Container> getWorkbenchLayout() {
 	return layout;
     }
 
@@ -405,9 +405,8 @@ public abstract class ASwingWorkbench extends JFrame
 		SwingUtilities.invokeLater(new Runnable() {
 		    @Override
 		    public void run() {
-			initComponent( new SwingAction(
-				perspective.getId(), perspective.getId(),
-				"init"),perspective);
+			initComponent(new SwingAction(perspective.getId(),
+				perspective.getId(), "init"), perspective);
 
 		    }
 		}); // SWING UTILS END
@@ -512,7 +511,7 @@ public abstract class ASwingWorkbench extends JFrame
      * @return
      */
     private Dimension getPanelDimension(
-	    final IWorkbenchLayout<LayoutManager2,Container> layout) {
+	    final IWorkbenchLayout<LayoutManager2, Container> layout) {
 	return new Dimension(layout.getWorkbenchSize().getX() - 15, layout
 		.getWorkbenchSize().getY() - 15);
     }

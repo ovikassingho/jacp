@@ -72,7 +72,6 @@ public abstract class AStateComponent implements
 	return name;
     }
 
-
     @Override
     public boolean isActive() {
 	return active;
