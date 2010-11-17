@@ -35,18 +35,18 @@ import org.jacp.api.component.ISubComponent;
  */
 public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
 
-	/**
-	 * add component to observe
-	 * 
-	 * @param component
-	 */
-	public abstract void addComponent(final ISubComponent<L, A, M> component);
+    /**
+     * add component to observe
+     * 
+     * @param component
+     */
+    public abstract void addComponent(final ISubComponent<L, A, M> component);
 
-	/**
-	 * remove component; e.g. when component is deactivated
-	 * 
-	 * @param component
-	 */
-	public abstract void removeComponent(final ISubComponent<L, A, M> component);
+    /**
+     * remove component; e.g. when component is deactivated
+     * 
+     * @param component
+     */
+    public abstract void removeComponent(final ISubComponent<L, A, M> component);
 
 }

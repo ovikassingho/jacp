@@ -38,72 +38,73 @@ import org.jacp.api.coordinator.IComponentCoordinator;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
-		IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>,IAction<A, M>> {
+public interface IPerspective<L, A, M>
+	extends
+	IComponent<L, A, M>,
+	IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>, IAction<A, M>> {
 
-	/**
-	 * the initialization method
-	 */
-	public abstract void init();
+    /**
+     * the initialization method
+     */
+    public abstract void init();
 
-	/**
-	 * get all subcomponents in perspective
-	 * 
-	 * @return
-	 */
-	public abstract List<ISubComponent<L, A, M>> getSubcomponents();
+    /**
+     * get all subcomponents in perspective
+     * 
+     * @return
+     */
+    public abstract List<ISubComponent<L, A, M>> getSubcomponents();
 
-	/**
-	 * set all subcomponents of perspective
-	 * 
-	 * @param subComponents
-	 */
-	public abstract void setSubcomponents(
-			final List<ISubComponent<L, A, M>> subComponents);
+    /**
+     * set all subcomponents of perspective
+     * 
+     * @param subComponents
+     */
+    public abstract void setSubcomponents(
+	    final List<ISubComponent<L, A, M>> subComponents);
 
-	/**
-	 * handle baselayout when perspective started
-	 * 
-	 * @param action
-	 */
-	public abstract void handlePerspective(final IAction<A, M> action);
+    /**
+     * handle baselayout when perspective started
+     * 
+     * @param action
+     */
+    public abstract void handlePerspective(final IAction<A, M> action);
 
+    /**
+     * add active component after component.handle was executed
+     * 
+     * @param component
+     */
+    public abstract void addActiveComponent(
+	    final ISubComponent<L, A, M> component);
 
-	/**
-	 * add active component after component.handle was executed
-	 * 
-	 * @param component
-	 */
-	public abstract void addActiveComponent(
-			final ISubComponent<L, A, M> component);
+    /**
+     * delegate target change to an other perspective
+     * 
+     * @param target
+     * @param component
+     */
+    public void delegateTargetChange(final String target,
+	    final ISubComponent<L, A, M> component);
 
-	/**
-	 * delegate target change to an other perspective
-	 * 
-	 * @param target
-	 * @param component
-	 */
-	public void delegateTargetChange(final String target,
-			final ISubComponent<L, A, M> component);
+    /**
+     * delegates massage to responsible componentObserver to notify target
+     * component
+     * 
+     * @param target
+     * @param action
+     */
+    public abstract void delegateComponentMassege(final String target,
+	    final IAction<A, M> action);
 
-	/**
-	 * delegates massage to responsible componentObserver to notify target
-	 * component
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	public abstract void delegateComponentMassege(final String target,
-			final IAction<A, M> action);
-
-	/**
-	 * delegates message to responsible perspectiveObserver to notify target
-	 * perspective
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	public abstract void delegateMassege(final String target,
-			final IAction<A, M> action);
+    /**
+     * delegates message to responsible perspectiveObserver to notify target
+     * perspective
+     * 
+     * @param target
+     * @param action
+     */
+    public abstract void delegateMassege(final String target,
+	    final IAction<A, M> action);
 
 }

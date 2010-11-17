@@ -24,23 +24,23 @@ package org.jacp.api.util;
  */
 public class Tupel<X, Y> {
 
-	X x;
-	Y y;
+    X x;
+    Y y;
 
-	public void setX(final X x) {
-		this.x = x;
-	}
+    public void setX(final X x) {
+	this.x = x;
+    }
 
-	public void setY(final Y y) {
-		this.y = y;
-	}
+    public void setY(final Y y) {
+	this.y = y;
+    }
 
-	public X getX() {
-		return x;
-	}
+    public X getX() {
+	return x;
+    }
 
-	public Y getY() {
-		return y;
-	}
+    public Y getY() {
+	return y;
+    }
 
 }

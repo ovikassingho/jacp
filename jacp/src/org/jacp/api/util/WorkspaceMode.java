@@ -25,5 +25,5 @@ package org.jacp.api.util;
  * @author Andy Moncsek
  */
 public enum WorkspaceMode {
-	WINDOWED_PANE, SINGLE_PANE, TABBED_PANE
+    WINDOWED_PANE, SINGLE_PANE, TABBED_PANE
 }

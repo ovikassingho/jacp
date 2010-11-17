@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2010,2011.
  * AHCP Project
@@ -33,68 +32,68 @@ import java.util.Map;
  */
 public interface IAction<A, M> extends Cloneable {
 
-	/**
-	 * set message for target component: OWN
-	 * 
-	 * @param message
-	 */
-	public abstract void setMessage(final M message);
+    /**
+     * set message for target component: OWN
+     * 
+     * @param message
+     */
+    public abstract void setMessage(final M message);
 
-	/**
-	 * set message for target component
-	 * 
-	 * @param targetId
-	 * @param message
-	 */
-	public abstract void setMessage(final String targetId, final M message);
+    /**
+     * set message for target component
+     * 
+     * @param targetId
+     * @param message
+     */
+    public abstract void setMessage(final String targetId, final M message);
 
-	/**
-	 * get action message
-	 * 
-	 * @return
-	 */
-	public abstract M getMessage();
+    /**
+     * get action message
+     * 
+     * @return
+     */
+    public abstract M getMessage();
 
-	/**
-	 * returns message list with target id's
-	 * 
-	 * @return
-	 */
-	public abstract Map<String, M> getMessageList();
+    /**
+     * returns message list with target id's
+     * 
+     * @return
+     */
+    public abstract Map<String, M> getMessageList();
 
-	/**
-	 * get caller id
-	 * 
-	 * @return
-	 */
-	public abstract String getSourceId();
+    /**
+     * get caller id
+     * 
+     * @return
+     */
+    public abstract String getSourceId();
 
-	/**
-	 * set implementation specific event
-	 * 
-	 * @param event
-	 */
-	public abstract void setActionEvent(final A event);
+    /**
+     * set implementation specific event
+     * 
+     * @param event
+     */
+    public abstract void setActionEvent(final A event);
 
-	/**
-	 * get implementation specific action event
-	 * 
-	 * @return
-	 */
-	public abstract A getActionEvent();
+    /**
+     * get implementation specific action event
+     * 
+     * @return
+     */
+    public abstract A getActionEvent();
 
-	/**
-	 * clone action and containing event
-	 * 
-	 * @return
-	 */
-	public abstract IAction<A, M> clone();
+    /**
+     * clone action and containing event
+     * 
+     * @return
+     */
+    public abstract IAction<A, M> clone();
 
-	/**
-	 * returns action target id
-	 * 
-	 * @return
-	 */
-	public abstract String getTargetId(); 
+    /**
+     * returns action target id
+     * 
+     * @return
+     */
+    public abstract String getTargetId();
 
 }

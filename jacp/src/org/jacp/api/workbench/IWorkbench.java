@@ -45,91 +45,87 @@ import org.jacp.api.perspective.IPerspective;
  */
 public interface IWorkbench<P, C, L, A, M> {
 
-	/**
-	 * returns basic container to handle perspectives
-	 * 
-	 * @return
-	 */
-	public abstract C init();
+    /**
+     * returns basic container to handle perspectives
+     * 
+     * @return
+     */
+    public abstract C init();
 
-	/**
-	 * init default workbench menu
-	 */
-	public abstract void initWorkbenchMenu();
+    /**
+     * init default workbench menu
+     */
+    public abstract void initWorkbenchMenu();
 
-	/**
-	 * set default menu bar instance to workspace
-	 */
-	public abstract void initMenuBar();
+    /**
+     * set default menu bar instance to workspace
+     */
+    public abstract void initMenuBar();
 
-	/**
-	 * returns default workbench menu
-	 * 
-	 * @return
-	 */
-	public abstract C getDefaultMenu();
+    /**
+     * returns default workbench menu
+     * 
+     * @return
+     */
+    public abstract C getDefaultMenu();
 
-	/**
-	 * add/remove menu entries to workbench instance
-	 * 
-	 * @return
-	 */
-	public abstract C handleMenuEntries(final C meuBar);
+    /**
+     * add/remove menu entries to workbench instance
+     * 
+     * @return
+     */
+    public abstract C handleMenuEntries(final C meuBar);
 
+    /**
+     * add default workbench actions to tool bar
+     * 
+     * @param toolBar
+     * @param bottomBar
+     */
+    public abstract void handleBarEntries(final Map<Layout, C> bars);
 
-	/**
-	 * add default workbench actions to tool bar
-	 * 
-	 * @param toolBar
-	 * @param bottomBar
-	 */
-	public abstract void handleBarEntries(final Map<Layout,C> bars);
+    /**
+     * set perspectives to workbench
+     * 
+     * @param perspectives
+     */
+    public abstract void setPerspectives(
+	    final List<IPerspective<L, A, M>> perspectives);
 
-	/**
-	 * set perspectives to workbench
-	 * 
-	 * @param perspectives
-	 */
-	public abstract void setPerspectives(
-			final List<IPerspective<L, A, M>> perspectives);
+    /**
+     * get perspectives in workbench
+     * 
+     * @return
+     */
+    public abstract List<IPerspective<L, A, M>> getPerspectives();
 
-	/**
-	 * get perspectives in workbench
-	 * 
-	 * @return
-	 */
-	public abstract List<IPerspective<L, A, M>> getPerspectives();
+    /**
+     * set visibility of all components in workspace wrapper to false
+     * 
+     * @param component
+     */
+    public abstract void disableComponents();
 
+    /**
+     * anable all components in workspace; for use in
+     * initPerspectiveInWindowMode
+     */
+    public abstract void enableComponents();
 
+    /**
+     * handle workbench layout
+     * 
+     * @param action
+     * @param layout
+     */
+    public abstract void handleInitialLayout(final IAction<A, M> action,
+	    final IWorkbenchLayout<P, C> layout);
 
-	/**
-	 * set visibility of all components in workspace wrapper to false
-	 * 
-	 * @param component
-	 */
-	public abstract void disableComponents();
-
-	/**
-	 * anable all components in workspace; for use in
-	 * initPerspectiveInWindowMode
-	 */
-	public abstract void enableComponents();
-
-	/**
-	 * handle workbench layout
-	 * 
-	 * @param action
-	 * @param layout
-	 */
-	public abstract void handleInitialLayout(final IAction<A, M> action,
-			final IWorkbenchLayout<P,C> layout);
-
-	/**
-	 * returns workbench layout object
-	 * 
-	 * @return
-	 */
-	public abstract IWorkbenchLayout<P,C> getWorkbenchLayout();
-
+    /**
+     * returns workbench layout object
+     * 
+     * @return
+     */
+    public abstract IWorkbenchLayout<P, C> getWorkbenchLayout();
 
 }

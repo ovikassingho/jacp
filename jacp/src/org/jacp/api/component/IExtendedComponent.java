@@ -30,18 +30,18 @@ import org.jacp.api.componentLayout.Layout;
  */
 public interface IExtendedComponent<C> {
 
-	/**
-	 * get custom menu entries
-	 * 
-	 * @return
-	 */
-	public abstract void handleMenuEntries(final C meuneBar);
+    /**
+     * get custom menu entries
+     * 
+     * @return
+     */
+    public abstract void handleMenuEntries(final C meuneBar);
 
-	/**
-	 * add custom actions to toolbar
-	 * 
-	 * @param toolBar
-	 */
-	public abstract void handleBarEntries(final Map<Layout,C> bars);
+    /**
+     * add custom actions to toolbar
+     * 
+     * @param toolBar
+     */
+    public abstract void handleBarEntries(final Map<Layout, C> bars);
 
 }

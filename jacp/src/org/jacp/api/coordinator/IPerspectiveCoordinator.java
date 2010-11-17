@@ -29,25 +29,26 @@ import org.jacp.api.perspective.IPerspective;
  * 
  * @author Andy Moncsek
  */
-public interface IPerspectiveCoordinator<C,L, A, M> extends ICoordinator<L, A, M> {
+public interface IPerspectiveCoordinator<C, L, A, M> extends
+	ICoordinator<L, A, M> {
 
-	/**
-	 * add perspective to observe
-	 * 
-	 * @param perspective
-	 */
-	public abstract void addPerspective(final IPerspective<L, A, M> perspective);
+    /**
+     * add perspective to observe
+     * 
+     * @param perspective
+     */
+    public abstract void addPerspective(final IPerspective<L, A, M> perspective);
 
-	/**
-	 * remove perspective; e.g. when perspective is deactivated
-	 * 
-	 * @param perspective
-	 */
-	public abstract void removePerspective(
-			final IPerspective<L, A, M> perspective);
-	
-	 public abstract Map<Layout,C> getBars() ;
-	 
-	 public C getMenu();
+    /**
+     * remove perspective; e.g. when perspective is deactivated
+     * 
+     * @param perspective
+     */
+    public abstract void removePerspective(
+	    final IPerspective<L, A, M> perspective);
+
+    public abstract Map<Layout, C> getBars();
+
+    public C getMenu();
 
 }

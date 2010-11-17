@@ -17,7 +17,6 @@
  */
 package org.jacp.api.coordinator;
 
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IBGComponent;
 
@@ -47,7 +46,7 @@ public interface IStatelessComponentCoordinator<L, A, M> {
      * @param clazz
      * @return
      */
-    public abstract <T extends IBGComponent<L, A, M>> IBGComponent<L, A, M> getCloneBean(final Class<T> clazz);
-
+    public abstract <T extends IBGComponent<L, A, M>> IBGComponent<L, A, M> getCloneBean(
+	    final Class<T> clazz);
 
 }
