@@ -43,14 +43,14 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 			panel.add(label1);
 			panel.add(label2);
 		}
-		if (action.getMessage() instanceof String) {
-			if (action.getMessage().equals("stop")) {
+		if (action.getLastMessage() instanceof String) {
+			if (action.getLastMessage().equals("stop")) {
 				final long stopTime = System.currentTimeMillis();
 
 				label.setText("stop Time: " + (stopTime - startTime));
 				text1.setText("count: " + counter);
 				block = true;
-			} else if (action.getMessage().equals("start")) {
+			} else if (action.getLastMessage().equals("start")) {
 				startTime = System.currentTimeMillis();
 				text1.setText("count: " + counter);
 				counter++;
@@ -61,17 +61,17 @@ public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 				    counter++;
 				}
 			}
-			label1.setText("message: " + action.getMessage());
-			System.out.println("message: " + action.getMessage());
+			label1.setText("message: " + action.getLastMessage());
+			System.out.println("message: " + action.getLastMessage());
 
-		} else if(action.getMessage() instanceof Long){
-			System.out.println("LLLOOONNNGGG" +action.getMessage());
-			label2.setText("stop Time bg component: " + action.getMessage());
+		} else if(action.getLastMessage() instanceof Long){
+			System.out.println("LLLOOONNNGGG" +action.getLastMessage());
+			label2.setText("stop Time bg component: " + action.getLastMessage());
 
 
-		}else if(action.getMessage() instanceof Integer){
-			System.out.println("Integer" +action.getMessage());
-			counter=counter + ((Integer)action.getMessage());
+		}else if(action.getLastMessage() instanceof Integer){
+			System.out.println("Integer" +action.getLastMessage());
+			counter=counter + ((Integer)action.getLastMessage());
 			text1.setText("count: " + counter);
 			
 

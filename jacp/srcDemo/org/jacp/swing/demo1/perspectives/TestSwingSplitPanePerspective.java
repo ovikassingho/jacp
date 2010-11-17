@@ -117,9 +117,9 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 	add.setFocusable(false);
 	add.setSize(new Dimension(10, 10));
 	final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-	listener.getAction().setMessage("id02", "test");
+	listener.getAction().addMessage("id02", "test");
 	final IActionListener<ActionListener, ActionEvent, Object> listener_1 = getActionListener();
-	listener_1.getAction().setMessage("id01_1", "test");
+	listener_1.getAction().addMessage("id01_1", "test");
 	add.addActionListener(listener.getListener());
 	add_1.addActionListener(listener_1.getListener());
 	toolBar.add(add);
@@ -132,7 +132,7 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 
 	    add2.setFocusable(false);
 	    final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-	    listener2.getAction().setMessage("id01", "tester");
+	    listener2.getAction().addMessage("id01", "tester");
 	    add2.addActionListener(listener2.getListener());
 	    add2.setText("perspective1");
 	    add2.putClientProperty("JButton.segmentPosition", "first");
@@ -144,7 +144,7 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
     public void handlePerspective(final SwingAction action,
 	    final SwingPerspectiveLayout perspectiveLayout) {
 
-	if (action.getMessage().equals("test")) {
+	if (action.getLastMessage().equals("test")) {
 	    final JSplitPane splitPane = new JSplitPane(
 		    JSplitPane.VERTICAL_SPLIT);
 	    final JSplitPane test = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -195,7 +195,7 @@ public class TestSwingSplitPanePerspective extends ASwingPerspective {
 			    for (final ISubComponent<ActionListener, ActionEvent, Object> comp : components) {
 				if (comp.getName().equals(arg0.getText())) {
 				    final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-				    listener3.getAction().setMessage(
+				    listener3.getAction().addMessage(
 					    getId()+"."+comp.getId(), "test");
 				    listener3.getListener().actionPerformed(
 					    null);

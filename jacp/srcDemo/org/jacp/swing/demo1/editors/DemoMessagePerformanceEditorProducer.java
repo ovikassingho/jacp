@@ -41,18 +41,18 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 	@Override
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
-		if (action.getMessage() instanceof String) {
-			if (action.getMessage().equals("begin")) {
+		if (action.getLastMessage() instanceof String) {
+			if (action.getLastMessage().equals("begin")) {
 				int p = 0;
-				System.out.println("BEGIN_ACTION" + action.getMessage());
+				System.out.println("BEGIN_ACTION" + action.getLastMessage());
 				final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-				listener2.getAction().setMessage("id09", "start");
+				listener2.getAction().addMessage("id09", "start");
 				listener2.getListener()
 						.actionPerformed(action.getActionEvent());
 				while (p < 10000) {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 					String val = "test" + p;
-					listener3.getAction().setMessage("id09", val);
+					listener3.getAction().addMessage("id09", val);
 					System.out.println("Producer Val.: "+val);
 					listener3.getListener().actionPerformed(
 						listener3.getAction().getActionEvent());
@@ -60,45 +60,45 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 
 				}
 				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-				listener3.getAction().setMessage("id09", "stop");
+				listener3.getAction().addMessage("id09", "stop");
 				listener3.getListener()
 						.actionPerformed(action.getActionEvent());
-			} else if (action.getMessage().equals("begin1")) {
+			} else if (action.getLastMessage().equals("begin1")) {
 				int p = 0;
-				System.out.println("BEGIN_ACTION2" + action.getMessage());
+				System.out.println("BEGIN_ACTION2" + action.getLastMessage());
 				final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-				listener2.getAction().setMessage("id11", "start");
+				listener2.getAction().addMessage("id11", "start");
 				listener2.getListener()
 						.actionPerformed(action.getActionEvent());
 				while (p < 2) {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-					listener3.getAction().setMessage("id11", "test" + p);
+					listener3.getAction().addMessage("id11", "test" + p);
 					listener3.getListener().actionPerformed(
 						listener3.getAction().getActionEvent());
 					p++;
 
 				}
 				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-				listener3.getAction().setMessage("id11", "stop");
+				listener3.getAction().addMessage("id11", "stop");
 				listener3.getListener()
 						.actionPerformed(action.getActionEvent());
-			} else if (action.getMessage().equals("begin2")) {
+			} else if (action.getLastMessage().equals("begin2")) {
 				int p = 0;
-				System.out.println("BEGIN_ACTION3" + action.getMessage());
+				System.out.println("BEGIN_ACTION3" + action.getLastMessage());
 				final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-				listener2.getAction().setMessage("id12", "start");
+				listener2.getAction().addMessage("id12", "start");
 				listener2.getListener()
 						.actionPerformed(action.getActionEvent());
 				while (p < 50) {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-					listener3.getAction().setMessage("id12", p*1000);
+					listener3.getAction().addMessage("id12", p*1000);
 					listener3.getListener().actionPerformed(
 						listener3.getAction().getActionEvent());
 					p++;
 
 				}
 				final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-				listener3.getAction().setMessage("id11", "stop");
+				listener3.getAction().addMessage("id11", "stop");
 				listener3.getListener()
 						.actionPerformed(action.getActionEvent());
 			}else {
@@ -107,7 +107,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 					@Override
 					public void actionPerformed(final ActionEvent e) {
 						final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-						listener2.getAction().setMessage("id08", "begin");
+						listener2.getAction().addMessage("id08", "begin");
 						listener2.getListener().actionPerformed(e);
 
 					}
@@ -120,7 +120,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 					public void actionPerformed(final ActionEvent e) {
 						System.out.println("blocked"+isBlocked);
 						final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-						listener2.getAction().setMessage("id08", "begin1");
+						listener2.getAction().addMessage("id08", "begin1");
 						listener2.getListener().actionPerformed(e);
 
 					}
@@ -132,7 +132,7 @@ public class DemoMessagePerformanceEditorProducer extends ASwingComponent {
 					public void actionPerformed(final ActionEvent e) {
 						System.out.println("blocked"+isBlocked);
 						final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-						listener2.getAction().setMessage("id08", "begin2");
+						listener2.getAction().addMessage("id08", "begin2");
 						listener2.getListener().actionPerformed(e);
 
 					}

@@ -31,7 +31,7 @@ public class TestSwingEditor extends ASwingComponent {
 	@Override
 	public Container handleAction(final IAction<ActionEvent, Object> action) {
 
-		System.out.println("Editor1 CALL::" + action.getMessage()+" : source: "+action.getSourceId());
+		System.out.println("Editor1 CALL::" + action.getLastMessage()+" : source: "+action.getSourceId());
 		Long i = 0L;
 		while (i < 100000000L) {
 			i++;
@@ -57,15 +57,15 @@ public class TestSwingEditor extends ASwingComponent {
 		};
 
 		final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-		listener2.getAction().setMessage("id04", "test");
+		listener2.getAction().addMessage("id04", "test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
-		listener3.getAction().setMessage("id02.id06", "test");
+		listener3.getAction().addMessage("id02.id06", "test");
 		final IActionListener<ActionListener, ActionEvent, Object> listener4 = getActionListener();
-		listener4.getAction().setMessage("id01.id03", "test11");
+		listener4.getAction().addMessage("id01.id03", "test11");
 		final IActionListener<ActionListener, ActionEvent, Object> listener5 = getActionListener();
-		listener5.getAction().setMessage("id01.id13", "start");
+		listener5.getAction().addMessage("id01.id13", "start");
 		final IActionListener<ActionListener, ActionEvent, Object> listener6 = getActionListener();
-		listener6.getAction().setMessage("id01.id13", "stop");
+		listener6.getAction().addMessage("id01.id13", "stop");
 
 		final JButton button = new JButton("message to editor2");
 		final JButton button2 = new JButton("message test");
@@ -88,10 +88,10 @@ public class TestSwingEditor extends ASwingComponent {
 				while (p < 2) {
 					final IActionListener<ActionListener, ActionEvent, Object> listener3 = getActionListener();
 					if (count == 4) {
-						listener3.getAction().setMessage("id04", "test1");
+						listener3.getAction().addMessage("id04", "test1");
 						count = 5;
 					} else {
-						listener3.getAction().setMessage("id05", "test");
+						listener3.getAction().addMessage("id05", "test");
 						count = 4;
 					}
 
@@ -138,7 +138,7 @@ public class TestSwingEditor extends ASwingComponent {
 
 	    add2.setFocusable(false);
 	    final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
-	    listener2.getAction().setMessage("id01", "tester");
+	    listener2.getAction().addMessage("id01", "tester");
 	    add2.addActionListener(listener2.getListener());
 	    add2.setText("editor");
 	    add2.putClientProperty("JButton.segmentPosition", "first");
