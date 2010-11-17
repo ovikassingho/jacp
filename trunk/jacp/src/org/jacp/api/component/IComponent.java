@@ -38,68 +38,68 @@ import org.jacp.api.coordinator.ICoordinator;
  */
 public interface IComponent<L, A, M> {
 
-	/**
-	 * handles component when called
-	 * 
-	 * @param action
-	 * @return view component
-	 */
-	public abstract <C> C handle(final IAction<A, M> action);
+    /**
+     * handles component when called
+     * 
+     * @param action
+     * @return view component
+     */
+    public abstract <C> C handle(final IAction<A, M> action);
 
-	/**
-	 * returns action listener (for local, target and global use)
-	 * 
-	 * @return
-	 */
-	public abstract IActionListener<L, A, M> getActionListener();
+    /**
+     * returns action listener (for local, target and global use)
+     * 
+     * @return
+     */
+    public abstract IActionListener<L, A, M> getActionListener();
 
-	/**
-	 * returns id of component
-	 * 
-	 * @return
-	 */
-	public abstract String getId();
+    /**
+     * returns id of component
+     * 
+     * @return
+     */
+    public abstract String getId();
 
-	/**
-	 * set unique id of component
-	 * 
-	 * @param id
-	 */
-	public abstract void setId(final String id);
+    /**
+     * set unique id of component
+     * 
+     * @param id
+     */
+    public abstract void setId(final String id);
 
-	/**
-	 * get active status of perspective
-	 * 
-	 * @return
-	 */
-	public abstract boolean isActive();
+    /**
+     * get active status of perspective
+     * 
+     * @return
+     */
+    public abstract boolean isActive();
 
-	/**
-	 * set active state of perspective
-	 * 
-	 * @param active
-	 */
-	public abstract void setActive(boolean active);
+    /**
+     * set active state of perspective
+     * 
+     * @param active
+     */
+    public abstract void setActive(boolean active);
 
-	/**
-	 * returns the name of a component
-	 * 
-	 * @return
-	 */
-	public abstract String getName();
+    /**
+     * returns the name of a component
+     * 
+     * @return
+     */
+    public abstract String getName();
 
-	/**
-	 * defines the name of a component
-	 * 
-	 * @param name
-	 */
-	public abstract void setName(String name);
+    /**
+     * defines the name of a component
+     * 
+     * @param name
+     */
+    public abstract void setName(String name);
 
-	/**
-	 * observer to handle changes in components
-	 * 
-	 * @return
-	 */
-	public abstract void setObserver(final ICoordinator<L, A, M> observer);
+    /**
+     * observer to handle changes in components
+     * 
+     * @return
+     */
+    public abstract void setObserver(final ICoordinator<L, A, M> observer);
 
 }

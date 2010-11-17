@@ -17,7 +17,6 @@
  */
 package org.jacp.api.component;
 
-
 /**
  * all root components have containing sub components (workspace ->
  * perspectives; perspective - editors) and listeners; all sub components have

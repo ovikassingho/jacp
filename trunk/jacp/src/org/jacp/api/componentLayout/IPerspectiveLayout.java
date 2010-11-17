@@ -31,38 +31,37 @@ import java.util.Map;
  */
 public interface IPerspectiveLayout<M, B> {
 
+    /**
+     * set Layoutwrapper for perspective; this wrapper contains wrappers for
+     * editors and views
+     * 
+     * @param comp
+     */
+    public abstract void setRootComponent(final M comp);
 
-	/**
-	 * set Layoutwrapper for perspective; this wrapper contains wrappers for
-	 * editors and views
-	 * 
-	 * @param comp
-	 */
-	public abstract void setRootComponent(final M comp);
+    /**
+     * getLayoutwrapper for perspective
+     * 
+     * @return
+     */
+    public abstract M getRootComponent();
 
-	/**
-	 * getLayoutwrapper for perspective
-	 * 
-	 * @return
-	 */
-	public abstract M getRootComponent();
+    /**
+     * returns map of target components and ids key - id value - target
+     * component
+     * 
+     * @return
+     */
+    public Map<String, B> getTargetLayoutComponents();
 
-	/**
-	 * returns map of target components and ids key - id value - target
-	 * component
-	 * 
-	 * @return
-	 */
-	public Map<String, B> getTargetLayoutComponents();
-
-	/**
-	 * register a target component; a target component defines a wrapper where
-	 * editors and views can "live" in; you can define a target for each editor
-	 * or view component; create an root component, a complex layout an register
-	 * all components where editors/views should displayed in
-	 * 
-	 * @param id
-	 * @param target
-	 */
-	public void registerTargetLayoutComponent(final String id, final B target);
+    /**
+     * register a target component; a target component defines a wrapper where
+     * editors and views can "live" in; you can define a target for each editor
+     * or view component; create an root component, a complex layout an register
+     * all components where editors/views should displayed in
+     * 
+     * @param id
+     * @param target
+     */
+    public void registerTargetLayoutComponent(final String id, final B target);
 }

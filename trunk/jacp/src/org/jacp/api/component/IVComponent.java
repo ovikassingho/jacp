@@ -31,20 +31,20 @@ package org.jacp.api.component;
  *            defines the basic message type
  */
 public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
-		ISubComponent<L, A, M> {
+	ISubComponent<L, A, M> {
 
-	/**
-	 * set the root ui component created by the handle method
-	 * 
-	 * @param root
-	 */
-	public abstract void setRoot(C root);
+    /**
+     * set the root ui component created by the handle method
+     * 
+     * @param root
+     */
+    public abstract void setRoot(C root);
 
-	/**
-	 * returns 'root' ui component created by the handle method
-	 * 
-	 * @return
-	 */
-	public abstract C getRoot();
+    /**
+     * returns 'root' ui component created by the handle method
+     * 
+     * @return
+     */
+    public abstract C getRoot();
 
 }

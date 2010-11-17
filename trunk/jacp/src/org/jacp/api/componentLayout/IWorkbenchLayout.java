@@ -27,7 +27,7 @@ import org.jacp.api.util.WorkspaceMode;
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbenchLayout<L,C> {
+public interface IWorkbenchLayout<L, C> {
 
     /**
      * get defined workspace layout
@@ -56,7 +56,6 @@ public interface IWorkbenchLayout<L,C> {
      * @param enabled
      */
     public abstract void setMenuEnabled(boolean enabled);
-
 
     /**
      * set default layout manager to workspace
@@ -87,15 +86,13 @@ public interface IWorkbenchLayout<L,C> {
      */
     public abstract Tupel<Integer, Integer> getWorkbenchSize();
 
-
     /**
      * register a tool bar for workbench
      * 
      * @param name
      * @param toolBar
      */
-    public abstract void registerToolBar(final Layout name,
-	    final C toolBar);
+    public abstract void registerToolBar(final Layout name, final C toolBar);
 
     /**
      * returns all registered tool bars of workbench
