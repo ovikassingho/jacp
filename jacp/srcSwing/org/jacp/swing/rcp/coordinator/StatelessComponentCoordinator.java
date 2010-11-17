@@ -77,7 +77,7 @@ public class StatelessComponentCoordinator implements
     public void incomingMessage(final IAction<ActionEvent, Object> message) {
 	synchronized (baseComponent) {
 	    // get active instance
-	    IBGComponent<ActionListener, ActionEvent, Object> comp = getActiveComponent();
+	    final IBGComponent<ActionListener, ActionEvent, Object> comp = getActiveComponent();
 	    if (comp != null) {
 		if (componentInstances.size() < MAX_INCTANCE_COUNT) {
 		    // create new instance

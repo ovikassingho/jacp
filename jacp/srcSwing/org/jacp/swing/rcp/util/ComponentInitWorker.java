@@ -25,11 +25,9 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
-
 
 /**
  * Background Worker to execute components; handle method to init component
@@ -49,7 +47,8 @@ public class ComponentInitWorker
     public ComponentInitWorker(
 	    final Map<String, Container> targetComponents,
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action,final Map<Layout, Container> bars, final JMenu menu) {
+	    final IAction<ActionEvent, Object> action,
+	    final Map<Layout, Container> bars, final JMenu menu) {
 	this.targetComponents = targetComponents;
 	this.component = component;
 	this.action = action;
@@ -74,7 +73,7 @@ public class ComponentInitWorker
 		    targetComponents, component.getExecutionTarget());
 	    log("3.4.4.2.3: subcomponent handle init add component by type: "
 		    + component.getName());
-	    addComponentByType(validContainer, component,bars,menu);
+	    addComponentByType(validContainer, component, bars, menu);
 	    log("3.4.4.2.4: subcomponent handle init END: "
 		    + component.getName());
 	    component.setBlocked(false);
@@ -94,10 +93,11 @@ public class ComponentInitWorker
     public void done() {
 	synchronized (component) {
 	    component.setBlocked(false);
-	    // check if news messages received while handled in initialization worker; if so then start replace worker
+	    // check if news messages received while handled in initialization
+	    // worker; if so then start replace worker
 	    if (component.hasIncomingMessage()) {
-		new ComponentReplaceWorker(targetComponents, component, action,bars,menu)
-			.execute();
+		new ComponentReplaceWorker(targetComponents, component, action,
+			bars, menu).execute();
 	    }
 	}
     }

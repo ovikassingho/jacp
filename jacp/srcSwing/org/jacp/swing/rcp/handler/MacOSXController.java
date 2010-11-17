@@ -16,26 +16,26 @@ import com.apple.mrj.MRJQuitHandler;
  * @author amo
  */
 public class MacOSXController implements MRJAboutHandler, MRJQuitHandler,
-		MRJPrefsHandler {
+	MRJPrefsHandler {
 
-	@Override
-	public void handleAbout() {
-		JOptionPane.showMessageDialog(null, "about", "about",
-				JOptionPane.INFORMATION_MESSAGE);
-	}
+    @Override
+    public void handleAbout() {
+	JOptionPane.showMessageDialog(null, "about", "about",
+		JOptionPane.INFORMATION_MESSAGE);
+    }
 
-	@Override
-	public void handlePrefs() throws IllegalStateException {
-		JOptionPane.showMessageDialog(null, "prefs", "prefs",
-				JOptionPane.INFORMATION_MESSAGE);
-	}
+    @Override
+    public void handlePrefs() throws IllegalStateException {
+	JOptionPane.showMessageDialog(null, "prefs", "prefs",
+		JOptionPane.INFORMATION_MESSAGE);
+    }
 
-	@Override
-	public void handleQuit() throws IllegalStateException {
-		JOptionPane.showMessageDialog(null, "quit", "quit",
-				JOptionPane.INFORMATION_MESSAGE);
-		// handle exit here
-		System.exit(0);
-	}
+    @Override
+    public void handleQuit() throws IllegalStateException {
+	JOptionPane.showMessageDialog(null, "quit", "quit",
+		JOptionPane.INFORMATION_MESSAGE);
+	// handle exit here
+	System.exit(0);
+    }
 
 }

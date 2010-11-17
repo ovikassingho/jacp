@@ -54,7 +54,8 @@ public class ComponentReplaceWorker
     public ComponentReplaceWorker(
 	    final Map<String, Container> targetComponents,
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action,final Map<Layout, Container> bars,final JMenu menu) {
+	    final IAction<ActionEvent, Object> action,
+	    final Map<Layout, Container> bars, final JMenu menu) {
 	this.targetComponents = targetComponents;
 	this.component = component;
 	this.action = action;
@@ -97,7 +98,8 @@ public class ComponentReplaceWorker
 		if (!currentTaget.equals(component.getExecutionTarget())
 			|| !previousContainer.equals(component.getRoot())) {
 		    publish(new ChunkDTO(parent, previousContainer,
-			    targetComponents, currentTaget, component,bars,menu));
+			    targetComponents, currentTaget, component, bars,
+			    menu));
 		} else {
 		    lock.add(true);
 		}
@@ -116,9 +118,10 @@ public class ComponentReplaceWorker
 	    final Container parent = dto.getParent();
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component = dto
 		    .getComponent();
-	    //TODO decide if menu and bars are always handled or only at start time
-	  //  component.handleBarEntries(dto.getBars());
-	  //  component.handleMenuEntries(dto.getMenu());
+	    // TODO decide if menu and bars are always handled or only at start
+	    // time
+	    // component.handleBarEntries(dto.getBars());
+	    // component.handleMenuEntries(dto.getMenu());
 	    final Container previousContainer = dto.getPreviousContainer();
 	    final String currentTaget = dto.getCurrentTaget();
 	    // remove old view

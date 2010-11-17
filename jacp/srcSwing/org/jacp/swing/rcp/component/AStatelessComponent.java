@@ -180,7 +180,6 @@ public abstract class AStatelessComponent implements
 	handleComponentTarget = componentTargetId;
     }
 
-
     @Override
     protected Object clone() {
 	try {

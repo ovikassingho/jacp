@@ -28,10 +28,13 @@ import org.jacp.api.util.Tupel;
 import org.jacp.api.util.WorkspaceMode;
 
 /**
- * defines basic layout of workbench; define if menus are enabled; declare tool bars; set workbench size
+ * defines basic layout of workbench; define if menus are enabled; declare tool
+ * bars; set workbench size
+ * 
  * @author Andy Moncsek
  */
-public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2,Container> {
+public class SwingWorkbenchLayout implements
+	IWorkbenchLayout<LayoutManager2, Container> {
 
     private LayoutManager2 layoutManager;
     private boolean menuEnabled;
@@ -39,7 +42,6 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2,Con
     private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
 
     private final Map<Layout, Container> toolBars = new ConcurrentHashMap<Layout, Container>();
-
 
     @Override
     public WorkspaceMode getWorkspaceMode() {
@@ -71,7 +73,6 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2,Con
 	return layoutManager;
     }
 
-
     @Override
     public void setWorkbenchXYSize(final int x, final int y) {
 	size.setX(x);
@@ -83,14 +84,14 @@ public class SwingWorkbenchLayout implements IWorkbenchLayout<LayoutManager2,Con
 	return size;
     }
 
-   
-    
+    @Override
     public void registerToolBar(final Layout name, final Container toolBar) {
 	toolBars.put(name, toolBar);
     }
-    
+
+    @Override
     public Map<Layout, Container> getToolBars() {
-	return this.toolBars;
+	return toolBars;
     }
 
 }

@@ -21,9 +21,7 @@ package org.jacp.swing.rcp.util;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -39,8 +37,6 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 /**
  * handles component methods in own thread; see
  * http://bugs.sun.com/view_bug.do?bug_id=6880336
@@ -52,7 +48,7 @@ public abstract class AbstractComponentWorker<T> extends
 	org.jacp.swing.rcp.util.SwingWorker<T, ChunkDTO> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    
+
     private final Map<Layout, Container> empty = new HashMap<Layout, Container>();
 
     /**
@@ -103,7 +99,7 @@ public abstract class AbstractComponentWorker<T> extends
 			    editor.getName());
 
 		}
-		if (menu!=null) {
+		if (menu != null) {
 		    editor.handleMenuEntries(menu);
 		}
 		if (!bars.isEmpty()) {

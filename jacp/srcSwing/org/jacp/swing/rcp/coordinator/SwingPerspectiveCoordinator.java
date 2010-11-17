@@ -68,12 +68,12 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
 
     @Override
     public Map<Layout, Container> getBars() {
-	return this.workbench.getWorkbenchLayout().getToolBars();
+	return workbench.getWorkbenchLayout().getToolBars();
     }
 
     @Override
     public Container getMenu() {
-	return this.workbench.getDefaultMenu();
+	return workbench.getDefaultMenu();
     }
 
     /**
