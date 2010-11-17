@@ -1,10 +1,12 @@
 package org.jacp.swing.demo1.editors;
 
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -128,7 +130,19 @@ public class TestSwingEditor extends ASwingComponent {
 
 	@Override
 	public void handleBarEntries(Map<Layout, Container> bars) {
-	    // TODO Auto-generated method stub
+		final Container bottomBar = bars.get(Layout.SOUTH);
+	    final JButton add2 = new JButton(new ImageIcon(Toolkit
+		    .getDefaultToolkit().getImage("NSImage://NSColorPanel")));
+	    // add2.putClientProperty("JButton.buttonType",
+	    // "segmentedTextured");
+
+	    add2.setFocusable(false);
+	    final IActionListener<ActionListener, ActionEvent, Object> listener2 = getActionListener();
+	    listener2.getAction().setMessage("id01", "tester");
+	    add2.addActionListener(listener2.getListener());
+	    add2.setText("editor");
+	    add2.putClientProperty("JButton.segmentPosition", "first");
+	    bottomBar.add(add2);
 	    
 	}
 

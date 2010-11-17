@@ -33,6 +33,15 @@ public class OSXToolBar extends JPanel {
         setBorder(Borders.createEmptyBorder("3dlu, 3dlu, 1dlu, 3dlu"));
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 5,5));
     }
+    
+    public OSXToolBar(final int hint) {
+        // make the component transparent
+        setOpaque(false);
+        // create an empty border around the panel
+        // note the border below is created using JGoodies Forms
+        setBorder(Borders.createEmptyBorder("3dlu, 3dlu, 1dlu, 3dlu"));
+        this.setLayout(new FlowLayout(hint, 5,5));
+    }
 
     @Override
     public Border getBorder() {

@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -47,6 +48,7 @@ import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingPerspectiveLayout;
 import org.jacp.swing.rcp.coordinator.SwingComponentCoordinator;
+import org.jacp.swing.rcp.coordinator.SwingPerspectiveCoordinator;
 import org.jacp.swing.rcp.util.ComponentAddWorker;
 import org.jacp.swing.rcp.util.ComponentInitWorker;
 import org.jacp.swing.rcp.util.ComponentReplaceWorker;
@@ -161,9 +163,10 @@ public abstract class ASwingPerspective implements
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
 	    log("COMPONENT EXECUTE INIT:::" + component.getName());
+	   // this.perspectiveObserver.
 	    final ComponentInitWorker tmp = new ComponentInitWorker(
 		    perspectiveLayout.getTargetLayoutComponents(),
-		    ((ASwingComponent) component), action);
+		    ((ASwingComponent) component), action,((SwingPerspectiveCoordinator)this.perspectiveObserver).getBars(),(JMenu) ((SwingPerspectiveCoordinator)this.perspectiveObserver).getMenu());
 	    tmp.execute();
 	    log("COMPONENT DONE EXECUTE INIT:::" + component.getName());
 	} else if (component instanceof AStateComponent) {
@@ -234,7 +237,7 @@ public abstract class ASwingPerspective implements
 	if (component instanceof ASwingComponent) {
 		new ComponentReplaceWorker(
 			layout.getTargetLayoutComponents(),
-			((ASwingComponent) component), action).execute();
+			((ASwingComponent) component), action,((SwingPerspectiveCoordinator)this.perspectiveObserver).getBars(),(JMenu) ((SwingPerspectiveCoordinator)this.perspectiveObserver).getMenu()).execute();
 
 	} else if (component instanceof AStateComponent) {
 	    runStateComponent(action, ((AStateComponent) component));

@@ -23,7 +23,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+
 import org.jacp.api.component.IVComponent;
+import org.jacp.api.componentLayout.Layout;
 
 /**
  * DTO container for processing component results in Event dispatch thread; for
@@ -38,18 +42,22 @@ public final class ChunkDTO {
     private final String currentTaget;
     private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
     private final Container previousContainer;
+    private final Map<Layout, Container> bars;
+    private final JMenu menu;
 
     public ChunkDTO(
 	    final Container parent,
 	    final Container previousContainer,
 	    final Map<String, Container> targetComponents,
 	    final String currentTaget,
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component) {
+	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,final Map<Layout, Container> bars, final JMenu menu) {
 	this.parent = parent;
 	this.targetComponents = targetComponents;
 	this.currentTaget = currentTaget;
 	this.component = component;
 	this.previousContainer = previousContainer;
+	this.bars = bars;
+	this.menu = menu;
     }
 
     public Container getParent() {
@@ -70,5 +78,13 @@ public final class ChunkDTO {
 
     public Container getPreviousContainer() {
 	return previousContainer;
+    }
+
+    public Map<Layout, Container> getBars() {
+        return bars;
+    }
+
+    public JMenu getMenu() {
+        return menu;
     }
 }

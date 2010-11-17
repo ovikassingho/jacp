@@ -22,11 +22,13 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
@@ -39,7 +41,7 @@ import org.jacp.swing.rcp.workbench.ASwingWorkbench;
  * @author Andy Moncsek
  */
 public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
-	IPerspectiveCoordinator<ActionListener, ActionEvent, Object> {
+	IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> {
 
     private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();
     private final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
@@ -62,6 +64,16 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	perspective.setObserver(null);
 	perspectives.remove(perspective);
+    }
+
+    @Override
+    public Map<Layout, Container> getBars() {
+	return this.workbench.getWorkbenchLayout().getToolBars();
+    }
+
+    @Override
+    public Container getMenu() {
+	return this.workbench.getDefaultMenu();
     }
 
     /**
@@ -236,7 +248,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     @Override
     public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 	    final M component, final IAction<ActionEvent, Object> action) {
-	((ASwingWorkbench)workbench).handleAndReplaceComponent(action,
+	((ASwingWorkbench) workbench).handleAndReplaceComponent(action,
 		(IPerspective<ActionListener, ActionEvent, Object>) component);
 
     }
@@ -245,7 +257,8 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final M component, final IAction<ActionEvent, Object> action) {
 	component.setActive(true);
-	((ASwingWorkbench)workbench).initComponent(action,(IPerspective<ActionListener, ActionEvent, Object>) component);
+	((ASwingWorkbench) workbench).initComponent(action,
+		(IPerspective<ActionListener, ActionEvent, Object>) component);
 
     }
 
