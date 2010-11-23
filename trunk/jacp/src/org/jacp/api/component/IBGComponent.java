@@ -17,6 +17,7 @@
  */
 package org.jacp.api.component;
 
+
 /**
  * defines methods for background components
  * 
@@ -46,5 +47,7 @@ public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>,
      * @param componentTargetId
      */
     public abstract void setHandleTarget(final String componentTargetId);
+    
+
 
 }
