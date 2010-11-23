@@ -53,6 +53,7 @@ import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
+import org.jacp.impl.Launcher;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
@@ -88,6 +89,8 @@ public abstract class ASwingWorkbench extends JFrame
     private final IWorkbenchLayout<LayoutManager2, Container> layout = new SwingWorkbenchLayout();
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    
+    private Launcher<?> launcher;
 
     public ASwingWorkbench(final String name) {
 	super(name);
@@ -95,7 +98,8 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public Container init() {
+    public Container init(Launcher<?> launcher) {
+	this.launcher = launcher;
 	log("1: init workbench");
 	// init user defined workspace
 	this.handleInitialLayout(new SwingAction("TODO", "init"), layout);
@@ -188,7 +192,7 @@ public abstract class ASwingWorkbench extends JFrame
     public void registerComponent(
 	    final IPerspective<ActionListener, ActionEvent, Object> component,
 	    final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> handler) {
-	component.init();
+	component.init(this.launcher);
 	handler.addPerspective(component);
 
     }

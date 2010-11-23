@@ -40,6 +40,7 @@ import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.impl.Launcher;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.component.AStateComponent;
@@ -72,9 +73,11 @@ public abstract class ASwingPerspective implements
     private String name;
     private boolean active;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private Launcher<?> launcher;
 
     @Override
-    public void init() {
+    public void init(Launcher<?> launcher) {
+	this.launcher = launcher;
 	((SwingComponentCoordinator) componentObserver).start();
     }
 
@@ -180,6 +183,7 @@ public abstract class ASwingPerspective implements
 	} else if (component instanceof AStatelessComponent) {
 	    log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
 		    + component.getName());
+	    ((AStatelessComponent) component).setLauncher(launcher);
 	    ((AStatelessComponent) component).addMessage(action);
 	    log("SATELESS BACKGROUND COMPONENT DONE EXECUTE INIT:::"
 		    + component.getName());
