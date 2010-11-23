@@ -26,9 +26,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IBGComponent;
+import org.jacp.api.component.IStateLessBGComponent;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.impl.Launcher;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 import org.jacp.swing.rcp.coordinator.StatelessComponentCoordinator;
@@ -40,7 +42,7 @@ import org.jacp.swing.rcp.coordinator.StatelessComponentCoordinator;
  * 
  */
 public abstract class AStatelessComponent implements
-	IBGComponent<ActionListener, ActionEvent, Object> {
+	IStateLessBGComponent<ActionListener, ActionEvent, Object> {
 
     private String id;
     private String target = "";
@@ -53,6 +55,7 @@ public abstract class AStatelessComponent implements
     private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
     private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> coordinator;
+    private Launcher<?> launcher;
 
     @Override
     public String getExecutionTarget() {
@@ -82,7 +85,8 @@ public abstract class AStatelessComponent implements
 
     private synchronized IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> getCooridinator() {
 	if (coordinator == null) {
-	    coordinator = new StatelessComponentCoordinator(this);
+	    if(launcher==null)throw new UnsupportedOperationException("no di launcher set");
+	    coordinator = new StatelessComponentCoordinator(this,launcher);
 	}
 	return coordinator;
     }
@@ -224,5 +228,9 @@ public abstract class AStatelessComponent implements
     }
 
     public abstract Object handleAction(IAction<ActionEvent, Object> action);
+
+    public void setLauncher(Launcher<?> launcher) {
+        this.launcher = launcher;
+    }
 
 }

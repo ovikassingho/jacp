@@ -74,38 +74,43 @@ public class ComponentReplaceWorker
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 	    final IAction<ActionEvent, Object> action) {
 	synchronized (component) {
-	    component.setBlocked(true);
-	    lock.add(true);
-	    while (component.hasIncomingMessage()) {
-		final IAction<ActionEvent, Object> myAction = component
-			.getNextIncomingMessage();
-		try {
-		    lock.take();
-		} catch (final InterruptedException e) {
-		    e.printStackTrace();
+	    try {
+		component.setBlocked(true);
+		lock.add(true);
+		while (component.hasIncomingMessage()) {
+		    final IAction<ActionEvent, Object> myAction = component
+			    .getNextIncomingMessage();
+		    try {
+			lock.take();
+		    } catch (final InterruptedException e) {
+			e.printStackTrace();
+		    }
+
+		    log(" //1.1.1.1.1// handle replace component BEGIN: "
+			    + component.getName());
+
+		    final Map<String, Container> targetComponents = this.targetComponents;
+		    final Container previousContainer = component.getRoot();
+		    final String currentTaget = component.getExecutionTarget();
+		    // run code
+		    log(" //1.1.1.1.2// handle component: "
+			    + component.getName());
+		    prepareAndHandleComponent(component, myAction);
+		    final Container parent = previousContainer.getParent();
+		    if (!currentTaget.equals(component.getExecutionTarget())
+			    || !previousContainer.equals(component.getRoot())) {
+			publish(new ChunkDTO(parent, previousContainer,
+				targetComponents, currentTaget, component,
+				bars, menu));
+		    } else {
+			lock.add(true);
+		    }
+
 		}
-
-		log(" //1.1.1.1.1// handle replace component BEGIN: "
-			+ component.getName());
-
-		final Map<String, Container> targetComponents = this.targetComponents;
-		final Container previousContainer = component.getRoot();
-		final String currentTaget = component.getExecutionTarget();
-		// run code
-		log(" //1.1.1.1.2// handle component: " + component.getName());
-		prepareAndHandleComponent(component, myAction);
-		final Container parent = previousContainer.getParent();
-		if (!currentTaget.equals(component.getExecutionTarget())
-			|| !previousContainer.equals(component.getRoot())) {
-		    publish(new ChunkDTO(parent, previousContainer,
-			    targetComponents, currentTaget, component, bars,
-			    menu));
-		} else {
-		    lock.add(true);
-		}
-
+	    }finally {
+		    component.setBlocked(false);
 	    }
-	    component.setBlocked(false);
+
 	}
 	return component;
 
