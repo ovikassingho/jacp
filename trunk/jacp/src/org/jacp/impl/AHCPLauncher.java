@@ -26,8 +26,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class AHCPLauncher {
 
-    private static final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-	    new String[] { "org/jacp/impl/resources/ahcpWorkbench.xml" });
+
 
     static {
 	try {
@@ -40,14 +39,13 @@ public class AHCPLauncher {
 
     @SuppressWarnings("unchecked")
     public static void main(final String[] args) throws ClassNotFoundException {
-	final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) context
+	final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher("org/jacp/impl/resources/ahcpWorkbench.xml");
+	final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) launcher.getContext()
 		.getBean("workbench");
-	workbench.init();
+	workbench.init(launcher);
     }
-
-    public static ClassPathXmlApplicationContext getContext() {
-	return context;
-    }
+    
+   
 
     private static void setOsSpecificSettings() throws ClassNotFoundException {
 	final String osName = System.getProperty("os.name");
@@ -109,4 +107,6 @@ public class AHCPLauncher {
 	}
 
     }
+    
+
 }

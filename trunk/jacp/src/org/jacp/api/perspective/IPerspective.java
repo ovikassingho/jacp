@@ -24,6 +24,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.impl.Launcher;
 
 /**
  * a perspective is a root component, handled by an workbench and contains
@@ -46,7 +47,7 @@ public interface IPerspective<L, A, M>
     /**
      * the initialization method
      */
-    public abstract void init();
+    public abstract void init(final Launcher<?> launcher);
 
     /**
      * get all subcomponents in perspective

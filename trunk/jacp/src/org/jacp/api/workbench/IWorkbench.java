@@ -24,6 +24,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.impl.Launcher;
 
 /**
  * base component for an application, handles perspectives and containing
@@ -46,11 +47,13 @@ import org.jacp.api.perspective.IPerspective;
 public interface IWorkbench<P, C, L, A, M> {
 
     /**
-     * returns basic container to handle perspectives
+     * Initialization sequence returns basic container to handle perspectives
      * 
+     * @param launcher
+     *            for di container
      * @return
      */
-    public abstract C init();
+    public abstract C init(final Launcher<?> launcher);
 
     /**
      * init default workbench menu
