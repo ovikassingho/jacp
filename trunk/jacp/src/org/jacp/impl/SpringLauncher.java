@@ -3,7 +3,7 @@ package org.jacp.impl;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class SpringLauncher implements Launcher<ClassPathXmlApplicationContext> {
-    private ClassPathXmlApplicationContext context;
+    private final ClassPathXmlApplicationContext context;
 
     public SpringLauncher(final String resource) {
 	context = new ClassPathXmlApplicationContext(new String[] { resource });
@@ -14,6 +14,7 @@ public class SpringLauncher implements Launcher<ClassPathXmlApplicationContext> 
 	return context;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public synchronized <E> E getBean(final Class<E> clazz) {
 	final String[] name = context.getBeanNamesForType(clazz);

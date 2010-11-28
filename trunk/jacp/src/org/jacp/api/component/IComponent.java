@@ -68,18 +68,34 @@ public interface IComponent<L, A, M> {
     public abstract void setId(final String id);
 
     /**
-     * get active status of perspective
+     * get default active status of component
      * 
      * @return
      */
     public abstract boolean isActive();
 
     /**
-     * set active state of perspective
+     * set default active state of component
      * 
      * @param active
      */
     public abstract void setActive(boolean active);
+
+    /**
+     * set if component was activated, can occur if message was send before
+     * "init" message arrived
+     * 
+     * @param active
+     */
+    public abstract void setActived(boolean isActive);
+
+    /**
+     * get if component was activated, can occur if message was send before
+     * "init" message arrived
+     * 
+     * @return
+     */
+    public abstract boolean isActived();
 
     /**
      * returns the name of a component

@@ -1,10 +1,12 @@
 package org.jacp.api.component;
 
 import org.jacp.impl.Launcher;
+
 /**
  * represents a state less background component
+ * 
  * @author Andy Moncsek
- *
+ * 
  * @param <L>
  * @param <A>
  * @param <M>
