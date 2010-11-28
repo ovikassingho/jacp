@@ -73,8 +73,6 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
 	return sourceId;
     }
 
-
-
     @Override
     public Map<String, Object> getMessageList() {
 	return messages;
@@ -104,6 +102,6 @@ public final class SwingAction implements IAction<ActionEvent, Object> {
 
     @Override
     public Object getLastMessage() {
-	return this.message;
+	return message;
     }
 }

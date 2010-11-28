@@ -72,11 +72,12 @@ public abstract class ASwingPerspective implements
     private String id;
     private String name;
     private boolean active;
+    private boolean isActived = false;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private Launcher<?> launcher;
 
     @Override
-    public void init(Launcher<?> launcher) {
+    public void init(final Launcher<?> launcher) {
 	this.launcher = launcher;
 	((SwingComponentCoordinator) componentObserver).start();
     }
@@ -149,11 +150,11 @@ public abstract class ASwingPerspective implements
 	    if (component.getId().equals(targetId)) {
 		log("3.4.4.2: subcomponent init with custom action");
 		initComponent(action, component);
-	    } else if (component.isActive()) {
-		log("3.4.4.2: subcomponent init with default action");
-		initComponent(
-			new SwingAction(component.getId(), component.getId(),
-				"init"), component);
+	    } else if (component.isActive() && !component.isActived()) {
+		    log("3.4.4.2: subcomponent init with default action");
+		    initComponent(
+			    new SwingAction(component.getId(),
+				    component.getId(), "init"), component);
 	    } // if END
 
 	} // for END
@@ -450,5 +451,15 @@ public abstract class ASwingPerspective implements
 	if (logger.isLoggable(Level.FINE)) {
 	    logger.fine(">> " + message);
 	}
+    }
+
+    @Override
+    public boolean isActived() {
+	return isActived;
+    }
+
+    @Override
+    public void setActived(final boolean isActived) {
+	this.isActived = isActived;
     }
 }

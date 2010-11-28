@@ -225,10 +225,9 @@ public abstract class AbstractComponentWorker<T> extends
 	    final IAction<ActionEvent, Object> action) {
 	final Container editorComponent;
 	synchronized (component) {
-	    System.out.println("-------1");
-	    System.out.println("-------1" + Thread.currentThread());
+	    // System.out.println("-------1" + Thread.currentThread());
 	    editorComponent = component.handle(action);
-	    System.out.println("-------2");
+	    // System.out.println("-------2");
 	    component.setRoot(editorComponent);
 	    editorComponent.setVisible(true);
 	    editorComponent.setEnabled(true);

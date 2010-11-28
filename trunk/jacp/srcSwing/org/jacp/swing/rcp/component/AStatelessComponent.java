@@ -49,6 +49,7 @@ public abstract class AStatelessComponent implements
     private String name;
     private volatile String handleComponentTarget;
     private volatile boolean active = true;
+    private boolean isActived = false;
     private volatile AtomicBoolean blocked = new AtomicBoolean(false);
     private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
@@ -85,8 +86,10 @@ public abstract class AStatelessComponent implements
 
     private synchronized IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> getCooridinator() {
 	if (coordinator == null) {
-	    if(launcher==null)throw new UnsupportedOperationException("no di launcher set");
-	    coordinator = new StatelessComponentCoordinator(this,launcher);
+	    if (launcher == null) {
+		throw new UnsupportedOperationException("no di launcher set");
+	    }
+	    coordinator = new StatelessComponentCoordinator(this, launcher);
 	}
 	return coordinator;
     }
@@ -229,8 +232,19 @@ public abstract class AStatelessComponent implements
 
     public abstract Object handleAction(IAction<ActionEvent, Object> action);
 
-    public void setLauncher(Launcher<?> launcher) {
-        this.launcher = launcher;
+    @Override
+    public void setLauncher(final Launcher<?> launcher) {
+	this.launcher = launcher;
+    }
+
+    @Override
+    public boolean isActived() {
+	return isActived;
+    }
+
+    @Override
+    public void setActived(final boolean isActived) {
+	this.isActived = isActived;
     }
 
 }
