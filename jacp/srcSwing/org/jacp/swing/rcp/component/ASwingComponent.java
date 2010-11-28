@@ -50,6 +50,7 @@ public abstract class ASwingComponent implements
     private String name;
     private Container root;
     private boolean active;
+    private boolean isActived = false;
     private volatile AtomicBoolean blocked = new AtomicBoolean(false);
     private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
@@ -191,5 +192,15 @@ public abstract class ASwingComponent implements
      * @return java.awt.Container
      */
     public abstract Container handleAction(IAction<ActionEvent, Object> action);
+
+    @Override
+    public boolean isActived() {
+	return isActived;
+    }
+
+    @Override
+    public void setActived(final boolean isActived) {
+	this.isActived = isActived;
+    }
 
 }

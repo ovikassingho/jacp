@@ -89,7 +89,7 @@ public abstract class ASwingWorkbench extends JFrame
     private final IWorkbenchLayout<LayoutManager2, Container> layout = new SwingWorkbenchLayout();
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    
+
     private Launcher<?> launcher;
 
     public ASwingWorkbench(final String name) {
@@ -98,7 +98,7 @@ public abstract class ASwingWorkbench extends JFrame
     }
 
     @Override
-    public Container init(Launcher<?> launcher) {
+    public Container init(final Launcher<?> launcher) {
 	this.launcher = launcher;
 	log("1: init workbench");
 	// init user defined workspace
@@ -192,7 +192,7 @@ public abstract class ASwingWorkbench extends JFrame
     public void registerComponent(
 	    final IPerspective<ActionListener, ActionEvent, Object> component,
 	    final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> handler) {
-	component.init(this.launcher);
+	component.init(launcher);
 	handler.addPerspective(component);
 
     }

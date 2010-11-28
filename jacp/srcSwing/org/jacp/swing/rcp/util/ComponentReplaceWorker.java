@@ -96,19 +96,26 @@ public class ComponentReplaceWorker
 		    log(" //1.1.1.1.2// handle component: "
 			    + component.getName());
 		    prepareAndHandleComponent(component, myAction);
-		    final Container parent = previousContainer.getParent();
-		    if (!currentTaget.equals(component.getExecutionTarget())
-			    || !previousContainer.equals(component.getRoot())) {
-			publish(new ChunkDTO(parent, previousContainer,
-				targetComponents, currentTaget, component,
-				bars, menu));
-		    } else {
+		    if (previousContainer == null
+			    || component.getRoot() == null) {
 			lock.add(true);
+		    } else {
+			final Container parent = previousContainer.getParent();
+			if (!currentTaget
+				.equals(component.getExecutionTarget())
+				|| !previousContainer.equals(component
+					.getRoot())) {
+			    publish(new ChunkDTO(parent, previousContainer,
+				    targetComponents, currentTaget, component,
+				    bars, menu));
+			} else {
+			    lock.add(true);
+			}
 		    }
 
 		}
-	    }finally {
-		    component.setBlocked(false);
+	    } finally {
+		component.setBlocked(false);
 	    }
 
 	}

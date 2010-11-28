@@ -29,11 +29,9 @@ import java.util.logging.Logger;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.api.coordinator.IStatelessComponentCoordinator;
-import org.jacp.impl.AHCPLauncher;
 import org.jacp.impl.Launcher;
 import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jacp.swing.rcp.util.StateLessComponentRunWorker;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -60,11 +58,11 @@ public class StatelessComponentCoordinator implements
     private final Launcher<?> launcher;
 
     public StatelessComponentCoordinator(
-	    final IBGComponent<ActionListener, ActionEvent, Object> baseComponent, final Launcher<?> launcher) {
+	    final IBGComponent<ActionListener, ActionEvent, Object> baseComponent,
+	    final Launcher<?> launcher) {
 	this.launcher = launcher;
 	setBaseComponent(baseComponent);
     }
-
 
     /*
      * (non-Javadoc)
@@ -151,7 +149,8 @@ public class StatelessComponentCoordinator implements
     @Override
     public <T extends IBGComponent<ActionListener, ActionEvent, Object>> IBGComponent<ActionListener, ActionEvent, Object> getCloneBean(
 	    final Class<T> clazz) {
-	return ((AStatelessComponent) baseComponent).init(launcher.getBean(clazz));
+	return ((AStatelessComponent) baseComponent).init(launcher
+		.getBean(clazz));
     }
 
     private IBGComponent<ActionListener, ActionEvent, Object> getActiveComponent() {

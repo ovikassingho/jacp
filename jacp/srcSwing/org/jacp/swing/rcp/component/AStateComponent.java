@@ -48,6 +48,7 @@ public abstract class AStateComponent implements
     private volatile AtomicBoolean blocked = new AtomicBoolean(false);
     private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
+    private boolean isActived = false;
     private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
 	    20);
 
@@ -176,5 +177,15 @@ public abstract class AStateComponent implements
     }
 
     public abstract Object handleAction(IAction<ActionEvent, Object> action);
+
+    @Override
+    public boolean isActived() {
+	return isActived;
+    }
+
+    @Override
+    public void setActived(final boolean isActived) {
+	this.isActived = isActived;
+    }
 
 }
