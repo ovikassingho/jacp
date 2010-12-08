@@ -41,7 +41,6 @@ import org.springframework.jmx.export.annotation.ManagedResource;
  * @author Andy Moncsek
  * 
  */
-@ManagedResource(objectName = "org.jacp:name=ASwingComponent", description = "a state ful swing component")
 public abstract class ASwingComponent implements
 	IVComponent<Container, ActionListener, ActionEvent, Object> {
 
@@ -63,7 +62,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public IPerspective<ActionListener, ActionEvent, Object> getParentPerspective() {
 	return parentPerspective;
     }
@@ -82,7 +80,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public String getId() {
 	if (id == null) {
 	    throw new UnsupportedOperationException("No id set");
@@ -96,7 +93,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public String getExecutionTarget() {
 	return target;
     }
@@ -107,7 +103,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public Container getRoot() {
 	return root;
     }
@@ -118,7 +113,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public String getName() {
 	if (name == null) {
 	    throw new UnsupportedOperationException("No name set");
@@ -132,7 +126,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public boolean isActive() {
 	return active;
     }
@@ -143,7 +136,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public boolean isBlocked() {
 	return blocked.get();
     }
@@ -154,7 +146,6 @@ public abstract class ASwingComponent implements
     }
 
     @Override
-    @ManagedAttribute
     public boolean hasIncomingMessage() {
 	return !incomingActions.isEmpty();
     }

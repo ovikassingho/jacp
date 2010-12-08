@@ -12,8 +12,7 @@ import javax.swing.JTextField;
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.component.ASwingComponent;
-import org.springframework.jmx.export.annotation.ManagedResource;
-@ManagedResource(objectName = "org.jacp:name=DemoMessagePerformanceEditorConsumer", description = "a state ful swing component")
+
 public class DemoMessagePerformanceEditorConsumer extends ASwingComponent {
 
 	private JPanel panel = null;

@@ -165,7 +165,7 @@ public abstract class ASwingPerspective implements
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	if (component instanceof ASwingComponent) {
 	    log("COMPONENT EXECUTE INIT:::" + component.getName());
-	    // this.perspectiveObserver.
+	    component.setActived(true);
 	    final ComponentInitWorker tmp = new ComponentInitWorker(
 		    perspectiveLayout.getTargetLayoutComponents(),
 		    ((ASwingComponent) component), action,

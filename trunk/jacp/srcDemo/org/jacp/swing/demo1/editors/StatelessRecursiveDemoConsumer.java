@@ -15,7 +15,6 @@ import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jdesktop.swingx.graphics.GraphicsUtilities;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
-@ManagedResource(objectName = "org.jacp:name=StatelessRecursiveDemoConsumer", description = "a state ful swing component")
 public class StatelessRecursiveDemoConsumer extends AStatelessComponent {
 
     private final static int THUMB_WIDTH = 88;

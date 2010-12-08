@@ -8,7 +8,6 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.springframework.jmx.export.annotation.ManagedResource;
-@ManagedResource(objectName = "org.jacp:name=StatelessDemoConsumer", description = "a state ful swing component")
 public class StatelessDemoConsumer extends AStatelessComponent{
     
     
