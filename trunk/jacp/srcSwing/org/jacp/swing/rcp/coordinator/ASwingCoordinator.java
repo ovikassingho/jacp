@@ -41,7 +41,7 @@ public abstract class ASwingCoordinator extends Thread implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-	    10000);
+	    50000);
 
     @Override
     public void run() {
