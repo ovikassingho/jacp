@@ -80,38 +80,19 @@ public class ComponentReplaceWorker
 		while (component.hasIncomingMessage()) {
 		    final IAction<ActionEvent, Object> myAction = component
 			    .getNextIncomingMessage();
-		    try {
-			lock.take();
-		    } catch (final InterruptedException e) {
-			e.printStackTrace();
-		    }
-
+		    waitOnLock();
 		    log(" //1.1.1.1.1// handle replace component BEGIN: "
 			    + component.getName());
 
-		    final Map<String, Container> targetComponents = this.targetComponents;
 		    final Container previousContainer = component.getRoot();
 		    final String currentTaget = component.getExecutionTarget();
 		    // run code
 		    log(" //1.1.1.1.2// handle component: "
 			    + component.getName());
 		    prepareAndHandleComponent(component, myAction);
-		    if (previousContainer == null) {
-			lock.add(true);
-		    } else {
-			final Container parent = previousContainer.getParent();
-			if (!currentTaget
-				.equals(component.getExecutionTarget())
-				|| !previousContainer.equals(component
-					.getRoot()) || parent == null) {
-			    publish(new ChunkDTO(parent, previousContainer,
-				    targetComponents, currentTaget, component,
-				    bars, menu));
-			} else {
-			    lock.add(true);
-			}
-		    }
-
+		    log(" //1.1.1.1.3// publish component: "
+			    + component.getName());
+		    publishComponentValue(previousContainer, currentTaget);
 		}
 	    } finally {
 		component.setBlocked(false);
@@ -122,7 +103,52 @@ public class ComponentReplaceWorker
 
     }
 
+    /**
+     * run in thread
+     * 
+     * @param previousContainer
+     * @param currentTaget
+     */
+    private void publishComponentValue(final Container previousContainer,
+	    final String currentTaget) {
+	synchronized (previousContainer) {
+	    boolean publish = false;
+	    Container parent = null;
+	    if (previousContainer == null) {
+		lock.add(true);
+	    } else {
+		parent = previousContainer.getParent();
+		if (parent == null) {
+		    publish = true;
+		} else if (!currentTaget.equals(component.getExecutionTarget())
+			|| !previousContainer.equals(component.getRoot())) {
+		    publish = true;
+		} else {
+		    lock.add(true);
+		}
+	    }
+	    if (publish) {
+		publish(new ChunkDTO(parent, previousContainer,
+			targetComponents, currentTaget, component, bars, menu));
+	    }
+	}
+    }
+
+    /**
+     * run in thread
+     */
+    private void waitOnLock() {
+	try {
+	    lock.take();
+	} catch (final InterruptedException e) {
+	    e.printStackTrace();
+	}
+    }
+
     @Override
+    /**
+     * run in EDT
+     */
     protected void process(final List<ChunkDTO> chunks) {
 	// process method runs in EventDispatchThread
 	for (final ChunkDTO dto : chunks) {
