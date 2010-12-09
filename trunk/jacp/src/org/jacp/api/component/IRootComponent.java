@@ -38,14 +38,14 @@ public interface IRootComponent<T, H, A> {
      * 
      * @param component
      */
-    abstract public void registerComponent(final T component, final H handler);
+    abstract public void registerComponent(final T component);
 
     /**
      * unregister component from current perspective
      * 
      * @param component
      */
-    abstract public void unregisterComponent(final T component, final H handler);
+    abstract public void unregisterComponent(final T component);
 
     /**
      * handles initialization of subcomponents

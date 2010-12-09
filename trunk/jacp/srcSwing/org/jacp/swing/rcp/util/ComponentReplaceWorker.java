@@ -32,6 +32,7 @@ import javax.swing.JMenu;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -92,7 +93,13 @@ public class ComponentReplaceWorker
 		    prepareAndHandleComponent(component, myAction);
 		    log(" //1.1.1.1.3// publish component: "
 			    + component.getName());
-		    publishComponentValue(previousContainer, currentTaget);
+		    if (component.isActive()) {
+			publishComponentValue(previousContainer, currentTaget);
+		    } else {
+			// unregister component
+			//removeComponentValue(component,previousContainer);
+		    }
+
 		}
 	    } finally {
 		component.setBlocked(false);
@@ -101,6 +108,21 @@ public class ComponentReplaceWorker
 	}
 	return component;
 
+    }
+
+    private void removeComponentValue(final IVComponent<Container, ActionListener, ActionEvent, Object> component,final Container previousContainer) {
+	synchronized (previousContainer) {
+	    if (previousContainer == null) {
+		lock.add(true);
+	    } else {
+		final Container parent  = previousContainer.getParent();
+		if (parent != null) {
+		    parent.remove(component.getRoot());
+		}
+		lock.add(true);
+	    }
+	    
+	}
     }
 
     /**

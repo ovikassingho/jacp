@@ -59,9 +59,9 @@ public class TestSwingEditor2 extends ASwingComponent {
 		} else if (action.getLastMessage().equals("testBLA")) {
 			setExecutionTarget("id0" + p + ".editor0");
 			if (p == 2) {
-				p = 0;
-			} else {
 				p = 1;
+			} else {
+				p = 2;
 			}
 			System.out.println("Editor2 CALL 2: " + p);
 		} else {

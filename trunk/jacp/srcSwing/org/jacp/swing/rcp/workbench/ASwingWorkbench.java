@@ -81,7 +81,7 @@ public abstract class ASwingWorkbench extends JFrame
     private static final long serialVersionUID = -1740398352308498810L;
     private JMenu menu;
     private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
-    private final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> perspectiveObserver = new SwingPerspectiveCoordinator(
+    private final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> perspectiveHandler = new SwingPerspectiveCoordinator(
 	    this);
     private final Dimension screenSize = Toolkit.getDefaultToolkit()
 	    .getScreenSize();
@@ -128,7 +128,7 @@ public abstract class ASwingWorkbench extends JFrame
 		// start perspective Observer worker thread
 		// TODO create status daemon which observes thread component on
 		// failure and restarts if needed!!
-		((SwingPerspectiveCoordinator) perspectiveObserver).start();
+		((SwingPerspectiveCoordinator) perspectiveHandler).start();
 		// init size
 		initWorkbenchSize();
 		// init menu instance#
@@ -190,18 +190,16 @@ public abstract class ASwingWorkbench extends JFrame
 
     @Override
     public void registerComponent(
-	    final IPerspective<ActionListener, ActionEvent, Object> component,
-	    final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> handler) {
+	    final IPerspective<ActionListener, ActionEvent, Object> component) {
 	component.init(launcher);
-	handler.addPerspective(component);
+	perspectiveHandler.addPerspective(component);
 
     }
 
     @Override
     public void unregisterComponent(
-	    final IPerspective<ActionListener, ActionEvent, Object> component,
-	    final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> handler) {
-	handler.removePerspective(component);
+	    final IPerspective<ActionListener, ActionEvent, Object> component) {
+	perspectiveHandler.removePerspective(component);
 
     }
 
@@ -401,7 +399,7 @@ public abstract class ASwingWorkbench extends JFrame
     public void initComponents(final IAction<ActionEvent, Object> action) {
 	for (final IPerspective<ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
 	    log("3.4.1: register component: " + perspective.getName());
-	    registerComponent(perspective, perspectiveObserver);
+	    registerComponent(perspective);
 	    // TODO what if component removed an initialized later again?
 	    log("3.4.2: create perspective menu");
 	    createPerspectiveMenue(perspective);

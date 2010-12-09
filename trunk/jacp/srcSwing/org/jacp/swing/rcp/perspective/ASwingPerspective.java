@@ -66,7 +66,7 @@ public abstract class ASwingPerspective implements
     private final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
 
     private ICoordinator<ActionListener, ActionEvent, Object> perspectiveObserver;
-    private final IComponentCoordinator<ActionListener, ActionEvent, Object> componentObserver = new SwingComponentCoordinator(
+    private final IComponentCoordinator<ActionListener, ActionEvent, Object> componentHandler = new SwingComponentCoordinator(
 	    this);
     private final IPerspectiveLayout<Container, Container> perspectiveLayout = new SwingPerspectiveLayout();
     private String id;
@@ -79,7 +79,7 @@ public abstract class ASwingPerspective implements
     @Override
     public void init(final Launcher<?> launcher) {
 	this.launcher = launcher;
-	((SwingComponentCoordinator) componentObserver).start();
+	((SwingComponentCoordinator) componentHandler).start();
     }
 
     /**
@@ -116,10 +116,9 @@ public abstract class ASwingPerspective implements
 
     @Override
     public void registerComponent(
-	    final ISubComponent<ActionListener, ActionEvent, Object> component,
-	    final IComponentCoordinator<ActionListener, ActionEvent, Object> handler) {
+	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	log("register component: " + component.getId());
-	handler.addComponent(component);
+	componentHandler.addComponent(component);
 	subcomponents.add(component);
 	component.setParentPerspective(this);
 
@@ -127,10 +126,9 @@ public abstract class ASwingPerspective implements
 
     @Override
     public void unregisterComponent(
-	    final ISubComponent<ActionListener, ActionEvent, Object> component,
-	    final IComponentCoordinator<ActionListener, ActionEvent, Object> handler) {
+	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	log("unregister component: " + component.getId());
-	handler.removeComponent(component);
+	componentHandler.removeComponent(component);
 	subcomponents.remove(component);
 	component.setParentPerspective(null);
     }
@@ -269,7 +267,7 @@ public abstract class ASwingPerspective implements
     public void addActiveComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	// register new component at perspective
-	registerComponent(component, componentObserver);
+	registerComponent(component);
 	if (component instanceof ASwingComponent) {
 	    // add component ui root to correct target
 	    addComponentUIValue(getIPerspectiveLayout()
@@ -299,7 +297,7 @@ public abstract class ASwingPerspective implements
 	final String parentId = getTargetParentId(target);
 	if (!id.equals(parentId)) {
 	    // unregister component in current perspective
-	    unregisterComponent(component, componentObserver);
+	    unregisterComponent(component);
 	    // delegate to perspective observer
 	    perspectiveObserver.delegateTargetChange(target, component);
 
@@ -315,7 +313,7 @@ public abstract class ASwingPerspective implements
     @Override
     public void delegateComponentMassege(final String target,
 	    final IAction<ActionEvent, Object> action) {
-	componentObserver.delegateMessage(target, action);
+	componentHandler.delegateMessage(target, action);
     }
 
     @Override
@@ -371,7 +369,7 @@ public abstract class ASwingPerspective implements
     }
 
     /**
-     * register components at componentObserver
+     * register components at componentHandler
      * 
      * @param <M>
      * @param components
@@ -379,7 +377,7 @@ public abstract class ASwingPerspective implements
     private <M extends ISubComponent<ActionListener, ActionEvent, Object>> void registerSubcomponents(
 	    final List<M> components) {
 	for (final M component : components) {
-	    registerComponent(component, componentObserver);
+	    registerComponent(component);
 	}
     }
 
