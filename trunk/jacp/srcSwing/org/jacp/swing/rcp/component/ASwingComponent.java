@@ -33,7 +33,6 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.swing.rcp.action.SwingAction;
 import org.jacp.swing.rcp.action.SwingActionListener;
 
-
 /**
  * represents a basic swing component to extend from
  * 

@@ -96,15 +96,14 @@ public class ComponentReplaceWorker
 		    log(" //1.1.1.1.2// handle component: "
 			    + component.getName());
 		    prepareAndHandleComponent(component, myAction);
-		    if (previousContainer == null
-			    || component.getRoot() == null) {
+		    if (previousContainer == null) {
 			lock.add(true);
 		    } else {
 			final Container parent = previousContainer.getParent();
 			if (!currentTaget
 				.equals(component.getExecutionTarget())
 				|| !previousContainer.equals(component
-					.getRoot())) {
+					.getRoot()) || parent == null) {
 			    publish(new ChunkDTO(parent, previousContainer,
 				    targetComponents, currentTaget, component,
 				    bars, menu));
@@ -139,12 +138,20 @@ public class ComponentReplaceWorker
 	    // remove old view
 	    log(" //1.1.1.1.3// handle old component remove: "
 		    + component.getName());
-	    handleOldComponentRemove(parent, previousContainer);
-	    // add new view
-	    log(" //1.1.1.1.4// handle new component insert: "
-		    + component.getName());
-	    handleNewComponentValue(component, targetComponents, parent,
-		    currentTaget);
+	    if (parent != null && previousContainer != null) {
+		handleOldComponentRemove(parent, previousContainer);
+	    }
+
+	    final Container root = component.getRoot();
+	    if (root != null) {
+		// add new view
+		log(" //1.1.1.1.4// handle new component insert: "
+			+ component.getName());
+		root.setVisible(true);
+		root.setEnabled(true);
+		handleNewComponentValue(component, targetComponents, parent,
+			currentTaget);
+	    }
 
 	}
 	lock.add(true);
