@@ -159,7 +159,11 @@ public abstract class AbstractComponentWorker<T> extends
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 	    final Map<String, Container> targetComponents,
 	    final Container parent, final String currentTaget) {
-	if (currentTaget.equals(component.getExecutionTarget())) {
+	if (parent == null) {
+	    final String validId = getValidTargetId(currentTaget,
+		    component.getExecutionTarget());
+	    handleTargetChange(component, targetComponents, validId);
+	} else if (currentTaget.equals(component.getExecutionTarget())) {
 	    addComponentByType(parent, component, empty, null);
 	} else {
 	    final String validId = getValidTargetId(currentTaget,
