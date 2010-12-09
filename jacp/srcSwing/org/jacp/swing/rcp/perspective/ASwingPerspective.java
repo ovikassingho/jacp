@@ -151,10 +151,10 @@ public abstract class ASwingPerspective implements
 		log("3.4.4.2: subcomponent init with custom action");
 		initComponent(action, component);
 	    } else if (component.isActive() && !component.isActived()) {
-		    log("3.4.4.2: subcomponent init with default action");
-		    initComponent(
-			    new SwingAction(component.getId(),
-				    component.getId(), "init"), component);
+		log("3.4.4.2: subcomponent init with default action");
+		initComponent(
+			new SwingAction(component.getId(), component.getId(),
+				"init"), component);
 	    } // if END
 
 	} // for END

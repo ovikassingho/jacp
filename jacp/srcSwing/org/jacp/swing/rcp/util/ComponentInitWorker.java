@@ -22,6 +22,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JMenu;
 
@@ -92,6 +93,18 @@ public class ComponentInitWorker
     @Override
     public void done() {
 	synchronized (component) {
+	    try {
+		this.get();
+	    } catch (final InterruptedException e) {
+		e.printStackTrace();
+		// TODO add to error queue and restart thread if messages in
+		// queue
+	    } catch (final ExecutionException e) {
+		e.printStackTrace();
+		// TODO add to error queue and restart thread if messages in
+		// queue
+	    }
+	    component.setBlocked(false);
 	    component.setBlocked(false);
 	    // check if news messages received while handled in initialization
 	    // worker; if so then start replace worker

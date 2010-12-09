@@ -159,13 +159,12 @@ public abstract class AbstractComponentWorker<T> extends
 	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
 	    final Map<String, Container> targetComponents,
 	    final Container parent, final String currentTaget) {
-	if (currentTaget.equals(component.getExecutionTarget())) {
-	    addComponentByType(parent, component, empty, null);
-	} else {
+	if (parent == null) {
 	    final String validId = getValidTargetId(currentTaget,
 		    component.getExecutionTarget());
 	    handleTargetChange(component, targetComponents, validId);
-
+	} else if (currentTaget.equals(component.getExecutionTarget())) {
+	    addComponentByType(parent, component, empty, null);
 	}
     }
 
@@ -229,8 +228,6 @@ public abstract class AbstractComponentWorker<T> extends
 	    editorComponent = component.handle(action);
 	    // System.out.println("-------2");
 	    component.setRoot(editorComponent);
-	    editorComponent.setVisible(true);
-	    editorComponent.setEnabled(true);
 	}
 	return editorComponent;
     }

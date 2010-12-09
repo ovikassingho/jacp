@@ -233,7 +233,7 @@ public abstract class AStatelessComponent implements
     public abstract Object handleAction(IAction<ActionEvent, Object> action);
 
     @Override
-    public void setLauncher(final Launcher<?> launcher) {
+    public synchronized void setLauncher(final Launcher<?> launcher) {
 	this.launcher = launcher;
     }
 
