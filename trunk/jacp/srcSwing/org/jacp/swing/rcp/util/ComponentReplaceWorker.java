@@ -18,21 +18,24 @@
 
 package org.jacp.swing.rcp.util;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
-import org.jacp.api.perspective.IPerspective;
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -102,7 +105,6 @@ public class ComponentReplaceWorker
                                                                 currentTaget);
                                         } else {
                                                 // unregister component
-                                                System.out.println("unregister");
                                                 removeComponentValue(component,
                                                                 previousContainer);
                                         }
@@ -120,12 +122,54 @@ public class ComponentReplaceWorker
         private void removeComponentValue(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
                         final Container previousContainer) {
+                // bar entries
+                final Map<Layout, Container> componentBarEnries = component
+                                .getBarEntries();
+                // when global bars and local bars are defined
+                if (!bars.isEmpty() && !componentBarEnries.isEmpty()) {
+                        final Iterator<Entry<Layout, Container>> it = componentBarEnries
+                                        .entrySet().iterator();
+                        while (it.hasNext()) {
+                                final Entry<Layout, Container> entry = it
+                                                .next();
+                                // when defined local key is defined in workspace
+                                if (bars.containsKey(entry.getKey())) {
+                                        final Container globalBar = bars
+                                                        .get(entry.getKey());
+                                        final Component[] all = entry
+                                                        .getValue()
+                                                        .getComponents();
+                                        // when user defined entries exists 
+                                        if (all.length > 0) {
+                                                SwingUtilities.invokeLater(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+
+                                                                for (final Component element : all) {
+                                                                        globalBar.remove(element);
+
+                                                                }
+                                                                globalBar.repaint();
+
+                                                        }
+                                                });
+                                        }
+                                }
+                        }
+                }
+
                 if (previousContainer == null) {
                         releaseLock();
                 } else {
                         final Container parent = previousContainer.getParent();
                         if (parent != null) {
-                                parent.remove(component.getRoot());
+                                SwingUtilities.invokeLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                parent.remove(component
+                                                                .getRoot());
+                                        }
+                                });
                         }
                         releaseLock();
                 }
@@ -140,30 +184,27 @@ public class ComponentReplaceWorker
          */
         private void publishComponentValue(final Container previousContainer,
                         final String currentTaget) {
-                synchronized (previousContainer) {
-                        boolean publish = false;
-                        Container parent = null;
-                        if (previousContainer == null) {
-                                releaseLock();
+                boolean publish = false;
+                Container parent = null;
+                if (previousContainer == null) {
+                        releaseLock();
+                } else {
+                        parent = previousContainer.getParent();
+                        if (parent == null) {
+                                publish = true;
+                        } else if (!currentTaget.equals(component
+                                        .getExecutionTarget())
+                                        || !previousContainer.equals(component
+                                                        .getRoot())) {
+                                publish = true;
                         } else {
-                                parent = previousContainer.getParent();
-                                if (parent == null) {
-                                        publish = true;
-                                } else if (!currentTaget.equals(component
-                                                .getExecutionTarget())
-                                                || !previousContainer
-                                                                .equals(component
-                                                                                .getRoot())) {
-                                        publish = true;
-                                } else {
-                                        releaseLock();
-                                }
+                                releaseLock();
                         }
-                        if (publish) {
-                                publish(new ChunkDTO(parent, previousContainer,
-                                                targetComponents, currentTaget,
-                                                component, bars, menu));
-                        }
+                }
+                if (publish) {
+                        publish(new ChunkDTO(parent, previousContainer,
+                                        targetComponents, currentTaget,
+                                        component, bars, menu));
                 }
         }
 
@@ -177,7 +218,10 @@ public class ComponentReplaceWorker
                         e.printStackTrace();
                 }
         }
-        
+
+        /**
+         * run in thread
+         */
         private void releaseLock() {
                 lock.add(true);
         }
