@@ -22,8 +22,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +34,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
@@ -53,44 +50,46 @@ import org.jacp.api.componentLayout.Layout;
  * 
  */
 public abstract class AbstractComponentWorker<T> extends
-	org.jacp.swing.rcp.util.SwingWorker<T, ChunkDTO> {
+                org.jacp.swing.rcp.util.SwingWorker<T, ChunkDTO> {
 
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+        private final Logger logger = Logger.getLogger(this.getClass()
+                        .getName());
 
-    private final Map<Layout, Container> empty = new HashMap<Layout, Container>();
+        private final Map<Layout, Container> empty = new HashMap<Layout, Container>();
 
-    /**
-     * find valid target component in perspective
-     * 
-     * @param targetComponents
-     * @param id
-     * @return
-     */
-    protected Container getValidContainerById(
-	    final Map<String, Container> targetComponents, final String id) {
-	return targetComponents.get(id);
-    }
+        /**
+         * find valid target component in perspective
+         * 
+         * @param targetComponents
+         * @param id
+         * @return
+         */
+        protected Container getValidContainerById(
+                        final Map<String, Container> targetComponents,
+                        final String id) {
+                return targetComponents.get(id);
+        }
 
-    /**
-     * invalidate swing host after changes
-     * 
-     * @param host
-     */
-    protected void invalidateHost(final Container host) {
-	if (host instanceof JComponent) {
-	    ((JComponent) host).revalidate();
-	} else {
-	    host.invalidate();
-	}
-	host.repaint();
-    }
+        /**
+         * invalidate swing host after changes
+         * 
+         * @param host
+         */
+        protected void invalidateHost(final Container host) {
+                if (host instanceof JComponent) {
+                        ((JComponent) host).revalidate();
+                } else {
+                        host.invalidate();
+                }
+                host.repaint();
+        }
 
-    /**
-     * find valid target and add type specific new component
-     * 
-     * @param layout
-     * @param editor
-     */
+        /**
+         * find valid target and add type specific new component
+         * 
+         * @param layout
+         * @param editor
+         */
         protected void addComponentByType(
                         final Container validContainer,
                         final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
@@ -114,32 +113,35 @@ public abstract class AbstractComponentWorker<T> extends
                                         editor.handleMenuEntries(menu);
                                 }
                                 if (!bars.isEmpty()) {
-                                        Set<Layout> keys = bars.keySet();
+                                        final Set<Layout> keys = bars.keySet();
                                         final Map<Layout, Container> myBars = editor
                                                         .getBarEntries();
                                         myBars.clear();
                                         for (final Layout layout : keys) {
-                                                myBars.put(layout, new JComponent() {
-                                                        private final List<Component> components = new CopyOnWriteArrayList<Component>();
-                                                        
-                                                        @Override
-                                                        public Component add(
-                                                                        Component comp) {
-                                                                components.add(comp);
-                                                                return super.add(comp);
-                                                        }
-                                                        
-                                                        @Override
-                                                        public Component[] getComponents() {
-                                                                final Component[] tmp = new Component[components.size()];
-                                                                int i=0;
-                                                                for(final Component c:components) {
-                                                                        tmp[i] = c;
-                                                                        i++;
-                                                                }
-                                                                return tmp;
-                                                        }
-                                                });
+                                                myBars.put(layout,
+                                                                new JComponent() {
+                                                                        private static final long serialVersionUID = 2148589637515686904L;
+                                                                        private final List<Component> components = new CopyOnWriteArrayList<Component>();
+
+                                                                        @Override
+                                                                        public Component add(
+                                                                                        final Component comp) {
+                                                                                components.add(comp);
+                                                                                return super.add(comp);
+                                                                        }
+
+                                                                        @Override
+                                                                        public Component[] getComponents() {
+                                                                                final Component[] tmp = new Component[components
+                                                                                                .size()];
+                                                                                int i = 0;
+                                                                                for (final Component c : components) {
+                                                                                        tmp[i] = c;
+                                                                                        i++;
+                                                                                }
+                                                                                return tmp;
+                                                                        }
+                                                                });
 
                                         }
 
@@ -155,7 +157,7 @@ public abstract class AbstractComponentWorker<T> extends
                 });
 
         }
-        
+
         private void addBarEntries(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
                         final Map<Layout, Container> bars) {
@@ -170,171 +172,178 @@ public abstract class AbstractComponentWorker<T> extends
                                 final Container tmpSystemBar = bars.get(key);
                                 final Container wrapper = entry.getValue();
                                 final Component[] tmp = wrapper.getComponents();
-                                for(final Component c:tmp) {
-                                        tmpSystemBar.add(c);   
-                                }
+                                SwingUtilities.invokeLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                for (final Component c : tmp) {
+                                                        tmpSystemBar.add(c);
+                                                }
 
-                                invalidateHost(tmpSystemBar);
+                                                invalidateHost(tmpSystemBar);
+                                        }
+                                });
                         }
 
                 }
         }
 
-    /**
-     * enables component an add to container
-     * 
-     * @param validContainer
-     * @param uiComponent
-     * @param name
-     */
-    private void handleAdd(final Container validContainer,
-	    final Container uiComponent, final String name) {
-	uiComponent.setEnabled(true);
-	uiComponent.setVisible(true);
-	if (validContainer != null) {
-	    validContainer.add(name, uiComponent);
-	}
+        /**
+         * enables component an add to container
+         * 
+         * @param validContainer
+         * @param uiComponent
+         * @param name
+         */
+        private void handleAdd(final Container validContainer,
+                        final Container uiComponent, final String name) {
+                uiComponent.setEnabled(true);
+                uiComponent.setVisible(true);
+                if (validContainer != null) {
+                        validContainer.add(name, uiComponent);
+                }
 
-    }
+        }
 
-    protected abstract T runHandleSubcomponent(final T component,
-	    final IAction<ActionEvent, Object> action);
+        protected abstract T runHandleSubcomponent(final T component,
+                        final IAction<ActionEvent, Object> action);
 
-    /**
-     * removes old ui component of subcomponent form parent ui component
-     * 
-     * @param parent
-     * @param currentContainer
-     */
-    protected void handleOldComponentRemove(final Container parent,
-	    final Container currentContainer) {
-	parent.remove(currentContainer);
-    }
+        /**
+         * removes old ui component of subcomponent form parent ui component
+         * 
+         * @param parent
+         * @param currentContainer
+         */
+        protected void handleOldComponentRemove(final Container parent,
+                        final Container currentContainer) {
+                parent.remove(currentContainer);
+        }
 
-    /**
-     * set new ui component to parent ui component
-     * 
-     * @param component
-     * @param parent
-     * @param currentTaget
-     */
-    protected void handleNewComponentValue(
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final Map<String, Container> targetComponents,
-	    final Container parent, final String currentTaget) {
-	if (parent == null) {
-	    final String validId = getValidTargetId(currentTaget,
-		    component.getExecutionTarget());
-	    handleTargetChange(component, targetComponents, validId);
-	} else if (currentTaget.equals(component.getExecutionTarget())) {
-	    addComponentByType(parent, component, empty, null);
-	} else {
-	    final String validId = getValidTargetId(currentTaget,
-		    component.getExecutionTarget());
-	    handleTargetChange(component, targetComponents, validId);
-	}
-    }
+        /**
+         * set new ui component to parent ui component
+         * 
+         * @param component
+         * @param parent
+         * @param currentTaget
+         */
+        protected void handleNewComponentValue(
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+                        final Map<String, Container> targetComponents,
+                        final Container parent, final String currentTaget) {
+                if (parent == null) {
+                        final String validId = getValidTargetId(currentTaget,
+                                        component.getExecutionTarget());
+                        handleTargetChange(component, targetComponents, validId);
+                } else if (currentTaget.equals(component.getExecutionTarget())) {
+                        addComponentByType(parent, component, empty, null);
+                } else {
+                        final String validId = getValidTargetId(currentTaget,
+                                        component.getExecutionTarget());
+                        handleTargetChange(component, targetComponents, validId);
+                }
+        }
 
-    /**
-     * currentTarget.length < 2 Happens when component changed target from one
-     * perspective to an other
-     * 
-     * @param currentTaget
-     * @param futureTarget
-     * @return
-     */
-    private String getValidTargetId(final String currentTaget,
-	    final String futureTarget) {
-	return currentTaget.length() < 2 ? getTargetComponentId(futureTarget)
-		: futureTarget;
-    }
+        /**
+         * currentTarget.length < 2 Happens when component changed target from
+         * one perspective to an other
+         * 
+         * @param currentTaget
+         * @param futureTarget
+         * @return
+         */
+        private String getValidTargetId(final String currentTaget,
+                        final String futureTarget) {
+                return currentTaget.length() < 2 ? getTargetComponentId(futureTarget)
+                                : futureTarget;
+        }
 
-    /**
-     * handle component when target has changed
-     * 
-     * @param component
-     * @param targetComponents
-     */
-    private void handleTargetChange(
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final Map<String, Container> targetComponents, final String target) {
-	final Container validContainer = getValidContainerById(
-		targetComponents, target);
-	if (validContainer != null) {
-	    addComponentByType(validContainer, component, empty, null);
-	} else {
-	    // handle target outside current perspective
-	    changeComponentTarget(component);
-	}
-    }
+        /**
+         * handle component when target has changed
+         * 
+         * @param component
+         * @param targetComponents
+         */
+        private void handleTargetChange(
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+                        final Map<String, Container> targetComponents,
+                        final String target) {
+                final Container validContainer = getValidContainerById(
+                                targetComponents, target);
+                if (validContainer != null) {
+                        addComponentByType(validContainer, component, empty,
+                                        null);
+                } else {
+                        // handle target outside current perspective
+                        changeComponentTarget(component);
+                }
+        }
 
-    /**
-     * move component to new target
-     * 
-     * @param component
-     */
-    protected void changeComponentTarget(
-	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
-	component.getParentPerspective().delegateTargetChange(
-		component.getExecutionTarget(), component);
-    }
+        /**
+         * move component to new target
+         * 
+         * @param component
+         */
+        protected void changeComponentTarget(
+                        final ISubComponent<ActionListener, ActionEvent, Object> component) {
+                component.getParentPerspective().delegateTargetChange(
+                                component.getExecutionTarget(), component);
+        }
 
-    /**
-     * runs subcomponents handle method
-     * 
-     * @param component
-     * @param action
-     * @return
-     */
-    protected Container prepareAndHandleComponent(
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action) {
-	final Container editorComponent;
-	synchronized (component) {
-	    editorComponent = component.handle(action);
-	    component.setRoot(editorComponent);
-	}
-	return editorComponent;
-    }
+        /**
+         * runs subcomponents handle method
+         * 
+         * @param component
+         * @param action
+         * @return
+         */
+        protected Container prepareAndHandleComponent(
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+                        final IAction<ActionEvent, Object> action) {
+                final Container editorComponent;
+                synchronized (component) {
+                        editorComponent = component.handle(action);
+                        component.setRoot(editorComponent);
+                }
+                return editorComponent;
+        }
 
-    /**
-     * returns the message target component id
-     * 
-     * @param messageId
-     * @return
-     */
-    protected String getTargetComponentId(final String messageId) {
-	final String[] targetId = getTargetId(messageId);
-	if (!isLocalMessage(messageId)) {
-	    return targetId[1];
-	}
-	return messageId;
-    }
+        /**
+         * returns the message target component id
+         * 
+         * @param messageId
+         * @return
+         */
+        protected String getTargetComponentId(final String messageId) {
+                final String[] targetId = getTargetId(messageId);
+                if (!isLocalMessage(messageId)) {
+                        return targetId[1];
+                }
+                return messageId;
+        }
 
-    /**
-     * when id has no separator it is a local message
-     * 
-     * @param messageId
-     * @return
-     */
-    protected boolean isLocalMessage(final String messageId) {
-	return !messageId.contains(".");
-    }
+        /**
+         * when id has no separator it is a local message
+         * 
+         * @param messageId
+         * @return
+         */
+        protected boolean isLocalMessage(final String messageId) {
+                return !messageId.contains(".");
+        }
 
-    /**
-     * returns target message with perspective and component name as array
-     * 
-     * @param messageId
-     * @return
-     */
-    protected String[] getTargetId(final String messageId) {
-	return messageId.split("\\.");
-    }
+        /**
+         * returns target message with perspective and component name as array
+         * 
+         * @param messageId
+         * @return
+         */
+        protected String[] getTargetId(final String messageId) {
+                return messageId.split("\\.");
+        }
 
-    protected void log(final String message) {
-	if (logger.isLoggable(Level.FINE)) {
-	    logger.fine(">> " + message);
-	}
-    }
+        protected void log(final String message) {
+                if (logger.isLoggable(Level.FINE)) {
+                        logger.fine(">> " + message);
+                }
+        }
 
 }
