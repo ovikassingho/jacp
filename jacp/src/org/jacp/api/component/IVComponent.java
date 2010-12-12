@@ -17,6 +17,10 @@
  */
 package org.jacp.api.component;
 
+import java.util.Map;
+
+import org.jacp.api.componentLayout.Layout;
+
 /**
  * represents an ui component handled by a perspective
  * 
@@ -46,5 +50,12 @@ public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
      * @return
      */
     public abstract C getRoot();
+    
+    /**
+     * get defines bar entries
+     * @return
+     */
+    public abstract Map<Layout, C> getBarEntries();
+    
 
 }

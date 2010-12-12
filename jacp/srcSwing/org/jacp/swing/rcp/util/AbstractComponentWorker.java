@@ -18,17 +18,25 @@
 
 package org.jacp.swing.rcp.util;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
@@ -83,39 +91,94 @@ public abstract class AbstractComponentWorker<T> extends
      * @param layout
      * @param editor
      */
-    protected void addComponentByType(
-	    final Container validContainer,
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
-	    final Map<Layout, Container> bars, final JMenu menu) {
+        protected void addComponentByType(
+                        final Container validContainer,
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
+                        final Map<Layout, Container> bars, final JMenu menu) {
 
-	SwingUtilities.invokeLater(new Runnable() {
-	    @Override
-	    public void run() {
-		if (validContainer instanceof JScrollPane) {
-		    ((JScrollPane) validContainer).getViewport().add(
-			    editor.getName(), editor.getRoot());
-		} else {
-		    handleAdd(validContainer, editor.getRoot(),
-			    editor.getName());
+                SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                                if (validContainer instanceof JScrollPane) {
+                                        ((JScrollPane) validContainer)
+                                                        .getViewport()
+                                                        .add(editor.getName(),
+                                                                        editor.getRoot());
+                                } else {
+                                        handleAdd(validContainer,
+                                                        editor.getRoot(),
+                                                        editor.getName());
 
-		}
-		if (menu != null) {
-		    editor.handleMenuEntries(menu);
-		}
-		if (!bars.isEmpty()) {
-		    editor.handleBarEntries(bars);
-		    final Collection<Container> container = bars.values();
-		    for (final Container c : container) {
-			invalidateHost(c);
-		    }
-		}
-		validContainer.setEnabled(true);
-		validContainer.setVisible(true);
+                                }
+                                if (menu != null) {
+                                        editor.handleMenuEntries(menu);
+                                }
+                                if (!bars.isEmpty()) {
+                                        Set<Layout> keys = bars.keySet();
+                                        final Map<Layout, Container> myBars = editor
+                                                        .getBarEntries();
+                                        myBars.clear();
+                                        for (final Layout layout : keys) {
+                                                myBars.put(layout, new JComponent() {
+                                                        private final List<Component> components = new CopyOnWriteArrayList<Component>();
+                                                        
+                                                        @Override
+                                                        public Component add(
+                                                                        Component comp) {
+                                                                components.add(comp);
+                                                                return super.add(comp);
+                                                        }
+                                                        
+                                                        @Override
+                                                        public Component[] getComponents() {
+                                                                final Component[] tmp = new Component[components.size()];
+                                                                int i=0;
+                                                                for(final Component c:components) {
+                                                                        tmp[i] = c;
+                                                                        i++;
+                                                                }
+                                                                return tmp;
+                                                        }
+                                                });
 
-	    }
-	});
+                                        }
 
-    }
+                                        editor.handleBarEntries(editor
+                                                        .getBarEntries());
+                                        addBarEntries(editor, bars);
+
+                                }
+                                validContainer.setEnabled(true);
+                                validContainer.setVisible(true);
+
+                        }
+                });
+
+        }
+        
+        private void addBarEntries(
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
+                        final Map<Layout, Container> bars) {
+                final Map<Layout, Container> currentBars = editor
+                                .getBarEntries();
+                final Iterator<Entry<Layout, Container>> it = currentBars
+                                .entrySet().iterator();
+                while (it.hasNext()) {
+                        final Entry<Layout, Container> entry = it.next();
+                        final Layout key = entry.getKey();
+                        if (bars.containsKey(key)) {
+                                final Container tmpSystemBar = bars.get(key);
+                                final Container wrapper = entry.getValue();
+                                final Component[] tmp = wrapper.getComponents();
+                                for(final Component c:tmp) {
+                                        tmpSystemBar.add(c);   
+                                }
+
+                                invalidateHost(tmpSystemBar);
+                        }
+
+                }
+        }
 
     /**
      * enables component an add to container
