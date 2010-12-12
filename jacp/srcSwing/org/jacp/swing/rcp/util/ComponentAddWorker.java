@@ -33,37 +33,37 @@ import org.jacp.api.component.IVComponent;
  * 
  */
 public class ComponentAddWorker
-	extends
-	AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
+                extends
+                AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
 
-    private final Map<String, Container> targetComponents;
-    private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
+        private final Map<String, Container> targetComponents;
+        private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
 
-    public ComponentAddWorker(
-	    final Map<String, Container> targetComponents,
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component) {
-	this.targetComponents = targetComponents;
-	this.component = component;
-    }
+        public ComponentAddWorker(
+                        final Map<String, Container> targetComponents,
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> component) {
+                this.targetComponents = targetComponents;
+                this.component = component;
+        }
 
-    @Override
-    protected IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-	    final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action) {
-	return null;
-    }
+        @Override
+        protected final IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
+                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+                        final IAction<ActionEvent, Object> action) {
+                return null;
+        }
 
-    @Override
-    protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
-	    throws Exception {
-	return null;
-    }
+        @Override
+        protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
+                        throws Exception {
+                return null;
+        }
 
-    @Override
-    public void done() {
-	component.setExecutionTarget(getTargetComponentId(component
-		.getExecutionTarget()));
-	handleNewComponentValue(component, targetComponents, null, "");
-    }
+        @Override
+        public final void done() {
+                component.setExecutionTarget(getTargetComponentId(component
+                                .getExecutionTarget()));
+                handleNewComponentValue(component, targetComponents, null, "");
+        }
 
 }

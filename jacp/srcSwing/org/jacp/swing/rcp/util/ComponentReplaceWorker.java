@@ -68,13 +68,13 @@ public class ComponentReplaceWorker
         }
 
         @Override
-        protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
+        protected final IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
                         throws Exception {
                 return runHandleSubcomponent(component, action);
         }
 
         @Override
-        protected IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
+        protected final IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
                         final IAction<ActionEvent, Object> action) {
                 synchronized (component) {
@@ -230,7 +230,7 @@ public class ComponentReplaceWorker
         /**
          * run in EDT
          */
-        protected void process(final List<ChunkDTO> chunks) {
+        protected final void process(final List<ChunkDTO> chunks) {
                 // process method runs in EventDispatchThread
                 for (final ChunkDTO dto : chunks) {
                         final Container parent = dto.getParent();
@@ -269,7 +269,7 @@ public class ComponentReplaceWorker
         }
 
         @Override
-        protected void done() {
+        protected final void done() {
                 try {
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component = this
                                         .get();
