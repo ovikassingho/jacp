@@ -129,15 +129,16 @@ public abstract class ASwingCoordinator extends Thread implements
     }
 
     @Override
-    public <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
-	    final String id, final List<M> components) {
-	for (final M p : components) {
-	    if (p.getId().equals(id)) {
-		return p;
-	    }
-	}
-	return null;
-    }
+        public <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
+                        final String id, final List<M> components) {
+                for (int i=0; i < components.size(); i++) {
+                        final M p = components.get(i);
+                        if (p.getId().equals(id)) {
+                                return p;
+                        }
+                }
+                return null;
+        }
 
     @Override
     public void handle(final IAction<ActionEvent, Object> action) {

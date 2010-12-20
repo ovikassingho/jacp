@@ -148,7 +148,9 @@ public abstract class ASwingPerspective implements
                 final String targetId = getTargetComponentId(action
                                 .getTargetId());
                 log("3.4.4.1: subcomponent targetId: " + targetId);
-                for (final ISubComponent<ActionListener, ActionEvent, Object> component : getSubcomponents()) {
+                final List<ISubComponent<ActionListener, ActionEvent, Object>> components = getSubcomponents();
+                for (int i=0; i<components.size(); i++) {
+                        final ISubComponent<ActionListener, ActionEvent, Object> component = components.get(i);
                         if (component.getId().equals(targetId)) {
                                 log("3.4.4.2: subcomponent init with custom action");
                                 initComponent(action, component);
@@ -392,7 +394,8 @@ public abstract class ASwingPerspective implements
          */
         private <M extends ISubComponent<ActionListener, ActionEvent, Object>> void registerSubcomponents(
                         final List<M> components) {
-                for (final M component : components) {
+                for (int i=0; i<components.size(); i++) {
+                        final M component = components.get(i);
                         registerComponent(component);
                 }
         }

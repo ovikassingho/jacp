@@ -69,7 +69,8 @@ public class StatelessComponentCoordinator
          * incomingMessage (org.jacp.api.action.IAction)
          */
         @Override
-        public final void incomingMessage(final IAction<ActionEvent, Object> message) {
+        public final void incomingMessage(
+                        final IAction<ActionEvent, Object> message) {
                 synchronized (baseComponent) {
                         // get active instance
                         final IBGComponent<ActionListener, ActionEvent, Object> comp = getActiveComponent();
@@ -105,7 +106,7 @@ public class StatelessComponentCoordinator
          * @param comp
          * @param message
          */
-        private void instanceRun(
+        private final void instanceRun(
                         final IBGComponent<ActionListener, ActionEvent, Object> comp,
                         final IAction<ActionEvent, Object> message) {
                 comp.setBlocked(true);
@@ -135,7 +136,7 @@ public class StatelessComponentCoordinator
          * 
          * @param message
          */
-        private void seekAndPutMessage(
+        private final void seekAndPutMessage(
                         final IAction<ActionEvent, Object> message) {
                 // if max count reached, seek through components and add
                 // message to queue of oldest component
@@ -154,8 +155,10 @@ public class StatelessComponentCoordinator
                                 .getBean(clazz));
         }
 
-        private IBGComponent<ActionListener, ActionEvent, Object> getActiveComponent() {
-                for (final IBGComponent<ActionListener, ActionEvent, Object> comp : componentInstances) {
+        private final IBGComponent<ActionListener, ActionEvent, Object> getActiveComponent() {
+                for (int i = 0; i < componentInstances.size(); i++) {
+                        final IBGComponent<ActionListener, ActionEvent, Object> comp = componentInstances
+                                        .get(i);
                         if (!comp.isBlocked()) {
                                 return comp;
                         }
@@ -176,11 +179,11 @@ public class StatelessComponentCoordinator
 
         }
 
-        public IBGComponent<ActionListener, ActionEvent, Object> getBaseComponent() {
+        public final IBGComponent<ActionListener, ActionEvent, Object> getBaseComponent() {
                 return baseComponent;
         }
 
-        public void setBaseComponent(
+        public final void setBaseComponent(
                         final IBGComponent<ActionListener, ActionEvent, Object> baseComponent) {
                 this.baseComponent = baseComponent;
                 componentInstances
@@ -189,7 +192,7 @@ public class StatelessComponentCoordinator
         }
 
         @ManagedAttribute
-        protected List<IBGComponent<ActionListener, ActionEvent, Object>> getComponentInstances() {
+        protected final List<IBGComponent<ActionListener, ActionEvent, Object>> getComponentInstances() {
                 return componentInstances;
         }
 }

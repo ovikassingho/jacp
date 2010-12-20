@@ -134,10 +134,8 @@ public abstract class AbstractComponentWorker<T> extends
                                                                         public Component[] getComponents() {
                                                                                 final Component[] tmp = new Component[components
                                                                                                 .size()];
-                                                                                int i = 0;
-                                                                                for (final Component c : components) {
-                                                                                        tmp[i] = c;
-                                                                                        i++;
+                                                                                for (int p=0;p<components.size();p++) {
+                                                                                        tmp[p] = components.get(p);
                                                                                 }
                                                                                 return tmp;
                                                                         }
@@ -175,8 +173,8 @@ public abstract class AbstractComponentWorker<T> extends
                                 SwingUtilities.invokeLater(new Runnable() {
                                         @Override
                                         public void run() {
-                                                for (final Component c : tmp) {
-                                                        tmpSystemBar.add(c);
+                                                for (int i=0;i<tmp.length;i++) {
+                                                        tmpSystemBar.add(tmp[i]);
                                                 }
 
                                                 invalidateHost(tmpSystemBar);
@@ -298,11 +296,8 @@ public abstract class AbstractComponentWorker<T> extends
         protected Container prepareAndHandleComponent(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
                         final IAction<ActionEvent, Object> action) {
-                final Container editorComponent;
-                synchronized (component) {
-                        editorComponent = component.handle(action);
-                        component.setRoot(editorComponent);
-                }
+                final Container editorComponent = component.handle(action);
+                component.setRoot(editorComponent);
                 return editorComponent;
         }
 
