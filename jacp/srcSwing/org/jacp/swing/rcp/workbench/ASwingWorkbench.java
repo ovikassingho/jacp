@@ -271,7 +271,9 @@ public abstract class ASwingWorkbench extends JFrame
                 // do not disable tool bar entries!!
                 final Collection<Container> toolBars = layout.getToolBars()
                                 .values();
-                for (final Component comp : getContentPane().getComponents()) {
+                final Component[] components = getContentPane().getComponents();
+                for (int i=0; i<components.length;i++) {
+                        final Component comp=components[i];
                         if (!toolBars.contains(comp)) {
                                 comp.setVisible(false);
                         }
@@ -285,7 +287,9 @@ public abstract class ASwingWorkbench extends JFrame
          */
         @Override
         public void enableComponents() {
-                for (final Component comp : getContentPane().getComponents()) {
+                final Component[] components = getContentPane().getComponents();
+                for (int i=0; i<components.length;i++) {
+                        final Component comp=components[i];
                         comp.setVisible(true);
                 }
         }
@@ -413,7 +417,9 @@ public abstract class ASwingWorkbench extends JFrame
          */
         @Override
         public void initComponents(final IAction<ActionEvent, Object> action) {
-                for (final IPerspective<ActionListener, ActionEvent, Object> perspective : getPerspectives()) {
+                final List<IPerspective<ActionListener, ActionEvent, Object>> perspectivesTmp = getPerspectives();
+                for (int i=0; i<perspectivesTmp.size(); i++) {
+                        final IPerspective<ActionListener, ActionEvent, Object> perspective = perspectivesTmp.get(i);
                         log("3.4.1: register component: "
                                         + perspective.getName());
                         registerComponent(perspective);
@@ -476,17 +482,18 @@ public abstract class ASwingWorkbench extends JFrame
         private void runReassign(
                         final IPerspectiveLayout<? extends Container, Container> layout,
                         final IPerspective<ActionListener, ActionEvent, Object> perspective) {
-                for (final ISubComponent<ActionListener, ActionEvent, Object> editor : perspective
-                                .getSubcomponents()) {
-                        if (editor instanceof ASwingComponent) {
-                                final Container editorComponent = ((ASwingComponent) editor)
+                final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = perspective.getSubcomponents();
+                for (int i=0; i<subcomponents.size(); i++) {
+                        final ISubComponent<ActionListener, ActionEvent, Object> subComp = subcomponents.get(i);
+                        if (subComp instanceof ASwingComponent) {
+                                final Container editorComponent = ((ASwingComponent) subComp)
                                                 .getRoot();
                                 if (editorComponent != null) {
                                         editorComponent.setVisible(true);
                                         editorComponent.setEnabled(true);
                                         addComponentByType(
                                                         layout,
-                                                        ((ASwingComponent) editor));
+                                                        ((ASwingComponent) subComp));
                                 }
                         }
                 }
