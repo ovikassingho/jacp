@@ -97,7 +97,7 @@ public abstract class AbstractComponentWorker<T> extends
 
                 SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run() {
+                        public final void run() {
                                 if (validContainer instanceof JScrollPane) {
                                         ((JScrollPane) validContainer)
                                                         .getViewport()
@@ -124,14 +124,14 @@ public abstract class AbstractComponentWorker<T> extends
                                                                         private final List<Component> components = new CopyOnWriteArrayList<Component>();
 
                                                                         @Override
-                                                                        public Component add(
+                                                                        public final Component add(
                                                                                         final Component comp) {
                                                                                 components.add(comp);
                                                                                 return super.add(comp);
                                                                         }
 
                                                                         @Override
-                                                                        public Component[] getComponents() {
+                                                                        public final Component[] getComponents() {
                                                                                 final Component[] tmp = new Component[components
                                                                                                 .size()];
                                                                                 for (int p=0;p<components.size();p++) {
@@ -172,7 +172,7 @@ public abstract class AbstractComponentWorker<T> extends
                                 final Component[] tmp = wrapper.getComponents();
                                 SwingUtilities.invokeLater(new Runnable() {
                                         @Override
-                                        public void run() {
+                                        public final void run() {
                                                 for (int i=0;i<tmp.length;i++) {
                                                         tmpSystemBar.add(tmp[i]);
                                                 }

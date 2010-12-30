@@ -44,7 +44,7 @@ public abstract class ASwingCoordinator extends Thread implements
 	    50000);
 
     @Override
-    public void run() {
+    public final void run() {
 	while (!Thread.interrupted()) {
 	    log(" observer thread size" + messages.size());
 	    IAction<ActionEvent, Object> action = null;
@@ -129,7 +129,7 @@ public abstract class ASwingCoordinator extends Thread implements
     }
 
     @Override
-        public <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
+        public final <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
                         final String id, final List<M> components) {
                 for (int i=0; i < components.size(); i++) {
                         final M p = components.get(i);
@@ -141,7 +141,7 @@ public abstract class ASwingCoordinator extends Thread implements
         }
 
     @Override
-    public void handle(final IAction<ActionEvent, Object> action) {
+    public final void handle(final IAction<ActionEvent, Object> action) {
 	messages.add(action);
 
     }

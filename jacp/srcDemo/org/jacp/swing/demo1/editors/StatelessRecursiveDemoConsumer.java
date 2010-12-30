@@ -13,7 +13,6 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.swing.demo1.util.DropShadowPanel;
 import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jdesktop.swingx.graphics.GraphicsUtilities;
-import org.springframework.jmx.export.annotation.ManagedResource;
 
 public class StatelessRecursiveDemoConsumer extends AStatelessComponent {
 
@@ -58,31 +57,36 @@ public class StatelessRecursiveDemoConsumer extends AStatelessComponent {
      */
     private org.jacp.swing.demo1.util.DropShadowPanel getPanel(File file) {
 	BufferedImage myPicture = null;
-	try {
-	    myPicture = ImageIO.read(file);
-	} catch (final IOException e) {
-	    e.printStackTrace();
-	}
-	//System.out.println(myPicture.getSampleModel());
-	// 88 vs 66 -> 4:3
-	if (myPicture.getWidth() > THUMB_WIDTH
-		&& myPicture.getHeight() > THUMB_HEIGHT) {
-	    // check landscape or portrait
-	    double direction = (double) myPicture.getWidth()
-		    / (double) myPicture.getHeight();
-	    if (direction > 1)
-		myPicture = GraphicsUtilities.createThumbnail(myPicture,
-			(int) (THUMB_HEIGHT * direction), THUMB_HEIGHT);
-	    else if (direction < 1)
-		myPicture = GraphicsUtilities.createThumbnail(myPicture,
-			(int) (THUMB_WIDTH * direction), THUMB_WIDTH);
-	    else
-		myPicture = GraphicsUtilities.createThumbnail(myPicture,
-			THUMB_WIDTH, THUMB_WIDTH);
+	synchronized (file) {
+        try {
+                myPicture = ImageIO.read(file);
+        } catch (final IOException e) {
+                e.printStackTrace();
+        }
+        //System.out.println(myPicture.getSampleModel());
+        // 88 vs 66 -> 4:3
+        if (myPicture.getWidth() > THUMB_WIDTH
+                        && myPicture.getHeight() > THUMB_HEIGHT) {
+                // check landscape or portrait
+                double direction = (double) myPicture.getWidth()
+                                / (double) myPicture.getHeight();
+                if (direction > 1)
+                        myPicture = GraphicsUtilities.createThumbnail(
+                                        myPicture,
+                                        (int) (THUMB_HEIGHT * direction),
+                                        THUMB_HEIGHT);
+                else if (direction < 1)
+                        myPicture = GraphicsUtilities.createThumbnail(
+                                        myPicture,
+                                        (int) (THUMB_WIDTH * direction),
+                                        THUMB_WIDTH);
+                else
+                        myPicture = GraphicsUtilities.createThumbnail(
+                                        myPicture, THUMB_WIDTH, THUMB_WIDTH);
 
-	}
-
-	return new DropShadowPanel(myPicture);
+        }
+}
+        return new DropShadowPanel(myPicture);
     }
 
 }

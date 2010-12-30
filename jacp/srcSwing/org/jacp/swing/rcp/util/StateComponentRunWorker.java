@@ -47,7 +47,7 @@ public class StateComponentRunWorker
     }
 
     @Override
-    protected IBGComponent<ActionListener, ActionEvent, Object> doInBackground()
+    protected final IBGComponent<ActionListener, ActionEvent, Object> doInBackground()
 	    throws Exception {
 	final IBGComponent<ActionListener, ActionEvent, Object> comp = component;
 	synchronized (comp) {
@@ -96,7 +96,7 @@ public class StateComponentRunWorker
     }
 
     @Override
-    protected void done() {
+    protected final void done() {
 	try {
 	    this.get();
 	} catch (final InterruptedException e) {
