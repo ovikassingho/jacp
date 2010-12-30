@@ -53,12 +53,12 @@ public abstract class AStateComponent implements
 	    20);
 
     @Override
-    public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
+    public final IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
 	return new SwingActionListener(new SwingAction(id), componentObserver);
     }
 
     @Override
-    public String getId() {
+    public final String getId() {
 	if (id == null) {
 	    throw new UnsupportedOperationException("No id set");
 	}
@@ -66,7 +66,7 @@ public abstract class AStateComponent implements
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
 	if (name == null) {
 	    throw new UnsupportedOperationException("No name set");
 	}
@@ -74,12 +74,12 @@ public abstract class AStateComponent implements
     }
 
     @Override
-    public boolean isActive() {
+    public final boolean isActive() {
 	return active;
     }
 
     @Override
-    public void setActive(final boolean active) {
+    public final void setActive(final boolean active) {
 	this.active = active;
     }
 
@@ -89,19 +89,19 @@ public abstract class AStateComponent implements
     }
 
     @Override
-    public void setName(final String name) {
+    public final void setName(final String name) {
 	this.name = name;
     }
 
     @Override
-    public void setObserver(
+    public final void setObserver(
 	    final ICoordinator<ActionListener, ActionEvent, Object> observer) {
 	componentObserver = observer;
 
     }
 
     @Override
-    public IAction<ActionEvent, Object> getNextIncomingMessage() {
+    public final IAction<ActionEvent, Object> getNextIncomingMessage() {
 	if (hasIncomingMessage()) {
 	    try {
 		return incomingActions.take();
@@ -113,27 +113,27 @@ public abstract class AStateComponent implements
     }
 
     @Override
-    public IPerspective<ActionListener, ActionEvent, Object> getParentPerspective() {
+    public final IPerspective<ActionListener, ActionEvent, Object> getParentPerspective() {
 	return parentPerspective;
     }
 
     @Override
-    public String getExecutionTarget() {
+    public final String getExecutionTarget() {
 	return target;
     }
 
     @Override
-    public boolean hasIncomingMessage() {
+    public final boolean hasIncomingMessage() {
 	return !incomingActions.isEmpty();
     }
 
     @Override
-    public boolean isBlocked() {
+    public final boolean isBlocked() {
 	return blocked.get();
     }
 
     @Override
-    public void putIncomingMessage(final IAction<ActionEvent, Object> action) {
+    public final void putIncomingMessage(final IAction<ActionEvent, Object> action) {
 	try {
 	    incomingActions.put(action);
 	} catch (final InterruptedException e) {
@@ -142,36 +142,37 @@ public abstract class AStateComponent implements
     }
 
     @Override
-    public void setBlocked(final boolean blocked) {
+    public final void setBlocked(final boolean blocked) {
 	this.blocked.set(blocked);
     }
 
     @Override
-    public void setParentPerspective(
+    public final void setParentPerspective(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	parentPerspective = perspective;
 
     }
 
     @Override
-    public void setExecutionTarget(final String target) {
+    public final void setExecutionTarget(final String target) {
 	this.target = target;
     }
 
     @Override
-    public String getHandleTargetAndClear() {
+    public final String getHandleTargetAndClear() {
 	final String tempTarget = String.valueOf(handleComponentTarget);
 	handleComponentTarget = null;
 	return tempTarget;
     }
 
     @Override
-    public void setHandleTarget(final String componentTargetId) {
+    public final void setHandleTarget(final String componentTargetId) {
 	handleComponentTarget = componentTargetId;
 
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+@Override
     public <C> C handle(final IAction<ActionEvent, Object> action) {
 	return (C) handleAction(action);
     }

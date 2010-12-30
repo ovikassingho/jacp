@@ -44,53 +44,53 @@ public class SwingWorkbenchLayout implements
     private final Map<Layout, Container> toolBars = new ConcurrentHashMap<Layout, Container>();
 
     @Override
-    public WorkspaceMode getWorkspaceMode() {
+    public final WorkspaceMode getWorkspaceMode() {
 	return workspaceMode;
     }
 
     @Override
-    public void setWorkspaceMode(final WorkspaceMode mode) {
+    public final void setWorkspaceMode(final WorkspaceMode mode) {
 	workspaceMode = mode;
     }
 
     @Override
-    public boolean isMenuEnabled() {
+    public final boolean isMenuEnabled() {
 	return menuEnabled;
     }
 
     @Override
-    public void setMenuEnabled(final boolean enabled) {
+    public final void setMenuEnabled(final boolean enabled) {
 	menuEnabled = enabled;
     }
 
     @Override
-    public void setLayoutManager(final LayoutManager2 layout) {
+    public final void setLayoutManager(final LayoutManager2 layout) {
 	layoutManager = layout;
     }
 
     @Override
-    public LayoutManager2 getLayoutManager() {
+    public final LayoutManager2 getLayoutManager() {
 	return layoutManager;
     }
 
     @Override
-    public void setWorkbenchXYSize(final int x, final int y) {
+    public final void setWorkbenchXYSize(final int x, final int y) {
 	size.setX(x);
 	size.setY(y);
     }
 
     @Override
-    public Tupel<Integer, Integer> getWorkbenchSize() {
+    public final Tupel<Integer, Integer> getWorkbenchSize() {
 	return size;
     }
 
     @Override
-    public void registerToolBar(final Layout name, final Container toolBar) {
+    public final void registerToolBar(final Layout name, final Container toolBar) {
 	toolBars.put(name, toolBar);
     }
 
     @Override
-    public Map<Layout, Container> getToolBars() {
+    public final Map<Layout, Container> getToolBars() {
 	return toolBars;
     }
 

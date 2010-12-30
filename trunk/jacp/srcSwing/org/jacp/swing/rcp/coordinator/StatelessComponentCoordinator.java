@@ -30,8 +30,6 @@ import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.impl.Launcher;
 import org.jacp.swing.rcp.component.AStatelessComponent;
 import org.jacp.swing.rcp.util.StateLessComponentRunWorker;
-import org.springframework.jmx.export.annotation.ManagedAttribute;
-import org.springframework.jmx.export.annotation.ManagedResource;
 
 /**
  * controls instantiation of state less component clones; each put to a new
@@ -41,7 +39,6 @@ import org.springframework.jmx.export.annotation.ManagedResource;
  * @author Andy Moncsek
  * 
  */
-@ManagedResource(objectName = "org.jacp:name=StatelessComponentCoordinator", description = "a state ful swing component")
 public class StatelessComponentCoordinator
                 implements
                 IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> {
@@ -191,7 +188,7 @@ public class StatelessComponentCoordinator
                                                 .getClass()));
         }
 
-        @ManagedAttribute
+    
         protected final List<IBGComponent<ActionListener, ActionEvent, Object>> getComponentInstances() {
                 return componentInstances;
         }

@@ -53,26 +53,26 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void addPerspective(
+    public final void addPerspective(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	perspective.setObserver(this);
 	perspectives.add(perspective);
     }
 
     @Override
-    public void removePerspective(
+    public final void removePerspective(
 	    final IPerspective<ActionListener, ActionEvent, Object> perspective) {
 	perspective.setObserver(null);
 	perspectives.remove(perspective);
     }
 
     @Override
-    public Map<Layout, Container> getBars() {
+    public final Map<Layout, Container> getBars() {
 	return workbench.getWorkbenchLayout().getToolBars();
     }
 
     @Override
-    public Container getMenu() {
+    public final Container getMenu() {
 	return workbench.getDefaultMenu();
     }
 
@@ -84,7 +84,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
      * @param action
      */
     @Override
-    public void handleMessage(final String target,
+    public final void handleMessage(final String target,
 	    final IAction<ActionEvent, Object> action) {
 	final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
 		getTargetPerspectiveId(target), perspectives);
@@ -160,7 +160,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void delegateMessage(final String target,
+    public final void delegateMessage(final String target,
 	    final IAction<ActionEvent, Object> action) {
 	// Find local Target; if target is perspective handle target or
 	// delegate
@@ -174,7 +174,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void delegateTargetChange(final String target,
+    public final void delegateTargetChange(final String target,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	// find responsible perspective
 	final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective = getObserveableById(
@@ -246,7 +246,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
+    public final <M extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 	    final M component, final IAction<ActionEvent, Object> action) {
 	((ASwingWorkbench) workbench).handleAndReplaceComponent(action,
 		(IPerspective<ActionListener, ActionEvent, Object>) component);
@@ -254,7 +254,7 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
+    public final <M extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final M component, final IAction<ActionEvent, Object> action) {
 	component.setActive(true);
 	((ASwingWorkbench) workbench).initComponent(action,

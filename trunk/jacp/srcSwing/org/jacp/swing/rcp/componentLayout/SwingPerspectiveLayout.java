@@ -38,23 +38,23 @@ public class SwingPerspectiveLayout implements
     private final Map<String, Container> targetComponents = new ConcurrentHashMap<String, Container>();
 
     @Override
-    public void setRootComponent(final Container comp) {
+    public final void setRootComponent(final Container comp) {
 	rootComponent = comp;
     }
 
     @Override
-    public Container getRootComponent() {
+    public final Container getRootComponent() {
 	return rootComponent;
     }
 
     @Override
-    public void registerTargetLayoutComponent(final String id,
+    public final void registerTargetLayoutComponent(final String id,
 	    final Container target) {
 	targetComponents.put(id, target);
     }
 
     @Override
-    public Map<String, Container> getTargetLayoutComponents() {
+    public final Map<String, Container> getTargetLayoutComponents() {
 	return targetComponents;
     }
 

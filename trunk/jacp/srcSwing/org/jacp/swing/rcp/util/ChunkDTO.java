@@ -60,31 +60,31 @@ public final class ChunkDTO {
 	this.menu = menu;
     }
 
-    public Container getParent() {
+    public final Container getParent() {
 	return parent;
     }
 
-    public Map<String, Container> getTargetComponents() {
+    public final Map<String, Container> getTargetComponents() {
 	return targetComponents;
     }
 
-    public String getCurrentTaget() {
+    public final String getCurrentTaget() {
 	return currentTaget;
     }
 
-    public IVComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
+    public final IVComponent<Container, ActionListener, ActionEvent, Object> getComponent() {
 	return component;
     }
 
-    public Container getPreviousContainer() {
+    public final Container getPreviousContainer() {
 	return previousContainer;
     }
 
-    public Map<Layout, Container> getBars() {
+    public final Map<Layout, Container> getBars() {
 	return bars;
     }
 
-    public JMenu getMenu() {
+    public final JMenu getMenu() {
 	return menu;
     }
 }

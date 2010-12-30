@@ -78,7 +78,7 @@ public abstract class ASwingPerspective implements
         private Launcher<?> launcher;
 
         @Override
-        public void init(final Launcher<?> launcher) {
+        public final void init(final Launcher<?> launcher) {
                 this.launcher = launcher;
                 ((SwingComponentCoordinator) componentHandler).start();
         }

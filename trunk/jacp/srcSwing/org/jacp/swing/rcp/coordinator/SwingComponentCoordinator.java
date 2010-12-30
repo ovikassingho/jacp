@@ -57,7 +57,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void addComponent(
+    public final void addComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	component.setObserver(this);
 	components.add(component);
@@ -65,7 +65,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void removeComponent(
+    public final void removeComponent(
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	component.setObserver(null);
 	components.remove(component);
@@ -79,7 +79,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
      * @param action
      */
     @Override
-    public void handleMessage(final String targetId,
+    public final void handleMessage(final String targetId,
 	    final IAction<ActionEvent, Object> action) {
 	synchronized (action) {
 
@@ -150,14 +150,14 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void delegateMessage(final String target,
+    public final void delegateMessage(final String target,
 	    final IAction<ActionEvent, Object> action) {
 	handleMessage(target, action);
 
     }
 
     @Override
-    public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
+    public final <P extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
 	log(" //1.1.1.1.1// component " + action.getTargetId()
 		+ " delegate to perspective: " + perspective.getId());
@@ -168,7 +168,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
+    public final <P extends IComponent<ActionListener, ActionEvent, Object>> void handleInActive(
 	    final P component, final IAction<ActionEvent, Object> action) {
 	component.setActive(true);
 	perspective.initComponent(action,
@@ -177,7 +177,7 @@ public class SwingComponentCoordinator extends ASwingCoordinator implements
     }
 
     @Override
-    public void delegateTargetChange(final String target,
+    public final void delegateTargetChange(final String target,
 	    final ISubComponent<ActionListener, ActionEvent, Object> component) {
 	// TODO Auto-generated method stub
 

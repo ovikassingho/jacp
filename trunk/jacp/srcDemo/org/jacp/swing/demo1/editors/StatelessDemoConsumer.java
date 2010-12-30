@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.swing.rcp.component.AStatelessComponent;
-import org.springframework.jmx.export.annotation.ManagedResource;
 public class StatelessDemoConsumer extends AStatelessComponent{
     
     
