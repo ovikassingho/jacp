@@ -43,7 +43,7 @@ public class StatelessComponentCoordinator
                 implements
                 IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> {
 
-        public static final int MAX_INCTANCE_COUNT = 10;
+        public static int MAX_INCTANCE_COUNT;
 
         private final AtomicInteger threadCount = new AtomicInteger(0);
 
@@ -57,6 +57,12 @@ public class StatelessComponentCoordinator
                         final Launcher<?> launcher) {
                 this.launcher = launcher;
                 setBaseComponent(baseComponent);
+        }
+        
+        static {
+        	final Runtime runtime = Runtime.getRuntime();
+    		final int nrOfProcessors = runtime.availableProcessors();
+    		MAX_INCTANCE_COUNT = nrOfProcessors+(nrOfProcessors/2);
         }
 
         /*
@@ -88,11 +94,6 @@ public class StatelessComponentCoordinator
                                         seekAndPutMessage(message);
                                 }
                         }
-                        // if instance is NULL get first element in list and put
-                        // message to
-                        // queue (increment position counter (counter = counter
-                        // mod
-                        // instances.size()))
 
                 }
         }

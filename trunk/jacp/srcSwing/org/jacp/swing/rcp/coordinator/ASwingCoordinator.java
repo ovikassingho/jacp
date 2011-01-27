@@ -36,118 +36,118 @@ import org.jacp.api.coordinator.ICoordinator;
  * 
  */
 public abstract class ASwingCoordinator extends Thread implements
-	ICoordinator<ActionListener, ActionEvent, Object> {
+		ICoordinator<ActionListener, ActionEvent, Object> {
 
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-	    50000);
+	private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+			100000);
 
-    @Override
-    public final void run() {
-	while (!Thread.interrupted()) {
-	    log(" observer thread size" + messages.size());
-	    IAction<ActionEvent, Object> action = null;
-	    try {
-		action = messages.take();
-	    } catch (final InterruptedException e) {
-		e.printStackTrace();
-	    }
-	    final Map<String, Object> messages = action.getMessageList();
-	    for (final String targetId : messages.keySet()) {
-		log(" handle message to: " + targetId);
-		handleMessage(targetId, action);
-	    }
-	    log(" observer thread DONE");
+	@Override
+	public final void run() {
+		while (!Thread.interrupted()) {
+			log(" observer thread size" + messages.size());
+			IAction<ActionEvent, Object> action = null;
+			try {
+				action = messages.take();
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+			final Map<String, Object> messages = action.getMessageList();
+			for (final String targetId : messages.keySet()) {
+				log(" handle message to: " + targetId);
+				handleMessage(targetId, action);
+			}
+			log(" observer thread DONE");
+
+		}
+	}
+
+	/**
+	 * returns cloned action with valid message TODO add to interface
+	 * 
+	 * @param action
+	 * @param message
+	 * @return
+	 */
+	protected IAction<ActionEvent, Object> getValidAction(
+			final IAction<ActionEvent, Object> action, final String target,
+			final Object message) {
+		final IAction<ActionEvent, Object> actionClone = action.clone();
+		actionClone.addMessage(target, message);
+		return actionClone;
+	}
+
+	/**
+	 * when id has no separator it is a local message // TODO remove code
+	 * duplication
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected boolean isLocalMessage(final String messageId) {
+		return !messageId.contains(".");
+	}
+
+	/**
+	 * returns target message with perspective and component name // TODO remove
+	 * code duplication
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected String[] getTargetId(final String messageId) {
+		return messageId.split("\\.");
+	}
+
+	/**
+	 * returns the message target perspective id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected String getTargetPerspectiveId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (!isLocalMessage(messageId)) {
+			return targetId[0];
+		}
+		return messageId;
+	}
+
+	/**
+	 * returns the message target component id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected String getTargetComponentId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (!isLocalMessage(messageId)) {
+			return targetId[1];
+		}
+		return messageId;
+	}
+
+	@Override
+	public final <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
+			final String id, final List<M> components) {
+		for (int i = 0; i < components.size(); i++) {
+			final M p = components.get(i);
+			if (p.getId().equals(id)) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public final void handle(final IAction<ActionEvent, Object> action) {
+		messages.add(action);
 
 	}
-    }
 
-    /**
-     * returns cloned action with valid message TODO add to interface
-     * 
-     * @param action
-     * @param message
-     * @return
-     */
-    protected IAction<ActionEvent, Object> getValidAction(
-	    final IAction<ActionEvent, Object> action, final String target,
-	    final Object message) {
-	final IAction<ActionEvent, Object> actionClone = action.clone();
-	actionClone.addMessage(target, message);
-	return actionClone;
-    }
-
-    /**
-     * when id has no separator it is a local message // TODO remove code
-     * duplication
-     * 
-     * @param messageId
-     * @return
-     */
-    protected boolean isLocalMessage(final String messageId) {
-	return !messageId.contains(".");
-    }
-
-    /**
-     * returns target message with perspective and component name // TODO remove
-     * code duplication
-     * 
-     * @param messageId
-     * @return
-     */
-    protected String[] getTargetId(final String messageId) {
-	return messageId.split("\\.");
-    }
-
-    /**
-     * returns the message target perspective id
-     * 
-     * @param messageId
-     * @return
-     */
-    protected String getTargetPerspectiveId(final String messageId) {
-	final String[] targetId = getTargetId(messageId);
-	if (!isLocalMessage(messageId)) {
-	    return targetId[0];
+	protected void log(final String message) {
+		logger.fine(message);
 	}
-	return messageId;
-    }
-
-    /**
-     * returns the message target component id
-     * 
-     * @param messageId
-     * @return
-     */
-    protected String getTargetComponentId(final String messageId) {
-	final String[] targetId = getTargetId(messageId);
-	if (!isLocalMessage(messageId)) {
-	    return targetId[1];
-	}
-	return messageId;
-    }
-
-    @Override
-        public final <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
-                        final String id, final List<M> components) {
-                for (int i=0; i < components.size(); i++) {
-                        final M p = components.get(i);
-                        if (p.getId().equals(id)) {
-                                return p;
-                        }
-                }
-                return null;
-        }
-
-    @Override
-    public final void handle(final IAction<ActionEvent, Object> action) {
-	messages.add(action);
-
-    }
-
-    protected void log(final String message) {
-	logger.fine(message);
-    }
 
 }
