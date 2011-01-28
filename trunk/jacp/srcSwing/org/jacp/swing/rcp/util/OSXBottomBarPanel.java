@@ -31,11 +31,11 @@ public class OSXBottomBarPanel extends JPanel {
 	  private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR =	  new Color( 135, 135, 135);*/
 	 
 
-	private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
-	private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR = new Color(10,10,10);//UIManager.getColor("SplitPane.shadow");
+	private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.background");
+	private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
 	
 	private static final Color OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
-	private static final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = new Color(90,90,90);
+	private static final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
 	
 	
 	private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = UIManager.getColor("SplitPane.background");

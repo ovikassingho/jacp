@@ -22,16 +22,16 @@ public class OSXToolBar extends JPanel {
      * 
      */
     private static final long serialVersionUID = 7030069330633050293L;
-	private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
-	private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR = new Color(10,10,10);//UIManager.getColor("SplitPane.shadow");
-	
-	private static final Color OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
-	private static final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = new Color(90,90,90);
-	
-	
-	private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = UIManager.getColor("SplitPane.background");
-	private static final Color OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
-	private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR = UIManager.getColor("SplitPane.background");
+    private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.background");
+    private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
+    
+    private static final Color OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
+    private static final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
+    
+    
+    private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = UIManager.getColor("SplitPane.background");
+    private static final Color OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
+    private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR = UIManager.getColor("SplitPane.background");
 
     public OSXToolBar() {
 	// make the component transparent
@@ -50,6 +50,28 @@ public class OSXToolBar extends JPanel {
 	setBorder(Borders.createEmptyBorder("3dlu, 3dlu, 1dlu, 3dlu"));
 	setLayout(new FlowLayout(hint, 5, 5));
     }
+    
+   /* @Override
+    protected void paintComponent(final Graphics g) {
+        final Graphics2D graphics = (Graphics2D) g.create();
+
+        final Window window = SwingUtilities.getWindowAncestor(this);
+        final boolean hasFoucs = window != null && window.isFocused();
+
+        final Color topColor = hasFoucs ? OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR
+                : OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR;
+        final Color bottomColor = hasFoucs ? OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR
+                : OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR;
+
+        final Paint paint = new GradientPaint(0, 0, topColor, 0, getHeight(),
+                bottomColor);
+
+        graphics.setPaint(paint);
+        graphics.fillRect(0, 0, getWidth(), getHeight());
+
+        graphics.dispose();
+        System.out.println("repaint");
+    }*/
 
     @Override
     public Border getBorder() {
@@ -60,26 +82,4 @@ public class OSXToolBar extends JPanel {
 		: BorderFactory.createMatteBorder(0, 0, 1, 0,
 			OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR);
     }
-    
-    @Override
-	protected void paintComponent(final Graphics g) {
-		final Graphics2D graphics = (Graphics2D) g.create();
-
-		final Window window = SwingUtilities.getWindowAncestor(this);
-		final boolean hasFoucs = window != null && window.isFocused();
-
-		final Color topColor = hasFoucs ? OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR
-				: OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR;
-		final Color bottomColor = hasFoucs ? OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR
-				: OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR;
-
-		final Paint paint = new GradientPaint(0, 0, topColor, 0, getHeight(),
-				bottomColor);
-
-		graphics.setPaint(paint);
-		graphics.fillRect(0, 0, getWidth(), getHeight());
-
-		graphics.dispose();
-		System.out.println("repaint");
-	}
 }
