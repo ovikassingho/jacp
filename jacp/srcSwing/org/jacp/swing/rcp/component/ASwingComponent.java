@@ -55,7 +55,7 @@ public abstract class ASwingComponent implements
         private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
         private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
         private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-                        20);
+                        500);
         private final Map<Layout, Container> barEntries = new ConcurrentHashMap<Layout, Container>();
 
         @Override
@@ -202,7 +202,6 @@ public abstract class ASwingComponent implements
 
         @Override
         public final Map<Layout, Container> getBarEntries() {
-                // TODO Auto-generated method stub
                 return barEntries;
         }
 

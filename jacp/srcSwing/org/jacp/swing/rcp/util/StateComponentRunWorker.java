@@ -38,13 +38,6 @@ public class StateComponentRunWorker
 	this.component = component;
     }
 
-    @Override
-    protected IBGComponent<ActionListener, ActionEvent, Object> runHandleSubcomponent(
-	    final IBGComponent<ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action) {
-	// TODO Auto-generated method stub
-	return null;
-    }
 
     @Override
     protected final IBGComponent<ActionListener, ActionEvent, Object> doInBackground()

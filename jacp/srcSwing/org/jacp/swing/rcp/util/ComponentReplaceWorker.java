@@ -49,7 +49,6 @@ public class ComponentReplaceWorker
                 AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
         private final Map<String, Container> targetComponents;
         private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
-        private final IAction<ActionEvent, Object> action;
         private final JMenu menu;
         private final Map<Layout, Container> bars;
         private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
@@ -58,11 +57,9 @@ public class ComponentReplaceWorker
         public ComponentReplaceWorker(
                         final Map<String, Container> targetComponents,
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-                        final IAction<ActionEvent, Object> action,
                         final Map<Layout, Container> bars, final JMenu menu) {
                 this.targetComponents = targetComponents;
                 this.component = component;
-                this.action = action;
                 this.bars = bars;
                 this.menu = menu;
         }
@@ -70,13 +67,6 @@ public class ComponentReplaceWorker
         @Override
         protected final IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
                         throws Exception {
-                return runHandleSubcomponent(component, action);
-        }
-
-        @Override
-        protected final IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-                        final IAction<ActionEvent, Object> action) {
                 synchronized (component) {
                         try {
                                 component.setBlocked(true);
@@ -116,8 +106,8 @@ public class ComponentReplaceWorker
 
                 }
                 return component;
-
         }
+
 
         private void removeComponentValue(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
@@ -232,7 +222,8 @@ public class ComponentReplaceWorker
          */
         protected final void process(final List<ChunkDTO> chunks) {
                 // process method runs in EventDispatchThread
-                for (final ChunkDTO dto : chunks) {
+                for (int i=0;i<chunks.size();i++) {
+                        final ChunkDTO dto = chunks.get(i);
                         final Container parent = dto.getParent();
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component = dto
                                         .getComponent();

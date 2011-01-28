@@ -50,7 +50,7 @@ public abstract class AStateComponent implements
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
     private boolean isActived = false;
     private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-	    20);
+	    500);
 
     @Override
     public final IActionListener<ActionListener, ActionEvent, Object> getActionListener() {

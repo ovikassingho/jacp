@@ -22,8 +22,6 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
-
-import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 
 /**
@@ -46,12 +44,7 @@ public class ComponentAddWorker
                 this.component = component;
         }
 
-        @Override
-        protected final IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-                        final IAction<ActionEvent, Object> action) {
-                return null;
-        }
+        
 
         @Override
         protected IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()

@@ -85,13 +85,6 @@ public class ComponentInitWorker
                 }
         }
 
-        @Override
-        protected final IVComponent<Container, ActionListener, ActionEvent, Object> runHandleSubcomponent(
-                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-                        final IAction<ActionEvent, Object> action) {
-
-                return component;
-        }
 
         @Override
         public final void done() {
@@ -116,7 +109,7 @@ public class ComponentInitWorker
                         // worker; if so then start replace worker
                         if (component.hasIncomingMessage()) {
                                 new ComponentReplaceWorker(targetComponents,
-                                                component, action, bars, menu)
+                                                component, bars, menu)
                                                 .execute();
                         }
                 }

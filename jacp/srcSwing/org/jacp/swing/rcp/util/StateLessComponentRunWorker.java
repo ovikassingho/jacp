@@ -38,13 +38,7 @@ public class StateLessComponentRunWorker
 	this.component = component;
     }
 
-    @Override
-    protected IBGComponent<ActionListener, ActionEvent, Object> runHandleSubcomponent(
-	    final IBGComponent<ActionListener, ActionEvent, Object> component,
-	    final IAction<ActionEvent, Object> action) {
-	// TODO Auto-generated method stub
-	return null;
-    }
+
 
     @Override
     protected IBGComponent<ActionListener, ActionEvent, Object> doInBackground()
@@ -66,7 +60,8 @@ public class StateLessComponentRunWorker
 	return comp;
 
     }
-
+    
+    // TODO implement targt change for stateless components
     private void checkAndHandleTargetChange(
 	    final IBGComponent<ActionListener, ActionEvent, Object> comp,
 	    final String currentTaget) {
