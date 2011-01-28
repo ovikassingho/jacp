@@ -22,13 +22,13 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +64,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param id
          * @return
          */
-        protected Container getValidContainerById(
+        protected final Container getValidContainerById(
                         final Map<String, Container> targetComponents,
                         final String id) {
                 return targetComponents.get(id);
@@ -85,12 +85,12 @@ public abstract class AbstractComponentWorker<T> extends
         }
 
         /**
-         * find valid target and add type specific new component
+         * find valid target and add type specific new component. Handles Container, ScrollPanes, Menus and Bar Entries from user
          * 
          * @param layout
          * @param editor
          */
-        protected void addComponentByType(
+        protected final void addComponentByType(
                         final Container validContainer,
                         final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
                         final Map<Layout, Container> bars, final JMenu menu) {
@@ -110,42 +110,12 @@ public abstract class AbstractComponentWorker<T> extends
 
                                 }
                                 if (menu != null) {
+                                        // menu handling in EDT!! 
                                         editor.handleMenuEntries(menu);
                                 }
                                 if (!bars.isEmpty()) {
-                                        final Set<Layout> keys = bars.keySet();
-                                        final Map<Layout, Container> myBars = editor
-                                                        .getBarEntries();
-                                        myBars.clear();
-                                        for (final Layout layout : keys) {
-                                                myBars.put(layout,
-                                                                new JComponent() {
-                                                                        private static final long serialVersionUID = 2148589637515686904L;
-                                                                        private final List<Component> components = new CopyOnWriteArrayList<Component>();
-
-                                                                        @Override
-                                                                        public final Component add(
-                                                                                        final Component comp) {
-                                                                                components.add(comp);
-                                                                                return super.add(comp);
-                                                                        }
-
-                                                                        @Override
-                                                                        public final Component[] getComponents() {
-                                                                                final Component[] tmp = new Component[components
-                                                                                                .size()];
-                                                                                for (int p=0;p<components.size();p++) {
-                                                                                        tmp[p] = components.get(p);
-                                                                                }
-                                                                                return tmp;
-                                                                        }
-                                                                });
-
-                                        }
-
-                                        editor.handleBarEntries(editor
-                                                        .getBarEntries());
-                                        addBarEntries(editor, bars);
+                                        // bar handling in EDT!!
+                                        handleUserBarEntries(editor, bars);
 
                                 }
                                 validContainer.setEnabled(true);
@@ -155,8 +125,60 @@ public abstract class AbstractComponentWorker<T> extends
                 });
 
         }
+        
+        /**
+         * create dummy root component and handle users bar invocation method
+         * @param editor
+         * @param bars
+         */
+        private final void handleUserBarEntries(final IVComponent<Container, ActionListener, ActionEvent, Object> editor,final Map<Layout, Container> bars) {
+                final Set<Layout> keys = bars.keySet();
+                final Map<Layout, Container> myBars = editor
+                                .getBarEntries();
+                myBars.clear();
+                for (final Layout layout : keys) {
+                        myBars.put(layout,new CustomJComponent());
 
-        private void addBarEntries(
+                }
+
+                editor.handleBarEntries(editor
+                                .getBarEntries());
+                addBarEntries(editor, bars);
+        }
+        
+        /**
+         * provides  custom methods to access valid menu entries
+         * @author Andy Moncsek
+         *
+         */
+        private final class CustomJComponent extends JComponent {
+                private static final long serialVersionUID = 2148589637515686904L;
+                private final List<Component> components = new ArrayList<Component>();
+
+                @Override
+                public final Component add(
+                                final Component comp) {
+                        components.add(comp);
+                        return super.add(comp);
+                }
+
+                @Override
+                public final Component[] getComponents() {
+                        final Component[] tmp = new Component[components
+                                        .size()];
+                        for (int p=0;p<components.size();p++) {
+                                tmp[p] = components.get(p);
+                        }
+                        return tmp;
+                }
+        }
+        
+        /**
+         * add users bar entries to bar
+         * @param editor
+         * @param bars
+         */
+        private final void addBarEntries(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> editor,
                         final Map<Layout, Container> bars) {
                 final Map<Layout, Container> currentBars = editor
@@ -167,22 +189,31 @@ public abstract class AbstractComponentWorker<T> extends
                         final Entry<Layout, Container> entry = it.next();
                         final Layout key = entry.getKey();
                         if (bars.containsKey(key)) {
-                                final Container tmpSystemBar = bars.get(key);
+                                final Container systemBar = bars.get(key);
                                 final Container wrapper = entry.getValue();
-                                final Component[] tmp = wrapper.getComponents();
-                                SwingUtilities.invokeLater(new Runnable() {
-                                        @Override
-                                        public final void run() {
-                                                for (int i=0;i<tmp.length;i++) {
-                                                        tmpSystemBar.add(tmp[i]);
-                                                }
-
-                                                invalidateHost(tmpSystemBar);
-                                        }
-                                });
+                                final Component[] componentList = wrapper.getComponents();
+                                addToSystemBar(systemBar, componentList);
                         }
 
                 }
+        }
+        
+        /**
+         * add users entries to bar in EDT
+         * @param systemBar
+         * @param componentList
+         */
+        private final void addToSystemBar(final Container systemBar,final Component[] componentList) {
+                SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public final void run() {
+                                for (int i=0;i<componentList.length;i++) {
+                                        systemBar.add(componentList[i]);
+                                }
+
+                                invalidateHost(systemBar);
+                        }
+                });
         }
 
         /**
@@ -192,7 +223,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param uiComponent
          * @param name
          */
-        private void handleAdd(final Container validContainer,
+        private final void handleAdd(final Container validContainer,
                         final Container uiComponent, final String name) {
                 uiComponent.setEnabled(true);
                 uiComponent.setVisible(true);
@@ -202,8 +233,6 @@ public abstract class AbstractComponentWorker<T> extends
 
         }
 
-        protected abstract T runHandleSubcomponent(final T component,
-                        final IAction<ActionEvent, Object> action);
 
         /**
          * removes old ui component of subcomponent form parent ui component
@@ -211,7 +240,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param parent
          * @param currentContainer
          */
-        protected void handleOldComponentRemove(final Container parent,
+        protected final void handleOldComponentRemove(final Container parent,
                         final Container currentContainer) {
                 parent.remove(currentContainer);
         }
@@ -223,7 +252,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param parent
          * @param currentTaget
          */
-        protected void handleNewComponentValue(
+        protected final void handleNewComponentValue(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
                         final Map<String, Container> targetComponents,
                         final Container parent, final String currentTaget) {
@@ -248,7 +277,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param futureTarget
          * @return
          */
-        private String getValidTargetId(final String currentTaget,
+        private final String getValidTargetId(final String currentTaget,
                         final String futureTarget) {
                 return currentTaget.length() < 2 ? getTargetComponentId(futureTarget)
                                 : futureTarget;
@@ -260,7 +289,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param component
          * @param targetComponents
          */
-        private void handleTargetChange(
+        private final void handleTargetChange(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
                         final Map<String, Container> targetComponents,
                         final String target) {
@@ -280,7 +309,7 @@ public abstract class AbstractComponentWorker<T> extends
          * 
          * @param component
          */
-        protected void changeComponentTarget(
+        protected final void changeComponentTarget(
                         final ISubComponent<ActionListener, ActionEvent, Object> component) {
                 component.getParentPerspective().delegateTargetChange(
                                 component.getExecutionTarget(), component);
@@ -293,7 +322,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param action
          * @return
          */
-        protected Container prepareAndHandleComponent(
+        protected final Container prepareAndHandleComponent(
                         final IVComponent<Container, ActionListener, ActionEvent, Object> component,
                         final IAction<ActionEvent, Object> action) {
                 final Container editorComponent = component.handle(action);
@@ -307,7 +336,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param messageId
          * @return
          */
-        protected String getTargetComponentId(final String messageId) {
+        protected final String getTargetComponentId(final String messageId) {
                 final String[] targetId = getTargetId(messageId);
                 if (!isLocalMessage(messageId)) {
                         return targetId[1];
@@ -321,7 +350,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param messageId
          * @return
          */
-        protected boolean isLocalMessage(final String messageId) {
+        protected final boolean isLocalMessage(final String messageId) {
                 return !messageId.contains(".");
         }
 
@@ -331,7 +360,7 @@ public abstract class AbstractComponentWorker<T> extends
          * @param messageId
          * @return
          */
-        protected String[] getTargetId(final String messageId) {
+        protected final String[] getTargetId(final String messageId) {
                 return messageId.split("\\.");
         }
 

@@ -55,7 +55,7 @@ import org.jacp.swing.rcp.util.ComponentReplaceWorker;
 import org.jacp.swing.rcp.util.StateComponentRunWorker;
 
 /**
- * represents a basic swing perspective that handles subcomponents
+ * represents a basic swing perspective that handles subcomponents, perspectives are not handled in thread so avoid long running tasks in perspectives. 
  * 
  * @author Andy Moncsek
  */
@@ -203,10 +203,20 @@ public abstract class ASwingPerspective implements
          * @param action
          * @param component
          */
-        private void runStateComponent(
+        private final void runStateComponent(
                         final IAction<ActionEvent, Object> action,
                         final IBGComponent<ActionListener, ActionEvent, Object> component) {
                 new StateComponentRunWorker(component).execute();
+        }
+        
+        private final void runSwingComponent(final IPerspectiveLayout<? extends Container, Container> layout,final ISubComponent<ActionListener, ActionEvent, Object> component) {
+                new ComponentReplaceWorker(
+                                layout.getTargetLayoutComponents(),
+                                ((ASwingComponent) component),
+                                ((SwingPerspectiveCoordinator) perspectiveObserver)
+                                                .getBars(),
+                                (JMenu) ((SwingPerspectiveCoordinator) perspectiveObserver)
+                                                .getMenu()).execute();
         }
 
         @Override
@@ -218,19 +228,9 @@ public abstract class ASwingPerspective implements
                         putMessageToQueue(component, action);
                         log("ADD TO QUEUE:::" + component.getName());
                 } else {
-                        if (component instanceof AStatelessComponent) {
-                                log("RUN STATELESS COMPONENTS:::"
-                                                + component.getName());
-                                ((AStatelessComponent) component)
-                                                .addMessage(action);
-                        } else {
-                                putMessageToQueue(component, action);
-                                executeComponentReplaceThread(
-                                                perspectiveLayout, component,
-                                                action);
-                                log("CREATE NEW THREAD:::"
-                                                + component.getName());
-                        }
+                        executeComponentReplaceThread(
+                                        perspectiveLayout, component,
+                                        action);
 
                 }
                 log("DONE EXECUTE REPLACE:::" + component.getName());
@@ -238,29 +238,31 @@ public abstract class ASwingPerspective implements
         }
 
         /**
-         * start component replace thread
+         * start component replace thread, be aware that all actions are in components message box!
          * 
          * @param layout
          * @param component
-         * @param action
          */
-        // TODO component instanceof AStatelessComponent !!
-        private void executeComponentReplaceThread(
+        private final void executeComponentReplaceThread(
                         final IPerspectiveLayout<? extends Container, Container> layout,
                         final ISubComponent<ActionListener, ActionEvent, Object> component,
                         final IAction<ActionEvent, Object> action) {
                 if (component instanceof ASwingComponent) {
-                        new ComponentReplaceWorker(
-                                        layout.getTargetLayoutComponents(),
-                                        ((ASwingComponent) component),
-                                        action,
-                                        ((SwingPerspectiveCoordinator) perspectiveObserver)
-                                                        .getBars(),
-                                        (JMenu) ((SwingPerspectiveCoordinator) perspectiveObserver)
-                                                        .getMenu()).execute();
+                        log("CREATE NEW THREAD:::"
+                                        + component.getName());
+                        putMessageToQueue(component, action);
+                        runSwingComponent(layout, component);
 
                 } else if (component instanceof AStateComponent) {
+                        log("CREATE NEW THREAD:::"
+                                        + component.getName());
+                        putMessageToQueue(component, action);
                         runStateComponent(action, ((AStateComponent) component));
+                } else if(component instanceof AStatelessComponent) {
+                        log("RUN STATELESS COMPONENTS:::"
+                                        + component.getName());
+                        ((AStatelessComponent) component)
+                                        .addMessage(action);
                 }
 
         }
@@ -271,7 +273,7 @@ public abstract class ASwingPerspective implements
          * @param component
          * @param action
          */
-        private void putMessageToQueue(
+        private final void putMessageToQueue(
                         final ISubComponent<ActionListener, ActionEvent, Object> component,
                         final IAction<ActionEvent, Object> action) {
                 component.putIncomingMessage(action);
@@ -307,7 +309,7 @@ public abstract class ASwingPerspective implements
         }
 
         @Override
-        public final void delegateTargetChange(
+        public final synchronized void delegateTargetChange(
                         final String target,
                         final ISubComponent<ActionListener, ActionEvent, Object> component) {
                 final String parentId = getTargetParentId(target);

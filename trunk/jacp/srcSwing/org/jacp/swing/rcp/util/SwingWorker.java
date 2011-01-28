@@ -407,8 +407,9 @@ public abstract class SwingWorker<T, V> implements RunnableFuture<T> {
 		    }
 		};
 	    }
+	    doProcess.add(chunks);
 	}
-	doProcess.add(chunks);
+
     }
 
     /**
@@ -499,8 +500,9 @@ public abstract class SwingWorker<T, V> implements RunnableFuture<T> {
 		    }
 		};
 	    }
+	    doNotifyProgressChange.add(oldProgress, progress);
 	}
-	doNotifyProgressChange.add(oldProgress, progress);
+
     }
 
     /**

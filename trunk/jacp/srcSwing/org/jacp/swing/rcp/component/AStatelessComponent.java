@@ -54,7 +54,7 @@ public abstract class AStatelessComponent implements
     private ICoordinator<ActionListener, ActionEvent, Object> componentObserver;
     private IPerspective<ActionListener, ActionEvent, Object> parentPerspective;
     private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-	    20);
+	    500);
     private IStatelessComponentCoordinator<ActionListener, ActionEvent, Object> coordinator;
     private Launcher<?> launcher;
 
@@ -225,6 +225,7 @@ public abstract class AStatelessComponent implements
 	return comp;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public final <C> C handle(final IAction<ActionEvent, Object> action) {
 	return (C) handleAction(action);
