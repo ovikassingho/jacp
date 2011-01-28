@@ -21,29 +21,26 @@ public class OSXBottomBarPanel extends JPanel {
      * 
      */
 	private static final long serialVersionUID = -200207223959401946L;
-	/*
-	 * private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = new Color(
-	 * 0xbbbbbb); private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR
-	 * = new Color( 0x969696); private static final Color
-	 * OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = new Color( 0xe3e3e3); private static
-	 * final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = new Color( 0xcfcfcf);
-	 * private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = new
-	 * Color( 0xd8d8d8); private static final Color
-	 * OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR = new Color( 64, 64, 64);
-	 * private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR =
-	 * new Color( 135, 135, 135);
-	 */
+	
+/*	 private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = new Color( 0xbbbbbb);
+	 private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR	  = new Color( 0x969696); 
+	 private static final Color	  OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = new Color( 0xe3e3e3);
+	 private static	  final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = new Color( 0xcfcfcf);
+	  private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = new	  Color( 0xd8d8d8); 
+	  private static final Color	  OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR = new Color( 64, 64, 64);
+	  private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR =	  new Color( 135, 135, 135);*/
+	 
 
-	private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.highlight");
-	private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
+	private static final Color OS_X_BOTTOM_BAR_ACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
+	private static final Color OS_X_BOTTOM_BAR_ACTIVE_BOTTOM_COLOR = new Color(10,10,10);//UIManager.getColor("SplitPane.shadow");
 	
-	private static final Color OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = Color.red;
-	private static final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = Color.red;
+	private static final Color OS_X_BOTTOM_BAR_INACTIVE_TOP_COLOR = UIManager.getColor("SplitPane.shadow");
+	private static final Color OS_X_BOTTOM_BAR_INACTIVE_BOTTOM_COLOR = new Color(90,90,90);
 	
 	
-	private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = UIManager.getColor("MenuBar.highlight");
+	private static final Color OS_X_BOTTOM_BAR_BORDER_HIGHLIGHT_COLOR = UIManager.getColor("SplitPane.background");
 	private static final Color OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR = UIManager.getColor("SplitPane.shadow");
-	private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR = UIManager.getColor("SplitPane.highlight");
+	private static final Color OS_X_UNIFIED_TOOLBAR_UNFOCUSED_BORDER_COLOR = UIManager.getColor("SplitPane.background");
 
 	public OSXBottomBarPanel() {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -57,7 +54,7 @@ public class OSXBottomBarPanel extends JPanel {
 				OS_X_UNIFIED_TOOLBAR_FOCUSED_BOTTOM_COLOR));
 	}
 
-/*	@Override
+	@Override
 	protected void paintComponent(final Graphics g) {
 		final Graphics2D graphics = (Graphics2D) g.create();
 
@@ -77,7 +74,7 @@ public class OSXBottomBarPanel extends JPanel {
 
 		graphics.dispose();
 		System.out.println("repaint");
-	}*/
+	}
 	
 
 	@Override
