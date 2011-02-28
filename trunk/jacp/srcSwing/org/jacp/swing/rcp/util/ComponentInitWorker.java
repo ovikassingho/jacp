@@ -21,14 +21,17 @@ package org.jacp.swing.rcp.util;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
+
 
 /**
  * Background Worker to execute components; handle method to init component
@@ -37,82 +40,106 @@ import org.jacp.api.componentLayout.Layout;
  * 
  */
 public class ComponentInitWorker
-                extends
-                AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
-        private final Map<String, Container> targetComponents;
-        private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
-        private final Map<Layout, Container> bars;
-        private final IAction<ActionEvent, Object> action;
-        private final JMenu menu;
+		extends
+		AbstractComponentWorker<IVComponent<Container, ActionListener, ActionEvent, Object>> {
+	private final Map<String, Container> targetComponents;
+	private final IVComponent<Container, ActionListener, ActionEvent, Object> component;
+	private final Map<Layout, Container> bars;
+	private final IAction<ActionEvent, Object> action;
+	private final JMenu menu;
 
-        public ComponentInitWorker(
-                        final Map<String, Container> targetComponents,
-                        final IVComponent<Container, ActionListener, ActionEvent, Object> component,
-                        final IAction<ActionEvent, Object> action,
-                        final Map<Layout, Container> bars, final JMenu menu) {
-                this.targetComponents = targetComponents;
-                this.component = component;
-                this.action = action;
-                this.bars = bars;
-                this.menu = menu;
-        }
+	public ComponentInitWorker(
+			final Map<String, Container> targetComponents,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+			final IAction<ActionEvent, Object> action,
+			final Map<Layout, Container> bars, final JMenu menu) {
+		this.targetComponents = targetComponents;
+		this.component = component;
+		this.action = action;
+		this.bars = bars;
+		this.menu = menu;
+	}
 
-        @Override
-        protected final IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
-                        throws Exception {
-                synchronized (component) {
-                        component.setBlocked(true);
-                        log("3.4.4.2.1: subcomponent handle init START: "
-                                        + component.getName());
-                        final Container editorComponent = component
-                                        .handle(action);
-                        component.setRoot(editorComponent);
-                        editorComponent.setVisible(true);
-                        editorComponent.setEnabled(true);
-                        log("3.4.4.2.2: subcomponent handle init get valid container: "
-                                        + component.getName());
-                        final Container validContainer = getValidContainerById(
-                                        targetComponents,
-                                        component.getExecutionTarget());
-                        log("3.4.4.2.3: subcomponent handle init add component by type: "
-                                        + component.getName());
-                        addComponentByType(validContainer, component, bars,
-                                        menu);
-                        log("3.4.4.2.4: subcomponent handle init END: "
-                                        + component.getName());
-                        component.setBlocked(false);
-                        return component;
-                }
-        }
+	@Override
+	protected final IVComponent<Container, ActionListener, ActionEvent, Object> doInBackground()
+			throws Exception {
+		synchronized (component) {
+			component.setBlocked(true);
+			log("3.4.4.2.1: subcomponent handle init START: "
+					+ component.getName());
+			final Container editorComponent = component.handle(action);
+			component.setRoot(editorComponent);
+			editorComponent.setVisible(true);
+			editorComponent.setEnabled(true);
+			log("3.4.4.2.2: subcomponent handle init get valid container: "
+					+ component.getName());
+			final Container validContainer = getValidContainerById(
+					targetComponents, component.getExecutionTarget());
+			log("3.4.4.2.3: subcomponent handle init add component by type: "
+					+ component.getName());
+			
+			addComonent(validContainer, component, bars, menu);
 
+			log("3.4.4.2.4: subcomponent handle init END: "
+					+ component.getName());
+			component.setBlocked(false);
+			return component;
+		}
+	}
+	
+	/**
+	 * handles "component add" in EDT must be called outside EDT
+	 * @param validContainer
+	 * @param component
+	 * @param bars
+	 * @param menu
+	 * @throws InterruptedException
+	 * @throws InvocationTargetException
+	 */
+	private final void addComonent(
+			final Container validContainer,
+			final IVComponent<Container, ActionListener, ActionEvent, Object> component,
+			final Map<Layout, Container> bars, final JMenu menu)
+			throws InterruptedException, InvocationTargetException {
 
-        @Override
-        public final void done() {
-                synchronized (component) {
-                        try {
-                                this.get();
-                        } catch (final InterruptedException e) {
-                                e.printStackTrace();
-                                // TODO add to error queue and restart thread if
-                                // messages in
-                                // queue
-                        } catch (final ExecutionException e) {
-                                e.printStackTrace();
-                                // TODO add to error queue and restart thread if
-                                // messages in
-                                // queue
-                        }
-                        component.setBlocked(false);
-                        component.setBlocked(false);
-                        // check if news messages received while handled in
-                        // initialization
-                        // worker; if so then start replace worker
-                        if (component.hasIncomingMessage()) {
-                                new ComponentReplaceWorker(targetComponents,
-                                                component, bars, menu)
-                                                .execute();
-                        }
-                }
-        }
+		SwingUtilities.invokeAndWait(new Runnable() {
+
+			@Override
+			public void run() {
+				// handle
+				addComponentByType(validContainer, component, bars, menu);
+
+			}
+		});
+
+	}
+
+	@Override
+	public final void done() {
+		synchronized (component) {
+			try {
+				this.get();
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+				// TODO add to error queue and restart thread if
+				// messages in
+				// queue
+			} catch (final ExecutionException e) {
+				e.printStackTrace();
+				// TODO add to error queue and restart thread if
+				// messages in
+				// queue
+			}
+			component.setBlocked(false);
+			component.setBlocked(false);
+			// check if news messages received while handled in
+			// initialization
+			// worker; if so then start replace worker
+			if (component.hasIncomingMessage()) {
+				new ComponentReplaceWorker(targetComponents, component, bars,
+						menu).execute();
+			}
+		}
+	}
 
 }
