@@ -273,8 +273,10 @@ public class ComponentReplaceWorker
                         e.printStackTrace();
                         // TODO add to error queue and restart thread if
                         // messages in queue
+                } finally {
+                    component.setBlocked(false);
                 }
-                component.setBlocked(false);
+      
         }
 
 }
