@@ -224,22 +224,24 @@ public abstract class ASwingWorkbench extends JFrame
                 perspective.initComponents(action);
                 log("3.4.5: perspective init bar entries");
                 addPerspectiveBarEntries(perspective);
-
-                switch (layout.getWorkspaceMode()) {
-                case SINGLE_PANE:
-                        log("3.4.6: perspective init SINGLE_PANE");
-                        initPerspectiveInStackMode(perspectiveLayout);
-                        break;
-                case TABBED_PANE:
-                        log("3.4.6: perspective init TABBED_PANE");
-                        initPerspectivesInTabbedMode(perspectiveLayout,
-                                        perspective.getName());
-                        break;
-                default:
-                        log("3.4.6: perspective init WINDOW_PANE");
-                        initPerspectiveInWindowMode(perspectiveLayout,
-                                        perspective.getName());
-                }
+                // avoid npt and overhead of checking in methods
+                if (perspectiveLayout.getRootComponent()!=null) {
+					switch (layout.getWorkspaceMode()) {
+					case SINGLE_PANE:
+						log("3.4.6: perspective init SINGLE_PANE");
+						initPerspectiveInStackMode(perspectiveLayout);
+						break;
+					case TABBED_PANE:
+						log("3.4.6: perspective init TABBED_PANE");
+						initPerspectivesInTabbedMode(perspectiveLayout,
+								perspective.getName());
+						break;
+					default:
+						log("3.4.6: perspective init WINDOW_PANE");
+						initPerspectiveInWindowMode(perspectiveLayout,
+								perspective.getName());
+					}
+				}
         }
 
         @Override
