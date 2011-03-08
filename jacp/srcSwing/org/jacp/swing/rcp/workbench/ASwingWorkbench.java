@@ -31,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -438,12 +439,27 @@ public abstract class ASwingWorkbench extends JFrame
                                                                 perspective.getId(),
                                                                 "init"),
                                                                 perspective);
+                                                refreshBarEntries();
 
                                         }
                                 }); // SWING UTILS END
                         }
 
                 }
+        }
+        
+        /**
+         * refresh bar entries after perspective initialisation
+         */
+        private final void refreshBarEntries() {
+        	 final Map<Layout, Container> bars = layout.getToolBars();
+             if(bars!=null && !bars.isEmpty()) {
+          	 final Iterator<Container> values = bars.values().iterator();
+          	 while(values.hasNext())  {
+          	   final Container value = values.next();
+          	   invalidateHost(value);
+          	 }
+             }
         }
 
         /**
