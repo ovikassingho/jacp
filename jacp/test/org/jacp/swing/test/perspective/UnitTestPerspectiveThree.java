@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -18,26 +19,39 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 
 	@Override
 	public void handleMenuEntries(JMenu menuBar) {
-		final JMenuItem perspectiveThreeMenuItem = new JMenuItem("PerspectiveThree");
+		final JMenuItem perspectiveThreeMenuItem = new JMenuItem(
+				"PerspectiveThree");
 		perspectiveThreeMenuItem.setName("PerspectiveThree");
 		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-		listener.getAction().setMessage("three");
+		listener.getAction().setMessage("threeMenu");
 		perspectiveThreeMenuItem.addActionListener(listener.getListener());
 		menuBar.add(perspectiveThreeMenuItem);
-		
+
 	}
 
 	@Override
 	public void handleBarEntries(Map<Layout, Container> bars) {
-		// TODO Auto-generated method stub
-		
+		final Container toolBar = bars.get(Layout.NORTH);
+		final JButton perspectiveThreeButtoneOne = new JButton();
+		perspectiveThreeButtoneOne.setText("PerspectiveThree");
+		perspectiveThreeButtoneOne.setName("PerspectiveThree");
+		final IActionListener<ActionListener, ActionEvent, Object> listenerOne = getActionListener();
+		listenerOne.getAction().setMessage("threeButtonOne");
+
+		perspectiveThreeButtoneOne.addActionListener(listenerOne.getListener());
+		toolBar.add(perspectiveThreeButtoneOne);
+
 	}
 
 	@Override
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
-		// TODO Auto-generated method stub
-		
+		if (action.getLastMessage().equals("threeMenu")) {
+
+		} else if (action.getLastMessage().equals("threeButtonOne")) {
+
+		}
+
 	}
 
 }
