@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -20,23 +21,35 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 	public void handleMenuEntries(JMenu menuBar) {
 		final JMenuItem perspectiveTwoMenuItem = new JMenuItem("PerspectiveTwo");
 		final IActionListener<ActionListener, ActionEvent, Object> listener = getActionListener();
-		listener.getAction().setMessage("two");
+		listener.getAction().setMessage("twoMenu");
 		perspectiveTwoMenuItem.addActionListener(listener.getListener());
 		menuBar.add(perspectiveTwoMenuItem);
-		
+
 	}
 
 	@Override
 	public void handleBarEntries(Map<Layout, Container> bars) {
-		// TODO Auto-generated method stub
-		
+		final Container toolBar = bars.get(Layout.NORTH);
+		final JButton perspectiveTwoButtoneOne = new JButton();
+		perspectiveTwoButtoneOne.setText("PerspectiveTwo");
+		perspectiveTwoButtoneOne.setName("PerspectiveTwo");
+		final IActionListener<ActionListener, ActionEvent, Object> listenerOne = getActionListener();
+		listenerOne.getAction().setMessage("twoButtonOne");
+
+		perspectiveTwoButtoneOne.addActionListener(listenerOne.getListener());
+		toolBar.add(perspectiveTwoButtoneOne);
+
 	}
 
 	@Override
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
-		// TODO Auto-generated method stub
-		
+		if (action.getLastMessage().equals("twoMenu")) {
+
+		} else if (action.getLastMessage().equals("twoMenu")) {
+
+		}
+
 	}
 
 }

@@ -2,6 +2,7 @@ package org.jacp.swing.test;
 
 import java.awt.Component;
 
+import org.jacp.swing.rcp.util.OSXToolBar;
 import org.jacp.swing.test.main.UnitTestBenchMain;
 import org.uispec4j.MenuBar;
 import org.uispec4j.MenuItem;
@@ -64,6 +65,32 @@ public class WorkspaceWindowTestCase extends UISpecTestCase {
 		MenuItem menuPerspectiveThree = menuBar.getMenu("perspectiveThree");
 		assertNotNull(menuPerspectiveThree);
 		assertNotNull(menuPerspectiveThree.getSubMenu("PerspectiveThree"));
+	}
+	
+	public void testGetPerspectiveToolBarEntries() throws InterruptedException {
+		Window window = getMainWindow();
+		 //Asynchrony behavior
+		 Thread.sleep(500);
+		 // tool bar
+		 Component[] result = window.getSwingComponents(org.jacp.swing.rcp.util.OSXToolBar.class);
+		 assertNotNull(result);
+		 assertTrue(result.length==1);
+		 Component toolBar = result[0];
+		 assertNotNull(toolBar);
+		 if(toolBar instanceof OSXToolBar) {
+			 Component[] buttons = ((OSXToolBar)toolBar).getComponents();
+			 assertNotNull(buttons);
+			 assertFalse(buttons.length==0);
+			 for(int i=0;i<buttons.length;i++){
+				 Component button = buttons[i];
+				 assertNotNull(button);
+			 }
+			 
+		 } else {
+			 assertTrue(false);
+		 }
+		 
+		
 	}
 	
 }
