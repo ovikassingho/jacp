@@ -1,6 +1,11 @@
 package org.jacp.swing.test;
 
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.jacp.swing.rcp.util.OSXToolBar;
 import org.jacp.swing.test.main.UnitTestBenchMain;
@@ -77,14 +82,20 @@ public class WorkspaceWindowTestCase extends UISpecTestCase {
 		 assertTrue(result.length==1);
 		 Component toolBar = result[0];
 		 assertNotNull(toolBar);
+		 String[] perspectiveButtons={"PerspectiveOneToolBarButton","PerspectiveTwoToolBarButton","PerspectiveThreeToolBarButton"};
 		 if(toolBar instanceof OSXToolBar) {
 			 Component[] buttons = ((OSXToolBar)toolBar).getComponents();
 			 assertNotNull(buttons);
 			 assertFalse(buttons.length==0);
+			 List<String> errorList = new ArrayList<String>( Arrays.asList(perspectiveButtons));
+
 			 for(int i=0;i<buttons.length;i++){
 				 Component button = buttons[i];
+				 System.out.println(button.getName());
 				 assertNotNull(button);
+				 if(!contains(perspectiveButtons, button.getName())){ errorList.remove(button.getName()+"");}
 			 }
+			 assertTrue(errorList.isEmpty());
 			 
 		 } else {
 			 assertTrue(false);
@@ -93,4 +104,12 @@ public class WorkspaceWindowTestCase extends UISpecTestCase {
 		
 	}
 	
+	
+	private boolean contains(final String[] array, final String searchString) {
+		for(int i=0; i<array.length;i++) {
+			String arrayString = array[i];
+			if(arrayString.toLowerCase().equals(searchString)) return true;
+		}		
+		return false;
+	}
 }

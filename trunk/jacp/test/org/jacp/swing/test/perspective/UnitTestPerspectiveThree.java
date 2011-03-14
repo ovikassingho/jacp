@@ -31,15 +31,30 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 
 	@Override
 	public void handleBarEntries(Map<Layout, Container> bars) {
+		////////////////TOOL BARS ////////////////////
 		final Container toolBar = bars.get(Layout.NORTH);
 		final JButton perspectiveThreeButtoneOne = new JButton();
-		perspectiveThreeButtoneOne.setText("PerspectiveThree");
-		perspectiveThreeButtoneOne.setName("PerspectiveThree");
-		final IActionListener<ActionListener, ActionEvent, Object> listenerOne = getActionListener();
-		listenerOne.getAction().setMessage("threeButtonOne");
+		perspectiveThreeButtoneOne.setText("PerspectiveThreeToolBarButton");
+		perspectiveThreeButtoneOne.setName("PerspectiveThreeToolBarButton");
+		final IActionListener<ActionListener, ActionEvent, Object> listenerThree = getActionListener();
+		listenerThree.getAction().setMessage("threeButtonOne");
 
-		perspectiveThreeButtoneOne.addActionListener(listenerOne.getListener());
+		perspectiveThreeButtoneOne.addActionListener(listenerThree.getListener());
 		toolBar.add(perspectiveThreeButtoneOne);
+		////////////////TOOL BARS END ////////////////////	
+		
+		////////////////BOTTOM BARS ////////////////////
+		final Container bottomBar = bars.get(Layout.SOUTH);
+		final JButton perspectiveThreeButtonBottomOne = new JButton();
+		perspectiveThreeButtonBottomOne.setText("PerspectiveThreeBottomBarButton");
+		perspectiveThreeButtonBottomOne.setName("PerspectiveThreeToolBottomButton");
+
+		final IActionListener<ActionListener, ActionEvent, Object> listenerBottomThree = getActionListener();
+		listenerBottomThree.getAction().setMessage("threeButtonBottomOne");
+		
+		perspectiveThreeButtonBottomOne.addActionListener(listenerBottomThree.getListener());
+		bottomBar.add(perspectiveThreeButtonBottomOne);
+		////////////////BOTTOM BARS END////////////////////
 
 	}
 

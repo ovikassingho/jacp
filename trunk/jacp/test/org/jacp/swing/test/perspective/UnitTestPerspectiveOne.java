@@ -30,17 +30,32 @@ public class UnitTestPerspectiveOne extends ASwingPerspective {
 
 	@Override
 	public void handleBarEntries(Map<Layout, Container> bars) {
+		
+		//////////////// TOOL BARS ////////////////////
 		final Container toolBar = bars.get(Layout.NORTH);
 		final JButton perspectiveOneButtoneOne = new JButton();
-		perspectiveOneButtoneOne.setText("PerspectiveOne");
-		perspectiveOneButtoneOne.setName("PerspectiveOne");
+		perspectiveOneButtoneOne.setText("PerspectiveOneToolBarButton");
+		perspectiveOneButtoneOne.setName("PerspectiveOneToolBarButton");
 
 		final IActionListener<ActionListener, ActionEvent, Object> listenerOne = getActionListener();
 		listenerOne.getAction().setMessage("oneButtonOne");
 		
 		perspectiveOneButtoneOne.addActionListener(listenerOne.getListener());
 		toolBar.add(perspectiveOneButtoneOne);
+		////////////////TOOL BARS END ////////////////////
+		
+		////////////////BOTTOM BARS ////////////////////
+		final Container bottomBar = bars.get(Layout.SOUTH);
+		final JButton perspectiveOneButtonBottomOne = new JButton();
+		perspectiveOneButtonBottomOne.setText("PerspectiveOneBottomBarButton");
+		perspectiveOneButtonBottomOne.setName("PerspectiveOneToolBottomButton");
 
+		final IActionListener<ActionListener, ActionEvent, Object> listenerBottomOne = getActionListener();
+		listenerBottomOne.getAction().setMessage("oneButtonBottomOne");
+		
+		perspectiveOneButtonBottomOne.addActionListener(listenerBottomOne.getListener());
+		bottomBar.add(perspectiveOneButtonBottomOne);
+		////////////////BOTTOM BARS END////////////////////
 	}
 
 	@Override
