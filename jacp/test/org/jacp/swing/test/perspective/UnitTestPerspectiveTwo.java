@@ -29,16 +29,30 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 
 	@Override
 	public void handleBarEntries(Map<Layout, Container> bars) {
+		////////////////TOOL BARS ////////////////////
 		final Container toolBar = bars.get(Layout.NORTH);
 		final JButton perspectiveTwoButtoneOne = new JButton();
-		perspectiveTwoButtoneOne.setText("PerspectiveTwo");
-		perspectiveTwoButtoneOne.setName("PerspectiveTwo");
-		final IActionListener<ActionListener, ActionEvent, Object> listenerOne = getActionListener();
-		listenerOne.getAction().setMessage("twoButtonOne");
+		perspectiveTwoButtoneOne.setText("PerspectiveTwoToolBarButton");
+		perspectiveTwoButtoneOne.setName("PerspectiveTwoToolBarButton");
+		final IActionListener<ActionListener, ActionEvent, Object> listenerTwo = getActionListener();
+		listenerTwo.getAction().setMessage("twoButtonOne");
 
-		perspectiveTwoButtoneOne.addActionListener(listenerOne.getListener());
+		perspectiveTwoButtoneOne.addActionListener(listenerTwo.getListener());
 		toolBar.add(perspectiveTwoButtoneOne);
+		////////////////TOOL BARS END ////////////////////
+		
+		////////////////BOTTOM BARS ////////////////////
+		final Container bottomBar = bars.get(Layout.SOUTH);
+		final JButton perspectiveTwoButtonBottomOne = new JButton();
+		perspectiveTwoButtonBottomOne.setText("PerspectiveTwoBottomBarButton");
+		perspectiveTwoButtonBottomOne.setName("PerspectiveTwoToolBottomButton");
 
+		final IActionListener<ActionListener, ActionEvent, Object> listenerBottomTwo = getActionListener();
+		listenerBottomTwo.getAction().setMessage("twoButtonBottomOne");
+		
+		perspectiveTwoButtonBottomOne.addActionListener(listenerBottomTwo.getListener());
+		bottomBar.add(perspectiveTwoButtonBottomOne);
+		////////////////BOTTOM BARS END////////////////////
 	}
 
 	@Override
