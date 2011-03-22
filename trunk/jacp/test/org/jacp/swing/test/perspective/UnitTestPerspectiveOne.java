@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
@@ -48,7 +50,7 @@ public class UnitTestPerspectiveOne extends ASwingPerspective {
 		final Container bottomBar = bars.get(Layout.SOUTH);
 		final JButton perspectiveOneButtonBottomOne = new JButton();
 		perspectiveOneButtonBottomOne.setText("PerspectiveOneBottomBarButton");
-		perspectiveOneButtonBottomOne.setName("PerspectiveOneToolBottomButton");
+		perspectiveOneButtonBottomOne.setName("PerspectiveOneBottomBarButton");
 
 		final IActionListener<ActionListener, ActionEvent, Object> listenerBottomOne = getActionListener();
 		listenerBottomOne.getAction().setMessage("oneButtonBottomOne");
@@ -61,12 +63,42 @@ public class UnitTestPerspectiveOne extends ASwingPerspective {
 	@Override
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
+		System.out.println(action.getLastMessage());
+		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setName("splitPanePerspectiveOne");
+		final JPanel panelOne = new JPanel();
+		panelOne.setName("panelOnePerspectiveOne");
+		final JPanel panelTwo = new JPanel();
+		panelTwo.setName("panelTwoPerspectiveOne");
 		if (action.getLastMessage().equals("oneMenu")) {
-
+			
 		} else 	if (action.getLastMessage().equals("oneButtonOne")) {
-
+			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			splitPane.setDividerLocation(256);
+			
+			JButton buttonOne = new JButton("ButtonOnePerspectiveOneTOP");
+			JButton buttonTwo = new JButton("BottonTwoPerspectiveOneBOTTOM");
+	
+			panelOne.add(buttonOne);
+			panelTwo.add(buttonTwo);
+		} else {
+			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+			splitPane.setDividerLocation(512);
+			
+			JButton buttonOne = new JButton("ButtonOnePerspectiveOneLEFT");
+			JButton buttonTwo = new JButton("BottonTwoPerspectiveOneRIGHT");
+			
+			panelOne.add(buttonOne);
+			panelTwo.add(buttonTwo);
 		}
+	
 
+
+	
+		splitPane.add(panelOne);
+	
+		splitPane.add(panelTwo);
+		perspectiveLayout.setRootComponent(splitPane);
 	}
 
 }

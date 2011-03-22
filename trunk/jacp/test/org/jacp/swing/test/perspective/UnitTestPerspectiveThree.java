@@ -47,7 +47,7 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 		final Container bottomBar = bars.get(Layout.SOUTH);
 		final JButton perspectiveThreeButtonBottomOne = new JButton();
 		perspectiveThreeButtonBottomOne.setText("PerspectiveThreeBottomBarButton");
-		perspectiveThreeButtonBottomOne.setName("PerspectiveThreeToolBottomButton");
+		perspectiveThreeButtonBottomOne.setName("PerspectiveThreeBottomBarButton");
 
 		final IActionListener<ActionListener, ActionEvent, Object> listenerBottomThree = getActionListener();
 		listenerBottomThree.getAction().setMessage("threeButtonBottomOne");
@@ -61,6 +61,7 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 	@Override
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
+		System.out.println(action.getLastMessage());
 		if (action.getLastMessage().equals("threeMenu")) {
 
 		} else if (action.getLastMessage().equals("threeButtonOne")) {
