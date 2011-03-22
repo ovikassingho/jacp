@@ -225,24 +225,7 @@ public abstract class ASwingWorkbench extends JFrame
                 perspective.initComponents(action);
                 log("3.4.5: perspective init bar entries");
                 addPerspectiveBarEntries(perspective);
-                // avoid npt and overhead of checking in methods
-                if (perspectiveLayout.getRootComponent()!=null) {
-					switch (layout.getWorkspaceMode()) {
-					case SINGLE_PANE:
-						log("3.4.6: perspective init SINGLE_PANE");
-						initPerspectiveInStackMode(perspectiveLayout);
-						break;
-					case TABBED_PANE:
-						log("3.4.6: perspective init TABBED_PANE");
-						initPerspectivesInTabbedMode(perspectiveLayout,
-								perspective.getName());
-						break;
-					default:
-						log("3.4.6: perspective init WINDOW_PANE");
-						initPerspectiveInWindowMode(perspectiveLayout,
-								perspective.getName());
-					}
-				}
+                initPerspectiveUI(perspective,perspectiveLayout);
         }
 
         @Override
@@ -255,14 +238,40 @@ public abstract class ASwingWorkbench extends JFrame
                 final Container componentOld = perspectiveLayout
                                 .getRootComponent();
                 perspective.handlePerspective(action);
-                final Container componentNew = getLayoutComponentFromPerspectiveLayout(
-                                perspectiveLayout,
-                                componentOld.getPreferredSize());
-                final Container parent = getParentAndReplace(componentOld,
-                                componentNew);
-                // set already active editors to new component
-                reassignSubcomponents(perspectiveLayout, perspective);
-                invalidateHost(parent);
+                if(componentOld!=null) {
+                    final Container componentNew = getLayoutComponentFromPerspectiveLayout(
+                            perspectiveLayout,
+                            componentOld.getPreferredSize());
+                    final Container parent = getParentAndReplace(componentOld,
+                            componentNew);
+                    // set already active editors to new component
+                    reassignSubcomponents(perspective,perspectiveLayout);
+                    invalidateHost(parent);
+                } else {
+                	initPerspectiveUI(perspective,perspectiveLayout);
+                }
+
+        }
+        
+        private void initPerspectiveUI(final IPerspective<ActionListener, ActionEvent, Object> perspective, final IPerspectiveLayout<? extends Container, Container> perspectiveLayout) {
+        	 // avoid npt and overhead of checking in methods
+            if (perspectiveLayout.getRootComponent()!=null) {
+				switch (layout.getWorkspaceMode()) {
+				case SINGLE_PANE:
+					log("3.4.6: perspective init SINGLE_PANE");
+					initPerspectiveInStackMode(perspectiveLayout);
+					break;
+				case TABBED_PANE:
+					log("3.4.6: perspective init TABBED_PANE");
+					initPerspectivesInTabbedMode(perspectiveLayout,
+							perspective.getName());
+					break;
+				default:
+					log("3.4.6: perspective init WINDOW_PANE");
+					initPerspectiveInWindowMode(perspectiveLayout,
+							perspective.getName());
+				}
+			}
         }
 
         /**
@@ -468,9 +477,8 @@ public abstract class ASwingWorkbench extends JFrame
          * @param layout
          * @param perspective
          */
-        private void reassignSubcomponents(
-                        final IPerspectiveLayout<? extends Container, Container> layout,
-                        final IPerspective<ActionListener, ActionEvent, Object> perspective) {
+        private void reassignSubcomponents(final IPerspective<ActionListener, ActionEvent, Object> perspective,
+                        final IPerspectiveLayout<? extends Container, Container> layout) {
                 if (!SwingUtilities.isEventDispatchThread()) {
                         try {
                                 SwingUtilities.invokeAndWait(new Runnable() {
