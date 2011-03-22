@@ -100,7 +100,7 @@ public interface IPerspective<L, A, M>
 
     /**
      * delegates message to responsible perspectiveObserver to notify target
-     * perspective
+     * perspective, check if message is local (message to component it self) or if message has to be delegate to an other component
      * 
      * @param target
      * @param action
