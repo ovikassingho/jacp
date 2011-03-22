@@ -45,7 +45,7 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 		final Container bottomBar = bars.get(Layout.SOUTH);
 		final JButton perspectiveTwoButtonBottomOne = new JButton();
 		perspectiveTwoButtonBottomOne.setText("PerspectiveTwoBottomBarButton");
-		perspectiveTwoButtonBottomOne.setName("PerspectiveTwoToolBottomButton");
+		perspectiveTwoButtonBottomOne.setName("PerspectiveTwoBottomBarButton");
 
 		final IActionListener<ActionListener, ActionEvent, Object> listenerBottomTwo = getActionListener();
 		listenerBottomTwo.getAction().setMessage("twoButtonBottomOne");
@@ -58,6 +58,7 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 	@Override
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
+		System.out.println(action.getLastMessage());
 		if (action.getLastMessage().equals("twoMenu")) {
 
 		} else if (action.getLastMessage().equals("twoMenu")) {
