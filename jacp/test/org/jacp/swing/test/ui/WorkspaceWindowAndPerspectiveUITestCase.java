@@ -1,15 +1,8 @@
-package org.jacp.swing.test;
+package org.jacp.swing.test.ui;
 
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.swing.JSplitPane;
-
-import org.jacp.swing.rcp.util.OSXBottomBarPanel;
-import org.jacp.swing.rcp.util.OSXToolBar;
-import org.jacp.swing.test.main.UnitTestBenchMain;
+import org.jacp.swing.test.ui.main.UnitTestBenchMain;
 import org.uispec4j.Button;
 import org.uispec4j.MenuBar;
 import org.uispec4j.MenuItem;
@@ -19,7 +12,7 @@ import org.uispec4j.assertion.Assertion;
 import org.uispec4j.finder.ComponentMatcher;
 import org.uispec4j.interception.MainClassAdapter;
 
-public class WorkspaceWindowTestCase extends UISpecTestCase {
+public class WorkspaceWindowAndPerspectiveUITestCase extends UISpecTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		setAdapter(new MainClassAdapter(UnitTestBenchMain.class));
@@ -210,7 +203,7 @@ public class WorkspaceWindowTestCase extends UISpecTestCase {
 
 	public void testPerspectiveOneBasicUIAndLocalMessageFunction()
 			throws InterruptedException {
-		// bottom bar
+	
 		Window window = getMainWindow();
 		// Asynchrony behavior
 		Thread.sleep(1000);

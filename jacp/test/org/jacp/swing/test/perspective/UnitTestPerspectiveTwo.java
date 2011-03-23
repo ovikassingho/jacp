@@ -37,7 +37,7 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 		perspectiveTwoButtoneOne.setText("PerspectiveTwoToolBarButton");
 		perspectiveTwoButtoneOne.setName("PerspectiveTwoToolBarButton");
 		final IActionListener<ActionListener, ActionEvent, Object> listenerTwo = getActionListener();
-		listenerTwo.getAction().setMessage("twoButtonOne");
+		listenerTwo.getAction().addMessage("id03", "messageFromPerspectiveTwo");
 
 		perspectiveTwoButtoneOne.addActionListener(listenerTwo.getListener());
 		toolBar.add(perspectiveTwoButtoneOne);

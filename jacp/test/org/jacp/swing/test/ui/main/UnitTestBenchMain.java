@@ -1,4 +1,4 @@
-package org.jacp.swing.test.main;
+package org.jacp.swing.test.ui.main;
 
 import java.awt.Container;
 import java.awt.LayoutManager2;
