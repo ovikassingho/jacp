@@ -39,7 +39,7 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 		perspectiveThreeButtoneOne.setText("PerspectiveThreeToolBarButton");
 		perspectiveThreeButtoneOne.setName("PerspectiveThreeToolBarButton");
 		final IActionListener<ActionListener, ActionEvent, Object> listenerThree = getActionListener();
-		listenerThree.getAction().setMessage("threeButtonOne");
+		listenerThree.getAction().addMessage("id02", "messageFromPerspectiveThree");
 
 		perspectiveThreeButtoneOne.addActionListener(listenerThree.getListener());
 		toolBar.add(perspectiveThreeButtoneOne);
