@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
@@ -62,12 +64,30 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
 		System.out.println(action.getLastMessage());
+		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setName("splitPanePerspectiveThree");
+		final JPanel panelOne = new JPanel();
+		panelOne.setName("panelOnePerspectiveThree");
+		final JPanel panelTwo = new JPanel();
+		panelTwo.setName("panelTwoPerspectiveThree");
 		if (action.getLastMessage().equals("threeMenu")) {
 
-		} else if (action.getLastMessage().equals("threeButtonOne")) {
-
+		} else  {
+			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+			splitPane.setDividerLocation(512);
+			
+			JButton buttonOne = new JButton("ButtonOnePerspectiveThreeLEFT");
+			buttonOne.setName("ButtonOnePerspectiveThreeLEFT");
+			
+			JButton buttonTwo = new JButton("BottonTwoPerspectiveThreeRIGHT");
+			buttonTwo.setName("BottonTwoPerspectiveThreeRIGHT");
+			
+			panelOne.add(buttonOne);
+			panelTwo.add(buttonTwo);
 		}
-
+		splitPane.add(panelOne);	
+		splitPane.add(panelTwo);
+		perspectiveLayout.setRootComponent(splitPane);
 	}
 
 }

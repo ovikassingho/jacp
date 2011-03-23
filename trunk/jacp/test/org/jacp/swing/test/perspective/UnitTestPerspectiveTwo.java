@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
@@ -59,12 +61,40 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
 		System.out.println(action.getLastMessage());
+		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setName("splitPanePerspectiveTwo");
+		final JPanel panelOne = new JPanel();
+		panelOne.setName("panelOnePerspectiveTwo");
+		final JPanel panelTwo = new JPanel();
+		panelTwo.setName("panelTwoPerspectiveTwo");
 		if (action.getLastMessage().equals("twoMenu")) {
-
-		} else if (action.getLastMessage().equals("twoMenu")) {
-
+			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			splitPane.setDividerLocation(256);
+			
+			JButton buttonOne = new JButton("ButtonOnePerspectiveTwoTOP");
+			buttonOne.setName("ButtonOnePerspectiveTwoTOP");
+			
+			JButton buttonTwo = new JButton("BottonTwoPerspectiveTwoBOTTOM");
+			buttonTwo.setName("BottonTwoPerspectiveTwoBOTTOM");
+			
+			panelOne.add(buttonOne);
+			panelTwo.add(buttonTwo);
+		} else  {
+			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+			splitPane.setDividerLocation(512);
+			
+			JButton buttonOne = new JButton("ButtonOnePerspectiveTwoLEFT");
+			buttonOne.setName("ButtonOnePerspectiveTwoLEFT");
+			
+			JButton buttonTwo = new JButton("BottonTwoPerspectiveTwoRIGHT");
+			buttonTwo.setName("BottonTwoPerspectiveTwoRIGHT");
+			
+			panelOne.add(buttonOne);
+			panelTwo.add(buttonTwo);
 		}
-
+		splitPane.add(panelOne);	
+		splitPane.add(panelTwo);
+		perspectiveLayout.setRootComponent(splitPane);
 	}
 
 }

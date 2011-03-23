@@ -77,8 +77,11 @@ public class UnitTestPerspectiveOne extends ASwingPerspective {
 			splitPane.setDividerLocation(256);
 			
 			JButton buttonOne = new JButton("ButtonOnePerspectiveOneTOP");
+			buttonOne.setName("ButtonOnePerspectiveOneTOP");
+			
 			JButton buttonTwo = new JButton("BottonTwoPerspectiveOneBOTTOM");
-	
+			buttonTwo.setName("BottonTwoPerspectiveOneBOTTOM");
+			
 			panelOne.add(buttonOne);
 			panelTwo.add(buttonTwo);
 		} else {
@@ -86,7 +89,10 @@ public class UnitTestPerspectiveOne extends ASwingPerspective {
 			splitPane.setDividerLocation(512);
 			
 			JButton buttonOne = new JButton("ButtonOnePerspectiveOneLEFT");
+			buttonOne.setName("ButtonOnePerspectiveOneLEFT");
+			
 			JButton buttonTwo = new JButton("BottonTwoPerspectiveOneRIGHT");
+			buttonTwo.setName("BottonTwoPerspectiveOneRIGHT");
 			
 			panelOne.add(buttonOne);
 			panelTwo.add(buttonTwo);
@@ -95,8 +101,7 @@ public class UnitTestPerspectiveOne extends ASwingPerspective {
 
 
 	
-		splitPane.add(panelOne);
-	
+		splitPane.add(panelOne);	
 		splitPane.add(panelTwo);
 		perspectiveLayout.setRootComponent(splitPane);
 	}
