@@ -70,8 +70,18 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 		panelOne.setName("panelOnePerspectiveThree");
 		final JPanel panelTwo = new JPanel();
 		panelTwo.setName("panelTwoPerspectiveThree");
-		if (action.getLastMessage().equals("threeMenu")) {
-
+		if (action.getLastMessage().equals("messageFromPerspectiveTwo")) {
+			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+			splitPane.setDividerLocation(256);
+			
+			JButton buttonOne = new JButton("ButtonOnePerspectiveThreeTOP");
+			buttonOne.setName("ButtonOnePerspectiveThreeTOP");
+			
+			JButton buttonTwo = new JButton("BottonTwoPerspectiveThreeBOTTOM");
+			buttonTwo.setName("BottonTwoPerspectiveThreeBOTTOM");
+			
+			panelOne.add(buttonOne);
+			panelTwo.add(buttonTwo);
 		} else  {
 			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setDividerLocation(512);
