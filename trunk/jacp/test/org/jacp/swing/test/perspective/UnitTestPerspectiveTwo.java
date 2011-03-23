@@ -67,7 +67,7 @@ public class UnitTestPerspectiveTwo extends ASwingPerspective {
 		panelOne.setName("panelOnePerspectiveTwo");
 		final JPanel panelTwo = new JPanel();
 		panelTwo.setName("panelTwoPerspectiveTwo");
-		if (action.getLastMessage().equals("twoMenu")) {
+		if (action.getLastMessage().equals("messageFromPerspectiveThree")) {
 			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			splitPane.setDividerLocation(256);
 			
