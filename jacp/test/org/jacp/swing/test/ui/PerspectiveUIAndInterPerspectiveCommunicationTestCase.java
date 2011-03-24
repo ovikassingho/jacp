@@ -447,7 +447,9 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 
 	Button buttonThree = window.getButton("PerspectiveTwoBottomBarButton");
 	buttonThree.click();
-
+	
+	/////////STRESS TEST //////////////
+	
 	Button buttonTwo = window.getButton("PerspectiveThreeToolBarButton");
 	for (int i = 0; i < 50000; i++) {
 	    buttonTwo.click();
@@ -461,6 +463,8 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	buttonTwo.click();
 	// Asynchrony behavior
 	Thread.sleep(20000);
+	
+	////////////STRESS TEST END ////////////Ï
 	
 	// //////////NEGATIVE TEST 3 /////////////////////////
 
