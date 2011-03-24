@@ -460,7 +460,7 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	buttonTwo = window.getButton("PerspectiveTwoBottomBarButton");
 	buttonTwo.click();
 	// Asynchrony behavior
-	Thread.sleep(50000);
+	Thread.sleep(20000);
 	
 	// //////////NEGATIVE TEST 3 /////////////////////////
 
@@ -472,7 +472,7 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 			.equals("ButtonOnePerspectiveTwoLEFT") : false;
 	    }
 	});
-	assertTrue(!assertion.isTrue());
+	assertTrue(assertion.isTrue());
 	assertion = window.containsComponent(new ComponentMatcher() {
 
 	    @Override
@@ -481,7 +481,7 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 			.equals("BottonTwoPerspectiveTwoRIGHT") : false;
 	    }
 	});
-	assertTrue(!assertion.isTrue());
+	assertTrue(assertion.isTrue());
 	// ////////NEGATIVE TEST 3 END //////////////////
 
 	// //////////NEGATIVE TEST 4 /////////////////////////
@@ -494,7 +494,7 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 			.equals("ButtonOnePerspectiveThreeLEFT") : false;
 	    }
 	});
-	assertTrue(!assertion.isTrue());
+	assertTrue(assertion.isTrue());
 	assertion = window.containsComponent(new ComponentMatcher() {
 
 	    @Override
@@ -503,8 +503,52 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 			.equals("BottonTwoPerspectiveThreeRIGHT") : false;
 	    }
 	});
-	assertTrue(!assertion.isTrue());
+	assertTrue(assertion.isTrue());
 	// ////////NEGATIVE TEST 4 END //////////////////
+	
+	// //////////POSITIVE TEST 3 /////////////////////////
+
+	assertion = window.containsComponent(new ComponentMatcher() {
+
+	    @Override
+	    public boolean matches(Component component) {
+		return component.getName() != null ? component.getName()
+			.equals("ButtonOnePerspectiveTwoTOP") : false;
+	    }
+	});
+	assertTrue(!assertion.isTrue());
+	assertion = window.containsComponent(new ComponentMatcher() {
+
+	    @Override
+	    public boolean matches(Component component) {
+		return component.getName() != null ? component.getName()
+			.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
+	    }
+	});
+	assertTrue(!assertion.isTrue());
+	// ////////POSITIVE TEST 3 END //////////////////
+
+	// //////////POSITIVE TEST 4 /////////////////////////
+
+	assertion = window.containsComponent(new ComponentMatcher() {
+
+	    @Override
+	    public boolean matches(Component component) {
+		return component.getName() != null ? component.getName()
+			.equals("ButtonOnePerspectiveThreeTOP") : false;
+	    }
+	});
+	assertTrue(!assertion.isTrue());
+	assertion = window.containsComponent(new ComponentMatcher() {
+
+	    @Override
+	    public boolean matches(Component component) {
+		return component.getName() != null ? component.getName()
+			.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
+	    }
+	});
+	assertTrue(!assertion.isTrue());
+	// ////////POSITIVE TEST 4 END //////////////////
     }
 
 }
