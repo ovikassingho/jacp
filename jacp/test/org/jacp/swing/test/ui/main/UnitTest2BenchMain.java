@@ -16,20 +16,20 @@ import org.jacp.impl.SpringLauncher;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * this component acts as an application startup component for unit test one;
- * this test checks correctnes of basic workspace functionallity an perspective
- * local and inter perspective communication
+ * this class acts as an application startup component for unit test 2; this
+ * test checks correctness of ui subcomponent local and inter component
+ * communication
  * 
  * @author Andy Moncsek
  * 
  */
-public class UnitTestBenchMain {
+public class UnitTest2BenchMain {
 
 	static {
 		try {
 			setOsSpecificSettings();
 		} catch (final ClassNotFoundException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		}
 	}
@@ -37,7 +37,7 @@ public class UnitTestBenchMain {
 	@SuppressWarnings("unchecked")
 	public static void main(final String[] args) {
 		final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(
-				"org/jacp/swing/test/resources/main.xml");
+				"org/jacp/swing/test/resources/main_2.xml");
 		final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) launcher
 				.getContext().getBean("workbench");
 		workbench.init(launcher);
@@ -59,13 +59,13 @@ public class UnitTestBenchMain {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final InstantiationException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		} catch (final IllegalAccessException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		} catch (final UnsupportedLookAndFeelException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		}
 
@@ -75,13 +75,13 @@ public class UnitTestBenchMain {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final InstantiationException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		} catch (final IllegalAccessException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		} catch (final UnsupportedLookAndFeelException ex) {
-			Logger.getLogger(UnitTestBenchMain.class.getName()).log(
+			Logger.getLogger(UnitTest2BenchMain.class.getName()).log(
 					Level.SEVERE, null, ex);
 		}
 

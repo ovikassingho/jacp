@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="workbench" class="org.jacp.swing.test.workbench.UnitTestWorkBench">
+		<property name="perspectives">
+			<list>
+				<ref bean="perspectiveOne" />
+				<ref bean="perspectiveTwo" />
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveOne" class="org.jacp.swing.test.perspective.UnitTestUISubcomponentsPerspectiveOne">
+		<property name="name" value="perspectiveOne" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveTwo" class="org.jacp.swing.test.perspective.UnitTestUISubcomponentsPerspectiveTwo">
+		<property name="name" value="perspectiveTwo" />
+		<property name="id" value="id02" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- <bean id="uiPerspective" class="org.jacp.demo.perspective.ImagePerspective">
+		<property name="name" value="uiPerspective" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+				<ref bean="navigationEditor" />
+				<ref bean="imageEditor" />
+				<ref bean="detailEditor" />
+				<ref bean="orderEditor" />
+				<ref bean="fullScreenEditor" />
+				<ref bean="dirScanningService" />
+				<ref bean="loadImageServiceService" />
+				<ref bean="imageCacheService" />
+				<ref bean="errorService" />
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="imageEditor" class="org.jacp.demo.ui.ImageEditor">
+		<property name="name" value="imageEditor" />
+		<property name="active" value="false" />
+		<property name="id" value="id02" />
+		<property name="executionTarget" value="image" />
+	</bean>
+
+	<bean id="navigationEditor" class="org.jacp.demo.ui.NavigationEditor">
+		<property name="name" value="navigationEditor" />
+		<property name="active" value="true" />
+		<property name="id" value="id03" />
+		<property name="executionTarget" value="left" />
+	</bean>
+
+	<bean id="detailEditor" class="org.jacp.demo.ui.DetailEditor">
+		<property name="name" value="detailEditor" />
+		<property name="active" value="true" />
+		<property name="id" value="id04" />
+		<property name="executionTarget" value="detail" />
+	</bean>
+
+	<bean id="orderEditor" class="org.jacp.demo.ui.OrderEditor">
+		<property name="name" value="orderEditor" />
+		<property name="active" value="true" />
+		<property name="id" value="id07" />
+		<property name="executionTarget" value="bottom" />
+	</bean>
+
+	<bean id="fullScreenEditor" class="org.jacp.demo.ui.FullScreenEditor">
+		<property name="name" value="fullScreenEditor" />
+		<property name="active" value="false" />
+		<property name="id" value="id08" />
+		<property name="executionTarget" value="image" />
+	</bean>
+
+	<bean id="dirScanningService" class="org.jacp.demo.service.DirScanningService"
+		scope="prototype">
+		<property name="name" value="dirScanningService" />
+		<property name="active" value="true" />
+		<property name="id" value="id05" />
+	</bean>
+
+	<bean id="loadImageServiceService" class="org.jacp.demo.service.LoadImageService"
+		scope="prototype">
+		<property name="name" value="loadImageServiceService" />
+		<property name="active" value="true" />
+		<property name="id" value="id06" />
+		<property name="cacheRepository" ref="imageInfoCacheRepository" />
+	</bean>
+
+	<bean id="imageCacheService" class="org.jacp.demo.service.ImageCacheService"
+		scope="prototype">
+		<property name="name" value="imageCacheService" />
+		<property name="active" value="true" />
+		<property name="id" value="id09" />
+		<property name="cacheRepository" ref="imageInfoCacheRepository" />
+	</bean>
+
+	<bean id="errorService" class="org.jacp.demo.service.ErrorService"
+		scope="prototype">
+		<property name="name" value="errorService" />
+		<property name="active" value="false" />
+		<property name="id" value="id10" />
+	</bean>
+	<bean id="imageInfoCacheRepository" class="org.jacp.demo.repository.ImageInfoCacheRepository"/>
+
+
+ -->
+
+</beans>
