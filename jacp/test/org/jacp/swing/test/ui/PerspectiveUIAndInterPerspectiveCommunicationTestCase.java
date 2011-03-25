@@ -462,11 +462,11 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	buttonTwo = window.getButton("PerspectiveTwoBottomBarButton");
 	buttonTwo.click();
 	// Asynchrony behavior
-	Thread.sleep(20000);
+	Thread.sleep(30000);
 	
 	////////////STRESS TEST END ////////////Ï
 	
-	// //////////NEGATIVE TEST 3 /////////////////////////
+	// //////////POSITIVE TEST 3 /////////////////////////
 
 	assertion = window.containsComponent(new ComponentMatcher() {
 
@@ -486,9 +486,9 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	    }
 	});
 	assertTrue(assertion.isTrue());
-	// ////////NEGATIVE TEST 3 END //////////////////
+	// ////////POSITIVE TEST 3 END //////////////////
 
-	// //////////NEGATIVE TEST 4 /////////////////////////
+	// //////////POSITIVE TEST 4 /////////////////////////
 
 	assertion = window.containsComponent(new ComponentMatcher() {
 
@@ -508,9 +508,9 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	    }
 	});
 	assertTrue(assertion.isTrue());
-	// ////////NEGATIVE TEST 4 END //////////////////
+	// ////////POSITIVE TEST 4 END //////////////////
 	
-	// //////////POSITIVE TEST 3 /////////////////////////
+	// //////////NEGATIVE TEST 3 /////////////////////////
 
 	assertion = window.containsComponent(new ComponentMatcher() {
 
@@ -530,9 +530,9 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	    }
 	});
 	assertTrue(!assertion.isTrue());
-	// ////////POSITIVE TEST 3 END //////////////////
+	// ////////NEGATIVE TEST 3 END //////////////////
 
-	// //////////POSITIVE TEST 4 /////////////////////////
+	// //////////NEGATIVE TEST 4 /////////////////////////
 
 	assertion = window.containsComponent(new ComponentMatcher() {
 
@@ -552,7 +552,7 @@ public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
 	    }
 	});
 	assertTrue(!assertion.isTrue());
-	// ////////POSITIVE TEST 4 END //////////////////
+	// ////////NEGATIVE TEST 4 END //////////////////
     }
 
 }
