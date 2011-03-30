@@ -87,6 +87,8 @@ public class UnitTestUISubcomponentsPerspectiveOne extends ASwingPerspective {
 					"perspectiveOneLeft", panelOne);
 			perspectiveLayout.registerTargetLayoutComponent(
 					"perspectiveOneRight", panelTwo);
+			splitPane.setDividerLocation(512);
+
 			splitPane.add(panelOne);
 			splitPane.add(panelTwo);
 			perspectiveLayout.setRootComponent(splitPane);
