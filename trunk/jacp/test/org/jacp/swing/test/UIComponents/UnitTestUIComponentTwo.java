@@ -4,6 +4,9 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.swing.rcp.component.ASwingComponent;
@@ -28,7 +31,10 @@ public class UnitTestUIComponentTwo extends ASwingComponent {
 
 	@Override
 	public Container handleAction(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-		return null;
+		final JPanel panelEditorTwo = new JPanel();
+		final JButton buttonOneEditorTwo = new JButton("ButtonOneEditorTwo");
+		buttonOneEditorTwo.setName("ButtonOneEditorTwo");
+		panelEditorTwo.add(buttonOneEditorTwo);
+		return panelEditorTwo;
 	}
 }
