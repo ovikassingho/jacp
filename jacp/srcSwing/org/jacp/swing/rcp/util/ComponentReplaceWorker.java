@@ -266,14 +266,24 @@ public class ComponentReplaceWorker
                                         .get();
                         component.setBlocked(false);
                 } catch (final InterruptedException e) {
-                        e.printStackTrace();
-                        // TODO add to error queue and restart thread if
-                        // messages in queue
-                } catch (final ExecutionException e) {
-                        e.printStackTrace();
-                        // TODO add to error queue and restart thread if
-                        // messages in queue
-                } finally {
+    				System.out.println("Exception in Component REPLACE Worker, Thread interrupted:");
+    				e.printStackTrace();
+    				// TODO add to error queue and restart thread if
+    				// messages in
+    				// queue
+    			} catch (final ExecutionException e) {
+    				System.out.println("Exception in Component REPLACE Worker, Thread Excecution Exception:");
+    				e.printStackTrace();
+    				// TODO add to error queue and restart thread if
+    				// messages in
+    				// queue
+    			} catch (final Exception e) {
+    				System.out.println("Exception in Component REPLACE Worker, Thread Exception:");
+    				e.printStackTrace();
+    				// TODO add to error queue and restart thread if
+    				// messages in
+    				// queue
+    			}finally {
                     component.setBlocked(false);
                 }
       

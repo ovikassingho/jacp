@@ -120,11 +120,19 @@ public class ComponentInitWorker
 			try {
 				this.get();
 			} catch (final InterruptedException e) {
+				System.out.println("Exception in Component INIT Worker, Thread interrupted:");
 				e.printStackTrace();
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			} catch (final ExecutionException e) {
+				System.out.println("Exception in Component INIT Worker, Thread Excecution Exception:");
+				e.printStackTrace();
+				// TODO add to error queue and restart thread if
+				// messages in
+				// queue
+			} catch (final Exception e) {
+				System.out.println("Exception in Component INIT Worker, Thread Exception:");
 				e.printStackTrace();
 				// TODO add to error queue and restart thread if
 				// messages in
