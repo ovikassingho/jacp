@@ -35,7 +35,7 @@ public interface IExtendedComponent<C> {
      * 
      * @return
      */
-    public abstract void handleMenuEntries(final C meuneBar);
+    public abstract void handleMenuEntries(final C menuBar);
 
     /**
      * add custom actions to toolbar; set key for bar type (south, north, east, west)
