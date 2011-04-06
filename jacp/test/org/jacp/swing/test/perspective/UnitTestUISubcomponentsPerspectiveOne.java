@@ -71,18 +71,21 @@ public class UnitTestUISubcomponentsPerspectiveOne extends ASwingPerspective {
 		if (this.splitPane == null) {
 			splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 			splitPane.setName("splitPanePerspectiveOne");
+			System.out.println("splitpane null");
 		}
 		if (this.panelOne == null) {
 			panelOne = new JPanel();
 			panelOne.setName("panelOnePerspectiveOne");
+			System.out.println("splitpane null");
 		}
 		if (this.panelTwo == null) {
 			panelTwo = new JPanel();
 			panelTwo.setName("panelTwoPerspectiveOne");
+			System.out.println("splitpane null");
 		}
 
 		if (action.getLastMessage().equals("init")) {
-
+			System.out.println("init start");
 			perspectiveLayout.registerTargetLayoutComponent(
 					"perspectiveOneLeft", panelOne);
 			perspectiveLayout.registerTargetLayoutComponent(
@@ -91,9 +94,12 @@ public class UnitTestUISubcomponentsPerspectiveOne extends ASwingPerspective {
 			splitPane.add(panelOne);
 			splitPane.add(panelTwo);
 			perspectiveLayout.setRootComponent(splitPane);
+			System.out.println("init end");
 		} else if (action.getLastMessage().equals("oneButtonOne")) {
+			System.out.println("splitpane null");
 			splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		} else if (action.getLastMessage().equals("oneButtonBottomOne")) {
+			System.out.println("splitpane null");
 			splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 		} 
 	}

@@ -68,11 +68,10 @@ public class UnitTestUIComponentTwo extends ASwingComponent {
 			fieldTwo.setName("oneTextFiledComponentTwo");
 			fieldTwo.setText("message: " + action.getLastMessage() + " from: "
 					+ action.getSourceId());
-		} else if(action.getLastMessage().equals("oneComponentOne")) {
-			fieldTwo.setText("counter: "+ counter.getAndIncrement() );
+		} else if (action.getLastMessage().equals("oneComponentOne")) {
+			fieldTwo.setText("counter: " + counter.getAndIncrement());
 		}
-
-
+		
 		panelEditorTwo.add(buttonOneEditorTwo);
 		panelEditorTwo.add(fieldTwo);
 		return panelEditorTwo;
