@@ -23,536 +23,539 @@ import org.uispec4j.interception.MainClassAdapter;
  * 
  */
 public class PerspectiveUIAndInterPerspectiveCommunicationTestCase extends
-	UISpecTestCase {
-    protected void setUp() throws Exception {
-	super.setUp();
-	setAdapter(new MainClassAdapter(UnitTestBenchMain.class));
-    }
-
-    public void testGetWindow() {
-	Window window = getMainWindow();
-	assertNotNull(window);
-    }
-
-    public void testMessageFromPerspectiveTwoToThree()
-	    throws InterruptedException {
-	Window window = getMainWindow();
-	// Asynchrony behavior
-	Thread.sleep(1000);
-	Assertion assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("splitPanePerspectiveOne") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// //////////POSITIVE TEST 1 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 1 END //////////////////
-	// //////////NEGATIVE TEST 1 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 1 END //////////////////
-
-	Button buttonTwo = window.getButton("PerspectiveTwoToolBarButton");
-	buttonTwo.click();
-	// Asynchrony behavior
-	Thread.sleep(500);
-
-	// //////////POSITIVE TEST 2 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeTOP") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 2 END //////////////////
-	// //////////NEGATIVE TEST 2 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeLEFT") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeRIGHT") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 2 END //////////////////
-
-	Button buttonThree = window
-		.getButton("PerspectiveThreeBottomBarButton");
-	buttonThree.click();
-	// Asynchrony behavior
-	Thread.sleep(500);
-
-	// //////////POSITIVE TEST 3 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 3 END //////////////////
-	// //////////NEGATIVE TEST 3 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 3 END //////////////////
-    }
-
-    public void testMessageFromPerspectiveThreeToTwo()
-	    throws InterruptedException {
-	Window window = getMainWindow();
-	// Asynchrony behavior
-	Thread.sleep(1000);
-	Assertion assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("splitPanePerspectiveOne") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// //////////POSITIVE TEST 1 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 1 END //////////////////
-	// //////////NEGATIVE TEST 1 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 1 END //////////////////
-
-	Button buttonTwo = window.getButton("PerspectiveThreeToolBarButton");
-	buttonTwo.click();
-	// Asynchrony behavior
-	Thread.sleep(500);
-
-	// //////////POSITIVE TEST 2 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoTOP") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 2 END //////////////////
-	// //////////NEGATIVE TEST 2 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoLEFT") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoRIGHT") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 2 END //////////////////
-
-	Button buttonThree = window.getButton("PerspectiveTwoBottomBarButton");
-	buttonThree.click();
-	// Asynchrony behavior
-	Thread.sleep(500);
-
-	// //////////POSITIVE TEST 3 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 3 END //////////////////
-	// //////////NEGATIVE TEST 3 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 3 END //////////////////
-    }
-
-    public void testSendMessageFromTwoToThreeAndViceVersaSterssTest()
-	    throws InterruptedException {
-	Window window = getMainWindow();
-	// Asynchrony behavior
-	Thread.sleep(1000);
-	Assertion assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("splitPanePerspectiveOne") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// //////////POSITIVE TEST 1 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 1 END //////////////////
-
-	// //////////POSITIVE TEST 2 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 2 END //////////////////
-
-	// //////////NEGATIVE TEST 1 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 1 END //////////////////
-
-	// //////////NEGATIVE TEST 2 /////////////////////////
-
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
-
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 2 END //////////////////
-
-	Button buttonThree = window.getButton("PerspectiveTwoBottomBarButton");
-	buttonThree.click();
-	
-	/////////STRESS TEST //////////////
-	
-	Button buttonTwo = window.getButton("PerspectiveThreeToolBarButton");
-	for (int i = 0; i < 50000; i++) {
-	    buttonTwo.click();
-	    buttonThree.click();
+		UISpecTestCase {
+	protected void setUp() throws Exception {
+		super.setUp();
+		setAdapter(new MainClassAdapter(UnitTestBenchMain.class));
 	}
 
-	buttonThree = window.getButton("PerspectiveThreeBottomBarButton");
-	buttonThree.click();
-	
-	buttonTwo = window.getButton("PerspectiveTwoBottomBarButton");
-	buttonTwo.click();
-	// Asynchrony behavior
-	Thread.sleep(30000);
-	
-	////////////STRESS TEST END ////////////Ï
-	
-	// //////////POSITIVE TEST 3 /////////////////////////
+	public void testGetWindow() {
+		Window window = getMainWindow();
+		assertNotNull(window);
+	}
 
-	assertion = window.containsComponent(new ComponentMatcher() {
+	public void testMessageFromPerspectiveTwoToThree()
+			throws InterruptedException {
+		Window window = getMainWindow();
+		// Asynchrony behavior
+		Thread.sleep(1000);
+		Assertion assertion = window.containsComponent(new ComponentMatcher() {
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("splitPanePerspectiveOne") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// //////////POSITIVE TEST 1 /////////////////////////
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 3 END //////////////////
+		assertion = window.containsComponent(new ComponentMatcher() {
 
-	// //////////POSITIVE TEST 4 /////////////////////////
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
 
-	assertion = window.containsComponent(new ComponentMatcher() {
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 1 END //////////////////
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeLEFT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
+		// this perspective should not be shown after inital startup
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeRIGHT") : false;
-	    }
-	});
-	assertTrue(assertion.isTrue());
-	// ////////POSITIVE TEST 4 END //////////////////
-	
-	// //////////NEGATIVE TEST 3 /////////////////////////
+		// //////////NEGATIVE TEST 1 /////////////////////////
 
-	assertion = window.containsComponent(new ComponentMatcher() {
+		assertion = window.containsComponent(new ComponentMatcher() {
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveTwoTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 3 END //////////////////
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 1 END //////////////////
+		// switch perspective !
+		Button buttonTwo = window.getButton("PerspectiveTwoToolBarButton");
+		buttonTwo.click();
+		// Asynchrony behavior -> wait 
+		Thread.sleep(500);
 
-	// //////////NEGATIVE TEST 4 /////////////////////////
+		// //////////POSITIVE TEST 2 /////////////////////////
 
-	assertion = window.containsComponent(new ComponentMatcher() {
+		assertion = window.containsComponent(new ComponentMatcher() {
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("ButtonOnePerspectiveThreeTOP") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	assertion = window.containsComponent(new ComponentMatcher() {
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeTOP") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
 
-	    @Override
-	    public boolean matches(Component component) {
-		return component.getName() != null ? component.getName()
-			.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
-	    }
-	});
-	assertTrue(!assertion.isTrue());
-	// ////////NEGATIVE TEST 4 END //////////////////
-    }
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 2 END //////////////////
+		// //////////NEGATIVE TEST 2 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeLEFT") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeRIGHT") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 2 END //////////////////
+
+		Button buttonThree = window
+				.getButton("PerspectiveThreeBottomBarButton");
+		buttonThree.click();
+		// Asynchrony behavior
+		Thread.sleep(500);
+
+		// //////////POSITIVE TEST 3 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 3 END //////////////////
+		// //////////NEGATIVE TEST 3 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 3 END //////////////////
+	}
+
+	public void testMessageFromPerspectiveThreeToTwo()
+			throws InterruptedException {
+		Window window = getMainWindow();
+		// Asynchrony behavior
+		Thread.sleep(1000);
+		Assertion assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("splitPanePerspectiveOne") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// //////////POSITIVE TEST 1 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 1 END //////////////////
+		// //////////NEGATIVE TEST 1 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 1 END //////////////////
+
+		Button buttonTwo = window.getButton("PerspectiveThreeToolBarButton");
+		buttonTwo.click();
+		// Asynchrony behavior
+		Thread.sleep(500);
+
+		// //////////POSITIVE TEST 2 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoTOP") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 2 END //////////////////
+		// //////////NEGATIVE TEST 2 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoLEFT") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoRIGHT") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 2 END //////////////////
+
+		Button buttonThree = window.getButton("PerspectiveTwoBottomBarButton");
+		buttonThree.click();
+		// Asynchrony behavior
+		Thread.sleep(500);
+
+		// //////////POSITIVE TEST 3 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 3 END //////////////////
+		// //////////NEGATIVE TEST 3 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 3 END //////////////////
+	}
+
+	public void testSendMessageFromTwoToThreeAndViceVersaSterssTest()
+			throws InterruptedException {
+		Window window = getMainWindow();
+		// Asynchrony behavior
+		Thread.sleep(1000);
+		Assertion assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("splitPanePerspectiveOne") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// //////////POSITIVE TEST 1 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 1 END //////////////////
+
+		// //////////POSITIVE TEST 2 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 2 END //////////////////
+
+		// //////////NEGATIVE TEST 1 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 1 END //////////////////
+
+		// //////////NEGATIVE TEST 2 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 2 END //////////////////
+
+		Button buttonThree = window.getButton("PerspectiveTwoBottomBarButton");
+		buttonThree.click();
+
+		// ///////STRESS TEST //////////////
+
+		Button buttonTwo = window.getButton("PerspectiveThreeToolBarButton");
+		for (int i = 0; i < 50000; i++) {
+			buttonTwo.click();
+			buttonThree.click();
+		}
+
+		buttonThree = window.getButton("PerspectiveThreeBottomBarButton");
+		buttonThree.click();
+
+		buttonTwo = window.getButton("PerspectiveTwoBottomBarButton");
+		buttonTwo.click();
+		// Asynchrony behavior
+		Thread.sleep(30000);
+
+		// //////////STRESS TEST END ////////////Ã�
+
+		// //////////POSITIVE TEST 3 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 3 END //////////////////
+
+		// //////////POSITIVE TEST 4 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeLEFT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeRIGHT") : false;
+			}
+		});
+		assertTrue(assertion.isTrue());
+		// ////////POSITIVE TEST 4 END //////////////////
+
+		// //////////NEGATIVE TEST 3 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveTwoTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveTwoBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 3 END //////////////////
+
+		// //////////NEGATIVE TEST 4 /////////////////////////
+
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("ButtonOnePerspectiveThreeTOP") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		assertion = window.containsComponent(new ComponentMatcher() {
+
+			@Override
+			public boolean matches(Component component) {
+				return component.getName() != null ? component.getName()
+						.equals("BottonTwoPerspectiveThreeBOTTOM") : false;
+			}
+		});
+		assertTrue(!assertion.isTrue());
+		// ////////NEGATIVE TEST 4 END //////////////////
+	}
 
 }

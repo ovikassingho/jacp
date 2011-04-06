@@ -64,6 +64,7 @@ public class UnitTestPerspectiveThree extends ASwingPerspective {
 	public void handlePerspective(SwingAction action,
 			SwingPerspectiveLayout perspectiveLayout) {
 		System.out.println(action.getLastMessage());
+		System.out.println("TEST");
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.setName("splitPanePerspectiveThree");
 		final JPanel panelOne = new JPanel();
