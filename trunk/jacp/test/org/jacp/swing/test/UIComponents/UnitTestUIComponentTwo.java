@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -69,9 +70,19 @@ public class UnitTestUIComponentTwo extends ASwingComponent {
 			fieldTwo.setText("message: " + action.getLastMessage() + " from: "
 					+ action.getSourceId());
 		} else if (action.getLastMessage().equals("oneComponentOne")) {
-			fieldTwo.setText("counter: " + counter.getAndIncrement());
+
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					fieldTwo.setText("counter: " + counter.getAndIncrement());
+
+				}
+			});
+
 		}
-		
+
 		panelEditorTwo.add(buttonOneEditorTwo);
 		panelEditorTwo.add(fieldTwo);
 		return panelEditorTwo;
