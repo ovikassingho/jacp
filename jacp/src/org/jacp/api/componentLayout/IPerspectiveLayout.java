@@ -32,15 +32,15 @@ import java.util.Map;
 public interface IPerspectiveLayout<M, B> {
 
     /**
-     * set Layoutwrapper for perspective; this wrapper contains wrappers for
-     * editors and views
+     * set Layout-Wrapper for perspective; this wrapper contains wrappers for
+     * editors and views, define a valid component which is valid to hold subcomponents
      * 
      * @param comp
      */
     public abstract void setRootComponent(final M comp);
 
     /**
-     * getLayoutwrapper for perspective
+     * getLayoutwrapper for perspective; a layout component is a component which can contain UI subcomponents
      * 
      * @return
      */
