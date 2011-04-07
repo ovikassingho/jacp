@@ -38,13 +38,7 @@ import org.jacp.api.coordinator.ICoordinator;
  */
 public interface IComponent<L, A, M> {
 
-    /**
-     * handles component when called
-     * 
-     * @param action
-     * @return view component
-     */
-    public abstract <C> C handle(final IAction<A, M> action);
+
 
     /**
      * returns action listener (for local, target and global use)

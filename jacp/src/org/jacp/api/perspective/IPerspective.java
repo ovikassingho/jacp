@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
@@ -42,7 +43,7 @@ import org.jacp.impl.Launcher;
 public interface IPerspective<L, A, M>
 	extends
 	IComponent<L, A, M>,
-	IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>, IAction<A, M>> {
+	IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>, IAction<A, M>>,IHandleable<A, M> {
 
     /**
      * the initialization method

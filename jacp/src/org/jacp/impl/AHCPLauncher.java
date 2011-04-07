@@ -36,7 +36,7 @@ public class AHCPLauncher {
     }
 
     @SuppressWarnings("unchecked")
-    public static void main(final String[] args) throws ClassNotFoundException {
+    public static void main(final String[] args) {
 	final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(
 		"org/jacp/impl/resources/ahcpWorkbench.xml");
 	final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) launcher
