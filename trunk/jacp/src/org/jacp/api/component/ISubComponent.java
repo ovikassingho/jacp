@@ -32,7 +32,7 @@ import org.jacp.api.perspective.IPerspective;
  * @param <M>
  *            defines the basic message type
  */
-public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
+public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,IHandleable<A, M> {
     /**
      * returns the target; defines the target perspective
      * 
