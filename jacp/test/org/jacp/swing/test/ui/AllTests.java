@@ -14,6 +14,7 @@ public class AllTests {
 	//$JUnit-BEGIN$
 	suite.addTestSuite(PerspectiveUIAndLocalCommunicationTest.class);
 	suite.addTestSuite(PerspectiveUIAndInterPerspectiveCommunicationTestCase.class);
+	suite.addTestSuite(PerspectiveUIAndInterPerspectiveCommunicationTestCase2.class);
 	suite.addTestSuite(WorkspaceWindowAndPerspectiveUITestCase.class);
 	//$JUnit-END$
 	return suite;
