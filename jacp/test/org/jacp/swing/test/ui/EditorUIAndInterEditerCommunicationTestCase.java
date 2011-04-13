@@ -24,7 +24,7 @@ import org.uispec4j.interception.MainClassAdapter;
  * @author Andy Moncsek
  * 
  */
-public class PerspectiveUIAndInterPerspectiveCommunicationTestCase2 extends
+public class EditorUIAndInterEditerCommunicationTestCase extends
 		UISpecTestCase {
 
 	private int counterOne = 0;
