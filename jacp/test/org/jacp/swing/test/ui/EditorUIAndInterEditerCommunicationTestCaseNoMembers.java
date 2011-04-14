@@ -12,6 +12,7 @@ import org.uispec4j.assertion.Assertion;
 import org.uispec4j.finder.ComponentMatcher;
 import org.uispec4j.interception.MainClassAdapter;
 
+// TODO: Auto-generated Javadoc
 /**
  * This test checks the inter perspective communication; messages are send from
  * one perspective to an other to check if behavior is correct; two perspectives
@@ -19,35 +20,57 @@ import org.uispec4j.interception.MainClassAdapter;
  * toolbarButton and a bottomBar button; the toolBar button sends a message to
  * corresponding perspective (toolBar button perspective two, sends message to
  * perspective three and vice versa); the buttonBar button sends a local message
- * to restore previous state
+ * to restore previous state.
  * 
  * @author Andy Moncsek
- * 
  */
 public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 		UISpecTestCase {
 
+	/** The TIM e_ t o_ wait. */
 	private static int TIME_TO_WAIT = 2000;
 
+	/** The counter one. */
 	private int counterOne = 0;
+
+	/** The counter two. */
 	private int counterTwo = 0;
+
+	/** The Constant MESSAGE_COUNT. */
 	private static final int MESSAGE_COUNT = 50;
+
+	/** The components. */
 	private String[] components = { "PerspectiveOneToolBarButton",
 			"POneComponentOneButton", "POneComponentTwoButton",
 			"ButtonOneEditorOne", "ButtonOneEditorTwo",
 			"PerspectiveOneBottomBarButton", "oneTextFieldComponentTwo",
 			"oneTextFieldComponentOne" };
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.uispec4j.UISpecTestCase#setUp()
+	 */
 	protected void setUp() throws Exception {
 		super.setUp();
 		setAdapter(new MainClassAdapter(UnitTest2BenchMainNoMember.class));
 	}
 
+	/**
+	 * Test get window.
+	 */
 	public void testGetWindow() {
 		Window window = getMainWindow();
 		assertNotNull(window);
 	}
 
+	/**
+	 * Check components.
+	 * 
+	 * @param names
+	 *            the names
+	 * @return true, if successful
+	 */
 	private boolean checkComponents(String[] names) {
 		Window window = getMainWindow();
 		for (final String name : names) {
@@ -71,6 +94,12 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 
 	// Check Components in GUI
 
+	/**
+	 * Test message from perspective one to two.
+	 * 
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
 	public void testMessageFromPerspectiveOneToTwo()
 			throws InterruptedException {
 		Window window = getMainWindow();
@@ -99,6 +128,12 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 	}
 
 	// Send several messages from Editor One to Editor Two
+	/**
+	 * Test message from editor one2 two.
+	 * 
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
 	public void testMessageFromEditorOne2Two() throws InterruptedException {
 
 		Window window = getMainWindow();
@@ -108,6 +143,8 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 		for (int i = 0; i < MESSAGE_COUNT; i++) {
 			buttonOne.click();
 			counterTwo++;
+
+			Thread.sleep(200);
 		}
 		Thread.sleep(TIME_TO_WAIT);
 
@@ -122,6 +159,12 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 	}
 
 	// Send several messages from Editor Two to Editor One
+	/**
+	 * Test message from editor two2 one.
+	 * 
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
 	public void testMessageFromEditorTwo2One() throws InterruptedException {
 		Window window = getMainWindow();
 		// Asynchrony behavior
@@ -130,6 +173,7 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 		for (int i = 0; i < MESSAGE_COUNT; i++) {
 			buttonTwo.click();
 			counterOne++;
+			Thread.sleep(200);
 		}
 		Thread.sleep(TIME_TO_WAIT);
 		TextBox textbox = window.getTextBox("oneTextFieldComponentOne");
@@ -141,6 +185,12 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 	 * A Fuzzy "stress"-Test
 	 */
 
+	/**
+	 * Test fuzzy messages.
+	 * 
+	 * @throws InterruptedException
+	 *             the interrupted exception
+	 */
 	public void testFuzzyMessages() throws InterruptedException {
 		Window window = getMainWindow();
 
@@ -170,10 +220,15 @@ public class EditorUIAndInterEditerCommunicationTestCaseNoMembers extends
 
 		TextBox textbox2 = window.getTextBox("oneTextFieldComponentTwo");
 		TextBox textbox = window.getTextBox("oneTextFieldComponentOne");
-		assertTrue(textbox2.getText().substring(9)
-				.equals("" + (counterTwo - 1)));
-		assertTrue(textbox.getText().substring(9).equals("" + (counterOne - 1)));
+		final String t2 = textbox2.getText();
+		final String t = textbox.getText();
+		if (t2.length() > 9) 
+			assertTrue(t2.substring(9)
+					.equals("" + (counterTwo - 1)));
+		if(t.length() > 9)
+			assertTrue(t.substring(9)
+					.equals("" + (counterOne - 1)));
+		}
+		
 
 	}
-
-}
