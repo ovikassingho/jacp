@@ -1,0 +1,59 @@
+<project default="compileSwing" name="JACP">
+
+	<path id="cp">
+		<pathelement location="bin" />
+		<fileset dir="lib/">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<target name="clean" depends="">
+		<delete dir="bin" />
+		<mkdir dir="bin" />
+	</target>
+
+	<target name="compile" depends="clean">
+		<property name="version.num" value="0.0.1" />
+		<buildnumber file="build.num" />
+		<manifest file="MANIFEST.MF">
+			<attribute name="Built-By" value="andy.moncsek" />
+			<attribute name="Implementation-Version" value="${version.num}-b${build.number}" />
+		</manifest>
+		<echo>Übersetzen Core-Java-Source</echo>
+		 <echo message="java version:  ${ant.java.version}"/> 
+		<javac srcdir="src" destdir="bin" classpathref="cp" deprecation="false" debug="true" />
+
+		<copy todir="bin">
+			<fileset dir="src" excludes="**/*.java" />
+		</copy>
+
+		<echo>Erstellen Core-JAR</echo>
+		<jar basedir="bin" jarfile="lib/JACP_API.jar" manifest="MANIFEST.MF" />
+	</target>
+	
+
+	
+	<target name="cleanSwing" depends="compile">
+		<delete dir="binSwing" />
+		<mkdir dir="binSwing" />
+	</target>
+		
+	<target name="compileSwing" depends="cleanSwing">
+		<property name="version.num" value="0.0.1" />
+		<buildnumber file="build.num" />
+		<manifest file="MANIFEST.MF">
+			<attribute name="Built-By" value="andy.moncsek" />
+			<attribute name="Implementation-Version" value="${version.num}-b${build.number}" />
+		</manifest>
+		<echo>Übersetzen Core-Java-Source</echo>
+		 <echo message="java version:  ${ant.java.version}"/> 
+		<javac srcdir="srcSwing" destdir="binSwing" classpathref="cp" deprecation="false" debug="true" />
+
+		<copy todir="binSwing">
+			<fileset dir="srcSwing" excludes="**/*.java" />
+		</copy>
+
+		<echo>Erstellen Core-JAR</echo>
+		<jar basedir="binSwing" jarfile="lib/JACP_Swing.jar" manifest="MANIFEST.MF" />
+	</target>
+
+</project>
