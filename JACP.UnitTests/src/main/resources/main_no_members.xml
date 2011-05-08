@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="workbench" class="org.jacp.project.JACP.UnitTests.workbench.UnitTestWorkBench">
+		<property name="perspectives">
+			<list>
+				<ref bean="perspectiveOne" />
+				<ref bean="perspectiveTwo" />
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveOne"
+		class="org.jacp.project.JACP.UnitTests.perspecitve.UnitTestUISubcomponentsPerspectiveOne">
+		<property name="name" value="perspectiveOne" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+				<ref bean="editorOne" />
+				<ref bean="editorTwo" />
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveTwo"
+		class="org.jacp.project.JACP.UnitTests.perspecitve.UnitTestUISubcomponentsPerspectiveTwo">
+		<property name="name" value="perspectiveTwo" />
+		<property name="id" value="id02" />
+		<property name="active" value="false" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="editorOne"
+		class="org.jacp.project.JACP.UnitTests.component.UnitTestUIComponentOneNoMembers">
+		<property name="name" value="editorOne" />
+		<property name="active" value="true" />
+		<property name="id" value="id001" />
+		<property name="executionTarget" value="perspectiveOneLeft" />
+	</bean>
+	<bean id="editorTwo"
+		class="org.jacp.project.JACP.UnitTests.component.UnitTestUIComponentTwoNoMembers">
+		<property name="name" value="editorTwo" />
+		<property name="active" value="true" />
+		<property name="id" value="id002" />
+		<property name="executionTarget" value="perspectiveOneRight" />
+	</bean>
+
+
+</beans>

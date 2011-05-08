@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="workbench" class="org.jacp.project.JACP.UnitTests.workbench.UnitTestWorkBench">
+		<property name="perspectives">
+			<list>
+				<ref bean="perspectiveOne" />
+				<ref bean="perspectiveTwo" />
+				<ref bean="perspectiveThree" />
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveOne" class="org.jacp.project.JACP.UnitTests.perspecitve.UnitTestPerspectiveOne">
+		<property name="name" value="perspectiveOne" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveTwo" class="org.jacp.project.JACP.UnitTests.perspecitve.UnitTestPerspectiveTwo">
+		<property name="name" value="perspectiveTwo" />
+		<property name="id" value="id02" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="perspectiveThree" class="org.jacp.project.JACP.UnitTests.perspecitve.UnitTestPerspectiveThree">
+		<property name="name" value="perspectiveThree" />
+		<property name="id" value="id03" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+</beans>
