@@ -12,6 +12,7 @@ So go to _Eclipse_ → _Help_ → _Eclipse Marketplace_ search for m2Eclipse and
 
 “_Right Click_” in “_Project Explorer_” → _Import_ → _Checkout Projects from svn_ :
 
+[http://code.google.com/p/jacp/source/browse/trunk/JACP.API/src/resources/image00.png]
 
 
 Proceed with “_Next_” and select “_Create a new repository location_”; Enter to URL {{{http://jacp.googlecode.com/svn/trunk/   }}} ; Click “_Next_”; 
