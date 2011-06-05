@@ -1,0 +1,37 @@
+#labels JACP,Turotial
+#startup tutorial JACP
+
+= JACP maven start-up tutorial= 
+
+This tutorial describes how to setup your Eclipse workbench to start developing JACP and JACP based applications. Due to the fact that currently no jars available in any nexus repository you have to checkout all JACP maven projects and subprojects to start developing your own application. The JACP  maven infrastructure allows you to develop your own code and to build all necessary  jar’s you nee to package in your application.
+
+Starting with a new, empty Eclipse workbench make sure you have M2Eclipse plugin and a svn plugin (like subclipse or so) installed. JACP has currently no maven 2 or maven 3 specific code so it should make no matter what version you use. 
+
+So go to _Eclipse_ → _Help_ → _Eclipse Marketplace_ search for m2Eclipse and install it. Same procedure for subverion Plugin. After you installed both plugins and restarted Eclipse you can proceed with downloading the JACP maven projects. 
+
+
+“_Right Click_” in “_Project Explorer_” → _Import_ → _Checkout Projects from svn_ :
+
+
+
+Proceed with “_Next_” and select “_Create a new repository location_”; Enter to URL {{{http://jacp.googlecode.com/svn/trunk/   }}} ; Click “_Next_”; 
+
+If you want to commit to JACP Project make sure you use https.
+
+First you select the root Project *“JACP”*. It does not contain any source code and is easy to setup because it does only contain the pom.xml to compile all sub-projects. Aftre you are selected the folder  you are asked to choose whether you want to configure the project by using the New Project Wizard or as an existing Project. 
+Select “_checkout as project in the workspace_” and click “_Finish_”. After the project has been downloaded you can configure the maven nature. Select the project, “_right click_” → “_Maven_” → “_Enable Dependency Management_”. 
+
+Now proceed the same way with *JCAP.API*, *JACP.Swing* and *JACP.Util*. When all downloads are finished and the maven nature is set you may experience errors in the project structure like this:
+
+
+When you see something like that, Eclipse had configured your source code directory wrong. Right click the project, select “_Properties_” and choose in “_Java build path_” the “_source code_” tab. Now remove the existing folder and click “_Add_” to select the correct one. The right structure is “{{{src/main/java}}}” and “{{{src/main/resource}}}” after confirming the changes your project should be set up correctly. 
+
+After all project parts are downloaded and configured without any errors try to build and install all parts in your local maven repository. Open the JACP root project, right click on the _pom.xml_ → “_Run As_” → “_Maven build_”. For the first time a configuration dialog opens up like this:
+ 
+
+
+
+
+
+
+Make sure you add the goals “_clean install_” (install ensures that the projects are build) and add the profile “ *all* ” (or “ *api* ” or “ *swing* ”) to compile and install all parts. Now click “ _Run_ ” to compile and install and when you see something like “[INFO] BUILD SUCCESS” you have done it right and can now start to develop your own JACP project.
