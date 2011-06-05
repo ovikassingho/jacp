@@ -24,15 +24,12 @@ Select “_checkout as project in the workspace_” and click “_Finish_”. Af
 
 Now proceed the same way with *JCAP.API*, *JACP.Swing* and *JACP.Util*. When all downloads are finished and the maven nature is set you may experience errors in the project structure like this:
 
+[https://jacp.googlecode.com/svn/trunk/JACP.API/src/resources/image01.png]
 
 When you see something like that, Eclipse had configured your source code directory wrong. Right click the project, select “_Properties_” and choose in “_Java build path_” the “_source code_” tab. Now remove the existing folder and click “_Add_” to select the correct one. The right structure is “{{{src/main/java}}}” and “{{{src/main/resource}}}” after confirming the changes your project should be set up correctly. 
 
 After all project parts are downloaded and configured without any errors try to build and install all parts in your local maven repository. Open the JACP root project, right click on the _pom.xml_ → “_Run As_” → “_Maven build_”. For the first time a configuration dialog opens up like this:
- 
 
-
-
-
-
+[https://jacp.googlecode.com/svn/trunk/JACP.API/src/resources/image02.png]
 
 Make sure you add the goals “_clean install_” (install ensures that the projects are build) and add the profile “ *all* ” (or “ *api* ” or “ *swing* ”) to compile and install all parts. Now click “ _Run_ ” to compile and install and when you see something like “[INFO] BUILD SUCCESS” you have done it right and can now start to develop your own JACP project.
