@@ -25,13 +25,11 @@ package org.jacp.api.component;
  * @author Andy Moncsek
  * 
  * @param <T>
- *            component to register
- * @param <H>
- *            handler where component have to be registered
+ *            component type to register
  * @param <A>
- *            action to use in registration process
+ *            action type to use in registration process
  */
-public interface IRootComponent<T, H, A> {
+public interface IRootComponent<T, A> {
 
     /**
      * register component at listener
