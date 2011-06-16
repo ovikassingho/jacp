@@ -71,7 +71,7 @@ import org.jacp.swing.rcp.perspective.ASwingPerspective;
 public abstract class ASwingWorkbench extends JFrame
 		implements
 		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object>, IAction<ActionEvent, Object>> {
+		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IAction<ActionEvent, Object>> {
 
 	/**
 	 * 
@@ -96,7 +96,7 @@ public abstract class ASwingWorkbench extends JFrame
 	}
 
 	@Override
-	public Container init(final Launcher<?> launcher) {
+	public void init(final Launcher<?> launcher) {
 		this.launcher = launcher;
 		log("1: init workbench");
 		// init user defined workspace
@@ -105,8 +105,6 @@ public abstract class ASwingWorkbench extends JFrame
 		setBasicLayout(contentPane);
 		log("3: handle initialisation sequence");
 		handleInitialisationSequence();
-
-		return contentPane;
 	}
 
 	/**
