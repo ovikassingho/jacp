@@ -17,17 +17,14 @@
  */
 package org.jacp.api.workbench;
 
-import java.util.List;
 import java.util.Map;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
-import org.jacp.api.launcher.Launcher;
-import org.jacp.api.perspective.IPerspective;
 
 /**
- * base component for an application, handles perspectives and containing
+ * base component for an AHCP UI application, handles perspectives and containing
  * components
  * 
  * @param <P>
@@ -44,16 +41,8 @@ import org.jacp.api.perspective.IPerspective;
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbench<P, C, L, A, M> {
+public interface IWorkbench<P, C, L, A, M> extends IBase<L, A, M>{
 
-	/**
-	 * Initialization sequence returns basic container to handle perspectives
-	 * 
-	 * @param launcher
-	 *            for di container
-	 * @return
-	 */
-	public abstract C init(final Launcher<?> launcher);
 
 	/**
 	 * init default workbench menu
@@ -87,21 +76,7 @@ public interface IWorkbench<P, C, L, A, M> {
 	 */
 	public abstract void handleBarEntries(final Map<Layout, C> bars);
 
-	/**
-	 * set perspectives to workbench
-	 * 
-	 * @param perspectives
-	 */
-	public abstract void setPerspectives(
-			final List<IPerspective<L, A, M>> perspectives);
-
-	/**
-	 * get perspectives in workbench
-	 * 
-	 * @return
-	 */
-	public abstract List<IPerspective<L, A, M>> getPerspectives();
-
+	
 	/**
 	 * set visibility of all components in workspace wrapper to false
 	 * 

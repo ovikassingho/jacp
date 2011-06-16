@@ -44,7 +44,7 @@ import org.jacp.api.launcher.Launcher;
 public interface IPerspective<L, A, M>
 	extends
 	IComponent<L, A, M>,
-	IRootComponent<ISubComponent<L, A, M>, IComponentCoordinator<L, A, M>, IAction<A, M>>,IHandleable<A, M> {
+	IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>,IHandleable<A, M> {
 
     /**
      * the initialization method
