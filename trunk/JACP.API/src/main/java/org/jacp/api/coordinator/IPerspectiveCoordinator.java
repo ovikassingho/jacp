@@ -17,9 +17,7 @@
  */
 package org.jacp.api.coordinator;
 
-import java.util.Map;
 
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.perspective.IPerspective;
 
 /**
@@ -29,7 +27,7 @@ import org.jacp.api.perspective.IPerspective;
  * 
  * @author Andy Moncsek
  */
-public interface IPerspectiveCoordinator<C, L, A, M> extends
+public interface IPerspectiveCoordinator<L, A, M> extends
 	ICoordinator<L, A, M> {
 
     /**
@@ -47,8 +45,5 @@ public interface IPerspectiveCoordinator<C, L, A, M> extends
     public abstract void removePerspective(
 	    final IPerspective<L, A, M> perspective);
 
-    public abstract Map<Layout, C> getBars();
-
-    public C getMenu();
 
 }

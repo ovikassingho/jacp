@@ -43,53 +43,67 @@ public class AHeadlessWorkbench
 	private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
 	private Launcher<?> launcher;
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	
+
 	@Override
 	public void setPerspectives(
 			List<IPerspective<ActionListener, ActionEvent, Object>> perspectives) {
 		this.perspectives = perspectives;
 
 	}
+
 	@Override
 	public List<IPerspective<ActionListener, ActionEvent, Object>> getPerspectives() {
 		return this.perspectives;
 	}
+
 	@Override
 	public void init(Launcher<?> launcher) {
 		this.launcher = launcher;
 		log("1: init workbench");
 
 	}
+
 	@Override
 	public void registerComponent(
 			IPerspective<ActionListener, ActionEvent, Object> component) {
-		// TODO Auto-generated method stub
+		component.init(launcher);
+		//perspectiveHandler.addPerspective(component);
 
 	}
+
 	@Override
 	public void unregisterComponent(
 			IPerspective<ActionListener, ActionEvent, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void initComponents(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
+		final List<IPerspective<ActionListener, ActionEvent, Object>> perspectivesTmp = getPerspectives();
+		for (int i = 0; i < perspectivesTmp.size(); i++) {
+			final IPerspective<ActionListener, ActionEvent, Object> perspective = perspectivesTmp
+					.get(i);
+			log("3.4.1: register component: " + perspective.getName());
+			registerComponent(perspective);
+		}
 
 	}
+
 	@Override
 	public void initComponent(IAction<ActionEvent, Object> action,
 			IPerspective<ActionListener, ActionEvent, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void handleAndReplaceComponent(IAction<ActionEvent, Object> action,
 			IPerspective<ActionListener, ActionEvent, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private void log(final String message) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine(">> " + message);

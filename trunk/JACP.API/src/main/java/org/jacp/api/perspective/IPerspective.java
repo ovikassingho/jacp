@@ -24,7 +24,6 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.launcher.Launcher;
 
 
