@@ -1,0 +1,5 @@
+#surefire
+#Thu Jun 16 19:00:54 CEST 2011
+user.dir=/home/ady/workspaceAHCP/JACP.Concurrency
+localRepository=/home/ady/.m2/repository
+basedir=/home/ady/workspaceAHCP/JACP.Concurrency
