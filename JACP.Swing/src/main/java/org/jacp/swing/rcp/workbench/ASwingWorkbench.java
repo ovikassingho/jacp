@@ -79,7 +79,7 @@ public abstract class ASwingWorkbench extends JFrame
 	private static final long serialVersionUID = -1740398352308498810L;
 	private JMenu menu;
 	private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
-	private final IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> perspectiveHandler = new SwingPerspectiveCoordinator(
+	private final IPerspectiveCoordinator<ActionListener, ActionEvent, Object> perspectiveHandler = new SwingPerspectiveCoordinator(
 			this);
 	private final Dimension screenSize = Toolkit.getDefaultToolkit()
 			.getScreenSize();

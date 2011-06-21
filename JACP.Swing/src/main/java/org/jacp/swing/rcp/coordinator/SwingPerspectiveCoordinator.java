@@ -41,7 +41,7 @@ import org.jacp.swing.rcp.workbench.ASwingWorkbench;
  * @author Andy Moncsek
  */
 public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
-	IPerspectiveCoordinator<Container, ActionListener, ActionEvent, Object> {
+	IPerspectiveCoordinator<ActionListener, ActionEvent, Object> {
 
     private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();
     private final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
@@ -66,12 +66,12 @@ public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
 	perspectives.remove(perspective);
     }
 
-    @Override
+   
     public final Map<Layout, Container> getBars() {
 	return workbench.getWorkbenchLayout().getToolBars();
     }
 
-    @Override
+    
     public final Container getMenu() {
 	return workbench.getDefaultMenu();
     }
