@@ -35,7 +35,7 @@ import org.jacp.api.coordinator.ICoordinator;
  * @author Andy Moncsek
  * 
  */
-public abstract class ASwingCoordinator extends Thread implements
+public abstract class ACoordinator extends Thread implements
 		ICoordinator<ActionListener, ActionEvent, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());

@@ -40,7 +40,7 @@ import org.jacp.swing.rcp.workbench.ASwingWorkbench;
  * 
  * @author Andy Moncsek
  */
-public class SwingPerspectiveCoordinator extends ASwingCoordinator implements
+public class SwingPerspectiveCoordinator extends ACoordinator implements
 	IPerspectiveCoordinator<ActionListener, ActionEvent, Object> {
 
     private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();

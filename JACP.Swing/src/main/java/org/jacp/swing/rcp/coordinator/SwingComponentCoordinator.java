@@ -35,7 +35,7 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  * 
  */
-public class SwingComponentCoordinator extends ASwingCoordinator implements
+public class SwingComponentCoordinator extends ACoordinator implements
 	IComponentCoordinator<ActionListener, ActionEvent, Object> {
 
     private List<ISubComponent<ActionListener, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
