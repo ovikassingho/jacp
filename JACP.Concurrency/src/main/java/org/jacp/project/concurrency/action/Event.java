@@ -18,24 +18,27 @@
 package org.jacp.project.concurrency.action;
 
 import java.util.EventObject;
+
 /**
  * JACP Event Object
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
-public class JACPEvent extends EventObject{
+public class Event extends EventObject {
 	private int id;
 	private String command;
 
-
-	public JACPEvent(Object source) {
+	public Event(Object source) {
 		super(source);
 	}
-	public JACPEvent(Object source,String command) {
+
+	public Event(Object source, String command) {
 		super(source);
 		this.command = command;
 	}
-	public JACPEvent(Object source,String command,int id) {
+
+	public Event(Object source, String command, int id) {
 		super(source);
 		this.command = command;
 		this.id = id;
@@ -45,6 +48,7 @@ public class JACPEvent extends EventObject{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	public int getId() {
 		return id;
 	}

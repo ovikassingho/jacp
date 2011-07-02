@@ -18,8 +18,9 @@ package org.jacp.project.concurrency.action;
  * governing permissions and limitations under the License.
  */
 
-import java.awt.event.ActionListener;
 import java.util.EventListener;
+import java.util.EventObject;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
@@ -32,37 +33,66 @@ import org.jacp.api.coordinator.ICoordinator;
  * @author Andy Moncsek
  * 
  */
-public class JACPActionListener implements EventListener,
-		IActionListener<EventListener, JACPEvent, Object> {
-	private IAction<JACPEvent, Object> action;
-	private final ICoordinator<ActionListener, JACPEvent, Object> observer;
+public class ActionListener implements EventListener,
+		IActionListener<EventListener, Event, Object> {
+	private IAction<Event, Object> action;
+	private final ICoordinator<EventListener, Event, Object> observer;
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-	public JACPActionListener(
-			final ICoordinator<ActionListener, JACPEvent, Object> observer) {
+	public ActionListener(final IAction<Event, Object> action,
+			final ICoordinator<EventListener, Event, Object> observer) {
 		this.observer = observer;
+		this.action = action;
+	}
+
+	/**
+	 * perform jacp action
+	 * 
+	 * @param event
+	 */
+	public void actionPerformed(final Event e) {
+		action.setActionEvent(e);
+		log(" //1// message send from / to: " + action.getSourceId() + " / "
+				+ action.getTargetId());
+		notifyComponents(action);
+
 	}
 
 	@Override
-	public void notifyComponents(final IAction<JACPEvent, Object> action) {
+	public void notifyComponents(final IAction<Event, Object> action) {
 		this.observer.handle(action);
 
 	}
 
 	@Override
-	public void setAction(final IAction<JACPEvent, Object> action) {
+	public void setAction(final IAction<Event, Object> action) {
 		this.action = action;
 
 	}
 
 	@Override
-	public IAction<JACPEvent, Object> getAction() {
+	public IAction<Event, Object> getAction() {
 		return this.action;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public EventListener getListener() {
-		return null;
+	public ActionListener getListener() {
+		return this;
+	}
+
+	private void log(final String message) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(">> " + message);
+		}
+
+	}
+
+
+	@Override
+	public void performAction(EventObject arg0) {
+		actionPerformed((Event) arg0);
+		
 	}
 
 }
