@@ -28,13 +28,13 @@ import org.jacp.api.action.IAction;
  * @author Andy Moncsek
  *
  */
-public class Action implements IAction<JACPEvent, Object>{
+public class Action implements IAction<Event, Object>{
 	
     private final Map<String, Object> messages = new HashMap<String, Object>();
     private Object message;
     private final String sourceId;
     private String target;
-    private JACPEvent event;
+    private Event event;
 	
 	public Action(final String sourceId) {
 		this.sourceId = sourceId;
@@ -71,12 +71,12 @@ public class Action implements IAction<JACPEvent, Object>{
 	}
 
 	@Override
-	public void setActionEvent(final JACPEvent event) {
+	public void setActionEvent(final Event event) {
 		this.event = event;		
 	}
 
 	@Override
-	public JACPEvent getActionEvent() {
+	public Event getActionEvent() {
 		return this.event;
 	}
 
@@ -86,8 +86,8 @@ public class Action implements IAction<JACPEvent, Object>{
 	}
 	
 	@Override
-	public IAction<JACPEvent, Object> clone()  {
-		final IAction<JACPEvent, Object> clone = new Action(sourceId);
+	public IAction<Event, Object> clone()  {
+		final IAction<Event, Object> clone = new Action(sourceId);
 		clone.setActionEvent(event);
 		return clone;
 	}

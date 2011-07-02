@@ -17,8 +17,7 @@
  */
 package org.jacp.project.concurrency.coordinator;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -28,6 +27,8 @@ import java.util.logging.Logger;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.project.concurrency.action.ActionListener;
+import org.jacp.project.concurrency.action.Event;
 
 /**
  * Observer handles message notification and notifies correct components
@@ -36,18 +37,18 @@ import org.jacp.api.coordinator.ICoordinator;
  * 
  */
 public abstract class ACoordinator extends Thread implements
-		ICoordinator<ActionListener, ActionEvent, Object> {
+		ICoordinator<ActionListener, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-	private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<IAction<Event, Object>>(
 			100000);
 
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
 			log(" observer thread size" + messages.size());
-			IAction<ActionEvent, Object> action = null;
+			IAction<Event, Object> action = null;
 			try {
 				action = messages.take();
 			} catch (final InterruptedException e) {
@@ -70,10 +71,10 @@ public abstract class ACoordinator extends Thread implements
 	 * @param message
 	 * @return
 	 */
-	protected IAction<ActionEvent, Object> getValidAction(
-			final IAction<ActionEvent, Object> action, final String target,
+	protected IAction<Event, Object> getValidAction(
+			final IAction<Event, Object> action, final String target,
 			final Object message) {
-		final IAction<ActionEvent, Object> actionClone = action.clone();
+		final IAction<Event, Object> actionClone = action.clone();
 		actionClone.addMessage(target, message);
 		return actionClone;
 	}
@@ -129,7 +130,7 @@ public abstract class ACoordinator extends Thread implements
 	}
 
 	@Override
-	public final <M extends IComponent<ActionListener, ActionEvent, Object>> M getObserveableById(
+	public final <M extends IComponent<ActionListener, Event, Object>> M getObserveableById(
 			final String id, final List<M> components) {
 		for (int i = 0; i < components.size(); i++) {
 			final M p = components.get(i);
@@ -141,7 +142,7 @@ public abstract class ACoordinator extends Thread implements
 	}
 
 	@Override
-	public final void handle(final IAction<ActionEvent, Object> action) {
+	public final void handle(final IAction<Event, Object> action) {
 		messages.add(action);
 
 	}

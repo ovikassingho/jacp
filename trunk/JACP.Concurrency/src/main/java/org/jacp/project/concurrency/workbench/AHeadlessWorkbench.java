@@ -18,8 +18,8 @@
 
 package org.jacp.project.concurrency.workbench;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +29,8 @@ import org.jacp.api.component.IRootComponent;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IBase;
+import org.jacp.project.concurrency.action.ActionListener;
+import org.jacp.project.concurrency.action.Event;
 
 /**
  * This class defines a headless workbench for JACP run time
@@ -38,21 +40,21 @@ import org.jacp.api.workbench.IBase;
  */
 public class AHeadlessWorkbench
 		implements
-		IBase<ActionListener, ActionEvent, Object>,
-		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IAction<ActionEvent, Object>> {
-	private List<IPerspective<ActionListener, ActionEvent, Object>> perspectives;
+		IBase<ActionListener, Event, Object>,
+		IRootComponent<IPerspective<ActionListener, Event, Object>, IAction<Event, Object>> {
+	private List<IPerspective<ActionListener, Event, Object>> perspectives;
 	private Launcher<?> launcher;
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Override
 	public void setPerspectives(
-			List<IPerspective<ActionListener, ActionEvent, Object>> perspectives) {
+			List<IPerspective<ActionListener, Event, Object>> perspectives) {
 		this.perspectives = perspectives;
 
 	}
 
 	@Override
-	public List<IPerspective<ActionListener, ActionEvent, Object>> getPerspectives() {
+	public List<IPerspective<ActionListener, Event, Object>> getPerspectives() {
 		return this.perspectives;
 	}
 
@@ -65,7 +67,7 @@ public class AHeadlessWorkbench
 
 	@Override
 	public void registerComponent(
-			IPerspective<ActionListener, ActionEvent, Object> component) {
+			IPerspective<ActionListener, Event, Object> component) {
 		component.init(launcher);
 		//perspectiveHandler.addPerspective(component);
 
@@ -73,16 +75,16 @@ public class AHeadlessWorkbench
 
 	@Override
 	public void unregisterComponent(
-			IPerspective<ActionListener, ActionEvent, Object> component) {
+			IPerspective<ActionListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void initComponents(IAction<ActionEvent, Object> action) {
-		final List<IPerspective<ActionListener, ActionEvent, Object>> perspectivesTmp = getPerspectives();
+	public void initComponents(IAction<Event, Object> action) {
+		final List<IPerspective<ActionListener, Event, Object>> perspectivesTmp = getPerspectives();
 		for (int i = 0; i < perspectivesTmp.size(); i++) {
-			final IPerspective<ActionListener, ActionEvent, Object> perspective = perspectivesTmp
+			final IPerspective<ActionListener, Event, Object> perspective = perspectivesTmp
 					.get(i);
 			log("3.4.1: register component: " + perspective.getName());
 			registerComponent(perspective);
@@ -91,15 +93,15 @@ public class AHeadlessWorkbench
 	}
 
 	@Override
-	public void initComponent(IAction<ActionEvent, Object> action,
-			IPerspective<ActionListener, ActionEvent, Object> component) {
+	public void initComponent(IAction<Event, Object> action,
+			IPerspective<ActionListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleAndReplaceComponent(IAction<ActionEvent, Object> action,
-			IPerspective<ActionListener, ActionEvent, Object> component) {
+	public void handleAndReplaceComponent(IAction<Event, Object> action,
+			IPerspective<ActionListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}

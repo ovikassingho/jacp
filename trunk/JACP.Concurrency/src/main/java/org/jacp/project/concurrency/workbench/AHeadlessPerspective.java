@@ -17,8 +17,9 @@
  */
 package org.jacp.project.concurrency.workbench;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import java.util.EventListener;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -30,9 +31,12 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.project.concurrency.action.Action;
+import org.jacp.project.concurrency.action.ActionListener;
+import org.jacp.project.concurrency.action.Event;
 
 public class AHeadlessPerspective implements
-		IPerspective<ActionListener, ActionEvent, Object> {
+		IPerspective<EventListener, Event, Object> {
 	private String id;
 	private String name;
 	private boolean active;
@@ -40,14 +44,10 @@ public class AHeadlessPerspective implements
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 
-	private final List<ISubComponent<ActionListener, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<ActionListener, ActionEvent, Object>>();
-    private ICoordinator<ActionListener, ActionEvent, Object> perspectiveObserver;
+	private final List<ISubComponent<EventListener, Event, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<EventListener, Event, Object>>();
+    private ICoordinator<EventListener, Event, Object> perspectiveObserver;
     
-	@Override
-	public IActionListener<ActionListener, ActionEvent, Object> getActionListener() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public String getId() {
@@ -95,14 +95,14 @@ public class AHeadlessPerspective implements
 
 	@Override
 	public void setObserver(
-			ICoordinator<ActionListener, ActionEvent, Object> observer) {
+			ICoordinator<EventListener, Event, Object> observer) {
 		this.perspectiveObserver = observer;
 
 	}
 
 	@Override
 	public void registerComponent(
-			ISubComponent<ActionListener, ActionEvent, Object> component) {
+			ISubComponent<EventListener, Event, Object> component) {
 		log("register component: " + component.getId());
 		// componentHandler.addComponent(component);
 		subcomponents.add(component);
@@ -112,7 +112,7 @@ public class AHeadlessPerspective implements
 
 	@Override
 	public void unregisterComponent(
-			ISubComponent<ActionListener, ActionEvent, Object> component) {
+			ISubComponent<EventListener, Event, Object> component) {
 		log("unregister component: " + component.getId());
 		// componentHandler.removeComponent(component);
 		subcomponents.remove(component);
@@ -121,27 +121,27 @@ public class AHeadlessPerspective implements
 	}
 
 	@Override
-	public void initComponents(IAction<ActionEvent, Object> action) {
+	public void initComponents(IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void initComponent(IAction<ActionEvent, Object> action,
-			ISubComponent<ActionListener, ActionEvent, Object> component) {
+	public void initComponent(IAction<Event, Object> action,
+			ISubComponent<EventListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleAndReplaceComponent(IAction<ActionEvent, Object> action,
-			ISubComponent<ActionListener, ActionEvent, Object> component) {
+	public void handleAndReplaceComponent(IAction<Event, Object> action,
+			ISubComponent<EventListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public <C> C handle(IAction<ActionEvent, Object> action) {
+	public <C> C handle(IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -153,48 +153,48 @@ public class AHeadlessPerspective implements
 	}
 
 	@Override
-	public List<ISubComponent<ActionListener, ActionEvent, Object>> getSubcomponents() {
+	public List<ISubComponent<EventListener, Event, Object>> getSubcomponents() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setSubcomponents(
-			List<ISubComponent<ActionListener, ActionEvent, Object>> subComponents) {
+			List<ISubComponent<EventListener, Event, Object>> subComponents) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handlePerspective(IAction<ActionEvent, Object> action) {
+	public void handlePerspective(IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void addActiveComponent(
-			ISubComponent<ActionListener, ActionEvent, Object> component) {
+			ISubComponent<EventListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void delegateTargetChange(String target,
-			ISubComponent<ActionListener, ActionEvent, Object> component) {
+			ISubComponent<EventListener, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void delegateComponentMassege(String target,
-			IAction<ActionEvent, Object> action) {
+			IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void delegateMassege(String target,
-			IAction<ActionEvent, Object> action) {
+			IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
 
 	}
@@ -203,5 +203,11 @@ public class AHeadlessPerspective implements
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine(">> " + message);
 		}
+	}
+
+	@Override
+	public IActionListener<EventListener, Event, Object> getActionListener() {
+		// TODO Auto-generated method stub
+		return new ActionListener(new Action(this.id), null);
 	}
 }
