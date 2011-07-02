@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2010,2011.
+ * AHCP Project
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.jacp.project.concurrency.coordinator;
 
 import java.awt.event.ActionEvent;
@@ -52,7 +69,7 @@ public class PerspectiveCoordinator extends ACoordinator implements
 		if (isLocalMessage(target)) {
 		    handleMessage(target, action);
 		} else {
-		 //   callComponentDelegate(target, action);
+		    callComponentDelegate(target, action);
 		}
 
 
@@ -61,7 +78,8 @@ public class PerspectiveCoordinator extends ACoordinator implements
 	@Override
 	public <P extends IComponent<ActionListener, ActionEvent, Object>> void handleActive(
 			P component, IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
+//		workbench.handleAndReplaceComponent(action,
+//				(IPerspective<ActionListener, ActionEvent, Object>) component);
 
 	}
 
@@ -83,7 +101,7 @@ public class PerspectiveCoordinator extends ACoordinator implements
 		    handleTargetHit(responsiblePerspective, component);
 
 		} else {
-		 //REMOVE   handleTargetMiss();
+		 handleTargetMiss();
 		}
 
 	}
@@ -104,7 +122,7 @@ public class PerspectiveCoordinator extends ACoordinator implements
 //	REMOVE	    new SwingAction(responsiblePerspective.getId(),
 //		REMOVE	    responsiblePerspective.getId(), "init"));
 	}
-// REMOVE	addToActivePerspective(responsiblePerspective, component);
+	addToActivePerspective(responsiblePerspective, component);
     }
 
 	/**
@@ -163,6 +181,49 @@ public class PerspectiveCoordinator extends ACoordinator implements
 			IPerspective<ActionListener, ActionEvent, Object> perspective) {
 		perspective.setObserver(null);
 		perspectives.remove(perspective);
+
+	}
+	
+	/**
+     * handle component delegate when no target found
+     */
+    private void handleTargetMiss() {
+	throw new UnsupportedOperationException(
+		"No responsible perspective found. Handling not implemented yet.");
+    }
+    
+	/**
+	 * add active component to perspective
+	 * 
+	 * @param responsiblePerspective
+	 * @param component
+	 */
+	private void addToActivePerspective(
+			final IPerspective<ActionListener, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<ActionListener, ActionEvent, Object> component) {
+		responsiblePerspective.addActiveComponent(component);
+	}
+	
+	/**
+	 * delegate to responsible componentObserver in correct perspective
+	 * 
+	 * @param target
+	 * @param action
+	 */
+	private void callComponentDelegate(final String target,
+			final IAction<ActionEvent, Object> action) {
+		final IPerspective<ActionListener, ActionEvent, Object> perspective = getObserveableById(
+				getTargetPerspectiveId(target), perspectives);
+		// TODO REMOVE null handling... use DUMMY instead (maybe like
+		// Collections.EMPTY...)
+		if (perspective != null) {
+			if (!perspective.isActive()) {
+				handleInActive(perspective, action);
+			} else {
+				perspective.delegateComponentMassege(target, action);
+			}
+
+		}
 
 	}
 
