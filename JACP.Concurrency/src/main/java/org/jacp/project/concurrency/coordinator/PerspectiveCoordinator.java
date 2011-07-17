@@ -17,8 +17,6 @@
  */
 package org.jacp.project.concurrency.coordinator;
 
-
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -28,9 +26,10 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IBase;
+import org.jacp.project.concurrency.action.Action;
 import org.jacp.project.concurrency.action.ActionListener;
 import org.jacp.project.concurrency.action.Event;
-
+import org.jacp.project.concurrency.workbench.AHeadlessWorkbench;;
 
 /**
  * 
@@ -51,45 +50,41 @@ public class PerspectiveCoordinator extends ACoordinator implements
 	public void handleMessage(String id, IAction<Event, Object> action) {
 		final IPerspective<ActionListener, Event, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(id), perspectives);
-			if (perspective != null) {
-			    final IAction<Event, Object> actionClone = getValidAction(
-				    action, id, action.getMessageList().get(id));
-			    handleComponentHit(id, actionClone, perspective);
-			} else {
-			    // TODO implement missing perspective handling!!
-			    throw new UnsupportedOperationException(
-				    "No responsible perspective found. Handling not implemented yet.");
-			}
+		if (perspective != null) {
+			final IAction<Event, Object> actionClone = getValidAction(action,
+					id, action.getMessageList().get(id));
+			handleComponentHit(id, actionClone, perspective);
+		} else {
+			// TODO implement missing perspective handling!!
+			throw new UnsupportedOperationException(
+					"No responsible perspective found. Handling not implemented yet.");
+		}
 	}
 
 	@Override
-	public void delegateMessage(String target,
-			IAction<Event, Object> action) {
+	public void delegateMessage(String target, IAction<Event, Object> action) {
 		// Find local Target; if target is perspective handle target or
 		// delegate
 		// message to responsible component observer
 		if (isLocalMessage(target)) {
-		    handleMessage(target, action);
+			handleMessage(target, action);
 		} else {
-		    callComponentDelegate(target, action);
+			callComponentDelegate(target, action);
 		}
-
 
 	}
 
 	@Override
 	public <P extends IComponent<ActionListener, Event, Object>> void handleActive(
 			P component, IAction<Event, Object> action) {
-//		workbench.handleAndReplaceComponent(action,
-//				(IPerspective<ActionListener, JACPEvent, Object>) component);
+		((AHeadlessWorkbench) base).handleAndReplaceComponent(action,(IPerspective<ActionListener, Event, Object>) component);
 
 	}
 
 	@Override
 	public <P extends IComponent<ActionListener, Event, Object>> void handleInActive(
 			P component, IAction<Event, Object> action) {
-		// TODO Auto-generated method stub
-
+		((AHeadlessWorkbench) base).initComponent(action,(IPerspective<ActionListener, Event, Object>) component);
 	}
 
 	@Override
@@ -97,35 +92,34 @@ public class PerspectiveCoordinator extends ACoordinator implements
 			ISubComponent<ActionListener, Event, Object> component) {
 		// find responsible perspective
 		final IPerspective<ActionListener, Event, Object> responsiblePerspective = getObserveableById(
-			getTargetPerspectiveId(target), perspectives);
+				getTargetPerspectiveId(target), perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
-		    handleTargetHit(responsiblePerspective, component);
-
+			handleTargetHit(responsiblePerspective, component);
 		} else {
-		 handleTargetMiss();
+			handleTargetMiss();
 		}
 
 	}
-	
-	 /**
-     * handle component delegate when target was found
-     * 
-     * @param responsiblePerspective
-     * @param component
-     */
-    private void handleTargetHit(
-	    final IPerspective<ActionListener, Event, Object> responsiblePerspective,
-	    final ISubComponent<ActionListener, Event, Object> component) {
-	if (!responsiblePerspective.isActive()) {
-	    // 1. init perspective (do not register component before perspective
-	    // is active, otherwise component will be handled once again)
-	  //REMOVE  handleInActive(responsiblePerspective,
-//	REMOVE	    new SwingAction(responsiblePerspective.getId(),
-//		REMOVE	    responsiblePerspective.getId(), "init"));
+
+	/**
+	 * handle component delegate when target was found
+	 * 
+	 * @param responsiblePerspective
+	 * @param component
+	 */
+	private void handleTargetHit(
+			final IPerspective<ActionListener, Event, Object> responsiblePerspective,
+			final ISubComponent<ActionListener, Event, Object> component) {
+		if (!responsiblePerspective.isActive()) {
+			// 1. init perspective (do not register component before perspective
+			// is active, otherwise component will be handled once again)
+			handleInActive(responsiblePerspective,
+					new Action(responsiblePerspective.getId(),
+							responsiblePerspective.getId(), "init"));
+		}
+		addToActivePerspective(responsiblePerspective, component);
 	}
-	addToActivePerspective(responsiblePerspective, component);
-    }
 
 	/**
 	 * handle message target hit
@@ -185,15 +179,15 @@ public class PerspectiveCoordinator extends ACoordinator implements
 		perspectives.remove(perspective);
 
 	}
-	
+
 	/**
-     * handle component delegate when no target found
-     */
-    private void handleTargetMiss() {
-	throw new UnsupportedOperationException(
-		"No responsible perspective found. Handling not implemented yet.");
-    }
-    
+	 * handle component delegate when no target found
+	 */
+	private void handleTargetMiss() {
+		throw new UnsupportedOperationException(
+				"No responsible perspective found. Handling not implemented yet.");
+	}
+
 	/**
 	 * add active component to perspective
 	 * 
@@ -205,7 +199,7 @@ public class PerspectiveCoordinator extends ACoordinator implements
 			final ISubComponent<ActionListener, Event, Object> component) {
 		responsiblePerspective.addActiveComponent(component);
 	}
-	
+
 	/**
 	 * delegate to responsible componentObserver in correct perspective
 	 * 

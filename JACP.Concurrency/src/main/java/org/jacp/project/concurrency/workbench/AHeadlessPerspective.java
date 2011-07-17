@@ -35,7 +35,7 @@ import org.jacp.project.concurrency.action.Action;
 import org.jacp.project.concurrency.action.ActionListener;
 import org.jacp.project.concurrency.action.Event;
 
-public class AHeadlessPerspective implements
+public abstract class AHeadlessPerspective implements
 		IPerspective<EventListener, Event, Object> {
 	private String id;
 	private String name;
@@ -99,6 +99,15 @@ public class AHeadlessPerspective implements
 		this.perspectiveObserver = observer;
 
 	}
+	
+	@Override
+	public <C> C handle(IAction<Event, Object> action) {
+		// TODO Auto-generated method stub
+		handlePerspective(action);
+		return null;
+	}
+	
+
 
 	@Override
 	public void registerComponent(
@@ -140,11 +149,6 @@ public class AHeadlessPerspective implements
 
 	}
 
-	@Override
-	public <C> C handle(IAction<Event, Object> action) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void init(Launcher<?> launcher) {
@@ -165,12 +169,7 @@ public class AHeadlessPerspective implements
 
 	}
 
-	@Override
-	public void handlePerspective(IAction<Event, Object> action) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void addActiveComponent(
 			ISubComponent<EventListener, Event, Object> component) {
