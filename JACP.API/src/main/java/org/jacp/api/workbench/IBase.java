@@ -19,8 +19,10 @@ package org.jacp.api.workbench;
 
 import java.util.List;
 
+
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
+
 
 /**
  * 
@@ -59,6 +61,7 @@ public interface IBase<L, A, M> {
 	 * @return
 	 */
 	public abstract void init(final Launcher<?> launcher);
+
 
 
 }
