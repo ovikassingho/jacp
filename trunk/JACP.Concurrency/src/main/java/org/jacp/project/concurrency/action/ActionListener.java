@@ -19,7 +19,6 @@ package org.jacp.project.concurrency.action;
  */
 
 import java.util.EventListener;
-import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,7 +74,6 @@ public class ActionListener implements EventListener,
 		return this.action;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ActionListener getListener() {
 		return this;
@@ -89,10 +87,5 @@ public class ActionListener implements EventListener,
 	}
 
 
-	@Override
-	public void performAction(EventObject arg0) {
-		actionPerformed((Event) arg0);
-		
-	}
 
 }

@@ -17,27 +17,42 @@
  */
 package org.jacp.project.concurrency.action;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.jacp.api.action.IAction;
+
 /**
- * The JACP Action class.  represents an action which is fired by an component, has a target and a
- * message targeting the component itself or an other component
+ * The JACP Action class. represents an action which is fired by an component,
+ * has a target and a message targeting the component itself or an other
+ * component
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
-public class Action implements IAction<Event, Object>{
-	
-    private final Map<String, Object> messages = new HashMap<String, Object>();
-    private Object message;
-    private final String sourceId;
-    private String target;
-    private Event event;
-	
+public class Action implements IAction<Event, Object> {
+
+	private final Map<String, Object> messages = new HashMap<String, Object>();
+	private Object message;
+	private final String sourceId;
+	private String target;
+	private Event event;
+
 	public Action(final String sourceId) {
 		this.sourceId = sourceId;
+	}
+
+	public Action(final String sourceId, final Object message) {
+		this.sourceId = sourceId;
+		setMessage(message);
+	}
+
+	public Action(final String sourceId, final String target,
+			final Object message) {
+		this.sourceId = sourceId;
+		this.target = target;
+		setMessage(message);
+
 	}
 
 	@Override
@@ -52,7 +67,7 @@ public class Action implements IAction<Event, Object>{
 		target = targetId;
 		this.message = message;
 		getMessageList().put(targetId, message);
-		
+
 	}
 
 	@Override
@@ -72,7 +87,7 @@ public class Action implements IAction<Event, Object>{
 
 	@Override
 	public void setActionEvent(final Event event) {
-		this.event = event;		
+		this.event = event;
 	}
 
 	@Override
@@ -84,9 +99,9 @@ public class Action implements IAction<Event, Object>{
 	public String getTargetId() {
 		return this.target;
 	}
-	
+
 	@Override
-	public IAction<Event, Object> clone()  {
+	public IAction<Event, Object> clone() {
 		final IAction<Event, Object> clone = new Action(sourceId);
 		clone.setActionEvent(event);
 		return clone;
