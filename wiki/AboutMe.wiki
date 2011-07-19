@@ -1,11 +1,6 @@
 #labels aboutme
 #about me.
 
-I am a skilled Java developer with fun in coding, engineering and [http://www.flickr.com/photos/30866998@N07/ photography]. Although my current job is focused on business development I do enjoy playing with all kind of JVM languages, frameworks and operating systems … and nearly everything what you can do with a computer. My current obsession is to create an Application Framework that addresses some major problems in current application development: “Where to get an easy to use, extensible Application skeleton and how can I create large scaling Applications, without having fear to end up in crazy deadlock situations”. To achieve this I do fight on three big fields: 
- # Find a set of interfaces which are suitable to be implemented on different UI-Toolkits (Swing, SWT, Echo2/3, Vaadin) AND are easy to use for application development
- # Create different non blocking implementations based on the interface set
- # Create a micro core structure that handles component lifecycle in a multithreaded environment and outside the current JVM borders
-
-If you are interested in my work or you are looking for an enthusiastic and experienced developer, than get in contact with me.
+I am a passionate software developer having fun in coding, engineering and [http://www.flickr.com/photos/30866998@N07/ photography].  Although my current job is focused on Java business development I do enjoy discovering all kind of programming languages, frameworks and operating systems… and nearly everything what you can do with a computer. Motivated by learning every day I love new and interesting techniques, tools and methodologies. Clean code, quality and testing is obvious in all my projects. My current obsession is to discover the boundaries of software scalability and to provide a straightforward access for all who wants to create efficiently applications and a great user experience. I enjoy working in teams of specialist, to use and to profit of the collective intelligence and the knowledge of each individual involved. Being a bit upset to leave the the grate research teams at TU Dresden  I am always looking for new challenges to keep my brain busy and fit. 
 
 Andy Moncsek
