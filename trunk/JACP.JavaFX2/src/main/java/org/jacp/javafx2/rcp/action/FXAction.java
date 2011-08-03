@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2010,2011.
+ * AHCP Project
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+package org.jacp.javafx2.rcp.action;
+
+import java.util.HashMap;
+import java.util.Map;
+import javafx.event.ActionEvent;
+import org.jacp.api.action.IAction;
+
+/**
+ * represents an action which is fired by an component, has a target and a
+ * message targeting the component itself or an other component
+ * 
+ * @author Andy Moncsek
+ */
+public final class FXAction implements IAction<ActionEvent, Object> {
+    
+    
+    private final Map<String, Object> messages = new HashMap<String, Object>();
+    private Object message;
+    private final String sourceId;
+    private ActionEvent event;
+    private String target;
+    
+    public FXAction(final String sourceId) {
+        this.sourceId = sourceId;
+    }
+    
+    public FXAction(final String sourceId, final Object message) {
+        this.sourceId = sourceId;
+        setMessage(message);
+    }
+    
+    public FXAction(final String sourceId, final String targetId, final Object message) {
+        this.sourceId = sourceId;
+        this.target = targetId;
+        setMessage(message);
+    }
+    
+    public void setMessage(Object message) {
+       this.message = message;
+       this.target = this.target !=null?this.target:this.getSourceId();
+       this.getMessageList().put(this.target, message);
+    }
+
+    public void addMessage(String targetId, Object message) {
+       this.target = targetId;
+       this.message = message;
+       this.getMessageList().put(target, message);
+    }
+
+    public Object getLastMessage() {
+       return this.message;
+    }
+
+    public Map<String, Object> getMessageList() {
+       return this.messages;
+    }
+
+    public String getSourceId() {
+        return this.sourceId;
+    }
+
+    public void setActionEvent(ActionEvent event) {
+        this.event = event;
+    }
+
+    public ActionEvent getActionEvent() {
+        return this.event;
+    }
+    @Override
+    public IAction<ActionEvent, Object> clone() {
+        final IAction<ActionEvent, Object> clone = new FXAction(sourceId);
+        clone.setActionEvent(this.event);
+        return clone;
+    }
+
+    public String getTargetId() {
+        return this.target;
+    }
+    
+}
