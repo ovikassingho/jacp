@@ -40,7 +40,6 @@ public class SwingWorkbenchLayout implements
     private boolean menuEnabled;
     private WorkspaceMode workspaceMode;
     private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
-
     private final Map<Layout, Container> toolBars = new ConcurrentHashMap<Layout, Container>();
 
     @Override

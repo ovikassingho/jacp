@@ -191,12 +191,12 @@ public abstract class ASwingComponent implements
                         IAction<ActionEvent, Object> action);
 
         @Override
-        public final boolean isActived() {
+        public final boolean isActivated() {
                 return isActived;
         }
 
         @Override
-        public final void setActived(final boolean isActived) {
+        public final void setActivated(final boolean isActived) {
                 this.isActived = isActived;
         }
 

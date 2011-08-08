@@ -155,7 +155,7 @@ public abstract class ASwingPerspective implements
                                 log("3.4.4.2: subcomponent init with custom action");
                                 initComponent(action, component);
                         } else if (component.isActive()
-                                        && !component.isActived()) {
+                                        && !component.isActivated()) {
                                 log("3.4.4.2: subcomponent init with default action");
                                 initComponent(new SwingAction(
                                                 component.getId(),
@@ -172,7 +172,7 @@ public abstract class ASwingPerspective implements
                         final ISubComponent<ActionListener, ActionEvent, Object> component) {
                 if (component instanceof ASwingComponent) {
                         log("COMPONENT EXECUTE INIT:::" + component.getName());
-                        component.setActived(true);
+                        component.setActivated(true);
                         final ComponentInitWorker tmp = new ComponentInitWorker(
                                         perspectiveLayout
                                                         .getTargetLayoutComponents(),
@@ -473,12 +473,12 @@ public abstract class ASwingPerspective implements
         }
 
         @Override
-        public final boolean isActived() {
+        public final boolean isActivated() {
                 return isActived;
         }
 
         @Override
-        public final void setActived(final boolean isActived) {
+        public final void setActivated(final boolean isActived) {
                 this.isActived = isActived;
         }
 }
