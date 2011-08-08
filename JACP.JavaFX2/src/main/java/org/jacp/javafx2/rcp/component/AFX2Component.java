@@ -38,7 +38,7 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * represents a basic FX2 component to extend from, uses this abstract class to create UI components
  * @author Andy Moncsek
  */
-public class AFX2Component implements IVComponent<Parent, EventHandler, ActionEvent, Object> {
+public abstract class AFX2Component implements IVComponent<Parent, EventHandler, ActionEvent, Object> {
 
     private String id;
     private String target;
@@ -64,20 +64,13 @@ public class AFX2Component implements IVComponent<Parent, EventHandler, ActionEv
         return this.barEntries;
     }
 
-    public void handleMenuEntries(Parent menuBar) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void handleBarEntries(Map<Layout, Parent> bars) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     public String getExecutionTarget() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.target;
     }
 
     public void setExecutionTarget(String target) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.target = target;
     }
 
     public void setParentPerspective(IPerspective<EventHandler, ActionEvent, Object> perspective) {
@@ -164,8 +157,15 @@ public class AFX2Component implements IVComponent<Parent, EventHandler, ActionEv
     public void setObserver(ICoordinator<EventHandler, ActionEvent, Object> observer) {
         this.componentObserver = observer;
     }
-
+    
+    @SuppressWarnings("unchecked")
     public <C> C handle(IAction<ActionEvent, Object> action) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return (C) handleAction(action);
     }
+    /**
+     * 
+     * @param action
+     * @return 
+     */
+    public abstract Parent handleAction(IAction<ActionEvent, Object> action);
 }
