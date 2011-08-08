@@ -180,12 +180,12 @@ public abstract class AStateComponent implements
     public abstract Object handleAction(IAction<ActionEvent, Object> action);
 
     @Override
-    public boolean isActived() {
+    public boolean isActivated() {
 	return isActived;
     }
 
     @Override
-    public void setActived(final boolean isActived) {
+    public void setActivated(final boolean isActived) {
 	this.isActived = isActived;
     }
 
