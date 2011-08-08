@@ -28,29 +28,35 @@ import org.jacp.api.coordinator.ICoordinator;
  * This class represents the JACP FX2 Event listener... this class can be assigned to components, it reacts on actions and notifies other components in JACP 
  * @author Andy Moncsek
  */
-public class FXActionListener implements EventHandler, IActionListener<EventHandler, ActionEvent, Object> {
+public class FX2ActionListener implements EventHandler, IActionListener<EventHandler, ActionEvent, Object> {
     private IAction<ActionEvent, Object> action;
     private ICoordinator<EventHandler, ActionEvent, Object> coordinator;
     
+    public FX2ActionListener(final IAction<ActionEvent, Object> action, final ICoordinator<EventHandler, ActionEvent, Object> coordinator) {
+        this.action = action;
+        this.coordinator = coordinator;
+    }
+    
     
     public void notifyComponents(IAction<ActionEvent, Object> action) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       coordinator.handle(action);
     }
 
     public void setAction(IAction<ActionEvent, Object> action) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       this.action = action;
     }
 
     public IAction<ActionEvent, Object> getAction() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return this.action;
     }
 
     public EventHandler getListener() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return this;
     }
 
     public void handle(Event t) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       action.setActionEvent((ActionEvent)t);
+       notifyComponents(action);
     }
     
 }

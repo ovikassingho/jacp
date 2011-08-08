@@ -28,7 +28,7 @@ import org.jacp.api.action.IAction;
  * 
  * @author Andy Moncsek
  */
-public final class FXAction implements IAction<ActionEvent, Object> {
+public final class FX2Action implements IAction<ActionEvent, Object> {
     
     
     private final Map<String, Object> messages = new HashMap<String, Object>();
@@ -37,16 +37,16 @@ public final class FXAction implements IAction<ActionEvent, Object> {
     private ActionEvent event;
     private String target;
     
-    public FXAction(final String sourceId) {
+    public FX2Action(final String sourceId) {
         this.sourceId = sourceId;
     }
     
-    public FXAction(final String sourceId, final Object message) {
+    public FX2Action(final String sourceId, final Object message) {
         this.sourceId = sourceId;
         setMessage(message);
     }
     
-    public FXAction(final String sourceId, final String targetId, final Object message) {
+    public FX2Action(final String sourceId, final String targetId, final Object message) {
         this.sourceId = sourceId;
         this.target = targetId;
         setMessage(message);
@@ -85,7 +85,7 @@ public final class FXAction implements IAction<ActionEvent, Object> {
     }
     @Override
     public IAction<ActionEvent, Object> clone() {
-        final IAction<ActionEvent, Object> clone = new FXAction(sourceId);
+        final IAction<ActionEvent, Object> clone = new FX2Action(sourceId);
         clone.setActionEvent(this.event);
         return clone;
     }
