@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IVComponent;
@@ -38,29 +38,29 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * represents a basic FX2 component to extend from, uses this abstract class to create UI components
  * @author Andy Moncsek
  */
-public abstract class AFX2Component implements IVComponent<Parent, EventHandler, ActionEvent, Object> {
+public abstract class AFX2Component implements IVComponent<Node, EventHandler, ActionEvent, Object> {
 
     private String id;
     private String target;
     private String name;
-    private Parent root;
+    private Node root;
     private boolean active;
     private boolean isActived = false;
     private volatile AtomicBoolean blocked = new AtomicBoolean(false);
     private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(1000);
-    private final Map<Layout, Parent> barEntries = new ConcurrentHashMap<Layout, Parent>();
+    private final Map<Layout, Node> barEntries = new ConcurrentHashMap<Layout, Node>();
     private ICoordinator<EventHandler, ActionEvent, Object> componentObserver;
     private IPerspective<EventHandler, ActionEvent, Object> parentPerspective;
 
-    public void setRoot(Parent root) {
+    public void setRoot(Node root) {
         this.root = root;
     }
 
-    public Parent getRoot() {
+    public Node getRoot() {
         return this.root;
     }
 
-    public Map<Layout, Parent> getBarEntries() {
+    public Map<Layout, Node> getBarEntries() {
         return this.barEntries;
     }
 
@@ -167,5 +167,5 @@ public abstract class AFX2Component implements IVComponent<Parent, EventHandler,
      * @param action
      * @return 
      */
-    public abstract Parent handleAction(IAction<ActionEvent, Object> action);
+    public abstract Node handleAction(IAction<ActionEvent, Object> action);
 }
