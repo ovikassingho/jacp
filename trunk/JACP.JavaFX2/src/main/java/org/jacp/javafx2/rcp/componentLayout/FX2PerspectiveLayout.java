@@ -19,7 +19,7 @@ package org.jacp.javafx2.rcp.componentLayout;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 
 /**
@@ -30,24 +30,24 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  * @author Andy Moncsek
  */
 public class FX2PerspectiveLayout implements
-        IPerspectiveLayout<Parent, Parent> {
+        IPerspectiveLayout<Node, Node> {
 
-    private Parent rootComponent;
-    private final Map<String,Parent> targetComponents = new ConcurrentHashMap<String, Parent>();
+    private Node rootComponent;
+    private final Map<String,Node> targetComponents = new ConcurrentHashMap<String, Node>();
 
-    public void setRootComponent(Parent comp) {
+    public void setRootComponent(Node comp) {
         this.rootComponent = comp;
     }
 
-    public Parent getRootComponent() {
+    public Node getRootComponent() {
        return this.rootComponent;
     }
 
-    public Map<String, Parent> getTargetLayoutComponents() {
+    public Map<String, Node> getTargetLayoutComponents() {
        return targetComponents;
     }
 
-    public void registerTargetLayoutComponent(String id, Parent target) {
+    public void registerTargetLayoutComponent(String id, Node target) {
         targetComponents.put(id, target);
     }
 }

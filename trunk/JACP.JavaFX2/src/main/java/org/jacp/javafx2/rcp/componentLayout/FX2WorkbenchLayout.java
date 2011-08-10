@@ -19,7 +19,7 @@ package org.jacp.javafx2.rcp.componentLayout;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.layout.Region;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
@@ -31,13 +31,13 @@ import org.jacp.api.util.WorkspaceMode;
  * bars; set workbench size
  * @author Andy Moncsek
  */
-public class FX2WorkbenchLayout implements IWorkbenchLayout<Region, Parent> {
+public class FX2WorkbenchLayout implements IWorkbenchLayout<Region, Node> {
     
     private WorkspaceMode workspaceMode;
     private boolean menueEnabled;
     private Region layout;
     private Tupel<Integer,Integer> size;
-    private Map<Layout, Parent> toolbars = new ConcurrentHashMap<Layout, Parent>(); 
+    private Map<Layout, Node> toolbars = new ConcurrentHashMap<Layout, Node>(); 
 
     public WorkspaceMode getWorkspaceMode() {
         return workspaceMode;
@@ -72,11 +72,11 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Region, Parent> {
         return size;
     }
 
-    public void registerToolBar(Layout name, Parent toolBar) {
+    public void registerToolBar(Layout name, Node toolBar) {
        toolbars.put(name, toolBar);
     }
 
-    public Map<Layout, Parent> getToolBars() {
+    public Map<Layout, Node> getToolBars() {
        return toolbars;
     }
     
