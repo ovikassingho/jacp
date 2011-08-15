@@ -48,10 +48,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 
     private final Map<Layout, Node> empty = new HashMap<Layout, Node>();
 
-    @Override
-    protected T call() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
 
     /**
      * find valid target component in perspective
