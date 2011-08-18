@@ -93,7 +93,7 @@ public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node
 			public void run() {
 				// handle
                             //TODO check addComponentByType
-			//	addComponentByType(validContainer, component, bars, menu);
+				addComponentByType(validContainer, component, bars, menu);
 
 			}
 		});
