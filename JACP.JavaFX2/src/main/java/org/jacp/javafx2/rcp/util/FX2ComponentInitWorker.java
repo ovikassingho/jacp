@@ -18,6 +18,7 @@
 package org.jacp.javafx2.rcp.util;
 
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -98,5 +99,43 @@ public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node
 			}
 		});
 
+	}
+        
+        @Override
+	public final void done() {
+		synchronized (component) {
+			try {
+				this.get();
+			} catch (final InterruptedException e) {
+				System.out.println("Exception in Component INIT Worker, Thread interrupted:");
+				e.printStackTrace();
+				// TODO add to error queue and restart thread if
+				// messages in
+				// queue
+			} catch (final ExecutionException e) {
+				System.out.println("Exception in Component INIT Worker, Thread Excecution Exception:");
+				e.printStackTrace();
+				// TODO add to error queue and restart thread if
+				// messages in
+				// queue
+			} catch (final Exception e) {
+				System.out.println("Exception in Component INIT Worker, Thread Exception:");
+				e.printStackTrace();
+				// TODO add to error queue and restart thread if
+				// messages in
+				// queue
+			}
+			component.setBlocked(false);
+			component.setBlocked(false);
+			// check if news messages received while handled in
+			// initialization
+			// worker; if so then start replace worker
+			if (component.hasIncomingMessage()) {
+                            
+                            // TODO add replace worker
+				//new ComponentReplaceWorker(targetComponents, component, bars,
+				//		menu).execute();
+			}
+		}
 	}
 }
