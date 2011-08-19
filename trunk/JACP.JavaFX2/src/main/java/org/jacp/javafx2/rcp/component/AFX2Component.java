@@ -38,7 +38,7 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * represents a basic FX2 component to extend from, uses this abstract class to create UI components
  * @author Andy Moncsek
  */
-public abstract class AFX2Component implements IVComponent<Node, EventHandler, ActionEvent, Object> {
+public abstract class AFX2Component implements IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> {
 
     private String id;
     private String target;
@@ -49,8 +49,8 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler, A
     private volatile AtomicBoolean blocked = new AtomicBoolean(false);
     private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(1000);
     private final Map<Layout, Node> barEntries = new ConcurrentHashMap<Layout, Node>();
-    private ICoordinator<EventHandler, ActionEvent, Object> componentObserver;
-    private IPerspective<EventHandler, ActionEvent, Object> parentPerspective;
+    private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentObserver;
+    private IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> parentPerspective;
 
     public void setRoot(Node root) {
         this.root = root;
@@ -73,11 +73,11 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler, A
         this.target = target;
     }
 
-    public void setParentPerspective(IPerspective<EventHandler, ActionEvent, Object> perspective) {
+    public void setParentPerspective(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
         this.parentPerspective = perspective;
     }
 
-    public IPerspective<EventHandler, ActionEvent, Object> getParentPerspective() {
+    public IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> getParentPerspective() {
         return this.parentPerspective;
     }
 
@@ -112,7 +112,7 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler, A
         this.blocked.set(blocked);
     }
 
-    public IActionListener<EventHandler, ActionEvent, Object> getActionListener() {
+    public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
         return new FX2ActionListener(new FX2Action(id), componentObserver);
     }
 
@@ -154,7 +154,7 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler, A
         this.name = name;
     }
 
-    public void setObserver(ICoordinator<EventHandler, ActionEvent, Object> observer) {
+    public void setObserver(ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
         this.componentObserver = observer;
     }
     

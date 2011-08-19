@@ -29,18 +29,18 @@ import org.jacp.api.component.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentAddWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler, ActionEvent, Object>> {
+public class FX2ComponentAddWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
 
     private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler, ActionEvent, Object> component;
+    private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
 
-    public FX2ComponentAddWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler, ActionEvent, Object> component) {
+    public FX2ComponentAddWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component) {
         this.targetComponents = targetComponents;
         this.component = component;
     }
 
     @Override
-    protected IVComponent<Node, EventHandler, ActionEvent, Object> call() throws Exception {
+    protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call() throws Exception {
         return null;
     }
 

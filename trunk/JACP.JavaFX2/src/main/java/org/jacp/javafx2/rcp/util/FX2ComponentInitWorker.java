@@ -32,15 +32,15 @@ import org.jacp.api.componentLayout.Layout;
  * Background Worker to execute components; handle method to init component
  * @author Andy Moncsek
  */
-public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler, ActionEvent, Object>> {
+public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
 
     private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler, ActionEvent, Object> component;
+    private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
     private final Map<Layout, Node> bars;
     private final IAction<ActionEvent, Object> action;
     private final MenuBar menu;
 
-    public FX2ComponentInitWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler, ActionEvent, Object> component, final Map<Layout, Node> bars, final IAction<ActionEvent, Object> action, final MenuBar menu) {
+    public FX2ComponentInitWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component, final Map<Layout, Node> bars, final IAction<ActionEvent, Object> action, final MenuBar menu) {
         this.targetComponents = targetComponents;
         this.component = component;
         this.action = action;
@@ -49,7 +49,7 @@ public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node
     }
 
     @Override
-    protected IVComponent<Node, EventHandler, ActionEvent, Object> call() throws Exception {
+    protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call() throws Exception {
         synchronized (component) {
 			component.setBlocked(true);
 			log("3.4.4.2.1: subcomponent handle init START: "
@@ -84,7 +84,7 @@ public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node
 	 */
 	private void addComonent(
 			final Node validContainer,
-			final IVComponent<Node, EventHandler, ActionEvent, Object> component,
+			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
 			final Map<Layout, Node> bars, final MenuBar menu)
 			throws InterruptedException{
 

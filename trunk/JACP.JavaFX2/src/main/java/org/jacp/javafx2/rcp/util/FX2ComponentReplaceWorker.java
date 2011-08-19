@@ -35,10 +35,10 @@ import org.jacp.api.componentLayout.Layout;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler, ActionEvent, Object>> {
+public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
 
     private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler, ActionEvent, Object> component;
+    private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
     private final Map<Layout, Node> bars;
     private final MenuBar menu;
     private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
@@ -46,7 +46,7 @@ public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<N
 
     public FX2ComponentReplaceWorker(
             final Map<String, Node> targetComponents,
-            final IVComponent<Node, EventHandler, ActionEvent, Object> component,
+            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
             final Map<Layout, Node> bars, final MenuBar menu) {
         this.targetComponents = targetComponents;
         this.component = component;
@@ -55,14 +55,14 @@ public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<N
     }
 
     @Override
-    protected IVComponent<Node, EventHandler, ActionEvent, Object> call() throws Exception {
+    protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call() throws Exception {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected final void done() {
         try {
-            final IVComponent<Node, EventHandler, ActionEvent, Object> component = this.get();
+            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = this.get();
             component.setBlocked(false);
         } catch (final InterruptedException e) {
             System.out.println("Exception in Component REPLACE Worker, Thread interrupted:");

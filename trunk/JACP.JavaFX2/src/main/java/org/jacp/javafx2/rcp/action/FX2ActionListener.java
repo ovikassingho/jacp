@@ -18,7 +18,6 @@
 package org.jacp.javafx2.rcp.action;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -28,11 +27,11 @@ import org.jacp.api.coordinator.ICoordinator;
  * This class represents the JACP FX2 Event listener... this class can be assigned to components, it reacts on actions and notifies other components in JACP 
  * @author Andy Moncsek
  */
-public class FX2ActionListener implements EventHandler, IActionListener<EventHandler, ActionEvent, Object> {
+public class FX2ActionListener implements EventHandler<ActionEvent>, IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> {
     private IAction<ActionEvent, Object> action;
-    private ICoordinator<EventHandler, ActionEvent, Object> coordinator;
+    private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
     
-    public FX2ActionListener(final IAction<ActionEvent, Object> action, final ICoordinator<EventHandler, ActionEvent, Object> coordinator) {
+    public FX2ActionListener(final IAction<ActionEvent, Object> action, final ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator) {
         this.action = action;
         this.coordinator = coordinator;
     }
@@ -50,12 +49,12 @@ public class FX2ActionListener implements EventHandler, IActionListener<EventHan
        return this.action;
     }
 
-    public EventHandler getListener() {
+    public EventHandler<ActionEvent> getListener() {
        return this;
     }
 
-    public void handle(Event t) {
-       action.setActionEvent((ActionEvent)t);
+    public void handle(ActionEvent t) {
+       action.setActionEvent(t);
        notifyComponents(action);
     }
     
