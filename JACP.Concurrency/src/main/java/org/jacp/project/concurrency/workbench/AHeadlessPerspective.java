@@ -70,17 +70,18 @@ public abstract class AHeadlessPerspective implements
 		this.active = active;
 
 	}
-
+	
 	@Override
-	public void setActived(boolean isActive) {
+	public void setActivated(boolean isActive) {
 		this.isActived = isActive;
-
+		
 	}
 
 	@Override
-	public boolean isActived() {
+	public boolean isActivated() {
 		return this.isActived;
 	}
+
 
 	@Override
 	public String getName() {
