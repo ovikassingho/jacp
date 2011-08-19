@@ -26,14 +26,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
-import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.ICoordinator;
 
 /**
  * Observer handles message notification and notifies correct components
  * @author Andy Moncsek
  */
-public abstract class AFX2Coordinator extends Thread implements ICoordinator<EventHandler, ActionEvent, Object> {
+public abstract class AFX2Coordinator extends Thread implements ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
@@ -126,7 +125,7 @@ public abstract class AFX2Coordinator extends Thread implements ICoordinator<Eve
        messages.add(action);
     }
 
-    public <P extends IComponent<EventHandler, ActionEvent, Object>> P getObserveableById(String id, List<P> components) {
+    public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> P getObserveableById(String id, List<P> components) {
        		for (int i = 0; i < components.size(); i++) {
 			final P p = components.get(i);
 			if (p.getId().equals(id)) {

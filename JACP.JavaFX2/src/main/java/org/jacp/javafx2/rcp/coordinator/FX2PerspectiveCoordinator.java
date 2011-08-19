@@ -30,7 +30,7 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  */
 public class FX2PerspectiveCoordinator extends AFX2Coordinator  implements
-	IPerspectiveCoordinator<EventHandler, ActionEvent, Object> {
+	IPerspectiveCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
 
     public void handleMessage(String id, IAction<ActionEvent, Object> action) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -40,23 +40,23 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator  implements
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public <P extends IComponent<EventHandler, ActionEvent, Object>> void handleActive(P component, IAction<ActionEvent, Object> action) {
+    public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleActive(P component, IAction<ActionEvent, Object> action) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public <P extends IComponent<EventHandler, ActionEvent, Object>> void handleInActive(P component, IAction<ActionEvent, Object> action) {
+    public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleInActive(P component, IAction<ActionEvent, Object> action) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void delegateTargetChange(String target, ISubComponent<EventHandler, ActionEvent, Object> component) {
+    public void delegateTargetChange(String target, ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void addPerspective(IPerspective<EventHandler, ActionEvent, Object> perspective) {
+    public void addPerspective(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void removePerspective(IPerspective<EventHandler, ActionEvent, Object> perspective) {
+    public void removePerspective(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

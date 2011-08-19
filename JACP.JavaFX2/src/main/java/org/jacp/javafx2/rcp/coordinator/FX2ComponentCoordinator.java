@@ -32,30 +32,30 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  */
 public class FX2ComponentCoordinator extends AFX2Coordinator implements
-        IComponentCoordinator<EventHandler, ActionEvent, Object> {
+        IComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
 
-    private List<ISubComponent<EventHandler, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler, ActionEvent, Object>>();
-    private final IPerspective<EventHandler, ActionEvent, Object> perspective;
+    private List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>>();
+    private final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective;
 
-    public FX2ComponentCoordinator(final IPerspective<EventHandler, ActionEvent, Object> perspective) {
+    public FX2ComponentCoordinator(final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
         setDaemon(true);
         this.perspective = perspective;
     }
 
-    public FX2ComponentCoordinator(final IPerspective<EventHandler, ActionEvent, Object> perspective, final List<ISubComponent<EventHandler, ActionEvent, Object>> components) {
+    public FX2ComponentCoordinator(final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective, final List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> components) {
         setDaemon(true);
         this.perspective = perspective;
         this.components = components;
     }
 
     @Override
-    public void addComponent(ISubComponent component) {
+    public void addComponent(ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
         component.setObserver(this);
         components.add(component);
     }
 
     @Override
-    public void removeComponent(ISubComponent component) {
+    public void removeComponent(ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
         component.setObserver(null);
         components.remove(component);
 
@@ -64,7 +64,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
     @Override
     public void handleMessage(String targetId, IAction<ActionEvent, Object> action) {
         synchronized (action) {
-            final ISubComponent<EventHandler, ActionEvent, Object> component = getObserveableById(getTargetComponentId(targetId), components);
+            final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component = getObserveableById(getTargetComponentId(targetId), components);
             log(" //1.1// component message to: " + action.getTargetId());
             if (component != null) {
                 log(" //1.1.1// component HIT: " + action.getTargetId());
@@ -86,7 +86,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
      */
     private void handleComponentHit(final String targetId,
             final IAction<ActionEvent, Object> action,
-            final ISubComponent<EventHandler, ActionEvent, Object> component) {
+            final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
         final IAction<ActionEvent, Object> actionClone = getValidAction(action,
                 targetId, action.getMessageList().get(targetId));
         if (component.isActive()) {
@@ -134,21 +134,21 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
     }
 
     @Override
-    public final <P extends IComponent<EventHandler, ActionEvent, Object>> void handleActive(
+    public final <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleActive(
             final P component, final IAction<ActionEvent, Object> action) {
         log(" //1.1.1.1.1// component " + action.getTargetId()
                 + " delegate to perspective: " + perspective.getId());
         perspective.handleAndReplaceComponent(action,
-                (ISubComponent<EventHandler, ActionEvent, Object>) component);
+                (ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>) component);
 
     }
 
     @Override
-    public final <P extends IComponent<EventHandler, ActionEvent, Object>> void handleInActive(
+    public final <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleInActive(
             final P component, final IAction<ActionEvent, Object> action) {
         component.setActive(true);
         perspective.initComponent(action,
-                (ISubComponent<EventHandler, ActionEvent, Object>) component);
+                (ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>) component);
 
     }
 
