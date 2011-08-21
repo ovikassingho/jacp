@@ -17,6 +17,9 @@
  */
 package org.jacp.javafx2.rcp.util;
 
+import java.awt.Container;
+import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -27,6 +30,7 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
+
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -86,6 +90,47 @@ public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<N
             component.setBlocked(false);
         }
 
+    }
+    
+    /**
+     * run in Main Thread
+     */
+    protected final void process(final List<ChunkDTO> chunks) {
+            // process method runs in EventDispatchThread
+            for (int i=0;i<chunks.size();i++) {
+                    final ChunkDTO dto = chunks.get(i);
+                    final Node parent = dto.getParent();
+                    final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = dto
+                                    .getComponent();
+                    // TODO decide if menu and bars are always handled or
+                    // only at start
+                    // time
+                    // component.handleBarEntries(dto.getBars());
+                    // component.handleMenuEntries(dto.getMenu());
+                    final Node previousContainer = dto
+                                    .getPreviousContainer();
+                    final String currentTaget = dto.getCurrentTaget();
+                    // remove old view
+                    log(" //1.1.1.1.3// handle old component remove: "
+                                    + component.getName());
+                    if (parent != null && previousContainer != null) {
+                            handleOldComponentRemove(parent,
+                                            previousContainer);
+                    }
+
+                    final Node root = component.getRoot();
+                    if (root != null) {
+                            // add new view
+                            log(" //1.1.1.1.4// handle new component insert: "
+                                            + component.getName());
+                            root.setVisible(true);
+                            handleNewComponentValue(component,
+                                            targetComponents, parent,
+                                            currentTaget);
+                    }
+
+            }
+            releaseLock();
     }
 
     /**
