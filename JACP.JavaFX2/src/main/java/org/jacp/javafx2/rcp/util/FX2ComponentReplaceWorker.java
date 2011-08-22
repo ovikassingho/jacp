@@ -17,19 +17,25 @@
  */
 package org.jacp.javafx2.rcp.util;
 
-import java.awt.Container;
-import java.awt.event.ActionListener;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
+
+
 
 
 /**
@@ -91,6 +97,33 @@ public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<N
         }
 
     }
+    
+    private void removeComponentValue(
+            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+            final Node previousContainer) {
+    // bar entries
+    final Map<Layout, Node> componentBarEnries = component
+                    .getBarEntries();
+    // when global bars and local bars are defined
+    // TODO handle menu bar entries
+
+    if (previousContainer == null) {
+            releaseLock();
+    } else {
+            final Node parent = previousContainer.getParent();
+            if (parent != null) {
+            	 Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                            	getChildren(parent).remove(component
+                                                    .getRoot());
+                            }
+                    });
+            }
+            releaseLock();
+    }
+
+}
     
     /**
      * run in Main Thread

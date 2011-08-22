@@ -190,7 +190,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
             final Node uiComponent, final String name) {
         uiComponent.setVisible(true);
         if (validContainer != null) {
-            final ObservableList children = getChildren(validContainer);
+            final ObservableList<Node> children = getChildren(validContainer);
             children.add(uiComponent);
         }
 
@@ -204,7 +204,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      */
     protected void handleOldComponentRemove(final Node parent,
             final Node currentContainer) {
-        final ObservableList children = getChildren(parent);
+        final ObservableList<Node> children = getChildren(parent);
         children.remove(currentContainer);
     }
 
@@ -337,16 +337,16 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      * @param node
      * @return 
      */
-    private ObservableList getChildren(Node node) {
+    @SuppressWarnings("unchecked") ObservableList<Node> getChildren(Node node) {
         if (node instanceof Parent) {
             Parent tmp = (Parent) node;
             Method protectedChildrenMethod;
-            ObservableList returnValue = null;
+            ObservableList<Node> returnValue = null;
             try {
                 protectedChildrenMethod = Parent.class.getDeclaredMethod("getChildren", null);
                 protectedChildrenMethod.setAccessible(true);
 
-                returnValue = (ObservableList) protectedChildrenMethod.invoke(tmp, null);
+                returnValue = (ObservableList<Node>) protectedChildrenMethod.invoke(tmp, null);
 
             } catch (NoSuchMethodException ex) {
                 Logger.getLogger(AFX2ComponentWorker.class.getName()).log(Level.SEVERE, null, ex);
