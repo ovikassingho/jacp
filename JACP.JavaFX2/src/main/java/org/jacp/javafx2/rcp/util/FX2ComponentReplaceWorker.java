@@ -17,26 +17,21 @@
  */
 package org.jacp.javafx2.rcp.util;
 
-
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
+
+import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
-
-
-
 
 /**
  * Background Worker to execute components handle method to replace or add the
@@ -45,142 +40,212 @@ import org.jacp.api.componentLayout.Layout;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentReplaceWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
+public class FX2ComponentReplaceWorker
+		extends
+		AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
 
-    private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
-    private final Map<Layout, Node> bars;
-    private final MenuBar menu;
-    private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
-            1);
+	private final Map<String, Node> targetComponents;
+	private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
+	private final Map<Layout, Node> bars;
+	private final MenuBar menu;
+	private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
+			1);
 
-    public FX2ComponentReplaceWorker(
-            final Map<String, Node> targetComponents,
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
-            final Map<Layout, Node> bars, final MenuBar menu) {
-        this.targetComponents = targetComponents;
-        this.component = component;
-        this.bars = bars;
-        this.menu = menu;
-    }
+	public FX2ComponentReplaceWorker(
+			final Map<String, Node> targetComponents,
+			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+			final Map<Layout, Node> bars, final MenuBar menu) {
+		this.targetComponents = targetComponents;
+		this.component = component;
+		this.bars = bars;
+		this.menu = menu;
+	}
 
-    @Override
-    protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call()
+			throws Exception {
+		synchronized (component) {
+			try {
+				component.setBlocked(true);
+				releaseLock();
+				while (component.hasIncomingMessage()) {
+					final IAction<ActionEvent, Object> myAction = component
+							.getNextIncomingMessage();
+					waitOnLock();
+					log(" //1.1.1.1.1// handle replace component BEGIN: "
+							+ component.getName());
 
-    @Override
-    protected final void done() {
-        try {
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = this.get();
-            component.setBlocked(false);
-        } catch (final InterruptedException e) {
-            System.out.println("Exception in Component REPLACE Worker, Thread interrupted:");
-            e.printStackTrace();
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
-        } catch (final ExecutionException e) {
-            System.out.println("Exception in Component REPLACE Worker, Thread Excecution Exception:");
-            e.printStackTrace();
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
-        } catch (final Exception e) {
-            System.out.println("Exception in Component REPLACE Worker, Thread Exception:");
-            e.printStackTrace();
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
-        } finally {
-            component.setBlocked(false);
-        }
+					final Node previousContainer = component.getRoot();
+					final String currentTaget = component.getExecutionTarget();
+					// run code
+					log(" //1.1.1.1.2// handle component: "
+							+ component.getName());
+					prepareAndHandleComponent(component, myAction);
+					log(" //1.1.1.1.3// publish component: "
+							+ component.getName());
+					if (component.isActive()) {
+						publishComponentValue(previousContainer, currentTaget);
+					} else {
+						// unregister component
+						removeComponentValue(component, previousContainer);
+					}
 
-    }
-    
-    private void removeComponentValue(
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
-            final Node previousContainer) {
-    // bar entries
-    final Map<Layout, Node> componentBarEnries = component
-                    .getBarEntries();
-    // when global bars and local bars are defined
-    // TODO handle menu bar entries
+				}
+			} finally {
+				component.setBlocked(false);
+			}
 
-    if (previousContainer == null) {
-            releaseLock();
-    } else {
-            final Node parent = previousContainer.getParent();
-            if (parent != null) {
-            	 Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                            	getChildren(parent).remove(component
-                                                    .getRoot());
-                            }
-                    });
-            }
-            releaseLock();
-    }
+		}
+		return component;
+	}
 
-}
-    
-    /**
-     * run in Main Thread
-     */
-    protected final void process(final List<ChunkDTO> chunks) {
-            // process method runs in EventDispatchThread
-            for (int i=0;i<chunks.size();i++) {
-                    final ChunkDTO dto = chunks.get(i);
-                    final Node parent = dto.getParent();
-                    final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = dto
-                                    .getComponent();
-                    // TODO decide if menu and bars are always handled or
-                    // only at start
-                    // time
-                    // component.handleBarEntries(dto.getBars());
-                    // component.handleMenuEntries(dto.getMenu());
-                    final Node previousContainer = dto
-                                    .getPreviousContainer();
-                    final String currentTaget = dto.getCurrentTaget();
-                    // remove old view
-                    log(" //1.1.1.1.3// handle old component remove: "
-                                    + component.getName());
-                    if (parent != null && previousContainer != null) {
-                            handleOldComponentRemove(parent,
-                                            previousContainer);
-                    }
+	@Override
+	protected final void done() {
+		try {
+			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = this
+					.get();
+			component.setBlocked(false);
+		} catch (final InterruptedException e) {
+			System.out
+					.println("Exception in Component REPLACE Worker, Thread interrupted:");
+			e.printStackTrace();
+			// TODO add to error queue and restart thread if
+			// messages in
+			// queue
+		} catch (final ExecutionException e) {
+			System.out
+					.println("Exception in Component REPLACE Worker, Thread Excecution Exception:");
+			e.printStackTrace();
+			// TODO add to error queue and restart thread if
+			// messages in
+			// queue
+		} catch (final Exception e) {
+			System.out
+					.println("Exception in Component REPLACE Worker, Thread Exception:");
+			e.printStackTrace();
+			// TODO add to error queue and restart thread if
+			// messages in
+			// queue
+		} finally {
+			component.setBlocked(false);
+		}
 
-                    final Node root = component.getRoot();
-                    if (root != null) {
-                            // add new view
-                            log(" //1.1.1.1.4// handle new component insert: "
-                                            + component.getName());
-                            root.setVisible(true);
-                            handleNewComponentValue(component,
-                                            targetComponents, parent,
-                                            currentTaget);
-                    }
+	}
 
-            }
-            releaseLock();
-    }
+	private void removeComponentValue(
+			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+			final Node previousContainer) {
+		// bar entries
+		// final Map<Layout, Node> componentBarEnries =
+		// component.getBarEntries();
+		// when global bars and local bars are defined
+		// TODO handle menu bar entries
 
-    /**
-     * run in thread
-     */
-    private void waitOnLock() {
-        try {
-            lock.take();
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+		if (previousContainer == null) {
+			releaseLock();
+		} else {
+			final Node parent = previousContainer.getParent();
+			if (parent != null) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						getChildren(parent).remove(component.getRoot());
+					}
+				});
+			}
+			releaseLock();
+		}
 
-    /**
-     * run in thread
-     */
-    private void releaseLock() {
-        lock.add(true);
-    }
+	}
+
+	/**
+	 * run in thread
+	 * 
+	 * @param previousContainer
+	 * @param currentTaget
+	 */
+	private void publishComponentValue(final Node previousContainer,
+			final String currentTaget) {
+		boolean publish = false;
+		Node parent = null;
+		if (previousContainer == null) {
+			releaseLock();
+		} else {
+			parent = previousContainer.getParent();
+			if (parent == null) {
+				publish = true;
+			} else if (!currentTaget.equals(component.getExecutionTarget())
+					|| !previousContainer.equals(component.getRoot())) {
+				publish = true;
+			} else {
+				releaseLock();
+			}
+		}
+		if (publish) {
+			process(new ChunkDTO(parent, previousContainer, targetComponents,
+					currentTaget, component, bars, menu));
+		}
+	}
+
+	/**
+	 * run in Main Thread
+	 */
+	protected final void process(final ChunkDTO... chunks) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				// process method runs in EventDispatchThread
+				for (int i = 0; i < chunks.length; i++) {
+					final ChunkDTO dto = chunks[i];
+					final Node parent = dto.getParent();
+					final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = dto
+							.getComponent();
+					// TODO decide if menu and bars are always handled or
+					// only at start
+					// time
+					// component.handleBarEntries(dto.getBars());
+					// component.handleMenuEntries(dto.getMenu());
+					final Node previousContainer = dto.getPreviousContainer();
+					final String currentTaget = dto.getCurrentTaget();
+					// remove old view
+					log(" //1.1.1.1.3// handle old component remove: "
+							+ component.getName());
+					if (parent != null && previousContainer != null) {
+						handleOldComponentRemove(parent, previousContainer);
+					}
+
+					final Node root = component.getRoot();
+					if (root != null) {
+						// add new view
+						log(" //1.1.1.1.4// handle new component insert: "
+								+ component.getName());
+						root.setVisible(true);
+						handleNewComponentValue(component, targetComponents,
+								parent, currentTaget);
+					}
+
+				}
+			}
+		});
+		releaseLock();
+
+	}
+
+	/**
+	 * run in thread
+	 */
+	private void waitOnLock() {
+		try {
+			lock.take();
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * run in thread
+	 */
+	private void releaseLock() {
+		lock.add(true);
+	}
 }
