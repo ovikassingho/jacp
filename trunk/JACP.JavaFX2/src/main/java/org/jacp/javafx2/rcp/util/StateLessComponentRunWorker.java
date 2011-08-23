@@ -28,17 +28,15 @@ import org.jacp.api.component.IBGComponent;
 import org.jacp.javafx2.rcp.action.FX2Action;
 
 /**
- * this class handles running stateful background components
+ * this class handles running stateless background components
  * 
  * @author Andy Moncsek
  * 
  */
-public class StateComponentRunWorker
-		extends
+public class StateLessComponentRunWorker extends
 		AFX2ComponentWorker<IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object>> {
 	private final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> component;
-	
-	public StateComponentRunWorker(final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+	public StateLessComponentRunWorker(final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
 		this.component = component;
 	}
 	@Override
@@ -49,32 +47,16 @@ public class StateComponentRunWorker
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {
 				final IAction<ActionEvent, Object> myAction = comp
-						.getNextIncomingMessage();
-				comp.setHandleTarget(myAction.getSourceId());
-				final String targetCurrent = comp.getExecutionTarget();
+						.getNextIncomingMessage();;
 				final Object value = comp.handle(myAction);
 				final String targetId = comp.getHandleTargetAndClear();
 				delegateReturnValue(comp, targetId, value);
-				checkAndHandleTargetChange(comp, targetCurrent);
 			}
 			comp.setBlocked(false);
 		}
 		return comp;
 	}
-	/**
-	 * check if target has changed
-	 * @param comp
-	 * @param currentTaget
-	 */
-	private void checkAndHandleTargetChange(
-			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp,
-			final String currentTaget) {
-		final String targetNew = comp.getExecutionTarget();
-		if (!targetNew.equals(currentTaget)) {
-			changeComponentTarget(comp);
-		}
-	}
-
+	
 	/**
 	 * delegate components handle return value to specified target
 	 * 
@@ -94,7 +76,7 @@ public class StateComponentRunWorker
 	}
 
 	@Override
-	protected final void done() {
+	protected void done() {
 		try {
 			this.get();
 		} catch (final InterruptedException e) {
@@ -107,5 +89,6 @@ public class StateComponentRunWorker
 			// release lock
 			component.setBlocked(false);
 		}
+
 	}
 }
