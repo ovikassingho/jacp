@@ -9,7 +9,7 @@
 	
 	<title>Java Asynchronous Client Platform</title>
 	
-	<meta name="description" content="Trivadis Techevent September 2011, Why MapReduce matters ">
+	<meta name="description" content="The Java Asynchronous Client Platform (JACP) ">
 	<meta name="author" content="Andy Moncsek">
 	<meta name="viewport" content="width=1024">
 	
@@ -41,7 +41,26 @@
 		<h4>http://code.google.com/p/jacp/</h4>
 	</p>
 </div>
-
+<div class="slide" id="me-overview">
+<h2>Name: Andy Moncsek</h2>
+<ul>
+		<li class="slide" id="me-s1">
+			<h3>age: 30</h3>
+		</li>
+		<li class="slide" id="me-s2">
+			<h3>father, husband, developer</h3>
+		</li>
+		<li class="slide" id="me-s3">
+			<h3>since 2003 active it developer</h3>
+		</li>
+		<li class="slide" id="me-s4">
+			<h3>since 2006 Diplom Medieninformatik (TU-Dresden)</h3>
+		</li>
+		<li class="slide" id="me-s5">
+			<h3>since February 2011 in Switzerland</h3>
+		</li>
+</ul>
+</div>
 <div class="slide" id="jacp-overview">
 	<h2>Overview</h2>
 	<ul>
@@ -52,7 +71,7 @@
 			<h3>since 2010 officially an open source project under Apache License 2.0</h3>
 		</li>
 		<li class="slide" id="third-overview">
-			<h3>idea was to create a simple to use counterpart to Eclipse RCP</h3>
+			<h3>idea was to create a simple counterpart to Eclipse RCP</h3>
 		</li>
 		<li class="slide" id="fourth-overview">
 			<h3>since than the ideas and goals of the project were extended, it became my personal research project ;-)</h3>
@@ -62,22 +81,23 @@
 
 <div class="slide" id="counterpart-slide">
 	<h2>Why create a counterpart to Eclipse RCP?</h2>
-	<p><h3>Although Eclipse RCP is a great, powerful and established platform the complexity can get a substantial risk</p></h3>
+	<h3>Although Eclipse RCP is a great, powerful and established platform the complexity can get a substantial risk</h3>
 	<ul>
 		<li class="slide" id="counterpart-s1">
-			<h3>back in 2005 we had at TU Dresden a project to bring Eclipse RCP to web, when Eclipse RAP was released the project was canceled </h3>
+			<h3>(back in 2005 we had at TU Dresden a project to bring Eclipse RCP to web, when Eclipse RAP was released the project was canceled )</h3>
 		</li>
 		<li class="slide" id="counterpart-s2">
-			<h3>a lot of student workers participated in this project and the quality got more and more worse</h3>
+			<h3>(a lot of student workers participated in this project and the quality got more and more worse)</h3>
 		</li>
 		<li class="slide" id="counterpart-s3">
-			<h3><strong>major problem:</strong> basic concepts are easy to understand but beyond workspace, perspective, view and editor students created "self made" solutions </h3>
+			<h3><strong>major problem:</strong> basic concepts are easy to understand but beyond workspace, perspective, view and editor many developers creating "self made" solutions </h3>
 		</li>
 		<li class="slide" id="counterpart-s4">
 			<h3>currently Eclipse Foundation is working on <a href="http://www.eclipse.org/e4/">e4</a> project to address most of those complexity issues </h3>
 		</li>
 	</ul>
 </div>
+
 <div class="slide" id="goals">
 	<h2>What are the goals of JACP?</h2>
 	<ol>
@@ -87,13 +107,13 @@
 		</li>
 		<ul>
 				<li class="slide" id="goals-s1-g1">
-					 it defines a minimal set of abstract components to create workbench, perspectives and components
+					 create workbench, perspectives and components
 				</li>
 				<li class="slide" id="goals-s1-g2">
-					 it defines communication between components
+					 communication between components
 				</li>
 				<li class="slide" id="goals-s1-g3">
-					it is basic enough to be implemented in different Toolkits like Swing, SWT, Vaadin or JavaFX 2.0
+					can be implemented in different Toolkits like Swing, SWT, Vaadin or JavaFX 2.0
 				</li>
 		</ul>
 		<li class="slide" id="goals-s2">
@@ -115,35 +135,39 @@
 		</li>
 		<ul>
 				<li class="slide" id="goals-s3-g1">
-					 every component is handled on message call
+					make components executable outside source JVM
 				</li>
 				<li class="slide" id="goals-s3-g2">
-					 components are handled in separate threads
+					 create loadbalancing / scheduling to decide where to run component
 				</li>
 		</ul>
 	</ol>
 </div>
-<div class="slide" id="basics-concurrency">
-	<h2>What do I need to know before I start using MapReduce</h2>
-	<p> You should know what Design Model is applicapable to our problem</p>
+
+
+<div class="slide" id="overview-jacp">
+<h2>What is JACP?</h2>
 	<ul>
-		<li class="slide" id="how-to-cook-s1-p2">
-			In terms of concurrency we distinguish <strong>Task Decomposition</strong> and <strong>Data Decomposition</strong>
-		</li>
-		<li class="slide" id="how-to-cook-s2-p2">
-			<h3>Task Decomposition: </h3> <br/><img src="../images/linear.png" width="25%" alt="linear"><br/> can be reorganized to<br/> <img src="../images/parallel.png" width="25%"   alt="parallel"> 
-		</li>
-		<li class="slide" id="how-to-cook-s3-p2">
-			<h3>Data Decomposition: </h3> a set of independent objects (data can be devided into chunks) 
-			<br/>
-			<br/><img src="../images/datacomp.png" width="25%" alt="linear">
-		</li>
-		<li class="slide" id="how-to-cook-s4-p2">
-			<h3>To use MapReduce a Data Decomposition must be applicable !</h3>
+		<li class="slide" id="overview-jacp-s1-g1">
+					<h3>basically it is a set of interfaces and implementations in Swing, Echo2 and JavaFX2</h3>
+					<br/>
+					<br/>
+					<img src="../images/interfaces.png" width="50%" alt="interface">
 		</li>
 	</ul>
 </div>
 
+<div class="slide" id="look-jacp">
+<h2>How does JACP look like?</h2>
+	<ul>
+		<li class="slide" id="look-jacp-s1-g1">
+					<h3>typical... with workbench, perspective and components; But! with a message bus</h3>
+					<br/>
+					<br/>
+					<img src="../images/structure.png" width="50%" alt="interface">
+		</li>
+	</ul>
+</div>
 
 <p class="deck-status">
 	<span class="deck-status-current"></span>
