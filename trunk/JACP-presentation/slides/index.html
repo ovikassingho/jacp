@@ -2,205 +2,204 @@
 <!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	
-	<title>Java Asynchronous Client Platform</title>
-	
-	<meta name="description" content="The Java Asynchronous Client Platform (JACP) ">
-	<meta name="author" content="Andy Moncsek">
-	<meta name="viewport" content="width=1024">
-	
-	<!-- Core and extension CSS files -->
-	<link rel="stylesheet" href="../core/deck.core.css">
-	<link rel="stylesheet" href="../extensions/goto/deck.goto.css">
-	<link rel="stylesheet" href="../extensions/menu/deck.menu.css">
-	<link rel="stylesheet" href="../extensions/navigation/deck.navigation.css">
-	<link rel="stylesheet" href="../extensions/status/deck.status.css">
-	<link rel="stylesheet" href="../extensions/hash/deck.hash.css">
-	
-	<!-- Theme CSS files (menu swaps these out) -->
-	<link rel="stylesheet" id="style-theme-link" href="../themes/style/home.css">
-	<link rel="stylesheet" id="transition-theme-link" href="../themes/transition/horizontal-slide.css">
-	
-	<!-- Custom CSS just for this page -->
-	<link rel="stylesheet" href="slides.css">
-	
-	<script src="../modernizr.custom.js"></script>
-</head>
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		
+		<title>Java Asynchronous Client Platform</title>
+		
+		<meta name="description"
+			content="The Java Asynchronous Client Platform (JACP) ">
+		<meta name="author" content="Andy Moncsek">
+		<meta name="viewport" content="width=1024">
+		
+		<!-- Core and extension CSS files -->
+		<link rel="stylesheet" href="../core/deck.core.css">
+		<link rel="stylesheet" href="../extensions/goto/deck.goto.css">
+		<link rel="stylesheet" href="../extensions/menu/deck.menu.css">
+		<link rel="stylesheet"
+			href="../extensions/navigation/deck.navigation.css">
+		<link rel="stylesheet" href="../extensions/status/deck.status.css">
+		<link rel="stylesheet" href="../extensions/hash/deck.hash.css">
+		
+		<!-- Theme CSS files (menu swaps these out) -->
+		<link rel="stylesheet" id="style-theme-link"
+			href="../themes/style/web-2.0.css">
+		<link rel="stylesheet" id="transition-theme-link"
+			href="../themes/transition/horizontal-slide.css">
+		
+		<!-- Custom CSS just for this page -->
+		<link rel="stylesheet" href="slides.css">
+		<link rel="stylesheet" href="../themes/style/introduction.css">
+		<link rel="stylesheet" href="../themes/style/common.css">
+		
+		<script src="../modernizr.custom.js"></script>
+	</head>
 
-<body class="deck-container" >
+<body class="introduction">
+	<article class="deck-container">
 
 
-<div class="slide" id="title-slide">
-	<h1>The Java Asynchronous Client Platform (JACP)</h1>
-	<p style="padding-top:50px;">
-		<h3>by Andy Moncsek</h3>
-		<h4>http://code.google.com/p/jacp/</h4>
+	<div class="slide" id="title-slide">
+		<h1>The Java Asynchronous Client Platform (JACP)</h1>
+		<p style="padding-top: 50px">
+			<h3>by Andy Moncsek</h3>
+			<h4>http://code.google.com/p/jacp/</h4>
+		</p>
+	</div>
+	<div class="slide" id="me-overview">
+		<h2>Name: Andy Moncsek</h2>
+		<ul>
+			<li class="slide" id="me-s1">
+				<h3>age: 30</h3></li>
+			<li class="slide" id="me-s2">
+				<h3>father, husband and passionate developer</h3></li>
+			<li class="slide" id="me-s4">
+				<h3>2006 finished Diploma Thesis at Heinz Nixdorf Chair of Multimedia Technology ( TU - Dresden )</h3></li>
+			<li class="slide" id="me-s5">
+				<h3>since February 2011 in Switzerland</h3></li>
+		</ul>
+	</div>
+	<div class="slide" id="jacp-overview">
+		<h2>Overview</h2>
+		<ul>
+			<li class="slide" id="third-overview">
+				<h3>idea was to create a simple counterpart to Eclipse RCP</h3></li>
+			<li class="slide" id="first-overview">
+				<h3>first ideas for JACP emerged in 2005</h3></li>
+			<li class="slide" id="second-overview">
+				<h3>since 2010 officially an open source project under Apache
+					License 2.0</h3></li>
+
+			<li class="slide" id="fourth-overview">
+				<h3>since than the ideas and goals of the project were
+					extended, it became my personal research project ;-)</h3></li>
+		</ul>
+	</div>
+
+	<div class="slide" id="counterpart-slide">
+		<h2>Why create a counterpart to Eclipse RCP?</h2>
+		<h3>Although Eclipse RCP is a great, powerful and established
+			platform the complexity can get a substantial risk</h3>
+		<ul>
+			<li class="slide" id="counterpart-s1">
+				<h3>(back in 2005 we had at TU Dresden a project to bring
+					Eclipse RCP to web, when Eclipse RAP was released the project was
+					canceled )</h3></li>
+			<li class="slide" id="counterpart-s2">
+				<h3>(a lot of student workers participated in this project and
+					the quality got more and more worse)</h3></li>
+			<li class="slide" id="counterpart-s2-1">
+				<h3>(my idea was to break down this complexity)</h3></li>
+			<li class="slide" id="counterpart-s3">
+				<h3>
+					<strong>major problem:</strong> basic concepts are easy to
+					understand but beyond workspace, perspective, view and editor many
+					developers creating "self made" solutions
+				</h3></li>
+			<li class="slide" id="counterpart-s4">
+				<h3>
+					currently Eclipse Foundation is working on <a
+						href="http://www.eclipse.org/e4/">e4</a> project to address some
+					of those complexity issues
+				</h3></li>
+		</ul>
+	</div>
+
+	<div class="slide" id="goals">
+		<h2>What are the goals of JACP?</h2>
+		<ol>
+			<li class="slide" id="goals-s1">
+				<h3>create a simple API that match following needs:</h3>
+				<ul>
+					<li>create workbench,
+						perspectives and components</li>
+					<li>communication between
+						components</li>
+					<li >can be implemented in
+						different Toolkits like Swing, SWT, Vaadin or JavaFX 2.0</li>
+				</ul>
+			</li>
+			<li class="slide" id="goals-s2">
+				<h3>create a „Actor Like“ approach to run/handle components</h3>
+				<ul>
+					<li>every component is handled
+						on message call</li>
+					<li>components are handled in
+						separate threads</li>
+				</ul>
+			</li>
+			<li class="slide" id="goals-s3">
+				<h3>create Peer-To-Peer based approach to handle component
+					messaging on other/remote instances</h3>
+				<ul>
+					<li>make components executable
+						outside source JVM</li>
+					<li>create loadbalancing /
+						scheduling to decide where to run component</li>
+				</ul>
+			</li>
+		</ol>
+	</div>
+
+
+	<div class="slide" id="overview-jacp">
+		<h2>What is JACP?</h2>
+		<ul>
+			<li class="slide" id="overview-jacp-s1-g1">
+				<h3>basically it is a set of interfaces and implementations in
+					Swing, Echo2 and JavaFX2</h3> <br /> <br /> <img
+				src="../images/interfaces.png" width="50%" alt="interface"></li>
+		</ul>
+	</div>
+
+	<div class="slide" id="look-jacp">
+		<h2>How does JACP look like?</h2>
+		<ul>
+			<li class="slide" id="look-jacp-s1-g1">
+				<h3>typical... with workbench, perspective and components; But!
+					with a message bus</h3> <br /> <br /> <img src="../images/structure.png"
+				width="50%" alt="interface"></li>
+		</ul>
+	</div>
+
+	<div class="slide" id="challenges">
+		<h2>What are the challenges?</h2>
+		<ul>
+			<li class="slide" id="challenges-jacp-s1-g1">
+				<h3>Unit testing of asynchronous UI components</h3></li>
+			<li class="slide" id="challenges-jacp-s2-g1">
+				<h3>Access to main application thread (like Event Dispatch
+					Thread in Swing)</h3></li>
+		</ul>
+	</div>
+
+
+	<p class="deck-status">
+		<span class="deck-status-current"></span> / <span
+			class="deck-status-total"></span>
 	</p>
-</div>
-<div class="slide" id="me-overview">
-<h2>Name: Andy Moncsek</h2>
-<ul>
-		<li class="slide" id="me-s1">
-			<h3>age: 30</h3>
-		</li>
-		<li class="slide" id="me-s2">
-			<h3>father, husband and passionate developer</h3>
-		</li>
-		<li class="slide" id="me-s3">
-			<h3>since 2003 active it developer</h3>
-		</li>
-		<li class="slide" id="me-s5">
-			<h3>since February 2011 in Switzerland</h3>
-		</li>
-</ul>
-</div>
-<div class="slide" id="jacp-overview">
-	<h2>Overview</h2>
-	<ul>
-		<li class="slide" id="first-overview">
-			<h3>first ideas for JACP emerged in 2005</h3>
-		</li>
-		<li class="slide" id="second-overview">
-			<h3>since 2010 officially an open source project under Apache License 2.0</h3>
-		</li>
-		<li class="slide" id="third-overview">
-			<h3>idea was to create a simple counterpart to Eclipse RCP</h3>
-		</li>
-		<li class="slide" id="fourth-overview">
-			<h3>since than the ideas and goals of the project were extended, it became my personal research project ;-)</h3>
-		</li>
-	</ul>
-</div>
-
-<div class="slide" id="counterpart-slide">
-	<h2>Why create a counterpart to Eclipse RCP?</h2>
-	<h3>Although Eclipse RCP is a great, powerful and established platform the complexity can get a substantial risk</h3>
-	<ul>
-		<li class="slide" id="counterpart-s1">
-			<h3>(back in 2005 we had at TU Dresden a project to bring Eclipse RCP to web, when Eclipse RAP was released the project was canceled )</h3>
-		</li>
-		<li class="slide" id="counterpart-s2">
-			<h3>(a lot of student workers participated in this project and the quality got more and more worse)</h3>
-		</li>
-		<li class="slide" id="counterpart-s2-1">
-			<h3>(my idea was to break down this complexity)</h3>
-		</li>
-		<li class="slide" id="counterpart-s3">
-			<h3><strong>major problem:</strong> basic concepts are easy to understand but beyond workspace, perspective, view and editor many developers creating "self made" solutions </h3>
-		</li>
-		<li class="slide" id="counterpart-s4">
-			<h3>currently Eclipse Foundation is working on <a href="http://www.eclipse.org/e4/">e4</a> project to address some of those complexity issues </h3>
-		</li>
-	</ul>
-</div>
-
-<div class="slide" id="goals">
-	<h2>What are the goals of JACP?</h2>
-	<ol>
-		<li class="slide" id="goals-s1">
-			<h3>create a simple API that match following needs:</h3>
-
-		</li>
-		<ul>
-				<li class="slide" id="goals-s1-g1">
-					 create workbench, perspectives and components
-				</li>
-				<li class="slide" id="goals-s1-g2">
-					 communication between components
-				</li>
-				<li class="slide" id="goals-s1-g3">
-					can be implemented in different Toolkits like Swing, SWT, Vaadin or JavaFX 2.0
-				</li>
-		</ul>
-		<li class="slide" id="goals-s2">
-			<h3>create a „Actor Like“ approach to run/handle components</h3>
-		</li>
-		<ul>
-				<li class="slide" id="goals-s2-g1">
-					 every component is handled on message call
-				</li>
-				<li class="slide" id="goals-s2-g2">
-					 components are handled in separate threads
-				</li>
-		</ul>
-		<li class="slide" id="goals-s3">
-			 <h3>create Peer-To-Peer based approach to handle component messaging on other/remote instances</h3>
-		</li>
-		<ul>
-				<li class="slide" id="goals-s3-g1">
-					make components executable outside source JVM
-				</li>
-				<li class="slide" id="goals-s3-g2">
-					 create loadbalancing / scheduling to decide where to run component
-				</li>
-		</ul>
-	</ol>
-</div>
-
-
-<div class="slide" id="overview-jacp">
-<h2>What is JACP?</h2>
-	<ul>
-		<li class="slide" id="overview-jacp-s1-g1">
-					<h3>basically it is a set of interfaces and implementations in Swing, Echo2 and JavaFX2</h3>
-					<br/>
-					<br/>
-					<img src="../images/interfaces.png" width="50%" alt="interface">
-		</li>
-	</ul>
-</div>
-
-<div class="slide" id="look-jacp">
-<h2>How does JACP look like?</h2>
-	<ul>
-		<li class="slide" id="look-jacp-s1-g1">
-					<h3>typical... with workbench, perspective and components; But! with a message bus</h3>
-					<br/>
-					<br/>
-					<img src="../images/structure.png" width="50%" alt="interface">
-		</li>
-	</ul>
-</div>
-
-<div class="slide" id="challenges">
-<h2>What are the challenges?  </h2>
-	<ul>
-		<li class="slide" id="challenges-jacp-s1-g1">
-					<h3>Unit testing of asynchronous UI components</h3>
-		</li>
-				<li class="slide" id="challenges-jacp-s2-g1">
-					<h3>Access to main application thread (like Event Dispatch Thread in Swing)</h3>
-		</li>
-	</ul>
-</div>
-
-
-<p class="deck-status">
-	<span class="deck-status-current"></span>
-	/
-	<span class="deck-status-total"></span>
-</p>
 
 
 
 
-<script src="../core/jquery.js"></script>
-<script>window.jQuery || document.write('<script src="../core/jquery-1.6.1.min.js">\x3C/script>')</script>
+	<script src="../core/jquery.js"></script>
+	<script>window.jQuery || document.write('<script src="../core/jquery-1.6.1.min.js">\x3C/script>')</script>
 
-<!-- Deck Core and extensions -->
-<script src="../core/deck.core.js"></script>
-<script src="../extensions/menu/deck.menu.js"></script>
-<script src="../extensions/goto/deck.goto.js"></script>
-<script src="../extensions/status/deck.status.js"></script>
-<script src="../extensions/navigation/deck.navigation.js"></script>
-<script src="../extensions/hash/deck.hash.js"></script>
+	<!-- Deck Core and extensions -->
+	<script src="../core/deck.core.js"></script>
+	<script src="../extensions/menu/deck.menu.js"></script>
+	<script src="../extensions/goto/deck.goto.js"></script>
+	<script src="../extensions/status/deck.status.js"></script>
+	<script src="../extensions/navigation/deck.navigation.js"></script>
+	<script src="../extensions/hash/deck.hash.js"></script>
 
-<!-- Specific to this page -->
-<script src="slides.js"></script>
+	<!-- Specific to this page -->
+	<script src="slides.js"></script>
 
+	</article>
 </body>
 </html>
