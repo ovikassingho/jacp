@@ -1,5 +1,21 @@
+/*
+ * Copyright (C) 2010,2011.
+ * AHCP Project
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.jacp.javafx2.rcp.component;
-
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -10,165 +26,215 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.component.IBGComponent;
 import org.jacp.api.component.IStateLessBGComponent;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.javafx2.rcp.action.FX2Action;
+import org.jacp.javafx2.rcp.action.FX2ActionListener;
+import org.jacp.javafx2.rcp.coordinator.StatelessComponentCoordinator;
+/**
+ * represents a abstract stateless background component
+ * 
+ * @author Andy Moncsek
+ * 
+ */
+public abstract class AStatelessComponent implements
+		IStateLessBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> {
+	private String id;
+	private String target = "";
+	private String name;
+	private volatile String handleComponentTarget;
+	private volatile boolean active = true;
+	private boolean isActivated = false;
+	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
+	private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentObserver;
+	private IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> parentPerspective;
+	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+			500);
+	private IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
+	private Launcher<?> launcher;
 
-public class AStatelessComponent  implements
-IStateLessBGComponent<EventHandler<ActionEvent>, ActionEvent, Object>{
-    private String id;
-    private String target = "";
-    private String name;
-    private volatile String handleComponentTarget;
-    private volatile boolean active = true;
-    private boolean isActived = false;
-    private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-    private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentObserver;
-    private IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> parentPerspective;
-    private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
-	    500);
-    private IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
-    private Launcher<?> launcher;
 	@Override
-	public String getHandleTargetAndClear() {
-		// TODO Auto-generated method stub
-		return null;
+	public final String getHandleTargetAndClear() {
+		return handleComponentTarget;
 	}
 
 	@Override
-	public void setHandleTarget(String componentTargetId) {
-		// TODO Auto-generated method stub
-		
+	public final void setHandleTarget(final String componentTargetId) {
+		handleComponentTarget = componentTargetId;
 	}
 
 	@Override
-	public String getExecutionTarget() {
-		// TODO Auto-generated method stub
-		return null;
+	public final String getExecutionTarget() {
+		return target;
 	}
 
 	@Override
-	public void setExecutionTarget(String target) {
-		// TODO Auto-generated method stub
-		
+	public final void setExecutionTarget(final String target) {
+		this.target = target;
 	}
 
 	@Override
 	public void setParentPerspective(
 			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
-		// TODO Auto-generated method stub
-		
+		this.parentPerspective = perspective;
 	}
 
 	@Override
 	public IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> getParentPerspective() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.parentPerspective;
 	}
 
 	@Override
 	public boolean hasIncomingMessage() {
-		// TODO Auto-generated method stub
-		return false;
+		return !incomingActions.isEmpty();
+	}
+
+	private final synchronized IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> getCooridinator() {
+		if (coordinator == null) {
+			if (launcher == null) {
+				throw new UnsupportedOperationException("no di launcher set");
+			}
+			coordinator = new StatelessComponentCoordinator(this, launcher);
+		}
+		return coordinator;
 	}
 
 	@Override
 	public void putIncomingMessage(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-		
+		try {
+			incomingActions.put(action);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public IAction<ActionEvent, Object> getNextIncomingMessage() {
-		// TODO Auto-generated method stub
+		if (hasIncomingMessage()) {
+			try {
+				return incomingActions.take();
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return null;
 	}
 
 	@Override
-	public boolean isBlocked() {
-		// TODO Auto-generated method stub
-		return false;
+	public final boolean isBlocked() {
+		return blocked.get();
 	}
 
 	@Override
-	public void setBlocked(boolean blocked) {
-		// TODO Auto-generated method stub
-		
+	public final void setBlocked(final boolean blocked) {
+		this.blocked.set(blocked);
 	}
 
 	@Override
 	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
-		// TODO Auto-generated method stub
-		return null;
+		return new FX2ActionListener(new FX2Action(id), componentObserver);
 	}
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id;
 	}
 
 	@Override
 	public void setId(String id) {
-		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	@Override
 	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.active;
 	}
 
 	@Override
 	public void setActive(boolean active) {
-		// TODO Auto-generated method stub
-		
+		this.active = active;
 	}
 
 	@Override
 	public void setActivated(boolean isActive) {
-		// TODO Auto-generated method stub
-		
+		this.isActivated = isActive;
+
 	}
 
 	@Override
 	public boolean isActivated() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.isActivated;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
+		this.name = name;
+
 	}
 
 	@Override
 	public void setObserver(
 			ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
-		// TODO Auto-generated method stub
-		
+		this.componentObserver = observer;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <C> C handle(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-		return null;
+	public final <C> C handle(final IAction<ActionEvent, Object> action) {
+		return (C) handleAction(action);
 	}
+
+	public abstract Object handleAction(IAction<ActionEvent, Object> action);
 
 	@Override
 	public void setLauncher(Launcher<?> launcher) {
-		// TODO Auto-generated method stub
-		
+		this.launcher = launcher;
+	}
+
+	@Override
+	protected final Object clone() {
+		try {
+			final AStatelessComponent comp = (AStatelessComponent) super
+					.clone();
+			comp.setId(id);
+			comp.setActive(active);
+			comp.setName(name);
+			comp.setExecutionTarget(target);
+			comp.setHandleTarget(handleComponentTarget);
+			comp.setObserver(componentObserver);
+			comp.setParentPerspective(parentPerspective);
+			return comp;
+		} catch (final CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * init cloned instance with values of blueprint
+	 * 
+	 * @param comp
+	 * @return
+	 */
+	public final synchronized IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> init(
+			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp) {
+		comp.setId(id);
+		comp.setActive(active);
+		comp.setName(name);
+		comp.setExecutionTarget(target);
+		comp.setHandleTarget(handleComponentTarget);
+		comp.setObserver(componentObserver);
+		comp.setParentPerspective(parentPerspective);
+		return comp;
 	}
 
 }
