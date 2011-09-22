@@ -12,6 +12,8 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.javafx2.rcp.action.FX2Action;
+import org.jacp.javafx2.rcp.action.FX2ActionListener;
 
 /**
  * represents a basic, stateful background component
@@ -19,7 +21,7 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  * 
  */
-public class AStateComponent implements
+public abstract class AStateComponent implements
 		IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> {
 
 	private String id;
@@ -58,38 +60,44 @@ public class AStateComponent implements
 
 	@Override
 	public boolean hasIncomingMessage() {
-		// TODO Auto-generated method stub
-		return false;
+		return !this.incomingActions.isEmpty();
 	}
 
 	@Override
 	public void putIncomingMessage(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-
+		try {
+			this.incomingActions.put(action);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public IAction<ActionEvent, Object> getNextIncomingMessage() {
-		// TODO Auto-generated method stub
+		if (hasIncomingMessage()) {
+			try {
+				return this.incomingActions.take();
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public boolean isBlocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.blocked.get();
 	}
 
 	@Override
 	public void setBlocked(boolean blocked) {
-		// TODO Auto-generated method stub
-
+		this.blocked.set(blocked);
 	}
 
 	@Override
 	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
-		// TODO Auto-generated method stub
-		return null;
+		return new FX2ActionListener(new FX2Action(this.id),
+				this.componentObserver);
 	}
 
 	@Override
@@ -142,26 +150,28 @@ public class AStateComponent implements
 	@Override
 	public void setObserver(
 			ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
-		// TODO Auto-generated method stub
+		this.componentObserver = observer;
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public <C> C handle(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-		return null;
+	public <C> C handle(final IAction<ActionEvent, Object> action) {
+		return (C) handleAction(action);
 	}
+
+	public abstract Object handleAction(IAction<ActionEvent, Object> action);
 
 	@Override
 	public String getHandleTargetAndClear() {
-		// TODO Auto-generated method stub
-		return null;
+		final String tempTarget = String.valueOf(this.handleComponentTarget);
+		this.handleComponentTarget = null;
+		return tempTarget;
 	}
 
 	@Override
 	public void setHandleTarget(String componentTargetId) {
-		// TODO Auto-generated method stub
-
+		this.handleComponentTarget = componentTargetId;
 	}
 
 }

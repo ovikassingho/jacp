@@ -59,17 +59,17 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public final String getHandleTargetAndClear() {
-		return handleComponentTarget;
+		return this.handleComponentTarget;
 	}
 
 	@Override
 	public final void setHandleTarget(final String componentTargetId) {
-		handleComponentTarget = componentTargetId;
+		this.handleComponentTarget = componentTargetId;
 	}
 
 	@Override
 	public final String getExecutionTarget() {
-		return target;
+		return this.target;
 	}
 
 	@Override
@@ -90,23 +90,23 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public boolean hasIncomingMessage() {
-		return !incomingActions.isEmpty();
+		return !this.incomingActions.isEmpty();
 	}
-
+	//TODO add double check idiom
 	private final synchronized IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> getCooridinator() {
-		if (coordinator == null) {
-			if (launcher == null) {
+		if (this.coordinator == null) {
+			if (this.launcher == null) {
 				throw new UnsupportedOperationException("no di launcher set");
 			}
-			coordinator = new StatelessComponentCoordinator(this, launcher);
+			this.coordinator = new StatelessComponentCoordinator(this, launcher);
 		}
-		return coordinator;
+		return this.coordinator;
 	}
 
 	@Override
 	public void putIncomingMessage(IAction<ActionEvent, Object> action) {
 		try {
-			incomingActions.put(action);
+			this.incomingActions.put(action);
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -116,7 +116,7 @@ public abstract class AStatelessComponent implements
 	public IAction<ActionEvent, Object> getNextIncomingMessage() {
 		if (hasIncomingMessage()) {
 			try {
-				return incomingActions.take();
+				return this.incomingActions.take();
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -126,7 +126,7 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public final boolean isBlocked() {
-		return blocked.get();
+		return this.blocked.get();
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(id), componentObserver);
+		return new FX2ActionListener(new FX2Action(this.id), this.componentObserver);
 	}
 
 	@Override
@@ -205,13 +205,13 @@ public abstract class AStatelessComponent implements
 		try {
 			final AStatelessComponent comp = (AStatelessComponent) super
 					.clone();
-			comp.setId(id);
-			comp.setActive(active);
-			comp.setName(name);
-			comp.setExecutionTarget(target);
-			comp.setHandleTarget(handleComponentTarget);
-			comp.setObserver(componentObserver);
-			comp.setParentPerspective(parentPerspective);
+			comp.setId(this.id);
+			comp.setActive(this.active);
+			comp.setName(this.name);
+			comp.setExecutionTarget(this.target);
+			comp.setHandleTarget(this.handleComponentTarget);
+			comp.setObserver(this.componentObserver);
+			comp.setParentPerspective(this.parentPerspective);
 			return comp;
 		} catch (final CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -227,13 +227,13 @@ public abstract class AStatelessComponent implements
 	 */
 	public final synchronized IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> init(
 			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp) {
-		comp.setId(id);
-		comp.setActive(active);
-		comp.setName(name);
-		comp.setExecutionTarget(target);
-		comp.setHandleTarget(handleComponentTarget);
-		comp.setObserver(componentObserver);
-		comp.setParentPerspective(parentPerspective);
+		comp.setId(this.id);
+		comp.setActive(this.active);
+		comp.setName(this.name);
+		comp.setExecutionTarget(this.target);
+		comp.setHandleTarget(this.handleComponentTarget);
+		comp.setObserver(this.componentObserver);
+		comp.setParentPerspective(this.parentPerspective);
 		return comp;
 	}
 
