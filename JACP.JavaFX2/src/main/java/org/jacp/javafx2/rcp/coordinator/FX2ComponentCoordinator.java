@@ -153,7 +153,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
     }
 
     @Override
-    public void delegateTargetChange(String target, ISubComponent component) {
+    public void delegateTargetChange(String target, ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
