@@ -30,6 +30,9 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
+import org.jacp.javafx2.rcp.action.FX2Action;
+import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
+
 
 /**
  * Observe perspective actions and delegates message to correct component
@@ -115,34 +118,113 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	 * activated; when working in window mode all components must be visible
 	 */
 	private void handleWorkspaceModeSpecific() {
-		switch (workbench.getWorkbenchLayout().getWorkspaceMode()) {
+		switch (this.workbench.getWorkbenchLayout().getWorkspaceMode()) {
 		case WINDOWED_PANE:
-			workbench.enableComponents();
+			this.workbench.enableComponents();
 			break;
 		default:
-			workbench.disableComponents();
+			this.workbench.disableComponents();
 		}
 	}
 
 	public void delegateMessage(String target,
 			IAction<ActionEvent, Object> action) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		// Find local Target; if target is perspective handle target or
+		// delegate
+		// message to responsible component observer
+		if (isLocalMessage(target)) {
+			handleMessage(target, action);
+		} else {
+			callComponentDelegate(target, action);
+		}
+	}
+
+	/**
+	 * delegate to responsible componentObserver in correct perspective
+	 * 
+	 * @param target
+	 * @param action
+	 */
+	private void callComponentDelegate(final String target,
+			final IAction<ActionEvent, Object> action) {
+		final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective = getObserveableById(
+				getTargetPerspectiveId(target), perspectives);
+		// TODO REMOVE null handling... use DUMMY instead (maybe like
+		// Collections.EMPTY...)
+		if (perspective != null) {
+			if (!perspective.isActive()) {
+				handleInActive(perspective, action);
+			} else {
+				perspective.delegateComponentMassege(target, action);
+			}
+
+		}
+
 	}
 
 	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleActive(
 			P component, IAction<ActionEvent, Object> action) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		((AFX2Workbench) workbench)
+				.handleAndReplaceComponent(
+						action,
+						(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>) component);
 	}
 
 	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleInActive(
 			P component, IAction<ActionEvent, Object> action) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		component.setActive(true);
+		((AFX2Workbench) workbench)
+				.initComponent(
+						action,
+						(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>) component);
 	}
 
 	public void delegateTargetChange(
 			String target,
 			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		// find responsible perspective
+		final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> responsiblePerspective = getObserveableById(
+				getTargetPerspectiveId(target), perspectives);
+		// find correct target in perspective
+		if (responsiblePerspective != null) {
+			handleTargetHit(responsiblePerspective, component);
+
+		} else {
+			handleTargetMiss();
+		}
+	}
+
+	/**
+	 * handle component delegate when target was found
+	 * 
+	 * @param responsiblePerspective
+	 * @param component
+	 */
+	private void handleTargetHit(
+			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+		if (!responsiblePerspective.isActive()) {
+			// 1. init perspective (do not register component before perspective
+			// is active, otherwise component will be handled once again)
+			handleInActive(responsiblePerspective,
+					new FX2Action(responsiblePerspective.getId(),
+							responsiblePerspective.getId(), "init"));
+		}
+		addToActivePerspective(responsiblePerspective, component);
+	}
+
+	private void addToActivePerspective(
+			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> responsiblePerspective,
+			final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+		responsiblePerspective.addActiveComponent(component);
+	}
+
+	/**
+	 * handle component delegate when no target found
+	 */
+	private void handleTargetMiss() {
+		throw new UnsupportedOperationException(
+				"No responsible perspective found. Handling not implemented yet.");
 	}
 
 	public void addPerspective(
