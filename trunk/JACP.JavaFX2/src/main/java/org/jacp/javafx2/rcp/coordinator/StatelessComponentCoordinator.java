@@ -1,8 +1,9 @@
 package org.jacp.javafx2.rcp.coordinator;
 
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.ActionEvent;
@@ -27,7 +28,7 @@ public class StatelessComponentCoordinator
 
 	private IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent;
 	private final Launcher<?> launcher;
-
+	ExecutorService executor = Executors.newFixedThreadPool(12); 
 	public StatelessComponentCoordinator(
 			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent,
 			final Launcher<?> launcher) {
@@ -80,7 +81,7 @@ public class StatelessComponentCoordinator
 		comp.putIncomingMessage(message);
 		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 				comp);
-		worker.execute();
+		executor.submit(worker);
 	}
 
 	/**
