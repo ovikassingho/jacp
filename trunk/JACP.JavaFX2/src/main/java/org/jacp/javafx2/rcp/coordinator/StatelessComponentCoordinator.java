@@ -28,7 +28,7 @@ public class StatelessComponentCoordinator
 
 	private IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent;
 	private final Launcher<?> launcher;
-	ExecutorService executor = Executors.newFixedThreadPool(12); 
+	ExecutorService executor = Executors.newFixedThreadPool(MAX_INCTANCE_COUNT); 
 	public StatelessComponentCoordinator(
 			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent,
 			final Launcher<?> launcher) {
@@ -53,19 +53,21 @@ public class StatelessComponentCoordinator
 					componentInstances
 							.add(getCloneBean(((AStatelessComponent) baseComponent)
 									.getClass()));
-				}
+				} // End inner if
 				// run component in thread
 				instanceRun(comp, message);
-			} else {
+			} // End if 
+			else {
 				// check if new instances can be created
 				if (componentInstances.size() < MAX_INCTANCE_COUNT) {
 					createInstanceAndRun(message);
-				} else {
+				} // End if
+				else {
 					seekAndPutMessage(message);
-				}
-			}
+				} // End else
+			} // End else
 
-		}
+		} // End synchronized
 	}
 
 	/**
@@ -115,8 +117,8 @@ public class StatelessComponentCoordinator
 					.get(i);
 			if (!comp.isBlocked()) {
 				return comp;
-			}
-		}
+			} // End if
+		} // End for
 
 		return null;
 	}
