@@ -33,7 +33,6 @@ import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
-
 /**
  * Observe perspective actions and delegates message to correct component
  * 
@@ -58,11 +57,12 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			final IAction<ActionEvent, Object> actionClone = getValidAction(
 					action, target, action.getMessageList().get(target));
 			handleComponentHit(target, actionClone, perspective);
-		} else {
+		} // End if
+		else {
 			// TODO implement missing perspective handling!!
 			throw new UnsupportedOperationException(
 					"No responsible perspective found. Handling not implemented yet.");
-		}
+		} // End else
 	}
 
 	/**
@@ -77,13 +77,14 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
 		if (perspective.isActive()) {
 			handleMessageToActivePerspective(target, action, perspective);
-		} else {
+		} // End if
+		else {
 			// perspective was not active and will be initialized
 			log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "
 					+ action.getTargetId());
 			handleWorkspaceModeSpecific();
 			handleInActive(perspective, action);
-		}
+		} // End else
 	}
 
 	/**
@@ -106,10 +107,11 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			// message is addressing perspective
 			handleWorkspaceModeSpecific();
 			handleActive(perspective, action);
-		} else {
+		} // End if
+		else {
 			// delegate to addressed component
 			perspective.delegateComponentMassege(target, action);
-		}
+		} // End else
 	}
 
 	/**
@@ -134,9 +136,10 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		// message to responsible component observer
 		if (isLocalMessage(target)) {
 			handleMessage(target, action);
-		} else {
+		} // End if
+		else {
 			callComponentDelegate(target, action);
-		}
+		} // End else
 	}
 
 	/**
@@ -154,11 +157,12 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		if (perspective != null) {
 			if (!perspective.isActive()) {
 				handleInActive(perspective, action);
-			} else {
+			} // End inner if
+			else {
 				perspective.delegateComponentMassege(target, action);
-			}
+			} // End else
 
-		}
+		} // End if
 
 	}
 
@@ -189,9 +193,10 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		if (responsiblePerspective != null) {
 			handleTargetHit(responsiblePerspective, component);
 
-		} else {
+		} // End if
+		else {
 			handleTargetMiss();
-		}
+		} // End else
 	}
 
 	/**
@@ -209,7 +214,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			handleInActive(responsiblePerspective,
 					new FX2Action(responsiblePerspective.getId(),
 							responsiblePerspective.getId(), "init"));
-		}
+		} // End if
 		addToActivePerspective(responsiblePerspective, component);
 	}
 

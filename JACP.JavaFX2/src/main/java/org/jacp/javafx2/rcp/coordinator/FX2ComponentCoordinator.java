@@ -69,12 +69,13 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
             if (component != null) {
                 log(" //1.1.1// component HIT: " + action.getTargetId());
                 handleComponentHit(targetId, action, component);
-            } else {
+            } // End if 
+            else {
                 // delegate message to parent perspective
                 log(" //1.1.1// component MISS: " + action.getTargetId());
                 handleComponentMiss(targetId, action);
-            }
-        }
+            } // End else
+        } // End synchronized
     }
 
     /**
@@ -93,11 +94,12 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
             log(" //1.1.1.1// component HIT handle ACTIVE: "
                     + action.getTargetId());
             handleActive(component, actionClone);
-        } else {
+        } // End if 
+        else {
             log(" //1.1.1.1// component HIT handle IN-ACTIVE: "
                     + action.getTargetId());
             handleInActive(component, actionClone);
-        }
+        } // End else
     }
 
     /**
