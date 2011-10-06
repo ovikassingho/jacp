@@ -17,6 +17,8 @@
  */
 package org.jacp.javafx2.rcp.action;
 
+import java.util.EventObject;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
@@ -24,38 +26,49 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.coordinator.ICoordinator;
 
 /**
- * This class represents the JACP FX2 Event listener... this class can be assigned to components, it reacts on actions and notifies other components in JACP 
+ * This class represents the JACP FX2 Event listener... this class can be
+ * assigned to components, it reacts on actions and notifies other components in
+ * JACP
+ * 
  * @author Andy Moncsek
  */
-public class FX2ActionListener implements EventHandler<ActionEvent>, IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> {
-    private IAction<ActionEvent, Object> action;
-    private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
-    
-    public FX2ActionListener(final IAction<ActionEvent, Object> action, final ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator) {
-        this.action = action;
-        this.coordinator = coordinator;
-    }
-    
-    
-    public void notifyComponents(IAction<ActionEvent, Object> action) {
-       coordinator.handle(action);
-    }
+public class FX2ActionListener implements EventHandler<ActionEvent>,
+		IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> {
+	private IAction<ActionEvent, Object> action;
+	private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
 
-    public void setAction(IAction<ActionEvent, Object> action) {
-       this.action = action;
-    }
+	public FX2ActionListener(
+			final IAction<ActionEvent, Object> action,
+			final ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator) {
+		this.action = action;
+		this.coordinator = coordinator;
+	}
 
-    public IAction<ActionEvent, Object> getAction() {
-       return this.action;
-    }
+	public void notifyComponents(IAction<ActionEvent, Object> action) {
+		coordinator.handle(action);
+	}
 
-    public EventHandler<ActionEvent> getListener() {
-       return this;
-    }
+	public void setAction(IAction<ActionEvent, Object> action) {
+		this.action = action;
+	}
 
-    public void handle(ActionEvent t) {
-       action.setActionEvent(t);
-       notifyComponents(action);
-    }
-    
+	public IAction<ActionEvent, Object> getAction() {
+		return this.action;
+	}
+
+	@SuppressWarnings("unchecked")
+	public EventHandler<ActionEvent> getListener() {
+		return this;
+	}
+
+	public void handle(ActionEvent t) {
+		action.setActionEvent(t);
+		notifyComponents(action);
+	}
+
+	@Override
+	public void performAction(EventObject arg0) {
+		handle((ActionEvent) arg0);
+	}
+
 }

@@ -19,6 +19,7 @@ package org.jacp.project.concurrency.action;
  */
 
 import java.util.EventListener;
+import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,16 +75,25 @@ public class ActionListener implements EventListener,
 		return this.action;
 	}
 
-	@Override
-	public ActionListener getListener() {
-		return this;
-	}
+	
 
 	private void log(final String message) {
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine(">> " + message);
 		}
 
+	}
+
+	@Override
+	public <C extends EventListener> C getListener() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void performAction(EventObject arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

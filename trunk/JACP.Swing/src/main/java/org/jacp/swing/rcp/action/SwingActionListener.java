@@ -19,6 +19,7 @@ package org.jacp.swing.rcp.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,8 +28,8 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.coordinator.ICoordinator;
 
 /**
- * 
- * @author amo
+ * the jacp swing action listener
+ * @author Andy Moncsek
  */
 public class SwingActionListener implements ActionListener,
 	IActionListener<ActionListener, ActionEvent, Object> {
@@ -67,14 +68,26 @@ public class SwingActionListener implements ActionListener,
 	return action;
     }
 
-    @Override
-    public ActionListener getListener() {
-	return this;
-    }
+
 
     private void log(final String message) {
 	if (logger.isLoggable(Level.FINE)) {
 	    logger.fine(">> " + message);
 	}
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public SwingActionListener getListener() {
+		return this;
+	}
+
+
+	@Override
+	public void performAction(EventObject arg0) {
+		actionPerformed((ActionEvent) arg0);
+		
+	}
+
+
 }

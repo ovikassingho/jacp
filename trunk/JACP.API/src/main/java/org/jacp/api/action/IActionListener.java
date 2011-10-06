@@ -17,6 +17,8 @@
  */
 package org.jacp.api.action;
 
+import java.util.EventObject;
+
 /**
  * handles implementation specific ActionListener
  * 
@@ -53,9 +55,15 @@ public interface IActionListener<L, A, M> {
     public IAction<A, M> getAction();
 
     /**
-     * returns implementation specific ActionListener
+     * returns implementation specific ActionListener, all listeners must extend java.util.EventListener
      * 
      * @return
      */
-    public abstract L getListener();
+    public abstract <C extends L> C getListener();
+    
+    /**
+     * abstraction to handle actions uniform on different toolkits
+     * @param arg0
+     */
+    public abstract void performAction(EventObject arg0);
 }
