@@ -84,7 +84,6 @@ public class StateComponentRunWorker
 					.getActionListener();
 			listener.setAction(new SwingAction(comp.getId(), targetId, value));
 			listener.notifyComponents(listener.getAction());
-			System.out.println("notify");
 		}
 	}
 
