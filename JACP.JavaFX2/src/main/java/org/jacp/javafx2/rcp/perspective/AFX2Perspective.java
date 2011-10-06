@@ -18,6 +18,7 @@
 
 package org.jacp.javafx2.rcp.perspective;
 
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -43,6 +44,7 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentCoordinator;
 
+
 /**
  * represents a basic javafx2 perspective that handles subcomponents,
  * perspectives are not handled in thread so avoid long running tasks in
@@ -60,8 +62,7 @@ public class AFX2Perspective implements
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 	private final List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>>();
-	private final IComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentHandler = new FX2ComponentCoordinator(
-			this);
+	private final IComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentHandler = new FX2ComponentCoordinator(this);
 	private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> perspectiveObserver;
 
 	@Override
@@ -128,14 +129,32 @@ public class AFX2Perspective implements
 	@Override
 	public void unregisterComponent(
 			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
-		// TODO Auto-generated method stub
-
+		log("unregister component: " + component.getId());
+		componentHandler.removeComponent(component);
+		subcomponents.remove(component);
+		component.setParentPerspective(null);
 	}
 
 	@Override
 	public void initComponents(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
+		final String targetId = getTargetComponentId(action.getTargetId());
+		log("3.4.4.1: subcomponent targetId: " + targetId);
+		final List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> components = getSubcomponents();
+		for (int i = 0; i < components.size(); i++) {
+			final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component = components
+					.get(i);
+			if (component.getId().equals(targetId)) {
+				log("3.4.4.2: subcomponent init with custom action");
+				initComponent(action, component);
+			} // else END 
+			else if (component.isActive() && !component.isActivated()) {
+				log("3.4.4.2: subcomponent init with default action");
+				initComponent(
+						new FX2Action(component.getId(), component.getId(),
+								"init"), component);
+			} // if END
 
+		} // for END
 	}
 
 	@Override
@@ -238,4 +257,57 @@ public class AFX2Perspective implements
 			logger.fine(">> " + message);
 		}
 	}
+	
+	 /**
+     * returns the message target id
+     * 
+     * @param messageId
+     * @return
+     */
+    private String getTargetComponentId(final String messageId) {
+            final String[] targetId = getTargetId(messageId);
+            if (isFullValidId(targetId)) {
+                    return targetId[1];
+            }
+            return messageId;
+    }
+
+    /**
+     * returns the message (parent) target id
+     * 
+     * @param messageId
+     * @return
+     */
+    private String getTargetParentId(final String messageId) {
+            final String[] parentId = getTargetId(messageId);
+            if (isFullValidId(parentId)) {
+                    return parentId[0];
+            }
+            return messageId;
+    }
+
+    /**
+     * returns target message with perspective and component name
+     * 
+     * @param messageId
+     * @return
+     */
+    private String[] getTargetId(final String messageId) {
+            return messageId.split("\\.");
+    }
+
+    /**
+     * a target id is valid, when it does contain a perspective and a
+     * component id (perspectiveId.componentId)
+     * 
+     * @param targetId
+     * @return
+     */
+    private boolean isFullValidId(final String[] targetId) {
+            if (targetId != null && targetId.length == 2) {
+                    return true;
+            }
+
+            return false;
+    }
 }
