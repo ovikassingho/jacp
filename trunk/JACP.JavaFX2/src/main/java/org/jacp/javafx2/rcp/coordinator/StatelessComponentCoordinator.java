@@ -28,7 +28,7 @@ public class StatelessComponentCoordinator
 
 	private IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent;
 	private final Launcher<?> launcher;
-	ExecutorService executor = Executors.newFixedThreadPool(MAX_INCTANCE_COUNT); 
+	private ExecutorService executor = Executors.newFixedThreadPool(MAX_INCTANCE_COUNT); 
 	public StatelessComponentCoordinator(
 			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent,
 			final Launcher<?> launcher) {

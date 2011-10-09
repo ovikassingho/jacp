@@ -17,7 +17,9 @@
  */
 package org.jacp.javafx2.rcp.coordinator;
 
+
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.event.ActionEvent;
@@ -27,6 +29,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
@@ -48,6 +51,18 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object> workbench) {
 		setDaemon(true);
 		this.workbench = workbench;
+	}
+	
+	public final Map<Layout, Node> getBars() {
+		return workbench.getWorkbenchLayout().getToolBars();
+	}
+	
+	/**
+	 * returns default workbench menu
+	 * 
+	 */
+	public final Node getMenu() {
+		return workbench.getDefaultMenu();
 	}
 
 	public void handleMessage(String target, IAction<ActionEvent, Object> action) {
