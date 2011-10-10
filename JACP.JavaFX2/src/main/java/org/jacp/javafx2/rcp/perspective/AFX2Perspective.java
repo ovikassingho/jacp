@@ -53,6 +53,7 @@ import org.jacp.javafx2.rcp.coordinator.FX2ComponentCoordinator;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
 import org.jacp.javafx2.rcp.util.FX2ComponentAddWorker;
 import org.jacp.javafx2.rcp.util.FX2ComponentInitWorker;
+import org.jacp.javafx2.rcp.util.FX2ComponentReplaceWorker;
 import org.jacp.javafx2.rcp.util.StateComponentRunWorker;
 
 /**
@@ -62,7 +63,7 @@ import org.jacp.javafx2.rcp.util.StateComponentRunWorker;
  * 
  * @author Andy Moncsek
  */
-public class AFX2Perspective implements
+public abstract class AFX2Perspective implements
 		IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>,
 		IExtendedComponent<Node>, ILayoutAbleComponent<Node> {
 	private String id;
@@ -88,54 +89,35 @@ public class AFX2Perspective implements
 	}
 
 	@Override
-	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(id), perspectiveObserver);
+	public final void init(Launcher<?> launcher) {
+		this.launcher = launcher;
+		((FX2ComponentCoordinator) componentHandler).start();
+	
 	}
 
 	@Override
-	public String getId() {
-		return this.id;
+	public final <C> C handle(IAction<ActionEvent, Object> action) {
+		  throw new UnsupportedOperationException("Not supported yet.");
+	}
+	
+	public abstract void handleMenuEntries(MenuBar menuBar) ;
+
+	@Override
+	public void handleMenuEntries(Node menuBar) {
+		if(menuBar instanceof MenuBar){
+			this.handleMenuEntries((MenuBar)menuBar);
+		}
 	}
 
 	@Override
-	public final void setId(String id) {
-		this.id = id;
-	}
+	public abstract void handleBarEntries(Map<Layout, Node> bars);
+	
+	public abstract void handlePerspective(IAction<ActionEvent, Object> action, final FX2PerspectiveLayout perspectiveLayout);
 
 	@Override
-	public boolean isActive() {
-		return this.active;
-	}
-
-	@Override
-	public final void setActive(boolean active) {
-		this.active = active;
-	}
-
-	@Override
-	public final void setActivated(boolean isActive) {
-		this.isActivated = isActive;
-	}
-
-	@Override
-	public boolean isActivated() {
-		return this.isActivated;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public final void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public final void setObserver(
-			ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
-		this.perspectiveObserver = observer;
+	public void handlePerspective(IAction<ActionEvent, Object> action) {
+		handlePerspective(action, (FX2PerspectiveLayout) perspectiveLayout);
+	
 	}
 
 	@Override
@@ -145,7 +127,7 @@ public class AFX2Perspective implements
 		componentHandler.addComponent(component);
 		subcomponents.add(component);
 		component.setParentPerspective(this);
-
+	
 	}
 
 	@Override
@@ -175,7 +157,7 @@ public class AFX2Perspective implements
 						new FX2Action(component.getId(), component.getId(),
 								"init"), component);
 			} // if END
-
+	
 		} // for END
 	}
 
@@ -204,7 +186,130 @@ public class AFX2Perspective implements
 			((AStatelessComponent) component).setLauncher(launcher);
 			((AStatelessComponent) component).addMessage(action);
 		}// else if END
+	
+	}
 
+	@Override
+	public final void handleAndReplaceComponent(
+			IAction<ActionEvent, Object> action,
+			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+		if (component.isBlocked()) {
+			putMessageToQueue(component, action);
+			log("ADD TO QUEUE:::" + component.getName());
+		} else {
+			executeComponentReplaceThread(perspectiveLayout, component, action);
+	
+		}
+		log("DONE EXECUTE REPLACE:::" + component.getName());
+	}
+
+	@Override
+	public final void addActiveComponent(
+			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+	    // register new component at perspective
+	    registerComponent(component);
+	    if (component instanceof AFX2Component) {
+	            // add component ui root to correct target
+	            addComponentUIValue(getIPerspectiveLayout()
+	                            .getTargetLayoutComponents(), component);
+	    }
+	
+	}
+
+	@Override
+	public synchronized void delegateTargetChange(
+			String target,
+			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+	    final String parentId = getTargetParentId(target);
+	    if (!id.equals(parentId)) {
+	            // unregister component in current perspective
+	            unregisterComponent(component);
+	            // delegate to perspective observer
+	            perspectiveObserver.delegateTargetChange(target,
+	                            component);
+	
+	    }
+	
+	}
+
+	@Override
+	public final void delegateComponentMassege(String target,
+			IAction<ActionEvent, Object> action) {
+		  componentHandler.delegateMessage(target, action);
+	}
+
+	@Override
+	public final void delegateMassege(String target,
+			IAction<ActionEvent, Object> action) {
+		 perspectiveObserver.delegateMessage(target, action);
+	}
+
+	@Override
+	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
+		return new FX2ActionListener(new FX2Action(id), perspectiveObserver);
+	}
+
+	@Override
+	public String getId() {
+		return this.id;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public IPerspectiveLayout<? extends Node, Node> getIPerspectiveLayout() {
+		return this.perspectiveLayout;
+	}
+
+	@Override
+	public List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> getSubcomponents() {
+		return this.subcomponents;
+	}
+
+	@Override
+	public boolean isActive() {
+		return this.active;
+	}
+
+	@Override
+	public boolean isActivated() {
+		return this.isActivated;
+	}
+
+	@Override
+	public final void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public final void setObserver(
+			ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
+		this.perspectiveObserver = observer;
+	}
+
+	@Override
+	public final void setId(String id) {
+		this.id = id;
+	}
+
+	@Override
+	public final void setActive(boolean active) {
+		this.active = active;
+	}
+
+	@Override
+	public final void setActivated(boolean isActive) {
+		this.isActivated = isActive;
+	}
+
+	@Override
+	public final void setSubcomponents(
+			List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> subComponents) {
+		  registerSubcomponents(subComponents);
+	
 	}
 
 	/**
@@ -240,27 +345,13 @@ public class AFX2Perspective implements
 	private final void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> layout,
 			final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
-		executor.execute(new FX2ComponentAddWorker(layout
+		executor.execute(new FX2ComponentReplaceWorker(layout
 				.getTargetLayoutComponents(), ((AFX2Component) component),
 				((FX2PerspectiveCoordinator) perspectiveObserver).getBars(),
 				(MenuBar) ((FX2PerspectiveCoordinator) perspectiveObserver)
 						.getMenu()));
 	}
 
-	@Override
-	public final void handleAndReplaceComponent(
-			IAction<ActionEvent, Object> action,
-			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
-		if (component.isBlocked()) {
-			putMessageToQueue(component, action);
-			log("ADD TO QUEUE:::" + component.getName());
-		} else {
-			executeComponentReplaceThread(perspectiveLayout, component, action);
-
-		}
-		log("DONE EXECUTE REPLACE:::" + component.getName());
-	}
-	
 	/**
      * start component replace thread, be aware that all actions are in components message box!
      * 
@@ -291,68 +382,7 @@ public class AFX2Perspective implements
 
     }
 
-	@Override
-	public <C> C handle(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IPerspectiveLayout<? extends Node, Node> getIPerspectiveLayout() {
-		return this.perspectiveLayout;
-	}
-
-	@Override
-	public void handleMenuEntries(Node menuBar) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleBarEntries(Map<Layout, Node> bars) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public final void init(Launcher<?> launcher) {
-		this.launcher = launcher;
-		((FX2ComponentCoordinator) componentHandler).start();
-
-	}
-
-	@Override
-	public List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> getSubcomponents() {
-		return this.subcomponents;
-	}
-
-	@Override
-	public final void setSubcomponents(
-			List<ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object>> subComponents) {
-		  registerSubcomponents(subComponents);
-
-	}
-
-	@Override
-	public void handlePerspective(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public final void addActiveComponent(
-			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
-        // register new component at perspective
-        registerComponent(component);
-        if (component instanceof AFX2Component) {
-                // add component ui root to correct target
-                addComponentUIValue(getIPerspectiveLayout()
-                                .getTargetLayoutComponents(), component);
-        }
-
-	}
-	
-	 /**
+	/**
      * handles ui return value and it to perspective TODO check correctness
      * of implementation
      * 
@@ -365,34 +395,6 @@ public class AFX2Perspective implements
             	executor.execute(new FX2ComponentAddWorker(targetComponents,
                                     ((AFX2Component) component)));
     }
-
-	@Override
-	public synchronized void delegateTargetChange(
-			String target,
-			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
-        final String parentId = getTargetParentId(target);
-        if (!id.equals(parentId)) {
-                // unregister component in current perspective
-                unregisterComponent(component);
-                // delegate to perspective observer
-                perspectiveObserver.delegateTargetChange(target,
-                                component);
-
-        }
-
-	}
-
-	@Override
-	public final void delegateComponentMassege(String target,
-			IAction<ActionEvent, Object> action) {
-		  componentHandler.delegateMessage(target, action);
-	}
-
-	@Override
-	public final void delegateMassege(String target,
-			IAction<ActionEvent, Object> action) {
-		 perspectiveObserver.delegateMessage(target, action);
-	}
 
 	private void log(final String message) {
 		if (logger.isLoggable(Level.FINE)) {
