@@ -185,14 +185,12 @@ public class AFX2Perspective implements
 			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
 		if (component instanceof AFX2Component) {
 			log("COMPONENT EXECUTE INIT:::" + component.getName());
-			component.setActivated(true);
-			final FX2ComponentInitWorker tmp = new FX2ComponentInitWorker(
-					perspectiveLayout.getTargetLayoutComponents(),
-					((AFX2Component) component),
-					action,
-					((FX2PerspectiveCoordinator) perspectiveObserver).getBars(),
-					(MenuBar) ((FX2PerspectiveCoordinator) perspectiveObserver)
-							.getMenu());
+			component.setActivated(true);			
+			final FX2ComponentInitWorker tmp =  new FX2ComponentInitWorker(
+					 perspectiveLayout.getTargetLayoutComponents(),
+						((AFX2Component) component),
+						((FX2PerspectiveCoordinator) perspectiveObserver).getBars(),action, (MenuBar) ((FX2PerspectiveCoordinator) perspectiveObserver)
+						.getMenu());
 			executor.execute(tmp);
 		}// if END
 		else if (component instanceof AStateComponent) {
