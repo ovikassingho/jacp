@@ -194,6 +194,11 @@ public abstract class AStatelessComponent implements
 	}
 
 	public abstract Object handleAction(IAction<ActionEvent, Object> action);
+	
+	public final void addMessage(final IAction<ActionEvent, Object> message) {
+		getCooridinator().incomingMessage(message);
+	    }
+
 
 	@Override
 	public void setLauncher(Launcher<?> launcher) {
