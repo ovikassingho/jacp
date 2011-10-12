@@ -17,8 +17,10 @@
  */
 package org.jacp.javafx2.rcp.workbench;
 
+import java.awt.Container;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jacp.api.action.IAction;
@@ -29,8 +31,10 @@ import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
+import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
+import org.jacp.swing.rcp.action.SwingAction;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -58,6 +62,20 @@ public class AFX2Workbench extends Application
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 	private MenuBar menu;
+	
+	
+
+	@Override
+	public void init(Launcher<?> launcher) {
+		this.launcher = launcher;
+		log("1: init workbench");
+		// init user defined workspace
+		this.handleInitialLayout(new FX2Action("TODO", "init"), layout);
+		final Container contentPane = getContentPane();
+		setBasicLayout(contentPane);
+		log("3: handle initialisation sequence");
+		handleInitialisationSequence();
+	}
 
 	@Override
 	public void start(Stage arg0) throws Exception {
@@ -76,11 +94,6 @@ public class AFX2Workbench extends Application
 		return this.perspectives;
 	}
 
-	@Override
-	public void init(Launcher<?> launcher) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void initWorkbenchMenu() {
@@ -172,5 +185,9 @@ public class AFX2Workbench extends Application
 
 	}
 
-	
+	private void log(final String message) {
+		if (logger.isLoggable(Level.FINE)) {
+			logger.fine(">> " + message);
+		}
+	}
 }

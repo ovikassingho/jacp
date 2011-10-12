@@ -46,6 +46,8 @@ public final class FX2Action implements IAction<ActionEvent, Object> {
         setMessage(message);
     }
     
+    
+    
     public FX2Action(final String sourceId, final String targetId, final Object message) {
         this.sourceId = sourceId;
         this.target = targetId;
