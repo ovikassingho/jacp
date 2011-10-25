@@ -17,11 +17,11 @@
  */
 package org.jacp.javafx2.rcp.workbench;
 
-import java.awt.Container;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IRootComponent;
@@ -34,12 +34,14 @@ import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
-import org.jacp.swing.rcp.action.SwingAction;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
@@ -56,14 +58,14 @@ public class AFX2Workbench extends Application
 		IRootComponent<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>, IAction<ActionEvent, Object>> {
 
 	private List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectives;
-	private final IPerspectiveCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> perspectiveHandler = new FX2PerspectiveCoordinator(this);
+	private final IPerspectiveCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> perspectiveHandler = new FX2PerspectiveCoordinator(
+			this);
 	private final int inset = 50;
 	private final IWorkbenchLayout<Region, Node> layout = new FX2WorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 	private MenuBar menu;
-	
-	
+	private Stage stage;
 
 	@Override
 	public void init(Launcher<?> launcher) {
@@ -71,15 +73,53 @@ public class AFX2Workbench extends Application
 		log("1: init workbench");
 		// init user defined workspace
 		this.handleInitialLayout(new FX2Action("TODO", "init"), layout);
-		final Container contentPane = getContentPane();
-		setBasicLayout(contentPane);
+		final Stage stage = getStage();
+		setBasicLayout(stage);
 		log("3: handle initialisation sequence");
 		handleInitialisationSequence();
+		
+	}
+
+	/**
+	 * handles sequence for workbench size, menu bar, tool bar and perspective
+	 * initialisation
+	 */
+	private void handleInitialisationSequence() {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				stage.show();
+				// start perspective Observer worker thread
+				// TODO create status daemon which observes
+				// thread component on
+				// failure and restarts if needed!!
+				((FX2PerspectiveCoordinator) perspectiveHandler).start();
+				// init menu instance#
+				log("3.1: workbench menu");
+				initMenuBar();
+				// init toolbar instance
+				log("3.2: workbench tool bars");
+				
+				//initToolBars();
+				// handle perspectives
+				log("3.3: workbench init perspectives");
+				initComponents(null);
+				// handle workspce bar entries
+				log("3.4: workbench handle bar entries");
+				handleBarEntries(layout.getToolBars());
+				// handle default and defined workspace menu
+				// entries
+				log("3.5: workbench init menu");
+				initWorkbenchMenu();
+			}
+
+		});
 	}
 
 	@Override
-	public void start(Stage arg0) throws Exception {
-
+	public void start(Stage stage) throws Exception {
+		this.stage = stage;
 	}
 
 	@Override
@@ -93,7 +133,6 @@ public class AFX2Workbench extends Application
 	public List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> getPerspectives() {
 		return this.perspectives;
 	}
-
 
 	@Override
 	public void initWorkbenchMenu() {
@@ -183,6 +222,29 @@ public class AFX2Workbench extends Application
 			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> component) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * set basic layout manager for workspace
+	 * 
+	 * @param stage
+	 *            javafx.stage.Stage
+	 */
+	private void setBasicLayout(final Stage stage) {
+		int x = layout.getWorkbenchSize().getX();
+		int y = layout.getWorkbenchSize().getY();
+		Group root = new Group();
+		// TODO check handling of layout.getLayoutManager();
+		stage.setScene(new Scene(root, x, y));
+	}
+
+	/**
+	 * returns primary stage
+	 * 
+	 * @return javafx.stage.Stage
+	 */
+	private Stage getStage() {
+		return this.stage;
 	}
 
 	private void log(final String message) {
