@@ -13,8 +13,7 @@
 
     <name>JACP.JavaFX2</name>
     <properties>
-       <!-- <jfx-jar>${jfx-runtime}/lib/jfxrt.jar</jfx-jar>-->
-       <jfx-jar> C:\Users\ady\Downloads\javafx-sdk2.0-beta\rt\lib\jfxrt.jar</jfx-jar>
+       <jfx-jar>C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib\jfxrt.jar</jfx-jar>
     </properties>
     <build>
         <plugins>
@@ -73,5 +72,40 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-asm</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
     </dependencies>
 </project>
