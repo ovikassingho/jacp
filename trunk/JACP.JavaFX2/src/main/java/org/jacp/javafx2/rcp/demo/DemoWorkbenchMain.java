@@ -2,6 +2,7 @@ package org.jacp.javafx2.rcp.demo;
 
 
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -18,10 +19,11 @@ public class DemoWorkbenchMain {
 	 */
 	public static void main(String[] args) {
 		final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(
-				"main_2.xml");
+				"main.xml");
 		final IWorkbench<Region, Node, EventHandler<ActionEvent>, ActionEvent, Object> workbench = (IWorkbench<Region, Node, EventHandler<ActionEvent>, ActionEvent, Object>) launcher
 				.getContext().getBean("workbench");
 		workbench.init(launcher);
+		Application.launch((Class<? extends Application>) workbench.getClass(),null);
 	}
 
 }
