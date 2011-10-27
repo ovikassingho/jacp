@@ -52,7 +52,7 @@ import javafx.stage.Stage;
  * 
  * @author Andy Moncsek
  */
-public class AFX2Workbench extends Application
+public abstract class AFX2Workbench extends Application
 		implements
 		IWorkbench<Region, Node, EventHandler<ActionEvent>, ActionEvent, Object>,
 		IRootComponent<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>, IAction<ActionEvent, Object>> {
@@ -66,18 +66,18 @@ public class AFX2Workbench extends Application
 	private Launcher<?> launcher;
 	private MenuBar menu;
 	private Stage stage;
+	
+	public AFX2Workbench(final String name) {
+		
+	}
+	
 
 	@Override
 	public void init(Launcher<?> launcher) {
-		this.launcher = launcher;
-		log("1: init workbench");
-		// init user defined workspace
-		this.handleInitialLayout(new FX2Action("TODO", "init"), layout);
-		final Stage stage = getStage();
-		setBasicLayout(stage);
-		log("3: handle initialisation sequence");
-		handleInitialisationSequence();
-		
+		this.launcher = launcher;		
+
+
+
 	}
 
 	/**
@@ -120,6 +120,12 @@ public class AFX2Workbench extends Application
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
+		log("1: init workbench");
+		// init user defined workspace
+		this.handleInitialLayout(new FX2Action("TODO", "init"), layout);
+		setBasicLayout(stage);
+		log("3: handle initialisation sequence");
+		handleInitialisationSequence();
 	}
 
 	@Override
@@ -176,12 +182,6 @@ public class AFX2Workbench extends Application
 
 	}
 
-	@Override
-	public void handleInitialLayout(IAction<ActionEvent, Object> action,
-			IWorkbenchLayout<Region, Node> layout) {
-		// TODO move to concrete workbench!!!
-
-	}
 
 	@Override
 	public IWorkbenchLayout<Region, Node> getWorkbenchLayout() {
