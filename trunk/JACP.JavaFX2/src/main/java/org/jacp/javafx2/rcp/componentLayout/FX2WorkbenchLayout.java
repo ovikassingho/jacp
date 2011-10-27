@@ -36,7 +36,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Region, Node> {
     private WorkspaceMode workspaceMode;
     private boolean menueEnabled;
     private Region layout;
-    private Tupel<Integer,Integer> size;
+    private Tupel<Integer,Integer> size = new Tupel<Integer, Integer>();
     private Map<Layout, Node> toolbars = new ConcurrentHashMap<Layout, Node>(); 
 
     public WorkspaceMode getWorkspaceMode() {
