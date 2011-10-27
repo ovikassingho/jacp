@@ -7,10 +7,18 @@
 	<bean id="workbench" class="org.jacp.javafx2.rcp.demo.DemoFX2Workbench">
 		<property name="perspectives">
 			<list>
-
+				<ref bean="perspectiveOne" />
 			</list>
 		</property>
 	</bean>
 
-
+	<bean id="perspectiveOne" class="org.jacp.javafx2.rcp.demo.DempFX2PerspectiveOne">
+		<property name="name" value="perspectiveOne" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+			</list>
+		</property>
+	</bean>
 </beans>

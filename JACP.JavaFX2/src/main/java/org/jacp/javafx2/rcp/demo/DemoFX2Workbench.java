@@ -1,10 +1,8 @@
 package org.jacp.javafx2.rcp.demo;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -27,7 +25,7 @@ public class DemoFX2Workbench extends AFX2Workbench {
 	public void handleInitialLayout(IAction<ActionEvent, Object> action,
 			IWorkbenchLayout<Region, Node> layout) {
 		System.out.println(action.getLastMessage());
-		layout.setWorkbenchXYSize(1024, 600);
+		layout.setWorkbenchXYSize(1024, 400);
 		System.out.println(action.getLastMessage());
 	}
 	
