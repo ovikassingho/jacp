@@ -17,10 +17,12 @@
  */
 package org.jacp.javafx2.rcp.workbench;
 
+
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 
 import org.jacp.api.action.IAction;
@@ -34,6 +36,7 @@ import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
+
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -204,8 +207,46 @@ public abstract class AFX2Workbench extends Application
 
 	@Override
 	public void initComponents(IAction<ActionEvent, Object> action) {
-		// TODO Auto-generated method stub
+		List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectivesTmp = getPerspectives();
+		for (int i = 0; i < perspectivesTmp.size(); i++) {
+			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective = perspectivesTmp
+					.get(i);
+			log("3.4.1: register component: " + perspective.getName());
+			registerComponent(perspective);
+			// TODO what if component removed an initialized later
+			// again?
+			log("3.4.2: create perspective menu");
+			createPerspectiveMenue(perspective);
+			if (perspective.isActive()) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						initComponent(new FX2Action(perspective.getId(),
+								perspective.getId(), "init"), perspective);
+						refreshBarEntries();
 
+					}
+				}); // FX2 UTILS END
+			}
+
+		}
+	}
+	
+
+	/**
+	 * refresh bar entries after perspective initialization
+	 */
+	private void refreshBarEntries() {
+		// TODO implement refresh bar entries
+	}
+	
+	/**
+	 * creates basic menu entry for perspective
+	 * 
+	 * @param perspective
+	 */
+	private void createPerspectiveMenue(final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective){
+		//TODO implement missing "create perspective menu" functionality
 	}
 
 	@Override
