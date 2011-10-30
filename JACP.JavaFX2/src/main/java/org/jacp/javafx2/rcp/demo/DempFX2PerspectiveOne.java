@@ -33,7 +33,7 @@ public class DempFX2PerspectiveOne extends AFX2Perspective{
 	@Override
 	public void handlePerspective(IAction<ActionEvent, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
-		// TODO Auto-generated method stub
+		System.out.println("message from perspective one: "+ action.getLastMessage());
 		
 	}
 
