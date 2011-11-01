@@ -25,7 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.util.Tupel;
-import org.jacp.api.util.WorkspaceMode;
+import org.jacp.swing.rcp.util.WorkspaceMode;
+
 
 /**
  * defines basic layout of workbench; define if menus are enabled; declare tool
@@ -34,23 +35,15 @@ import org.jacp.api.util.WorkspaceMode;
  * @author Andy Moncsek
  */
 public class SwingWorkbenchLayout implements
-	IWorkbenchLayout<LayoutManager2, Container> {
+	IWorkbenchLayout<LayoutManager2, Container,WorkspaceMode> {
 
     private LayoutManager2 layoutManager;
     private boolean menuEnabled;
-    private WorkspaceMode workspaceMode;
     private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
     private final Map<Layout, Container> toolBars = new ConcurrentHashMap<Layout, Container>();
+    
+    private WorkspaceMode style;
 
-    @Override
-    public final WorkspaceMode getWorkspaceMode() {
-	return workspaceMode;
-    }
-
-    @Override
-    public final void setWorkspaceMode(final WorkspaceMode mode) {
-	workspaceMode = mode;
-    }
 
     @Override
     public final boolean isMenuEnabled() {
@@ -92,5 +85,16 @@ public class SwingWorkbenchLayout implements
     public final Map<Layout, Container> getToolBars() {
 	return toolBars;
     }
+
+	@Override
+	public void setStyle(WorkspaceMode style) {
+		this.style = style;
+		
+	}
+
+	@Override
+	public WorkspaceMode getStyle() {
+		return style;
+	}
 
 }
