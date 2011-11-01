@@ -21,7 +21,7 @@ package org.jacp.javafx2.rcp.util;
 
 import java.util.Map;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
@@ -42,7 +42,7 @@ public class ChunkDTO {
 	 private final Node parent;
 	    private final Map<String, Node> targetComponents;
 	    private final String currentTaget;
-	    private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
+	    private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 	    private final Node previousContainer;
 	    private final Map<Layout, Node> bars;
 	    private final MenuBar menu;
@@ -52,7 +52,7 @@ public class ChunkDTO {
 		    final Node previousContainer,
 		    final Map<String, Node> targetComponents,
 		    final String currentTaget,
-		    final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+		    final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 		    final Map<Layout, Node> bars, final MenuBar menu) {
 		this.parent = parent;
 		this.targetComponents = targetComponents;
@@ -75,7 +75,7 @@ public class ChunkDTO {
 		return currentTaget;
 	    }
 
-	    public final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> getComponent() {
+	    public final IVComponent<Node, EventHandler<Event>, Event, Object> getComponent() {
 		return component;
 	    }
 

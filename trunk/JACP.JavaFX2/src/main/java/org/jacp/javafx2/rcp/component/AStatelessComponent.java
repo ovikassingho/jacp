@@ -21,7 +21,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
@@ -42,7 +42,7 @@ import org.jacp.javafx2.rcp.coordinator.StatelessComponentCoordinator;
  * 
  */
 public abstract class AStatelessComponent implements
-		IStateLessBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> {
+		IStateLessBGComponent<EventHandler<Event>, Event, Object> {
 	private String id;
 	private String target = "";
 	private String name;
@@ -50,11 +50,11 @@ public abstract class AStatelessComponent implements
 	private volatile boolean active = true;
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-	private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentObserver;
-	private IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> parentPerspective;
-	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
+	private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
+	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
-	private IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
+	private IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> coordinator;
 	private Launcher<?> launcher;
 
 	@Override
@@ -79,12 +79,12 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public void setParentPerspective(
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.parentPerspective = perspective;
 	}
 
 	@Override
-	public IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> getParentPerspective() {
+	public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
 		return this.parentPerspective;
 	}
 
@@ -93,7 +93,7 @@ public abstract class AStatelessComponent implements
 		return !this.incomingActions.isEmpty();
 	}
 	//TODO add double check idiom
-	private final synchronized IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> getCooridinator() {
+	private final synchronized IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> getCooridinator() {
 		if (this.coordinator == null) {
 			if (this.launcher == null) {
 				throw new UnsupportedOperationException("no di launcher set");
@@ -104,7 +104,7 @@ public abstract class AStatelessComponent implements
 	}
 
 	@Override
-	public void putIncomingMessage(IAction<ActionEvent, Object> action) {
+	public void putIncomingMessage(IAction<Event, Object> action) {
 		try {
 			this.incomingActions.put(action);
 		} catch (final InterruptedException e) {
@@ -113,7 +113,7 @@ public abstract class AStatelessComponent implements
 	}
 
 	@Override
-	public IAction<ActionEvent, Object> getNextIncomingMessage() {
+	public IAction<Event, Object> getNextIncomingMessage() {
 		if (hasIncomingMessage()) {
 			try {
 				return this.incomingActions.take();
@@ -135,7 +135,7 @@ public abstract class AStatelessComponent implements
 	}
 
 	@Override
-	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
+	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id), this.componentObserver);
 	}
 
@@ -183,19 +183,19 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public void setObserver(
-			ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
+			ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final <C> C handle(final IAction<ActionEvent, Object> action) {
+	public final <C> C handle(final IAction<Event, Object> action) {
 		return (C) handleAction(action);
 	}
 
-	public abstract Object handleAction(IAction<ActionEvent, Object> action);
+	public abstract Object handleAction(IAction<Event, Object> action);
 	
-	public final void addMessage(final IAction<ActionEvent, Object> message) {
+	public final void addMessage(final IAction<Event, Object> message) {
 		getCooridinator().incomingMessage(message);
 	    }
 
@@ -230,8 +230,8 @@ public abstract class AStatelessComponent implements
 	 * @param comp
 	 * @return
 	 */
-	public final synchronized IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> init(
-			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp) {
+	public final synchronized IBGComponent<EventHandler<Event>, Event, Object> init(
+			final IBGComponent<EventHandler<Event>, Event, Object> comp) {
 		comp.setId(this.id);
 		comp.setActive(this.active);
 		comp.setName(this.name);

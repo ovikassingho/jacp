@@ -18,8 +18,7 @@
 package org.jacp.javafx2.rcp.action;
 
 import java.util.EventObject;
-
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -32,48 +31,48 @@ import org.jacp.api.coordinator.ICoordinator;
  * 
  * @author Andy Moncsek
  */
-public class FX2ActionListener implements EventHandler<ActionEvent>,
-		IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> {
-	private IAction<ActionEvent, Object> action;
-	private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator;
+public class FX2ActionListener implements EventHandler<Event>,
+		IActionListener<EventHandler<Event>, Event, Object> {
+	private IAction<Event, Object> action;
+	private ICoordinator<EventHandler<Event>, Event, Object> coordinator;
 
 	public FX2ActionListener(
-			final IAction<ActionEvent, Object> action,
-			final ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> coordinator) {
+			final IAction<Event, Object> action,
+			final ICoordinator<EventHandler<Event>, Event, Object> coordinator) {
 		this.action = action;
 		this.coordinator = coordinator;
 	}
 
 	@Override
-	public void notifyComponents(IAction<ActionEvent, Object> action) {
+	public void notifyComponents(IAction<Event, Object> action) {
 		coordinator.handle(action);
 	}
 
 	@Override
-	public void setAction(IAction<ActionEvent, Object> action) {
+	public void setAction(IAction<Event, Object> action) {
 		this.action = action;
 	}
 
 	@Override
-	public IAction<ActionEvent, Object> getAction() {
+	public IAction<Event, Object> getAction() {
 		return this.action;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public EventHandler<ActionEvent> getListener() {
+	public EventHandler<Event> getListener() {
 		return this;
 	}
 
 	@Override
-	public void handle(ActionEvent t) {
+	public void handle(Event t) {
 		action.setActionEvent(t);
 		notifyComponents(action);
 	}
 
 	@Override
 	public void performAction(EventObject arg0) {
-		handle((ActionEvent) arg0);
+		handle((Event) arg0);
 	}
 
 }

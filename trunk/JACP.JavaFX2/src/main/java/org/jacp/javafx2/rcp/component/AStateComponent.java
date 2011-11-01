@@ -4,7 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
@@ -22,7 +22,7 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * 
  */
 public abstract class AStateComponent implements
-		IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> {
+		IBGComponent<EventHandler<Event>, Event, Object> {
 
 	private String id;
 	private String target = "";
@@ -31,9 +31,9 @@ public abstract class AStateComponent implements
 	private volatile boolean active;
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-	private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentObserver;
-	private IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> parentPerspective;
-	private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
+	private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
+	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
 
 	@Override
@@ -48,13 +48,13 @@ public abstract class AStateComponent implements
 
 	@Override
 	public void setParentPerspective(
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.parentPerspective = perspective;
 
 	}
 
 	@Override
-	public IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> getParentPerspective() {
+	public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
 		return this.parentPerspective;
 	}
 
@@ -64,7 +64,7 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public void putIncomingMessage(IAction<ActionEvent, Object> action) {
+	public void putIncomingMessage(IAction<Event, Object> action) {
 		try {
 			this.incomingActions.put(action);
 		} catch (final InterruptedException e) {
@@ -73,7 +73,7 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public IAction<ActionEvent, Object> getNextIncomingMessage() {
+	public IAction<Event, Object> getNextIncomingMessage() {
 		if (hasIncomingMessage()) {
 			try {
 				return this.incomingActions.take();
@@ -95,7 +95,7 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
+	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
 				this.componentObserver);
 	}
@@ -149,18 +149,18 @@ public abstract class AStateComponent implements
 
 	@Override
 	public void setObserver(
-			ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
+			ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <C> C handle(final IAction<ActionEvent, Object> action) {
+	public <C> C handle(final IAction<Event, Object> action) {
 		return (C) handleAction(action);
 	}
 
-	public abstract Object handleAction(IAction<ActionEvent, Object> action);
+	public abstract Object handleAction(IAction<Event, Object> action);
 
 	@Override
 	public String getHandleTargetAndClear() {

@@ -19,7 +19,7 @@ package org.jacp.javafx2.rcp.action;
 
 import java.util.HashMap;
 import java.util.Map;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import org.jacp.api.action.IAction;
 
 /**
@@ -28,12 +28,12 @@ import org.jacp.api.action.IAction;
  * 
  * @author Andy Moncsek
  */
-public final class FX2Action implements IAction<ActionEvent, Object> {
+public final class FX2Action implements IAction<Event, Object> {
 
 	private final Map<String, Object> messages = new HashMap<String, Object>();
 	private Object message;
 	private final String sourceId;
-	private ActionEvent event;
+	private Event event;
 	private String target;
 
 	public FX2Action(final String sourceId) {
@@ -82,18 +82,18 @@ public final class FX2Action implements IAction<ActionEvent, Object> {
 	}
 
 	@Override
-	public void setActionEvent(ActionEvent event) {
+	public void setActionEvent(Event event) {
 		this.event = event;
 	}
 
 	@Override
-	public ActionEvent getActionEvent() {
+	public Event getActionEvent() {
 		return this.event;
 	}
 
 	@Override
-	public IAction<ActionEvent, Object> clone() {
-		final IAction<ActionEvent, Object> clone = new FX2Action(sourceId);
+	public IAction<Event, Object> clone() {
+		final IAction<Event, Object> clone = new FX2Action(sourceId);
 		clone.setActionEvent(this.event);
 		return clone;
 	}

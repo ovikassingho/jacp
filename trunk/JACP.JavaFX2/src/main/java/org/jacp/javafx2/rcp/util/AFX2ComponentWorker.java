@@ -30,7 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -72,7 +72,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      */
     protected final void addComponentByType(
             final Node validContainer,
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> editor,
+            final IVComponent<Node, EventHandler<Event>, Event, Object> editor,
             final Map<Layout, Node> bars, final MenuBar menu) {
 
         handleAdd(validContainer, editor.getRoot(), editor.getName());
@@ -97,7 +97,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      * @param bars
      */
     private void handleUserBarEntries(
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> editor,
+            final IVComponent<Node, EventHandler<Event>, Event, Object> editor,
             final Map<Layout, Node> bars) {
         final Set<Layout> keys = bars.keySet();
         final Map<Layout, Node> myBars = editor.getBarEntries();
@@ -148,7 +148,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      */
     // TODO migrate menu bar handling
     private void addBarEntries(
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> editor,
+            final IVComponent<Node, EventHandler<Event>, Event, Object> editor,
             final Map<Layout, Node> bars) {
         final Map<Layout, Node> currentBars = editor.getBarEntries();
         final Iterator<Entry<Layout, Node>> it = currentBars.entrySet().iterator();
@@ -217,7 +217,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      * @param currentTaget
      */
     protected void handleNewComponentValue(
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+            final IVComponent<Node, EventHandler<Event>, Event, Object> component,
             final Map<String, Node> targetComponents,
             final Node parent, final String currentTaget) {
         if (parent == null) {
@@ -254,7 +254,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      * @param targetComponents
      */
     private void handleTargetChange(
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+            final IVComponent<Node, EventHandler<Event>, Event, Object> component,
             final Map<String, Node> targetComponents, final String target) {
         final Node validContainer = getValidContainerById(
                 targetComponents, target);
@@ -272,7 +272,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      * @param component
      */
     protected final void changeComponentTarget(
-            final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
         component.getParentPerspective().delegateTargetChange(
                 component.getExecutionTarget(), component);
     }
@@ -285,8 +285,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      * @return
      */
     protected final Node prepareAndHandleComponent(
-            final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
-            final IAction<ActionEvent, Object> action) {
+            final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+            final IAction<Event, Object> action) {
         final Node editorComponent = component.handle(action);
         component.setRoot(editorComponent);
         return editorComponent;

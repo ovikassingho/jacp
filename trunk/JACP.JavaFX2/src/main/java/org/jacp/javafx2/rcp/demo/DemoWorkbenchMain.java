@@ -1,7 +1,7 @@
 package org.jacp.javafx2.rcp.demo;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
@@ -28,7 +28,7 @@ public class DemoWorkbenchMain extends Application {
 
 	@Override
 	public void start(Stage arg0) throws Exception {
-		final IWorkbench<Region, Node, EventHandler<ActionEvent>, ActionEvent, Object, StageStyle> workbench = (IWorkbench<Region, Node, EventHandler<ActionEvent>, ActionEvent, Object, StageStyle>) launcher
+		final IWorkbench<Region, Node, EventHandler<Event>, Event, Object, StageStyle> workbench = (IWorkbench<Region, Node, EventHandler<Event>, Event, Object, StageStyle>) launcher
 				.getContext().getBean("workbench");
 		workbench.init(launcher);
 		((AFX2Workbench) workbench).start(arg0);

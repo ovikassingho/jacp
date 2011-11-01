@@ -24,7 +24,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
@@ -43,10 +43,10 @@ import org.jacp.api.componentLayout.Layout;
  */
 public class FX2ComponentReplaceWorker
 		extends
-		AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
+		AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
 	private final Map<String, Node> targetComponents;
-	private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
+	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 	private final Map<Layout, Node> bars;
 	private final MenuBar menu;
 	private volatile BlockingQueue<Boolean> lock = new ArrayBlockingQueue<Boolean>(
@@ -54,7 +54,7 @@ public class FX2ComponentReplaceWorker
 
 	public FX2ComponentReplaceWorker(
 			final Map<String, Node> targetComponents,
-			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<Layout, Node> bars, final MenuBar menu) {
 		this.targetComponents = targetComponents;
 		this.component = component;
@@ -63,14 +63,14 @@ public class FX2ComponentReplaceWorker
 	}
 
 	@Override
-	protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call()
+	protected IVComponent<Node, EventHandler<Event>, Event, Object> call()
 			throws Exception {
 		synchronized (component) {
 			try {
 				component.setBlocked(true);
 				releaseLock();
 				while (component.hasIncomingMessage()) {
-					final IAction<ActionEvent, Object> myAction = component
+					final IAction<Event, Object> myAction = component
 							.getNextIncomingMessage();
 					waitOnLock();
 					log(" //1.1.1.1.1// handle replace component BEGIN: "
@@ -103,7 +103,7 @@ public class FX2ComponentReplaceWorker
 	@Override
 	protected final void done() {
 		try {
-			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = this
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component = this
 					.get();
 			component.setBlocked(false);
 		} catch (final InterruptedException e) {
@@ -134,7 +134,7 @@ public class FX2ComponentReplaceWorker
 	}
 
 	private void removeComponentValue(
-			final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component,
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer) {
 		// bar entries
 		// final Map<Layout, Node> componentBarEnries =
@@ -199,7 +199,7 @@ public class FX2ComponentReplaceWorker
 				for (int i = 0; i < chunks.length; i++) {
 					final ChunkDTO dto = chunks[i];
 					final Node parent = dto.getParent();
-					final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component = dto
+					final IVComponent<Node, EventHandler<Event>, Event, Object> component = dto
 							.getComponent();
 					// TODO decide if menu and bars are always handled or
 					// only at start
