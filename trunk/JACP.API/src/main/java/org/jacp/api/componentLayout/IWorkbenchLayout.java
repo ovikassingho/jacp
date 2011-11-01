@@ -20,28 +20,15 @@ package org.jacp.api.componentLayout;
 import java.util.Map;
 
 import org.jacp.api.util.Tupel;
-import org.jacp.api.util.WorkspaceMode;
+
 
 /**
  * defines the base layout of a workbench and the application
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbenchLayout<L, C> {
+public interface IWorkbenchLayout<L, C, S> {
 
-    /**
-     * get defined workspace layout
-     * 
-     * @return
-     */
-    public abstract WorkspaceMode getWorkspaceMode();
-
-    /**
-     * set workspace layout to window-, stack- or tabbed-mode
-     * 
-     * @param mode
-     */
-    public abstract void setWorkspaceMode(WorkspaceMode mode);
 
     /**
      * check if menues are enabled
@@ -100,5 +87,16 @@ public interface IWorkbenchLayout<L, C> {
      * @return
      */
     public abstract Map<Layout, C> getToolBars();
+    
+    /**
+     * set workbench style
+     * @param style, the style of workbench
+     */
+    public abstract void setStyle(S style);
+    /**
+     *  returns the workbench style
+     * @return style
+     */
+    public abstract S getStyle();
 
 }
