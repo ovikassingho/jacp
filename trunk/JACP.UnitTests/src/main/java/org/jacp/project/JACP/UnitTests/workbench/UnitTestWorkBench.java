@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.swing.JMenu;
 
 import org.jacp.api.componentLayout.Layout;
-import org.jacp.api.util.WorkspaceMode;
 import org.jacp.project.JACP.Util.util.OSXBottomBarPanel;
 import org.jacp.project.JACP.Util.util.OSXToolBar;
 import org.jacp.swing.rcp.action.SwingAction;
@@ -39,7 +38,6 @@ public class UnitTestWorkBench extends ASwingWorkbench {
 	@Override
 	public void handleInitialLayout(SwingAction action,
 			SwingWorkbenchLayout layout) {
-		layout.setWorkspaceMode(WorkspaceMode.SINGLE_PANE);
 		layout.setLayoutManager(new BorderLayout());
 		layout.registerToolBar(Layout.NORTH, new OSXToolBar());
 		layout.registerToolBar(Layout.SOUTH, new OSXBottomBarPanel());
