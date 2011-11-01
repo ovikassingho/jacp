@@ -34,6 +34,7 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 
+
 /**
  * represents a basic FX2 component to extend from, uses this abstract class to create UI components
  * @author Andy Moncsek

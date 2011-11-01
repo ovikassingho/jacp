@@ -16,7 +16,6 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx2.rcp.component.AStatelessComponent;
 import org.jacp.javafx2.rcp.util.StateLessComponentRunWorker;
 
-
 public class StatelessComponentCoordinator
 		implements
 		IStatelessComponentCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
@@ -28,7 +27,9 @@ public class StatelessComponentCoordinator
 
 	private IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent;
 	private final Launcher<?> launcher;
-	private ExecutorService executor = Executors.newFixedThreadPool(MAX_INCTANCE_COUNT); 
+	private ExecutorService executor = Executors
+			.newFixedThreadPool(MAX_INCTANCE_COUNT);
+
 	public StatelessComponentCoordinator(
 			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> baseComponent,
 			final Launcher<?> launcher) {
@@ -54,9 +55,9 @@ public class StatelessComponentCoordinator
 							.add(getCloneBean(((AStatelessComponent) baseComponent)
 									.getClass()));
 				} // End inner if
-				// run component in thread
+					// run component in thread
 				instanceRun(comp, message);
-			} // End if 
+			} // End if
 			else {
 				// check if new instances can be created
 				if (componentInstances.size() < MAX_INCTANCE_COUNT) {
@@ -102,8 +103,8 @@ public class StatelessComponentCoordinator
 	@Override
 	public <T extends IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object>> IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> getCloneBean(
 			Class<T> clazz) {
-        return ((AStatelessComponent) baseComponent).init(launcher
-                .getBean(clazz));
+		return ((AStatelessComponent) baseComponent).init(launcher
+				.getBean(clazz));
 	}
 
 	/**

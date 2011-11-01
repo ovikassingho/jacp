@@ -29,71 +29,78 @@ import org.jacp.api.action.IAction;
  * @author Andy Moncsek
  */
 public final class FX2Action implements IAction<ActionEvent, Object> {
-    
-    
-    private final Map<String, Object> messages = new HashMap<String, Object>();
-    private Object message;
-    private final String sourceId;
-    private ActionEvent event;
-    private String target;
-    
-    public FX2Action(final String sourceId) {
-        this.sourceId = sourceId;
-    }
-    
-    public FX2Action(final String sourceId, final Object message) {
-        this.sourceId = sourceId;
-        setMessage(message);
-    }
-    
-    
-    
-    public FX2Action(final String sourceId, final String targetId, final Object message) {
-        this.sourceId = sourceId;
-        this.target = targetId;
-        setMessage(message);
-    }
-    
-    public void setMessage(Object message) {
-       this.message = message;
-       this.target = this.target !=null?this.target:this.getSourceId();
-       this.getMessageList().put(this.target, message);
-    }
 
-    public void addMessage(String targetId, Object message) {
-       this.target = targetId;
-       this.message = message;
-       this.getMessageList().put(target, message);
-    }
+	private final Map<String, Object> messages = new HashMap<String, Object>();
+	private Object message;
+	private final String sourceId;
+	private ActionEvent event;
+	private String target;
 
-    public Object getLastMessage() {
-       return this.message;
-    }
+	public FX2Action(final String sourceId) {
+		this.sourceId = sourceId;
+	}
 
-    public Map<String, Object> getMessageList() {
-       return this.messages;
-    }
+	public FX2Action(final String sourceId, final Object message) {
+		this.sourceId = sourceId;
+		setMessage(message);
+	}
 
-    public String getSourceId() {
-        return this.sourceId;
-    }
+	public FX2Action(final String sourceId, final String targetId,
+			final Object message) {
+		this.sourceId = sourceId;
+		this.target = targetId;
+		setMessage(message);
+	}
 
-    public void setActionEvent(ActionEvent event) {
-        this.event = event;
-    }
+	@Override
+	public void setMessage(Object message) {
+		this.message = message;
+		this.target = this.target != null ? this.target : this.getSourceId();
+		this.getMessageList().put(this.target, message);
+	}
 
-    public ActionEvent getActionEvent() {
-        return this.event;
-    }
-    @Override
-    public IAction<ActionEvent, Object> clone() {
-        final IAction<ActionEvent, Object> clone = new FX2Action(sourceId);
-        clone.setActionEvent(this.event);
-        return clone;
-    }
+	@Override
+	public void addMessage(String targetId, Object message) {
+		this.target = targetId;
+		this.message = message;
+		this.getMessageList().put(target, message);
+	}
 
-    public String getTargetId() {
-        return this.target;
-    }
-    
+	@Override
+	public Object getLastMessage() {
+		return this.message;
+	}
+
+	@Override
+	public Map<String, Object> getMessageList() {
+		return this.messages;
+	}
+
+	@Override
+	public String getSourceId() {
+		return this.sourceId;
+	}
+
+	@Override
+	public void setActionEvent(ActionEvent event) {
+		this.event = event;
+	}
+
+	@Override
+	public ActionEvent getActionEvent() {
+		return this.event;
+	}
+
+	@Override
+	public IAction<ActionEvent, Object> clone() {
+		final IAction<ActionEvent, Object> clone = new FX2Action(sourceId);
+		clone.setActionEvent(this.event);
+		return clone;
+	}
+
+	@Override
+	public String getTargetId() {
+		return this.target;
+	}
+
 }

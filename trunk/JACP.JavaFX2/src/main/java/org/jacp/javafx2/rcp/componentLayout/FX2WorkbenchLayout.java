@@ -21,63 +21,76 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
+import javafx.stage.StageStyle;
+
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.util.Tupel;
-import org.jacp.api.util.WorkspaceMode;
 
 /**
  * defines basic layout of workbench; define if menus are enabled; declare tool
  * bars; set workbench size
+ * 
  * @author Andy Moncsek
  */
-public class FX2WorkbenchLayout implements IWorkbenchLayout<Region, Node> {
-    
-    private WorkspaceMode workspaceMode;
-    private boolean menueEnabled;
-    private Region layout;
-    private Tupel<Integer,Integer> size = new Tupel<Integer, Integer>();
-    private Map<Layout, Node> toolbars = new ConcurrentHashMap<Layout, Node>(); 
+public class FX2WorkbenchLayout implements
+		IWorkbenchLayout<Region, Node, StageStyle> {
 
-    public WorkspaceMode getWorkspaceMode() {
-        return workspaceMode;
-    }
+	private boolean menueEnabled;
+	private Region layout;
+	private Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
+	private Map<Layout, Node> toolbars = new ConcurrentHashMap<Layout, Node>();
+	private StageStyle style = StageStyle.DECORATED;
 
-    public void setWorkspaceMode(WorkspaceMode mode) {
-       this.workspaceMode = mode;
-    }
+	@Override
+	public boolean isMenuEnabled() {
+		return menueEnabled;
+	}
 
-    public boolean isMenuEnabled() {
-        return menueEnabled;
-    }
+	@Override
+	public void setMenuEnabled(boolean enabled) {
+		this.menueEnabled = enabled;
+	}
 
-    public void setMenuEnabled(boolean enabled) {
-       this. menueEnabled = enabled;
-    }
+	@Override
+	public void setLayoutManager(Region layout) {
+		this.layout = layout;
+	}
 
-    public void setLayoutManager(Region layout) {
-        this.layout = layout;
-    }
+	@Override
+	public Region getLayoutManager() {
+		return this.layout;
+	}
 
-    public Region getLayoutManager() {
-        return this.layout;
-    }
+	@Override
+	public void setWorkbenchXYSize(int x, int y) {
+		size.setX(x);
+		size.setY(y);
+	}
 
-    public void setWorkbenchXYSize(int x, int y) {
-       size.setX(x);
-       size.setY(y);
-    }
+	@Override
+	public Tupel<Integer, Integer> getWorkbenchSize() {
+		return size;
+	}
 
-    public Tupel<Integer, Integer> getWorkbenchSize() {
-        return size;
-    }
+	@Override
+	public void registerToolBar(Layout name, Node toolBar) {
+		toolbars.put(name, toolBar);
+	}
 
-    public void registerToolBar(Layout name, Node toolBar) {
-       toolbars.put(name, toolBar);
-    }
+	@Override
+	public Map<Layout, Node> getToolBars() {
+		return toolbars;
+	}
 
-    public Map<Layout, Node> getToolBars() {
-       return toolbars;
-    }
-    
+	@Override
+	public void setStyle(StageStyle style) {
+		this.style = style;
+	}
+
+	@Override
+	public StageStyle getStyle() {
+		return this.style;
+	}
+
 }

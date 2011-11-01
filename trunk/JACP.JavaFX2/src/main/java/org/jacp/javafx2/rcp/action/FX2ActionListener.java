@@ -44,23 +44,28 @@ public class FX2ActionListener implements EventHandler<ActionEvent>,
 		this.coordinator = coordinator;
 	}
 
+	@Override
 	public void notifyComponents(IAction<ActionEvent, Object> action) {
 		coordinator.handle(action);
 	}
 
+	@Override
 	public void setAction(IAction<ActionEvent, Object> action) {
 		this.action = action;
 	}
 
+	@Override
 	public IAction<ActionEvent, Object> getAction() {
 		return this.action;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public EventHandler<ActionEvent> getListener() {
 		return this;
 	}
 
+	@Override
 	public void handle(ActionEvent t) {
 		action.setActionEvent(t);
 		notifyComponents(action);
