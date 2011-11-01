@@ -12,6 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
+import org.jacp.swing.rcp.util.WorkspaceMode;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -44,7 +45,7 @@ public class UnitTest2BenchMainNoMember {
 	public static void main(final String[] args) {
 		final Launcher<ClassPathXmlApplicationContext> launcher = new org.jacp.project.JACP.Util.impl.SpringLauncher(
 				"main_no_members.xml");
-		final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object>) launcher
+		final IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object, WorkspaceMode> workbench = (IWorkbench<Container, LayoutManager2, ActionListener, ActionEvent, Object, WorkspaceMode>) launcher
 				.getContext().getBean("workbench");
 		workbench.init(launcher);
 	}
