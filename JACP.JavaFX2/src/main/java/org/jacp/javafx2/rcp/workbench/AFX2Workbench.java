@@ -38,7 +38,7 @@ import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -57,11 +57,11 @@ import javafx.stage.StageStyle;
  */
 public abstract class AFX2Workbench
 		implements
-		IWorkbench<Region, Node, EventHandler<ActionEvent>, ActionEvent, Object, StageStyle>,
-		IRootComponent<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>, IAction<ActionEvent, Object>> {
+		IWorkbench<Region, Node, EventHandler<Event>, Event, Object, StageStyle>,
+		IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 
-	private List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectives;
-	private final IPerspectiveCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> perspectiveHandler = new FX2PerspectiveCoordinator(
+	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
+	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveHandler = new FX2PerspectiveCoordinator(
 			this);
 	private final int inset = 50;
 	private final IWorkbenchLayout<Region, Node, StageStyle> layout = new FX2WorkbenchLayout();
@@ -130,13 +130,13 @@ public abstract class AFX2Workbench
 
 	@Override
 	public void setPerspectives(
-			List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectives) {
+			List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
 		this.perspectives = perspectives;
 
 	}
 
 	@Override
-	public List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> getPerspectives() {
+	public List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
 		return this.perspectives;
 	}
 
@@ -189,23 +189,23 @@ public abstract class AFX2Workbench
 
 	@Override
 	public void registerComponent(
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+			IPerspective<EventHandler<Event>, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void unregisterComponent(
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+			IPerspective<EventHandler<Event>, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void initComponents(IAction<ActionEvent, Object> action) {
-		List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectivesTmp = getPerspectives();
+	public void initComponents(IAction<Event, Object> action) {
+		List<IPerspective<EventHandler<Event>, Event, Object>> perspectivesTmp = getPerspectives();
 		for (int i = 0; i < perspectivesTmp.size(); i++) {
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective = perspectivesTmp
+			final IPerspective<EventHandler<Event>, Event, Object> perspective = perspectivesTmp
 					.get(i);
 			log("3.4.1: register component: " + perspective.getName());
 			registerComponent(perspective);
@@ -241,14 +241,14 @@ public abstract class AFX2Workbench
 	 * @param perspective
 	 */
 	private void createPerspectiveMenue(
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		// TODO implement missing "create perspective menu" functionality
 	}
 
 	@Override
 	public void initComponent(
-			IAction<ActionEvent, Object> action,
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			IAction<Event, Object> action,
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFX2Perspective) perspective)
 				.getIPerspectiveLayout();
 		log("3.4.3: perspective handle init");
@@ -267,7 +267,7 @@ public abstract class AFX2Workbench
 	 * @param perspective
 	 */
 	private void addPerspectiveBarEntries(
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		synchronized (layout) { // TODO remove synchronized block
 			if (perspective instanceof AFX2Perspective) {
 				((AFX2Perspective) perspective).handleBarEntries(layout
@@ -283,7 +283,7 @@ public abstract class AFX2Workbench
 	 * @param perspectiveLayout
 	 */
 	private void initPerspectiveUI(
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective,
+			final IPerspective<EventHandler<Event>, Event, Object> perspective,
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout) {
 		log("3.4.6: perspective init SINGLE_PANE");
 		initPerspectiveInStackMode(perspectiveLayout);
@@ -314,8 +314,8 @@ public abstract class AFX2Workbench
 	 * @param perspective
 	 */
 	private void handlePerspectiveInitMethod(
-			IAction<ActionEvent, Object> action,
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			IAction<Event, Object> action,
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (getTargetPerspectiveId(action.getTargetId()).equals(
 				perspective.getId())) {
 			log("3.4.3.1: perspective handle with custom action");
@@ -329,8 +329,8 @@ public abstract class AFX2Workbench
 
 	@Override
 	public void handleAndReplaceComponent(
-			IAction<ActionEvent, Object> action,
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+			IAction<Event, Object> action,
+			IPerspective<EventHandler<Event>, Event, Object> component) {
 		// TODO Auto-generated method stub
 
 	}

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.stage.StageStyle;
@@ -43,13 +43,13 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
  * @author Andy Moncsek
  */
 public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
-		IPerspectiveCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
+		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
-	private final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object,StageStyle> workbench;
-	private List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>>();
+	private final IWorkbench<?, Node, EventHandler<Event>, Event, Object,StageStyle> workbench;
+	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 
 	public FX2PerspectiveCoordinator(
-			final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object, StageStyle> workbench) {
+			final IWorkbench<?, Node, EventHandler<Event>, Event, Object, StageStyle> workbench) {
 		setDaemon(true);
 		this.workbench = workbench;
 	}
@@ -67,11 +67,11 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	}
 
 	@Override
-	public void handleMessage(String target, IAction<ActionEvent, Object> action) {
-		final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective = getObserveableById(
+	public void handleMessage(String target, IAction<Event, Object> action) {
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		if (perspective != null) {
-			final IAction<ActionEvent, Object> actionClone = getValidAction(
+			final IAction<Event, Object> actionClone = getValidAction(
 					action, target, action.getMessageList().get(target));
 			handleComponentHit(target, actionClone, perspective);
 		} // End if
@@ -90,8 +90,8 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	 */
 	private void handleComponentHit(
 			final String target,
-			final IAction<ActionEvent, Object> action,
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			final IAction<Event, Object> action,
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (perspective.isActive()) {
 			handleMessageToActivePerspective(target, action, perspective);
 		} // End if
@@ -113,8 +113,8 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	 */
 	private void handleMessageToActivePerspective(
 			final String target,
-			final IAction<ActionEvent, Object> action,
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			final IAction<Event, Object> action,
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		// if perspective already active handle perspective and replace
 		// with newly created layout component in workbench
 		log(" //1.1.1.1// perspective HIT handle ACTIVE: "
@@ -131,7 +131,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 
 	@Override
 	public void delegateMessage(String target,
-			IAction<ActionEvent, Object> action) {
+			IAction<Event, Object> action) {
 		// Find local Target; if target is perspective handle target or
 		// delegate
 		// message to responsible component observer
@@ -150,8 +150,8 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	 * @param action
 	 */
 	private void callComponentDelegate(final String target,
-			final IAction<ActionEvent, Object> action) {
-		final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective = getObserveableById(
+			final IAction<Event, Object> action) {
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		// TODO REMOVE null handling... use DUMMY instead (maybe like
 		// Collections.EMPTY...)
@@ -168,30 +168,30 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	}
 
 	@Override
-	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleActive(
-			P component, IAction<ActionEvent, Object> action) {
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
+			P component, IAction<Event, Object> action) {
 		((AFX2Workbench) workbench)
 				.handleAndReplaceComponent(
 						action,
-						(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>) component);
+						(IPerspective<EventHandler<Event>, Event, Object>) component);
 	}
 
 	@Override
-	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleInActive(
-			P component, IAction<ActionEvent, Object> action) {
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
+			P component, IAction<Event, Object> action) {
 		component.setActive(true);
 		((AFX2Workbench) workbench)
 				.initComponent(
 						action,
-						(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>) component);
+						(IPerspective<EventHandler<Event>, Event, Object>) component);
 	}
 
 	@Override
 	public void delegateTargetChange(
 			String target,
-			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+			ISubComponent<EventHandler<Event>, Event, Object> component) {
 		// find responsible perspective
-		final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> responsiblePerspective = getObserveableById(
+		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
@@ -210,8 +210,8 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	 * @param component
 	 */
 	private void handleTargetHit(
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> responsiblePerspective,
-			final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (!responsiblePerspective.isActive()) {
 			// 1. init perspective (do not register component before perspective
 			// is active, otherwise component will be handled once again)
@@ -223,8 +223,8 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	}
 
 	private void addToActivePerspective(
-			final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> responsiblePerspective,
-			final ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		responsiblePerspective.addActiveComponent(component);
 	}
 
@@ -238,14 +238,14 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 
 	@Override
 	public void addPerspective(
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspective.setObserver(this);
 		this.perspectives.add(perspective);
 	}
 
 	@Override
 	public void removePerspective(
-			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspective.setObserver(null);
 		this.perspectives.remove(perspective);
 	}

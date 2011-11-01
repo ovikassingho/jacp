@@ -18,7 +18,7 @@
 package org.jacp.javafx2.rcp.util;
 
 import java.util.Map;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.component.IVComponent;
@@ -29,18 +29,18 @@ import org.jacp.api.component.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentAddWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object>> {
+public class FX2ComponentAddWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
     private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component;
+    private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 
-    public FX2ComponentAddWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> component) {
+    public FX2ComponentAddWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
         this.targetComponents = targetComponents;
         this.component = component;
     }
 
     @Override
-    protected IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> call() throws Exception {
+    protected IVComponent<Node, EventHandler<Event>, Event, Object> call() throws Exception {
         return null;
     }
 

@@ -19,7 +19,7 @@ package org.jacp.javafx2.rcp.util;
 
 import java.util.concurrent.ExecutionException;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
@@ -35,20 +35,20 @@ import org.jacp.javafx2.rcp.action.FX2Action;
  */
 public class StateComponentRunWorker
 		extends
-		AFX2ComponentWorker<IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object>> {
-	private final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> component;
+		AFX2ComponentWorker<IBGComponent<EventHandler<Event>, Event, Object>> {
+	private final IBGComponent<EventHandler<Event>, Event, Object> component;
 	
-	public StateComponentRunWorker(final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
+	public StateComponentRunWorker(final IBGComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
 	@Override
-	protected IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> call()
+	protected IBGComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp = component;
+		final IBGComponent<EventHandler<Event>, Event, Object> comp = component;
 		synchronized (comp) {
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {
-				final IAction<ActionEvent, Object> myAction = comp
+				final IAction<Event, Object> myAction = comp
 						.getNextIncomingMessage();
 				comp.setHandleTarget(myAction.getSourceId());
 				final String targetCurrent = comp.getExecutionTarget();
@@ -67,7 +67,7 @@ public class StateComponentRunWorker
 	 * @param currentTaget
 	 */
 	private void checkAndHandleTargetChange(
-			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp,
+			final IBGComponent<EventHandler<Event>, Event, Object> comp,
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
@@ -83,10 +83,10 @@ public class StateComponentRunWorker
 	 * @param value
 	 */
 	private void delegateReturnValue(
-			final IBGComponent<EventHandler<ActionEvent>, ActionEvent, Object> comp,
+			final IBGComponent<EventHandler<Event>, Event, Object> comp,
 			final String targetId, final Object value) {
 		if (value != null && targetId != null) {
-			final IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> listener = comp
+			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
 					.getActionListener();
 			listener.setAction(new FX2Action(comp.getId(), targetId, value));
 			listener.notifyComponents(listener.getAction());

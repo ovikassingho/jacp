@@ -22,7 +22,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
@@ -39,7 +39,7 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * represents a basic FX2 component to extend from, uses this abstract class to create UI components
  * @author Andy Moncsek
  */
-public abstract class AFX2Component implements IVComponent<Node, EventHandler<ActionEvent>, ActionEvent, Object> {
+public abstract class AFX2Component implements IVComponent<Node, EventHandler<Event>, Event, Object> {
 
     private String id;
     private String target;
@@ -48,10 +48,10 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
     private boolean active;
     private boolean isActived = false;
     private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-    private final BlockingQueue<IAction<ActionEvent, Object>> incomingActions = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(1000);
+    private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(1000);
     private final Map<Layout, Node> barEntries = new ConcurrentHashMap<Layout, Node>();
-    private ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> componentObserver;
-    private IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> parentPerspective;
+    private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
+    private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 
     public void setRoot(Node root) {
         this.root = root;
@@ -74,11 +74,11 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
         this.target = target;
     }
 
-    public void setParentPerspective(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
+    public void setParentPerspective(IPerspective<EventHandler<Event>, Event, Object> perspective) {
         this.parentPerspective = perspective;
     }
 
-    public IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> getParentPerspective() {
+    public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
         return this.parentPerspective;
     }
 
@@ -86,7 +86,7 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
         return !incomingActions.isEmpty();
     }
 
-    public void putIncomingMessage(IAction<ActionEvent, Object> action) {
+    public void putIncomingMessage(IAction<Event, Object> action) {
         try {
             incomingActions.put(action);
         } catch (final InterruptedException e) {
@@ -94,7 +94,7 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
         }
     }
 
-    public IAction<ActionEvent, Object> getNextIncomingMessage() {
+    public IAction<Event, Object> getNextIncomingMessage() {
         if (hasIncomingMessage()) {
             try {
                 return incomingActions.take();
@@ -113,7 +113,7 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
         this.blocked.set(blocked);
     }
 
-    public IActionListener<EventHandler<ActionEvent>, ActionEvent, Object> getActionListener() {
+    public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
         return new FX2ActionListener(new FX2Action(id), componentObserver);
     }
 
@@ -155,12 +155,12 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
         this.name = name;
     }
 
-    public void setObserver(ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> observer) {
+    public void setObserver(ICoordinator<EventHandler<Event>, Event, Object> observer) {
         this.componentObserver = observer;
     }
     
     @SuppressWarnings("unchecked")
-    public <C> C handle(IAction<ActionEvent, Object> action) {
+    public <C> C handle(IAction<Event, Object> action) {
         return (C) handleAction(action);
     }
     /**
@@ -168,5 +168,5 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ac
      * @param action
      * @return 
      */
-    public abstract Node handleAction(IAction<ActionEvent, Object> action);
+    public abstract Node handleAction(IAction<Event, Object> action);
 }

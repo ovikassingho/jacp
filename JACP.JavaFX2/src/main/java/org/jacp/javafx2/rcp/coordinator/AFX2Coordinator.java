@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
@@ -34,17 +34,17 @@ import org.jacp.api.coordinator.ICoordinator;
  * @author Andy Moncsek
  */
 public abstract class AFX2Coordinator extends Thread implements
-		ICoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
+		ICoordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private volatile BlockingQueue<IAction<ActionEvent, Object>> messages = new ArrayBlockingQueue<IAction<ActionEvent, Object>>(
+	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<IAction<Event, Object>>(
 			100000);
 
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
 			log(" observer thread size" + messages.size());
-			IAction<ActionEvent, Object> action = null;
+			IAction<Event, Object> action = null;
 			try {
 				action = messages.take();
 			} catch (final InterruptedException e) {
@@ -66,10 +66,10 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @param message
 	 * @return
 	 */
-	protected IAction<ActionEvent, Object> getValidAction(
-			IAction<ActionEvent, Object> action, final String target,
+	protected IAction<Event, Object> getValidAction(
+			IAction<Event, Object> action, final String target,
 			final Object message) {
-		final IAction<ActionEvent, Object> actionClone = action.clone();
+		final IAction<Event, Object> actionClone = action.clone();
 		actionClone.addMessage(target, message);
 		return actionClone;
 	}
@@ -125,12 +125,12 @@ public abstract class AFX2Coordinator extends Thread implements
 	}
 
 	@Override
-	public void handle(IAction<ActionEvent, Object> action) {
+	public void handle(IAction<Event, Object> action) {
 		messages.add(action);
 	}
 
 	@Override
-	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> P getObserveableById(
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
 			String id, List<P> components) {
 		for (int i = 0; i < components.size(); i++) {
 			final P p = components.get(i);
