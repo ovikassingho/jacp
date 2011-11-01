@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.jacp.api.componentLayout.Layout;
 
+
 /**
  * represents an ui component handled by a perspective
  * 

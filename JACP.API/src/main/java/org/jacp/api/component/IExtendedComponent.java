@@ -21,6 +21,8 @@ import java.util.Map;
 
 import org.jacp.api.componentLayout.Layout;
 
+
+
 /**
  * represents a extended component with menu entries and tool bar access
  * 

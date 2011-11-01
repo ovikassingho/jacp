@@ -23,6 +23,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.componentLayout.Layout;
 
+
 /**
  * base component for an AHCP UI application, handles perspectives and containing
  * components
@@ -38,10 +39,12 @@ import org.jacp.api.componentLayout.Layout;
  *            defines the basic action type
  * @param <M>
  *            defines the basic message type
+ * @param <S>
+ *            defines the workbench style
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbench<P, C, L, A, M> extends IBase<L, A, M>{
+public interface IWorkbench<P, C, L, A, M, S> extends IBase<L, A, M>{
 
 
 	/**
@@ -97,13 +100,13 @@ public interface IWorkbench<P, C, L, A, M> extends IBase<L, A, M>{
 	 * @param layout
 	 */
 	public abstract void handleInitialLayout(final IAction<A, M> action,
-			final IWorkbenchLayout<P, C> layout);
+			final IWorkbenchLayout<P, C, S> layout);
 
 	/**
 	 * returns workbench layout object
 	 * 
 	 * @return
 	 */
-	public abstract IWorkbenchLayout<P, C> getWorkbenchLayout();
+	public abstract IWorkbenchLayout<P, C, S> getWorkbenchLayout();
 
 }
