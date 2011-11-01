@@ -30,6 +30,7 @@ import javafx.scene.control.MenuBar;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
 
+
 /**
  * DTO container for processing component results in Event dispatch thread; for
  * use in componentWorker classes

@@ -12,7 +12,7 @@
 		</property>
 	</bean>
 
-	<bean id="perspectiveOne" class="org.jacp.javafx2.rcp.demo.DempFX2PerspectiveOne">
+	<bean id="perspectiveOne" class="org.jacp.javafx2.rcp.demo.DemoFX2PerspectiveOne">
 		<property name="name" value="perspectiveOne" />
 		<property name="id" value="id01" />
 		<property name="active" value="true" />

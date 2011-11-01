@@ -33,12 +33,13 @@ import javafx.scene.control.MenuBar;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.component.IBGComponent;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ILayoutAbleComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.launcher.Launcher;
@@ -55,6 +56,7 @@ import org.jacp.javafx2.rcp.util.FX2ComponentAddWorker;
 import org.jacp.javafx2.rcp.util.FX2ComponentInitWorker;
 import org.jacp.javafx2.rcp.util.FX2ComponentReplaceWorker;
 import org.jacp.javafx2.rcp.util.StateComponentRunWorker;
+
 
 /**
  * represents a basic javafx2 perspective that handles subcomponents,

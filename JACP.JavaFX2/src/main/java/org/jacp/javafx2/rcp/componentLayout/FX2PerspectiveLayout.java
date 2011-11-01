@@ -27,27 +27,31 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  * configuration and registration of layout 'leaves' where subcomponents can
  * live in. Create your own complex layout, return the root node and register
  * parts of your layout that can handle subcomponents
+ * 
  * @author Andy Moncsek
  */
-public class FX2PerspectiveLayout implements
-        IPerspectiveLayout<Node, Node> {
+public class FX2PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 
-    private Node rootComponent;
-    private final Map<String,Node> targetComponents = new ConcurrentHashMap<String, Node>();
+	private Node rootComponent;
+	private final Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();
 
-    public void setRootComponent(Node comp) {
-        this.rootComponent = comp;
-    }
+	@Override
+	public void setRootComponent(Node comp) {
+		this.rootComponent = comp;
+	}
 
-    public Node getRootComponent() {
-       return this.rootComponent;
-    }
+	@Override
+	public Node getRootComponent() {
+		return this.rootComponent;
+	}
 
-    public Map<String, Node> getTargetLayoutComponents() {
-       return targetComponents;
-    }
+	@Override
+	public Map<String, Node> getTargetLayoutComponents() {
+		return targetComponents;
+	}
 
-    public void registerTargetLayoutComponent(String id, Node target) {
-        targetComponents.put(id, target);
-    }
+	@Override
+	public void registerTargetLayoutComponent(String id, Node target) {
+		targetComponents.put(id, target);
+	}
 }

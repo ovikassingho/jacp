@@ -17,7 +17,6 @@
  */
 package org.jacp.javafx2.rcp.coordinator;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,6 +24,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.stage.StageStyle;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
@@ -36,6 +36,7 @@ import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
+
 /**
  * Observe perspective actions and delegates message to correct component
  * 
@@ -44,19 +45,19 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		IPerspectiveCoordinator<EventHandler<ActionEvent>, ActionEvent, Object> {
 
-	private final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object> workbench;
+	private final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object,StageStyle> workbench;
 	private List<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>>();
 
 	public FX2PerspectiveCoordinator(
-			final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object> workbench) {
+			final IWorkbench<?, Node, EventHandler<ActionEvent>, ActionEvent, Object, StageStyle> workbench) {
 		setDaemon(true);
 		this.workbench = workbench;
 	}
-	
+
 	public final Map<Layout, Node> getBars() {
 		return workbench.getWorkbenchLayout().getToolBars();
 	}
-	
+
 	/**
 	 * returns default workbench menu
 	 * 
@@ -65,6 +66,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		return workbench.getDefaultMenu();
 	}
 
+	@Override
 	public void handleMessage(String target, IAction<ActionEvent, Object> action) {
 		final IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective = getObserveableById(
 				getTargetPerspectiveId(target), perspectives);
@@ -97,7 +99,6 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			// perspective was not active and will be initialized
 			log(" //1.1.1.1// perspective HIT handle IN-ACTIVE: "
 					+ action.getTargetId());
-			handleWorkspaceModeSpecific();
 			handleInActive(perspective, action);
 		} // End else
 	}
@@ -120,7 +121,6 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 				+ action.getTargetId());
 		if (isLocalMessage(target)) {
 			// message is addressing perspective
-			handleWorkspaceModeSpecific();
 			handleActive(perspective, action);
 		} // End if
 		else {
@@ -129,21 +129,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		} // End else
 	}
 
-	/**
-	 * handle workspace mode specific actions. When working in single pain mode
-	 * all components are deactivated and only one (the active) will be
-	 * activated; when working in window mode all components must be visible
-	 */
-	private void handleWorkspaceModeSpecific() {
-		switch (this.workbench.getWorkbenchLayout().getWorkspaceMode()) {
-		case WINDOWED_PANE:
-			this.workbench.enableComponents();
-			break;
-		default:
-			this.workbench.disableComponents();
-		}
-	}
-
+	@Override
 	public void delegateMessage(String target,
 			IAction<ActionEvent, Object> action) {
 		// Find local Target; if target is perspective handle target or
@@ -181,6 +167,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 
 	}
 
+	@Override
 	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleActive(
 			P component, IAction<ActionEvent, Object> action) {
 		((AFX2Workbench) workbench)
@@ -189,6 +176,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 						(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>) component);
 	}
 
+	@Override
 	public <P extends IComponent<EventHandler<ActionEvent>, ActionEvent, Object>> void handleInActive(
 			P component, IAction<ActionEvent, Object> action) {
 		component.setActive(true);
@@ -198,6 +186,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 						(IPerspective<EventHandler<ActionEvent>, ActionEvent, Object>) component);
 	}
 
+	@Override
 	public void delegateTargetChange(
 			String target,
 			ISubComponent<EventHandler<ActionEvent>, ActionEvent, Object> component) {
@@ -247,12 +236,14 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 				"No responsible perspective found. Handling not implemented yet.");
 	}
 
+	@Override
 	public void addPerspective(
 			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
 		perspective.setObserver(this);
 		this.perspectives.add(perspective);
 	}
 
+	@Override
 	public void removePerspective(
 			IPerspective<EventHandler<ActionEvent>, ActionEvent, Object> perspective) {
 		perspective.setObserver(null);
