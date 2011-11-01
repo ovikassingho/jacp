@@ -33,6 +33,7 @@ import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.swing.rcp.action.SwingAction;
+import org.jacp.swing.rcp.util.WorkspaceMode;
 import org.jacp.swing.rcp.workbench.ASwingWorkbench;
 
 /**
@@ -44,10 +45,10 @@ public class SwingPerspectiveCoordinator extends ACoordinator implements
 		IPerspectiveCoordinator<ActionListener, ActionEvent, Object> {
 
 	private final List<IPerspective<ActionListener, ActionEvent, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<ActionListener, ActionEvent, Object>>();
-	private final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench;
+	private final IWorkbench<?, Container, ActionListener, ActionEvent, Object,WorkspaceMode> workbench;
 
 	public SwingPerspectiveCoordinator(
-			final IWorkbench<?, Container, ActionListener, ActionEvent, Object> workbench) {
+			final IWorkbench<?, Container, ActionListener, ActionEvent, Object,WorkspaceMode> workbench) {
 		setDaemon(true);
 		this.workbench = workbench;
 	}
@@ -148,13 +149,7 @@ public class SwingPerspectiveCoordinator extends ACoordinator implements
 	 * activated; when working in window mode all components must be visible
 	 */
 	private void handleWorkspaceModeSpecific() {
-		switch (workbench.getWorkbenchLayout().getWorkspaceMode()) {
-		case WINDOWED_PANE:
-			workbench.enableComponents();
-			break;
-		default:
-			workbench.disableComponents();
-		}
+		workbench.disableComponents();
 	}
 
 	@Override

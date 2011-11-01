@@ -61,6 +61,7 @@ import org.jacp.swing.rcp.component.ASwingComponent;
 import org.jacp.swing.rcp.componentLayout.SwingWorkbenchLayout;
 import org.jacp.swing.rcp.coordinator.SwingPerspectiveCoordinator;
 import org.jacp.swing.rcp.perspective.ASwingPerspective;
+import org.jacp.swing.rcp.util.WorkspaceMode;
 
 /**
  * represents the basic swing workbench instance; handles perspectives and
@@ -70,7 +71,7 @@ import org.jacp.swing.rcp.perspective.ASwingPerspective;
  */
 public abstract class ASwingWorkbench extends JFrame
 		implements
-		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object>,
+		IWorkbench<LayoutManager2, Container, ActionListener, ActionEvent, Object,WorkspaceMode>,
 		IRootComponent<IPerspective<ActionListener, ActionEvent, Object>, IAction<ActionEvent, Object>> {
 
 	/**
@@ -84,7 +85,7 @@ public abstract class ASwingWorkbench extends JFrame
 	private final Dimension screenSize = Toolkit.getDefaultToolkit()
 			.getScreenSize();
 	private final int inset = 50;
-	private final IWorkbenchLayout<LayoutManager2, Container> layout = new SwingWorkbenchLayout();
+	private final IWorkbenchLayout<LayoutManager2, Container,WorkspaceMode> layout = new SwingWorkbenchLayout();
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -168,7 +169,7 @@ public abstract class ASwingWorkbench extends JFrame
 
 	@Override
 	public void handleInitialLayout(final IAction<ActionEvent, Object> action,
-			final IWorkbenchLayout<LayoutManager2, Container> layout) {
+			final IWorkbenchLayout<LayoutManager2, Container,WorkspaceMode> layout) {
 		handleInitialLayout((SwingAction) action, (SwingWorkbenchLayout) layout);
 
 	}
@@ -239,21 +240,7 @@ public abstract class ASwingWorkbench extends JFrame
 			final IPerspectiveLayout<? extends Container, Container> perspectiveLayout) {
 		// avoid npt and overhead of checking in methods
 		if (perspectiveLayout.getRootComponent() != null) {
-			switch (layout.getWorkspaceMode()) {
-			case SINGLE_PANE:
-				log("3.4.6: perspective init SINGLE_PANE");
-				initPerspectiveInStackMode(perspectiveLayout);
-				break;
-			case TABBED_PANE:
-				log("3.4.6: perspective init TABBED_PANE");
-				initPerspectivesInTabbedMode(perspectiveLayout,
-						perspective.getName());
-				break;
-			default:
-				log("3.4.6: perspective init WINDOW_PANE");
-				initPerspectiveInWindowMode(perspectiveLayout,
-						perspective.getName());
-			}
+			initPerspectiveInStackMode(perspectiveLayout);
 		}
 	}
 
@@ -387,7 +374,7 @@ public abstract class ASwingWorkbench extends JFrame
 	}
 
 	@Override
-	public IWorkbenchLayout<LayoutManager2, Container> getWorkbenchLayout() {
+	public IWorkbenchLayout<LayoutManager2, Container,WorkspaceMode> getWorkbenchLayout() {
 		return layout;
 	}
 
@@ -592,7 +579,7 @@ public abstract class ASwingWorkbench extends JFrame
 	 * @return
 	 */
 	private Dimension getPanelDimension(
-			final IWorkbenchLayout<LayoutManager2, Container> layout) {
+			final IWorkbenchLayout<LayoutManager2, Container,WorkspaceMode> layout) {
 		return new Dimension(layout.getWorkbenchSize().getX() - 15, layout
 				.getWorkbenchSize().getY() - 15);
 	}
