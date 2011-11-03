@@ -79,19 +79,6 @@ public interface IWorkbench<P, C, L, A, M, S> extends IBase<L, A, M>{
 	 */
 	public abstract void handleBarEntries(final Map<Layout, C> bars);
 
-	
-	/**
-	 * set visibility of all components in workspace wrapper to false
-	 * 
-	 * @param component
-	 */
-	public abstract void disableComponents();
-
-	/**
-	 * anable all components in workspace; for use in
-	 * initPerspectiveInWindowMode
-	 */
-	public abstract void enableComponents();
 
 	/**
 	 * handle workbench layout
