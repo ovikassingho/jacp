@@ -150,7 +150,7 @@ public class FX2ComponentReplaceWorker
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						getChildren(parent).remove(component.getRoot());
+						FX2Util.getChildren(parent).remove(component.getRoot());
 					}
 				});
 			}

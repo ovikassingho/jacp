@@ -48,10 +48,10 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective{
 		BorderPane layout = new BorderPane();
 
 		final  IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().setMessage("oneButtonBottomOne");
-		Button bc=  new Button("Options");
+		listenerBottomOne.getAction().addMessage("id02","oneButtonBottomOne");
+		Button bc=  new Button("Button Perspective 1");
         bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
-        bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
+        bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
 		layout.setTop(new Rectangle(1024, 50, Color.DARKCYAN));
 		layout.setBottom(new Rectangle(1024, 50, Color.DARKCYAN));
 		layout.setCenter(bc);

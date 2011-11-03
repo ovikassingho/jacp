@@ -29,7 +29,8 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.coordinator.ICoordinator;
 
 /**
- * Observer handles message notification and notifies correct components
+ * Observer handles messages and notifies correct components, the observer is
+ * running in an own thread so that message handling can be done in background
  * 
  * @author Andy Moncsek
  */
@@ -66,8 +67,8 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @param message
 	 * @return
 	 */
-	protected IAction<Event, Object> getValidAction(
-			IAction<Event, Object> action, final String target,
+	protected final IAction<Event, Object> getValidAction(
+			final IAction<Event, Object> action, final String target,
 			final Object message) {
 		final IAction<Event, Object> actionClone = action.clone();
 		actionClone.addMessage(target, message);
@@ -81,7 +82,7 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @param messageId
 	 * @return
 	 */
-	protected boolean isLocalMessage(final String messageId) {
+	protected final boolean isLocalMessage(final String messageId) {
 		return !messageId.contains(".");
 	}
 
@@ -92,7 +93,7 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @param messageId
 	 * @return
 	 */
-	protected String[] getTargetId(final String messageId) {
+	protected final String[] getTargetId(final String messageId) {
 		return messageId.split("\\.");
 	}
 
@@ -102,7 +103,7 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @param messageId
 	 * @return
 	 */
-	protected String getTargetPerspectiveId(final String messageId) {
+	protected final String getTargetPerspectiveId(final String messageId) {
 		final String[] targetId = getTargetId(messageId);
 		if (!isLocalMessage(messageId)) {
 			return targetId[0];
@@ -116,7 +117,7 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @param messageId
 	 * @return
 	 */
-	protected String getTargetComponentId(final String messageId) {
+	protected final String getTargetComponentId(final String messageId) {
 		final String[] targetId = getTargetId(messageId);
 		if (!isLocalMessage(messageId)) {
 			return targetId[1];
@@ -125,13 +126,13 @@ public abstract class AFX2Coordinator extends Thread implements
 	}
 
 	@Override
-	public void handle(IAction<Event, Object> action) {
+	public void handle(final IAction<Event, Object> action) {
 		messages.add(action);
 	}
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
-			String id, List<P> components) {
+			final String id, final List<P> components) {
 		for (int i = 0; i < components.size(); i++) {
 			final P p = components.get(i);
 			if (p.getId().equals(id)) {
