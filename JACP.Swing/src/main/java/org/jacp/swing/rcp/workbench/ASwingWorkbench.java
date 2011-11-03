@@ -248,7 +248,6 @@ public abstract class ASwingWorkbench extends JFrame
 	 * disable all components in workspace; for use in
 	 * initPerspectiveInSingleMode
 	 */
-	@Override
 	public void disableComponents() {
 		// do not disable tool bar entries!!
 		final Collection<Container> toolBars = layout.getToolBars().values();
@@ -266,7 +265,6 @@ public abstract class ASwingWorkbench extends JFrame
 	 * enable all components in workspace; for use in
 	 * initPerspectiveInWindowMode
 	 */
-	@Override
 	public void enableComponents() {
 		final Component[] components = getContentPane().getComponents();
 		for (int i = 0; i < components.length; i++) {
