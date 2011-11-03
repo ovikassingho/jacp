@@ -149,7 +149,7 @@ public class SwingPerspectiveCoordinator extends ACoordinator implements
 	 * activated; when working in window mode all components must be visible
 	 */
 	private void handleWorkspaceModeSpecific() {
-		workbench.disableComponents();
+		((ASwingWorkbench) workbench).disableComponents();
 	}
 
 	@Override
