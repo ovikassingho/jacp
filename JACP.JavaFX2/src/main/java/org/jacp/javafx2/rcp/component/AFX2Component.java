@@ -53,40 +53,40 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ev
     private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
     private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 
-    public void setRoot(Node root) {
+    public final void setRoot(final Node root) {
         this.root = root;
     }
 
-    public Node getRoot() {
+    public final Node getRoot() {
         return this.root;
     }
 
-    public Map<Layout, Node> getBarEntries() {
+    public final Map<Layout, Node> getBarEntries() {
         return this.barEntries;
     }
 
 
-    public String getExecutionTarget() {
+    public final String getExecutionTarget() {
         return this.target;
     }
 
-    public void setExecutionTarget(String target) {
+    public final void setExecutionTarget(final String target) {
         this.target = target;
     }
 
-    public void setParentPerspective(IPerspective<EventHandler<Event>, Event, Object> perspective) {
+    public final void setParentPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         this.parentPerspective = perspective;
     }
 
-    public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
+    public final IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
         return this.parentPerspective;
     }
 
-    public boolean hasIncomingMessage() {
+    public final boolean hasIncomingMessage() {
         return !incomingActions.isEmpty();
     }
 
-    public void putIncomingMessage(IAction<Event, Object> action) {
+    public final void putIncomingMessage(final IAction<Event, Object> action) {
         try {
             incomingActions.put(action);
         } catch (final InterruptedException e) {
@@ -94,7 +94,7 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ev
         }
     }
 
-    public IAction<Event, Object> getNextIncomingMessage() {
+    public final IAction<Event, Object> getNextIncomingMessage() {
         if (hasIncomingMessage()) {
             try {
                 return incomingActions.take();
@@ -105,62 +105,62 @@ public abstract class AFX2Component implements IVComponent<Node, EventHandler<Ev
         return null;
     }
 
-    public boolean isBlocked() {
+    public final boolean isBlocked() {
         return blocked.get();
     }
 
-    public void setBlocked(boolean blocked) {
+    public final void setBlocked(final boolean blocked) {
         this.blocked.set(blocked);
     }
 
-    public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
+    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
         return new FX2ActionListener(new FX2Action(id), componentObserver);
     }
 
-    public String getId() {
+    public final String getId() {
         if (id == null) {
             throw new UnsupportedOperationException("No id set");
         }
         return this.id;
     }
 
-    public void setId(String id) {
+    public final void setId(final String id) {
         this.id = id;
     }
 
-    public boolean isActive() {
+    public final boolean isActive() {
         return this.active;
     }
 
-    public void setActive(boolean active) {
+    public final void setActive(final boolean active) {
         this.active = active;
     }
 
-    public void setActivated(boolean isActive) {
+    public final void setActivated(final boolean isActive) {
         this.isActived = isActive;
     }
 
-    public boolean isActivated() {
+    public final boolean isActivated() {
         return this.isActived;
     }
 
-    public String getName() {
+    public final String getName() {
         if (name == null) {
             throw new UnsupportedOperationException("No name set");
         }
         return name;
     }
 
-    public void setName(String name) {
+    public final void setName(final String name) {
         this.name = name;
     }
 
-    public void setObserver(ICoordinator<EventHandler<Event>, Event, Object> observer) {
+    public final void setObserver(final ICoordinator<EventHandler<Event>, Event, Object> observer) {
         this.componentObserver = observer;
     }
     
     @SuppressWarnings("unchecked")
-    public <C> C handle(IAction<Event, Object> action) {
+    public final <C> C handle(final IAction<Event, Object> action) {
         return (C) handleAction(action);
     }
     /**

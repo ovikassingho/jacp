@@ -190,7 +190,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
             final Node uiComponent, final String name) {
         uiComponent.setVisible(true);
         if (validContainer != null) {
-            final ObservableList<Node> children = getChildren(validContainer);
+            final ObservableList<Node> children = FX2Util.getChildren(validContainer);
             children.add(uiComponent);
         }
 
@@ -204,7 +204,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      */
     protected void handleOldComponentRemove(final Node parent,
             final Node currentContainer) {
-        final ObservableList<Node> children = getChildren(parent);
+        final ObservableList<Node> children = FX2Util.getChildren(parent);
         children.remove(currentContainer);
     }
 
@@ -332,38 +332,4 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
         }
     }
 
-    /**
-     * returns children of current node
-     * @param node
-     * @return 
-     */
-    @SuppressWarnings("unchecked") ObservableList<Node> getChildren(Node node) {
-        if (node instanceof Parent) {
-            Parent tmp = (Parent) node;
-            Method protectedChildrenMethod;
-            ObservableList<Node> returnValue = null;
-            try {
-                protectedChildrenMethod = Parent.class.getDeclaredMethod("getChildren", null);
-                protectedChildrenMethod.setAccessible(true);
-
-                returnValue = (ObservableList<Node>) protectedChildrenMethod.invoke(tmp, null);
-
-            } catch (NoSuchMethodException ex) {
-                Logger.getLogger(AFX2ComponentWorker.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(AFX2ComponentWorker.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(AFX2ComponentWorker.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalArgumentException ex) {
-                Logger.getLogger(AFX2ComponentWorker.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvocationTargetException ex) {
-                Logger.getLogger(AFX2ComponentWorker.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            return returnValue;
-        }
-
-        return null;
-
-    }
 }
