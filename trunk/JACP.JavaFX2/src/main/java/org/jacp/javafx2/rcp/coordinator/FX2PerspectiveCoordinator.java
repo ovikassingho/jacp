@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -128,7 +129,8 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	}
 
 	@Override
-	public void delegateMessage(final String target, final IAction<Event, Object> action) {
+	public void delegateMessage(final String target,
+			final IAction<Event, Object> action) {
 		// Find local Target; if target is perspective handle target or
 		// delegate
 		// message to responsible component observer
@@ -175,8 +177,15 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
 			final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
-		((AFX2Workbench) workbench).initComponent(action,
-				(IPerspective<EventHandler<Event>, Event, Object>) component);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				((AFX2Workbench) workbench)
+						.initComponent(
+								action,
+								(IPerspective<EventHandler<Event>, Event, Object>) component);
+			}
+		});
 	}
 
 	@Override
