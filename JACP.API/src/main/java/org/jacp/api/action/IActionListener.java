@@ -38,32 +38,32 @@ public interface IActionListener<L, A, M> {
      * 
      * @param action
      */
-    public abstract void notifyComponents(final IAction<A, M> action);
+    void notifyComponents(final IAction<A, M> action);
 
     /**
      * set Action to listener
      * 
      * @param action
      */
-    public abstract void setAction(final IAction<A, M> action);
+    void setAction(final IAction<A, M> action);
 
     /**
      * returns the action
      * 
      * @return
      */
-    public IAction<A, M> getAction();
+    IAction<A, M> getAction();
 
     /**
      * returns implementation specific ActionListener, all listeners must extend java.util.EventListener
      * 
      * @return
      */
-    public abstract <C extends L> C getListener();
+    <C extends L> C getListener();
     
     /**
      * abstraction to handle actions uniform on different toolkits
      * @param arg0
      */
-    public abstract void performAction(EventObject arg0);
+    void performAction(EventObject arg0);
 }
