@@ -22,7 +22,7 @@
 				<module>../JACP.API</module>
 				<module>../JACP.Swing</module>
 				<module>../JACP.Util</module>
-				<module>../JACP.UnitTests</module>
+				<!-- <module>../JACP.UnitTests</module> -->
 			</modules>
 		</profile>
 		<profile>
@@ -30,6 +30,14 @@
 			<modules>
 				<module>../JACP.API</module>
 				<module>../JACP.Swing</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>javafx2</id>
+			<modules>
+				<module>../JACP.API</module>
+				<module>../JACP.JavaFX2</module>				
+				<module>../JACP.JavaFX2DemoArea</module>
 			</modules>
 		</profile>
 		<profile>
