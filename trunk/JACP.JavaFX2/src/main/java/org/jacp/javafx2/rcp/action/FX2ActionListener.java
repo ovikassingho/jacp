@@ -17,7 +17,6 @@
  */
 package org.jacp.javafx2.rcp.action;
 
-import java.util.EventObject;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
@@ -71,8 +70,8 @@ public class FX2ActionListener implements EventHandler<Event>,
 	}
 
 	@Override
-	public void performAction(EventObject arg0) {
-		handle((Event) arg0);
+	public void performAction(Event arg0) {
+		handle(arg0);
 	}
 
 }
