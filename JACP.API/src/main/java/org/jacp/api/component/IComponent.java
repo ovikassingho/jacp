@@ -16,17 +16,16 @@
  * governing permissions and limitations under the License.
  */
 package org.jacp.api.component;
+
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.coordinator.ICoordinator;
 
 /**
- * represents a basic component
+ * This Interface represents a very basic component that can exists in JACP
+ * environment.
  * 
  * @author Andy Moncsek
- * @param <C>
- *            defines the return type of component handling; when component is
- *            an UI component C is the basic type where other elements extends
- *            from
+
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -36,78 +35,76 @@ import org.jacp.api.coordinator.ICoordinator;
  */
 public interface IComponent<L, A, M> {
 
+	/**
+	 * Returns an action listener (for local, target and global use).
+	 * 
+	 * @return the action listener instance
+	 */
+	IActionListener<L, A, M> getActionListener();
 
+	/**
+	 * Returns the id of the component.
+	 * 
+	 * @return the component id
+	 */
+	String getId();
 
-    /**
-     * returns action listener (for local, target and global use)
-     * 
-     * @return
-     */
-    public abstract IActionListener<L, A, M> getActionListener();
+	/**
+	 * Set unique id of component.
+	 * 
+	 * @param id
+	 */
+	void setId(final String id);
 
-    /**
-     * returns id of component
-     * 
-     * @return
-     */
-    public abstract String getId();
+	/**
+	 * Get the default active status of component.
+	 * 
+	 * @return the active state of component
+	 */
+	boolean isActive();
 
-    /**
-     * set unique id of component
-     * 
-     * @param id
-     */
-    public abstract void setId(final String id);
+	/**
+	 * Set default active state of component.
+	 * 
+	 * @param active
+	 */
+	void setActive(boolean active);
 
-    /**
-     * get default active status of component
-     * 
-     * @return
-     */
-    public abstract boolean isActive();
+	/**
+	 * Set if component was activated, can occur if message was send before
+	 * "init" message arrived
+	 * 
+	 * @param isActive
+	 */
+	void setActivated(boolean isActive);
 
-    /**
-     * set default active state of component
-     * 
-     * @param active
-     */
-    public abstract void setActive(boolean active);
+	/**
+	 * Get if component was activated, can occur if message was send before
+	 * "init" message arrived
+	 * 
+	 * @return the active status
+	 */
+	boolean isActivated();
 
-    /**
-     * set if component was activated, can occur if message was send before
-     * "init" message arrived
-     * 
-     * @param active
-     */
-    public abstract void setActivated(boolean isActive);
+	/**
+	 * Returns the name of a component.
+	 * 
+	 * @return the component name
+	 */
+	String getName();
 
-    /**
-     * get if component was activated, can occur if message was send before
-     * "init" message arrived
-     * 
-     * @return
-     */
-    public abstract boolean isActivated();
+	/**
+	 * Defines the name of a component.
+	 * 
+	 * @param name
+	 */
+	void setName(String name);
 
-    /**
-     * returns the name of a component
-     * 
-     * @return
-     */
-    public abstract String getName();
-
-    /**
-     * defines the name of a component
-     * 
-     * @param name
-     */
-    public abstract void setName(String name);
-
-    /**
-     * observer to handle changes in components
-     * 
-     * @return
-     */
-    public abstract void setObserver(final ICoordinator<L, A, M> observer);
+	/**
+	 * set Observer to handle changes in components.
+	 * 
+	 * @param observer
+	 */
+	void setObserver(final ICoordinator<L, A, M> observer);
 
 }

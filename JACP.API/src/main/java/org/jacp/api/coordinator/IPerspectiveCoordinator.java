@@ -21,28 +21,31 @@ package org.jacp.api.coordinator;
 import org.jacp.api.perspective.IPerspective;
 
 /**
- * notifies perspectives and components included in workbench C defines the base
- * component where others extend A defines the action listener type E defines
- * the basic action type T defines the basic message type
- * 
+ * Notifies perspectives and components included in workbench.
+ * @param <L>
+ *            defines the action listener type
+ * @param <A>
+ *            defines the basic action type
+ * @param <M>
+ *            defines the basic message type
  * @author Andy Moncsek
  */
 public interface IPerspectiveCoordinator<L, A, M> extends
 	ICoordinator<L, A, M> {
 
     /**
-     * add perspective to observe
+     * Add the perspective to observe.
      * 
      * @param perspective
      */
-    public abstract void addPerspective(final IPerspective<L, A, M> perspective);
+    void addPerspective(final IPerspective<L, A, M> perspective);
 
     /**
-     * remove perspective; e.g. when perspective is deactivated
+     * Remove the perspective; e.g. when perspective is deactivated
      * 
      * @param perspective
      */
-    public abstract void removePerspective(
+    void removePerspective(
 	    final IPerspective<L, A, M> perspective);
 
 

@@ -21,9 +21,9 @@ import java.util.Map;
 
 import org.jacp.api.componentLayout.Layout;
 
-
 /**
- * represents an ui component handled by a perspective
+ * Represents an UI component handled by a perspective. A IVComponent is an
+// * visible UI component displayed in a defined area of perspective.
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -36,27 +36,27 @@ import org.jacp.api.componentLayout.Layout;
  *            defines the basic message type
  */
 public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
-	ISubComponent<L, A, M> {
+		ISubComponent<L, A, M> {
 
-    /**
-     * set the root ui component created by the handle method
-     * 
-     * @param root
-     */
-    public abstract void setRoot(C root);
+	/**
+	 * Set the root ui component created by the handle method.
+	 * 
+	 * @param root
+	 */
+	void setRoot(C root);
 
-    /**
-     * returns 'root' ui component created by the handle method
-     * 
-     * @return
-     */
-    public abstract C getRoot();
-    
-    /**
-     * get defines bar entries
-     * @return
-     */
-    public abstract Map<Layout, C> getBarEntries();
-    
+	/**
+	 * Returns the 'root' ui component created by the handle method.
+	 * 
+	 * @return the root component
+	 */
+	C getRoot();
+
+	/**
+	 * get defines bar entries
+	 * 
+	 * @return a map with all defined menu bars
+	 */
+	Map<Layout, C> getBarEntries();
 
 }

@@ -23,6 +23,7 @@ import java.util.Map;
  * Represents an action used by specific listener, targets a component and
  * contains a message, every target get a specific instance of an action (clone)
  * containing only his specific message and action event.
+ * 
  * @param <M>
  *            defines the type of message
  * @param <A>
@@ -31,67 +32,69 @@ import java.util.Map;
  */
 public interface IAction<A, M> extends Cloneable {
 
-    /**
-     *  Set message for target component.
-     * @param message
-     */
-    void setMessage(final M message);
+	/**
+	 *  Set message for target component.
+	 * 
+	 * @param message
+	 */
+	void setMessage(final M message);
 
-    /**
-     *Set message for a specified target component. Use component ID to notify the component.
-     * 
-     * @param targetId
-     * @param message
-     */
-    void addMessage(final String targetId, final M message);
+	/**
+	 * Set message for a specified target component.
+	 * the component.
+	 * 
+	 * @param targetId
+	 * @param message
+	 */
+	void addMessage(final String targetId, final M message);
 
-    /**
-     * get action message
-     * 
-     * @return M
-     */
-    M getLastMessage();
+	/**
+	 * Get the action message.
+	 * 
+	 * @return M
+	 */
+	M getLastMessage();
 
-    /**
-     * returns message list with target id's
-     * 
-     * @return
-     */
-    Map<String, M> getMessageList();
+	/**
+	 * Returns the message list with target id's.
+	 * 
+	 * @return a map where key is the target id and M the message
+	 */
+	Map<String, M> getMessageList();
 
-    /**
-     * get caller id
-     * 
-     * @return
-     */
-    String getSourceId();
+	/**
+	 * Get the caller id.
+	 * 
+	 * @return the sorce id
+	 */
+	String getSourceId();
 
-    /**
-     * set implementation specific event
-     * 
-     * @param event
-     */
-    void setActionEvent(final A event);
+	/**
+	 * Set implementation specific event.
+	 * 
+	 * @param event
+	 */
+	void setActionEvent(final A event);
 
-    /**
-     * get implementation specific action event
-     * 
-     * @return
-     */
-    A getActionEvent();
+	/**
+	 * Get implementation specific action event.
+	 * 
+	 * @return the event
+	 */
+	A getActionEvent();
 
-    /**
-     * clone action and containing event
-     * 
-     * @return
-     */
-    IAction<A, M> clone();
+	/**
+	 * Clone action and containing event.
+	 * 
+	 * @return a clone of current action instance
+	 */
+	IAction<A, M> clone();
 
-    /**
-     * returns action target id
-     * 
-     * @return
-     */
-    String getTargetId();
+	/**
+	 * Returns action target id.
+	 * 
+	 * @return the target id
+	 */
+	String getTargetId();
 
 }

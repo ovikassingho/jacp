@@ -20,7 +20,7 @@ package org.jacp.api.componentLayout;
 import java.util.Map;
 
 /**
- * defines layout of a perspective and the container for included editors and
+ * Defines layout of a perspective and the container for included editors and
  * views (target components); for use in perspectives handle method
  * 
  * @param <M>
@@ -32,30 +32,30 @@ import java.util.Map;
 public interface IPerspectiveLayout<M, B> {
 
     /**
-     * set Layout-Wrapper for perspective; this wrapper contains wrappers for
+     * Set Layout-Wrapper for perspective; this wrapper contains wrappers for
      * editors and views, define a valid component which is valid to hold subcomponents
      * 
      * @param comp
      */
-    public abstract void setRootComponent(final M comp);
+    void setRootComponent(final M comp);
 
     /**
-     * getLayoutwrapper for perspective; a layout component is a component which can contain UI subcomponents
+     * Get the ' layoutwrapper'  for perspective; a layout component is a component which can contain UI subcomponents.
      * 
-     * @return
+     * @return the toolkit root component where all other UI components are included 
      */
-    public abstract M getRootComponent();
+    M getRootComponent();
 
     /**
-     * returns map of target components and ids key - id value - target
+     * Returns map of target components and ids key - id value - target
      * component
      * 
-     * @return
+     * @return a map with all target UI components
      */
-    public Map<String, B> getTargetLayoutComponents();
+    Map<String, B> getTargetLayoutComponents();
 
     /**
-     * register a target component; a target component defines a wrapper where
+     * Register a target component; a target component defines a wrapper where
      * editors and views can "live" in; you can define a target for each editor
      * or view component; create an root component, a complex layout an register
      * all components where editors/views should displayed in
@@ -63,5 +63,5 @@ public interface IPerspectiveLayout<M, B> {
      * @param id
      * @param target
      */
-    public void registerTargetLayoutComponent(final String id, final B target);
+    void registerTargetLayoutComponent(final String id, final B target);
 }

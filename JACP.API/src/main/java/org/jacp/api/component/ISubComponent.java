@@ -21,7 +21,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.perspective.IPerspective;
 
 /**
- * defines a subcomponent handled by a root component
+ * Defines a subcomponent handled by a root component. A subcomponent is running in a perspective environment an can be represented by an visible UI or non visible background component.
  * 
  * @author Andy Moncsek
  * 
@@ -32,68 +32,68 @@ import org.jacp.api.perspective.IPerspective;
  * @param <M>
  *            defines the basic message type
  */
-public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,IHandleable<A, M> {
-    /**
-     * returns the target; defines the target perspective
-     * 
-     * @param target
-     */
-    public abstract String getExecutionTarget();
+public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
+		IHandleable<A, M> {
+	/**
+	 * Returns the target id where component will be displayed in.
+	 * 
+	 * @return target id
+	 */
+	String getExecutionTarget();
 
-    /**
-     * set the target; defines the target container in perspective
-     * 
-     * @param target
-     */
-    public abstract void setExecutionTarget(final String target);
+	/**
+	 * Set the target id where component will be displayed in.
+	 * 
+	 * @param target
+	 */
+	void setExecutionTarget(final String target);
 
-    /**
-     * set responsible perspective
-     * 
-     * @param perspective
-     */
-    public abstract void setParentPerspective(
-	    final IPerspective<L, A, M> perspective);
+	/**
+	 * Set the responsible perspective.
+	 * 
+	 * @param perspective
+	 */
+	void setParentPerspective(final IPerspective<L, A, M> perspective);
 
-    /**
-     * returns responsible perspective
-     * 
-     * @return
-     */
-    public abstract IPerspective<L, A, M> getParentPerspective();
+	/**
+	 * Returns the responsible perspective.
+	 * 
+	 * @return the parent perspective of 
+	 */
+	IPerspective<L, A, M> getParentPerspective();
 
-    /**
-     * returns true if component has message in pipe
-     * 
-     * @return
-     */
-    public abstract boolean hasIncomingMessage();
+	/**
+	 * Returns true if component has message in pipe.
+	 * 
+	 * @return returns true if incoming message is in queue
+	 */
+	boolean hasIncomingMessage();
 
-    /**
-     * add new message to component
-     * 
-     * @param action
-     */
-    public abstract void putIncomingMessage(final IAction<A, M> action);
+	/**
+	 * Add new message to component.
+	 * 
+	 * @param action
+	 */
+	void putIncomingMessage(final IAction<A, M> action);
 
-    /**
-     * returns next message in pipe
-     * 
-     * @return
-     */
-    public IAction<A, M> getNextIncomingMessage();
+	/**
+	 * Returns next message in pipe.
+	 * 
+	 * @return the next action to handle
+	 */
+	IAction<A, M> getNextIncomingMessage();
 
-    /**
-     * component is blocked when executed in thread
-     * 
-     * @return
-     */
-    public boolean isBlocked();
+	/**
+	 * Component is blocked when executed in thread.
+	 * 
+	 * @return blocked state
+	 */
+	boolean isBlocked();
 
-    /**
-     * block component when run in thread
-     * 
-     * @param blocked
-     */
-    public void setBlocked(final boolean blocked);
+	/**
+	 * Block component when run in thread.
+	 * 
+	 * @param blocked
+	 */
+	void setBlocked(final boolean blocked);
 }

@@ -25,8 +25,8 @@ import org.jacp.api.componentLayout.Layout;
 
 
 /**
- * base component for an AHCP UI application, handles perspectives and containing
- * components
+ * Base component for an JACP UI application, handles perspectives and containing
+ * components. A workbench is the root of all JACP perspectives an component. You can have 1 workbench including (1-n) perspectives which can include (1-n) components.
  * 
  * @param <P>
  *            defines the default layout manager
@@ -48,52 +48,51 @@ public interface IWorkbench<P, C, L, A, M, S> extends IBase<L, A, M>{
 
 
 	/**
-	 * init default workbench menu
+	 * Initializes the default workbench menu.
 	 */
-	public abstract void initWorkbenchMenu();
+	void initWorkbenchMenu();
 
 	/**
-	 * set default menu bar instance to workspace
+	 * Set default menu bar instance to workspace.
 	 */
-	public abstract void initMenuBar();
+	void initMenuBar();
 
 	/**
-	 * returns default workbench menu
+	 * Returns the default workbench menu.
 	 * 
-	 * @return
+	 * @return an instance representing a menu bar
 	 */
-	public abstract C getDefaultMenu();
+	C getDefaultMenu();
 
 	/**
-	 * add/remove menu entries to workbench instance
+	 * Add/remove menu entries from/to workbench instance.
 	 * 
-	 * @return
+	 * @return an instance representing the menu bar
 	 */
-	public abstract C handleMenuEntries(final C meuBar);
+	C handleMenuEntries(final C meuBar);
 
 	/**
-	 * add default workbench actions to tool bar
+	 * Add the default workbench actions to tool bar.
 	 * 
-	 * @param toolBar
-	 * @param bottomBar
+	 * @param bars
 	 */
-	public abstract void handleBarEntries(final Map<Layout, C> bars);
+	void handleBarEntries(final Map<Layout, C> bars);
 
 
 	/**
-	 * handle workbench layout
+	 * Handle the workbench layout.
 	 * 
 	 * @param action
 	 * @param layout
 	 */
-	public abstract void handleInitialLayout(final IAction<A, M> action,
+	void handleInitialLayout(final IAction<A, M> action,
 			final IWorkbenchLayout<P, C, S> layout);
 
 	/**
-	 * returns workbench layout object
+	 * Returns workbench layout object.
 	 * 
-	 * @return
+	 * @return the workbench layout class, defining basic settings for the workbench
 	 */
-	public abstract IWorkbenchLayout<P, C, S> getWorkbenchLayout();
+	IWorkbenchLayout<P, C, S> getWorkbenchLayout();
 
 }

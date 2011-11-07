@@ -24,7 +24,7 @@ import org.jacp.api.componentLayout.Layout;
 
 
 /**
- * represents a extended component with menu entries and tool bar access
+ * Represents a extended component with menu entries and tool bar access.
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -33,18 +33,18 @@ import org.jacp.api.componentLayout.Layout;
 public interface IExtendedComponent<C> {
 
     /**
-     * get custom menu entries
+     * Get the custom menu entries.
      * 
-     * @return
+     * @param menuBar
      */
-    public abstract void handleMenuEntries(final C menuBar);
+    void handleMenuEntries(final C menuBar);
 
     /**
-     * add custom actions to toolbar; set key for bar type (south, north, east, west)
+     * Add custom actions to tool bar; set key for bar type (south, north, east, west).
      * 
-     * @param toolBar
+     * @param bars
      */
-    public abstract void handleBarEntries(final Map<Layout, C> bars);
+    void handleBarEntries(final Map<Layout, C> bars);
     
 
 }

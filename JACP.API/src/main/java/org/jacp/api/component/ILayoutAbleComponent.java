@@ -20,7 +20,7 @@ package org.jacp.api.component;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 
 /**
- * defines perspective components with visible ui
+ * This interface defines perspective components with visible ui.
  * 
  * @author Andy Moncsek
  * 
@@ -29,9 +29,9 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  */
 public interface ILayoutAbleComponent<C> {
     /**
-     * returns layout dto
+     * Returns layout dto.
      * 
-     * @return
+     * @return an IPerspectiveLayout instance to define basic layout stuff for perspective
      */
-    public abstract IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
+    IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
 }

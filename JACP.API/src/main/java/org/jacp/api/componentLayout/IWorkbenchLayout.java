@@ -21,82 +21,84 @@ import java.util.Map;
 
 import org.jacp.api.util.Tupel;
 
-
 /**
- * defines the base layout of a workbench and the application
+ * Defines the base layout of a workbench and the application.
  * 
  * @author Andy Moncsek
  */
 public interface IWorkbenchLayout<L, C, S> {
 
+	/**
+	 * Check if menus are enabled.
+	 * 
+	 * @return if menu is enable/disable
+	 */
+	boolean isMenuEnabled();
 
-    /**
-     * check if menues are enabled
-     * 
-     * @return
-     */
-    public abstract boolean isMenuEnabled();
+	/**
+	 * Set menus to enabled state.
+	 * 
+	 * @param enabled
+	 */
+	void setMenuEnabled(boolean enabled);
 
-    /**
-     * set menues enabled
-     * 
-     * @param enabled
-     */
-    public abstract void setMenuEnabled(boolean enabled);
+	/**
+	 * Set the default layout manager to workspace.
+	 * 
+	 * @param layout
+	 */
+	void setLayoutManager(L layout);
 
-    /**
-     * set default layout manager to workspace
-     * 
-     * @param layout
-     */
-    public abstract void setLayoutManager(L layout);
+	/**
+	 * Get the defined layout manager.
+	 * 
+	 * @return the layout manager
+	 */
+	public abstract L getLayoutManager();
 
-    /**
-     * get defined layout manager
-     * 
-     * @return
-     */
-    public abstract L getLayoutManager();
+	/**
+	 * Set the size of the workbench.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	void setWorkbenchXYSize(int x, int y);
 
-    /**
-     * set size of workbench
-     * 
-     * @param x
-     * @param y
-     */
-    public abstract void setWorkbenchXYSize(int x, int y);
+	/**
+	 * Returns a tuple defining the workbench size.
+	 * 
+	 * @return the tuple containing the workbench size
+	 */
+	Tupel<Integer, Integer> getWorkbenchSize();
 
-    /**
-     * returns a tupel defining the workbench size
-     * 
-     * @return
-     */
-    public abstract Tupel<Integer, Integer> getWorkbenchSize();
+	/**
+	 * Register a tool bar for workbench.
+	 * 
+	 * @param name
+	 * @param toolBar
+	 */
+	void registerToolBar(final Layout name, final C toolBar);
 
-    /**
-     * register a tool bar for workbench
-     * 
-     * @param name
-     * @param toolBar
-     */
-    public abstract void registerToolBar(final Layout name, final C toolBar);
+	/**
+	 * Returns all registered tool bars of workbench.
+	 * 
+	 * @return a map containing the defined tool bars
+	 */
+	Map<Layout, C> getToolBars();
 
-    /**
-     * returns all registered tool bars of workbench
-     * 
-     * @return
-     */
-    public abstract Map<Layout, C> getToolBars();
-    
-    /**
-     * set workbench style
-     * @param style, the style of workbench
-     */
-    public abstract void setStyle(S style);
-    /**
-     *  returns the workbench style
-     * @return style
-     */
-    public abstract S getStyle();
+	/**
+	 * Set the workbench style.
+	 * 
+	 * @param style
+	 *            , the style of workbench
+	 */
+	void setStyle(S style);
+
+	/**
+	 * Returns the workbench style.
+	 * 
+	 * @return style
+	 */
+	S getStyle();
 
 }

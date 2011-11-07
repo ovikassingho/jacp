@@ -26,10 +26,11 @@ import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.launcher.Launcher;
 
-
 /**
- * a perspective is a root component, handled by an workbench and contains
- * subcomponents
+ * Defines a perspective, a perspective is a root component handled by an
+ * workbench and contains subcomponents such as visibla UI components or
+ * background components. A workbench can handle one or more perspectives (1-n)
+ * and every perspective can handle one ore more components (1-n).
  * 
  * @author Andy Moncsek
  * 
@@ -40,73 +41,73 @@ import org.jacp.api.launcher.Launcher;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<L, A, M>
-	extends
-	IComponent<L, A, M>,
-	IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>,IHandleable<A, M> {
+public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
+		IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>,
+		IHandleable<A, M> {
 
-    /**
-     * the initialization method
-     */
-    public abstract void init(final Launcher<?> launcher);
+	/**
+	 * The initialization method. The launcher is the access to the DI container
+	 * instance.
+	 * 
+	 * @param launcher
+	 */
+	void init(final Launcher<?> launcher);
 
-    /**
-     * get all subcomponents in perspective
-     * 
-     * @return
-     */
-    public abstract List<ISubComponent<L, A, M>> getSubcomponents();
+	/**
+	 * Returns all subcomponents in perspective.
+	 * 
+	 * @return a list of all handled components in current perspective.
+	 */
+	List<ISubComponent<L, A, M>> getSubcomponents();
 
-    /**
-     * set all subcomponents of perspective
-     * 
-     * @param subComponents
-     */
-    public abstract void setSubcomponents(
-	    final List<ISubComponent<L, A, M>> subComponents);
+	/**
+	 * Set all subcomponents handled by the perspective.
+	 * 
+	 * @param subComponents
+	 */
+	void setSubcomponents(final List<ISubComponent<L, A, M>> subComponents);
 
-    /**
-     * handle baselayout when perspective started
-     * 
-     * @param action
-     */
-    public abstract void handlePerspective(final IAction<A, M> action);
+	/**
+	 * Handle a message call on perspective instance. This method should be override to handle the layout of an perspective.
+	 * 
+	 * @param action
+	 */
+	void handlePerspective(final IAction<A, M> action);
 
-    /**
-     * add active component after component.handle was executed
-     * 
-     * @param component
-     */
-    public abstract void addActiveComponent(
-	    final ISubComponent<L, A, M> component);
+	/**
+	 * Add an active component after component.handle was executed.
+	 * 
+	 * @param component
+	 */
+	void addActiveComponent(final ISubComponent<L, A, M> component);
 
-    /**
-     * delegate target change to an other perspective
-     * 
-     * @param target
-     * @param component
-     */
-    public void delegateTargetChange(final String target,
-	    final ISubComponent<L, A, M> component);
+	/**
+	 * Delegate target change to an other perspective.
+	 * 
+	 * @param target
+	 * @param component
+	 */
+	void delegateTargetChange(final String target,
+			final ISubComponent<L, A, M> component);
 
-    /**
-     * delegates massage to responsible componentObserver to notify target
-     * component
-     * 
-     * @param target
-     * @param action
-     */
-    public abstract void delegateComponentMassege(final String target,
-	    final IAction<A, M> action);
+	/**
+	 * Delegates massage to responsible componentObserver to notify target
+	 * component.
+	 * 
+	 * @param target
+	 * @param action
+	 */
+	void delegateComponentMassege(final String target,
+			final IAction<A, M> action);
 
-    /**
-     * delegates message to responsible perspectiveObserver to notify target
-     * perspective, check if message is local (message to component it self) or if message has to be delegate to an other component
-     * 
-     * @param target
-     * @param action
-     */
-    public abstract void delegateMassege(final String target,
-	    final IAction<A, M> action);
+	/**
+	 * Delegates message to responsible perspectiveObserver to notify target
+	 * perspective, check if message is local (message to component it self) or
+	 * if message has to be delegate to an other component.
+	 * 
+	 * @param target
+	 * @param action
+	 */
+	void delegateMassege(final String target, final IAction<A, M> action);
 
 }

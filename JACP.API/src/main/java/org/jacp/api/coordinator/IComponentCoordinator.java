@@ -20,10 +20,8 @@ package org.jacp.api.coordinator;
 import org.jacp.api.component.ISubComponent;
 
 /**
- * notifies components included in perspective
+ * Notifies the components included in perspective.
  * 
- * @param <C>
- *            defines the base component where others extend from
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -36,17 +34,17 @@ import org.jacp.api.component.ISubComponent;
 public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
 
     /**
-     * add component to observe
+     * Add the component to observe.
      * 
      * @param component
      */
-    public abstract void addComponent(final ISubComponent<L, A, M> component);
+    void addComponent(final ISubComponent<L, A, M> component);
 
     /**
-     * remove component; e.g. when component is deactivated
+     * Remove component; e.g. when component is deactivated.
      * 
      * @param component
      */
-    public abstract void removeComponent(final ISubComponent<L, A, M> component);
+    void removeComponent(final ISubComponent<L, A, M> component);
 
 }

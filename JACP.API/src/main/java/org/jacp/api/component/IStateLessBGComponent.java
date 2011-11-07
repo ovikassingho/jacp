@@ -22,14 +22,21 @@ import org.jacp.api.launcher.Launcher;
 
 
 /**
- * represents a state less background component
+ * Represents a state less background component.
  * 
  * @author Andy Moncsek
  * 
  * @param <L>
+ *            defines the action listener type
  * @param <A>
+ *            defines the basic action type
  * @param <M>
+ *            defines the basic message type
  */
 public interface IStateLessBGComponent<L, A, M> extends IBGComponent<L, A, M> {
-    public abstract void setLauncher(final Launcher<?> launcher);
+	/**
+	 * The launcher is needed to create many instances of a component
+	 * @param launcher
+	 */
+    void setLauncher(final Launcher<?> launcher);
 }
