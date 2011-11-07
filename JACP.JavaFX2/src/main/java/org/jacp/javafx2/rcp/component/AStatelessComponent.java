@@ -201,7 +201,7 @@ public abstract class AStatelessComponent implements
 
 
 	@Override
-	public void setLauncher(Launcher<?> launcher) {
+	public synchronized void setLauncher(Launcher<?> launcher) {
 		this.launcher = launcher;
 	}
 

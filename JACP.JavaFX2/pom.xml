@@ -15,49 +15,6 @@
     <properties>
        <jfx-jar>C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib\jfxrt.jar</jfx-jar>
     </properties>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>my.pkg.Main</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>lib/jfxrt.jar</Class-Path>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <executions>
-                    <execution>
-                        <id>copy-jfx</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target</outputDirectory>
-                            <resources>          
-                                <resource>
-                                    <directory>${jfx-runtime}</directory>
-                                    <includes>
-                                        <include>bin/*.dll</include>    
-                                        <include>lib/jfxrt.jar</include>    
-                                    </includes>
-                                </resource>
-                            </resources>              
-                        </configuration>            
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
     <dependencies>
         <dependency>
             <groupId>javafx</groupId>
