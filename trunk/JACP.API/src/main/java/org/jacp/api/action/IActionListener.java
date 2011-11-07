@@ -17,12 +17,9 @@
  */
 package org.jacp.api.action;
 
-import java.util.EventObject;
-
 /**
- * handles implementation specific ActionListener
- * 
- * 
+ * Handles implementation specific Listener to perform events. This Interface is
+ * an abstraction to hide toolkit specific event/action details.
  * @param <L>
  *            defines the basic listener type
  * @param <M>
@@ -33,37 +30,40 @@ import java.util.EventObject;
  */
 public interface IActionListener<L, A, M> {
 
-    /**
-     * notify component when action fired
-     * 
-     * @param action
-     */
-    void notifyComponents(final IAction<A, M> action);
+	/**
+	 * Notify component when action fired.
+	 * 
+	 * @param action
+	 */
+	void notifyComponents(final IAction<A, M> action);
 
-    /**
-     * set Action to listener
-     * 
-     * @param action
-     */
-    void setAction(final IAction<A, M> action);
+	/**
+	 * Set Action to listener.
+	 * 
+	 * @param action
+	 */
+	void setAction(final IAction<A, M> action);
 
-    /**
-     * returns the action
-     * 
-     * @return
-     */
-    IAction<A, M> getAction();
+	/**
+	 * Returns the action.
+	 * 
+	 * @return an action instance
+	 */
+	IAction<A, M> getAction();
 
-    /**
-     * returns implementation specific ActionListener, all listeners must extend java.util.EventListener
-     * 
-     * @return
-     */
-    <C extends L> C getListener();
-    
-    /**
-     * abstraction to handle actions uniform on different toolkits
-     * @param arg0
-     */
-    void performAction(EventObject arg0);
+	/**
+	 * Returns implementation specific ActionListener. All listeners should extend
+	 * java.util.EventListener.
+	 * 
+	 * @return a new listener instance
+	 */
+	<C extends L> C getListener();
+
+	/**
+	 * Abstraction to handle actions/events uniform on different toolkits.
+	 * Method invokes toolkit specific handle method perform event call.
+	 * 
+	 * @param event
+	 */
+	void performAction(A event);
 }

@@ -20,24 +20,30 @@ package org.jacp.api.component;
 import org.jacp.api.action.IAction;
 
 /**
- * defines the interface for a map/reduce instance
+ * Defines the interface for a map/reduce instance.
  * 
  * @author Andy Moncsek
  * 
  * @param <L>
+ *            defines the action listener type
  * @param <A>
+ *            defines the basic action type
  * @param <M>
+ *            defines the basic message type
  */
 public interface IMapReudce<L, A, M> extends IComponent<L, A, M> {
-    /**
-     * the reduce method
-     */
-    public abstract <C> C reduce(final IAction<A, M> action);
-    /**
-     * the handle method
-     * @param <C>
-     * @param action
-     * @return
-     */
-    public abstract <C> C map(final IAction<A, M> action);
+	/**
+	 * The reduce method.
+	 * @return the value of reduce state
+	 */
+	<C> C reduce(final IAction<A, M> action);
+
+	/**
+	 * The handle method.
+	 * 
+	 * @param <C>
+	 * @param action
+	 * @return the value of map state (a map)
+	 */
+	<C> C map(final IAction<A, M> action);
 }

@@ -39,28 +39,27 @@ import org.jacp.api.perspective.IPerspective;
 public interface IBase<L, A, M> {
 	
 	/**
-	 * set perspectives to workbench
+	 * Set perspectives to workbench.
 	 * 
 	 * @param perspectives
 	 */
-	public abstract void setPerspectives(
+	void setPerspectives(
 			final List<IPerspective<L, A, M>> perspectives);
 
 	/**
-	 * get perspectives in workbench
+	 * Get perspectives in workbench.
 	 * 
-	 * @return
+	 * @return a list of all perspectives
 	 */
-	public abstract List<IPerspective<L, A, M>> getPerspectives();
+	List<IPerspective<L, A, M>> getPerspectives();
 	
 	/**
-	 * Initialization sequence returns basic container to handle perspectives
+	 * Initialization sequence returns basic container to handle perspectives.
 	 * 
 	 * @param launcher
 	 *            for di container
-	 * @return
 	 */
-	public abstract void init(final Launcher<?> launcher);
+	void init(final Launcher<?> launcher);
 
 
 

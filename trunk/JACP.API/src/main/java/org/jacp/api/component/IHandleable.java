@@ -20,7 +20,7 @@ package org.jacp.api.component;
 import org.jacp.api.action.IAction;
 
 /**
- * this interface defines components which are able to handle a single message
+ * This interface defines components which are able to handle a single message.
  * 
  * @author Andy Moncsek
  * @param <A>
@@ -29,11 +29,11 @@ import org.jacp.api.action.IAction;
  *            defines the basic message type
  */
 public interface IHandleable<A, M> {
-    /**
-     * handles component when called
-     * 
-     * @param action
-     * @return view component
-     */
-    public abstract <C> C handle(final IAction<A, M> action);
+	/**
+	 * Handles component when called.
+	 * 
+	 * @param action
+	 * @return view component
+	 */
+	<C> C handle(final IAction<A, M> action);
 }

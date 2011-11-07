@@ -18,7 +18,7 @@
 package org.jacp.api.componentLayout;
 
 /**
- * 
+ * This Enum defines some basic layout names.
  * @author Andy Moncsek
  */
 public enum Layout {
@@ -31,7 +31,10 @@ public enum Layout {
     private Layout(final String layout) {
 	this.layout = layout;
     }
-
+    /**
+     * returns the layout name
+     * @return the name
+     */
     public String getLayout() {
 	return layout;
     }

@@ -18,33 +18,36 @@
 package org.jacp.api.component;
 
 /**
- * defines methods for background components
+ * This interface defines methods for background/ non ui components.
  * 
  * @author Andy Moncsek
  * 
  * @param <L>
+ *            defines the action listener type
  * @param <A>
+ *            defines the basic action type
  * @param <M>
+ *            defines the basic message type
  */
 public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>,
-	Cloneable {
+		Cloneable {
 
-    /**
-     * returns component id which is targeted by bg component return value; the
-     * return value will be handled like an average message and will be
-     * delivered to targeted component
-     * 
-     * @return
-     */
-    public abstract String getHandleTargetAndClear();
+	/**
+	 * Returns component id which is targeted by bg component return value; the
+	 * return value will be handled like an average message and will be
+	 * delivered to targeted component
+	 * 
+	 * @return the target id
+	 */
+	String getHandleTargetAndClear();
 
-    /**
-     * set component target id which is targeted by bg component return value;
-     * the return value will be handled like an average message and will be
-     * delivered to targeted component
-     * 
-     * @param componentTargetId
-     */
-    public abstract void setHandleTarget(final String componentTargetId);
+	/**
+	 * Set component target id which is targeted by background component return value;
+	 * the return value will be handled like an average message and will be
+	 * delivered to targeted component
+	 * 
+	 * @param componentTargetId
+	 */
+	void setHandleTarget(final String componentTargetId);
 
 }

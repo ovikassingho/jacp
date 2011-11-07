@@ -18,7 +18,7 @@
 package org.jacp.api.component;
 
 /**
- * all root components have containing sub components (workspace ->
+ * All root components have containing sub components (workspace ->
  * perspectives; perspective - editors) and listeners; all sub components have
  * to be initialized, registered and handled
  * 
@@ -31,43 +31,42 @@ package org.jacp.api.component;
  */
 public interface IRootComponent<T, A> {
 
-    /**
-     * register component at listener
-     * 
-     * @param component
-     */
-    abstract public void registerComponent(final T component);
+	/**
+	 * Register the component at the listener.
+	 * 
+	 * @param component
+	 */
+	void registerComponent(final T component);
 
-    /**
-     * unregister component from current perspective
-     * 
-     * @param component
-     */
-    abstract public void unregisterComponent(final T component);
+	/**
+	 * Unregister component from current perspective.
+	 * 
+	 * @param component
+	 */
+	void unregisterComponent(final T component);
 
-    /**
-     * handles initialization of subcomponents
-     * 
-     * @param action
-     */
-    public abstract void initComponents(final A action);
+	/**
+	 * Handles initialization of subcomponents.
+	 * 
+	 * @param action
+	 */
+	void initComponents(final A action);
 
-    /**
-     * handles initialization of a single component;
-     * 
-     * @param action
-     * @param editor
-     */
-    public abstract void initComponent(final A action, final T component);
+	/**
+	 * Handles initialization of a single component.
+	 * 
+	 * @param action
+	 * @param component
+	 */
+	void initComponent(final A action, final T component);
 
-    /**
-     * runs 'handle' method and replace of subcomponent in perspective
-     * 
-     * @param layout
-     * @param component
-     * @param action
-     */
-    public abstract void handleAndReplaceComponent(final A action,
-	    final T component);
+	/**
+	 * Runs 'handle' method and replace of subcomponent in perspective.
+	 * 
+	 * @param component
+	 * @param action
+	 */
+	void handleAndReplaceComponent(final A action,
+			final T component);
 
 }
