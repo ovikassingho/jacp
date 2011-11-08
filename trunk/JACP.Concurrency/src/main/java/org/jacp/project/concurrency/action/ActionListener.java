@@ -91,7 +91,7 @@ public class ActionListener implements EventListener,
 	}
 
 	@Override
-	public void performAction(EventObject arg0) {
+	public void performAction(Event arg0) {
 		// TODO Auto-generated method stub
 		
 	}
