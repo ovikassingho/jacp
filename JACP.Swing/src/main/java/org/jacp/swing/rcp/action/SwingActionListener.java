@@ -19,7 +19,6 @@ package org.jacp.swing.rcp.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,8 +83,8 @@ public class SwingActionListener implements ActionListener,
 
 
 	@Override
-	public void performAction(EventObject arg0) {
-		actionPerformed((ActionEvent) arg0);
+	public void performAction(ActionEvent arg0) {
+		actionPerformed(arg0);
 		
 	}
 
