@@ -15,7 +15,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<jfx-jar>C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib\jfxrt.jar</jfx-jar>
 	</properties>
 	<build>
 		<plugins>
@@ -35,13 +34,12 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<dependency>
-			<groupId>javafx</groupId>
-			<artifactId>javafx</artifactId>
-			<version>2.0</version>
-			<scope>system</scope>
-			<systemPath>${jfx-jar}</systemPath>
-		</dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx-runtime</artifactId>
+            <version>2.0</version>
+            <scope>compile</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
