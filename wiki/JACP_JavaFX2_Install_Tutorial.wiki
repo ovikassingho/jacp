@@ -1,0 +1,13 @@
+#summary One-sentence summary of this page.
+#labels install,tutorial
+
+= Create a running JACP JavaFX2 project =
+
+
+
+
+= Install jfxrt.jar to your local maven repository =
+
+   * make shure you have a working maven install (type in terminal mvn -version)
+   * go to your JavaFX2 install location (C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib)
+   * *type:* mvn install:install-file -Dfile=jfxrt.jar -DgroupId=com.oracle -DartifactId=javafx-runtime -Dpackaging=jar -Dversion=2.0
