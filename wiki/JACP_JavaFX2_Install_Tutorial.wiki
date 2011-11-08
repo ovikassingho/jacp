@@ -1,5 +1,5 @@
-#summary One-sentence summary of this page.
 #labels install,tutorial
+#JACP JavaFX2-Project install tutorial
 
 = Create a running JACP JavaFX2 project =
 
