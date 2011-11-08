@@ -20,16 +20,9 @@
 			<id>all</id>
 			<modules>
 				<module>../JACP.API</module>
-				<module>../JACP.Swing</module>
-				<module>../JACP.Util</module>
-				<!-- <module>../JACP.UnitTests</module> -->
-			</modules>
-		</profile>
-		<profile>
-			<id>swing</id>
-			<modules>
-				<module>../JACP.API</module>
-				<module>../JACP.Swing</module>
+				<module>../JACP.Concurrency</module>
+				<module>../JACP.JavaFX2</module>				
+				<module>../JACP.JavaFX2DemoArea</module>
 			</modules>
 		</profile>
 		<profile>
