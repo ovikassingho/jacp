@@ -24,7 +24,7 @@
 
 == checkout the projects ==
    * go to terminal andy type: *svn checkout http://jacp.googlecode.com/svn/trunk/ * 
-   * now your folder should contain 4 folders (*JACP, JACP.API, JACP.Concurrency, JACP.JavaFX2 and JACP.JavaFX2*)
+   * now your root folder should contain 4 sub folders (*JACP, JACP.API, JACP.Concurrency, JACP.JavaFX2 and JACP.JavaFX2*)
 
 == build and install projetcs ==
    * go to JACP folder (the root project folder)
