@@ -23,7 +23,7 @@
    * copy (the bin folder) *C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\bin* to  *C:\Users\YOURUSER\.m2\repository\com\oracle\javafx-runtime*
 
 == checkout the projects ==
-   * go to terminal type: *svn checkout http://jacp.googlecode.com/svn/trunk/ * 
+   * go to terminal and type: *svn checkout http://jacp.googlecode.com/svn/trunk/ * 
    * now your root folder should contain 4 sub folders (*JACP, JACP.API, JACP.Concurrency, JACP.JavaFX2 and JACP.JavaFX2*)
 
 == build and install projetcs ==
