@@ -31,7 +31,7 @@
    * type *mvn clean install -Pall* this builds all projects
 
 == create eclipse nature and import to workspace ==
-   * go to each of the 4 folders and type mvn eclipse:eclipse
+   * go to each of the 4 folders and type *mvn eclipse:eclipse*
    * go to your workspace in eclipse, right click on the "ProjectExplorer" and select "Existing Projects into Workspace" 
    * choose now the folder containing the JACP project and import 
 
