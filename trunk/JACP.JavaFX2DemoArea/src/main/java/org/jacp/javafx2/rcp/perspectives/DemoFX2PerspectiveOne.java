@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
@@ -49,12 +50,17 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective{
 		Button bc=  new Button("Button Perspective 1");
         bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
         bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
-		layout.setTop(new Rectangle(1024, 50, Color.DARKCYAN));
-		layout.setBottom(new Rectangle(1024, 50, Color.DARKCYAN));
+		 Group top = new Group();
+		layout.setTop(top);
+		 Group bottom = new Group();
+		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
+		layout.setBottom(bottom);
 		layout.setCenter(bc);
 		layout.setLeft(new Rectangle(50, 300, Color.DARKTURQUOISE));
 		layout.setRight(new Rectangle(50, 300, Color.DARKTURQUOISE));
 		perspectiveLayout.setRootComponent(layout);
+		perspectiveLayout.registerTargetLayoutComponent("PBottomOne", bottom);
+		perspectiveLayout.registerTargetLayoutComponent("PTopOne", top);
 		
 	}
 
