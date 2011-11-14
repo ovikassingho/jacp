@@ -20,6 +20,7 @@
 		<property name="active" value="false" />
 		<property name="subcomponents">
 			<list>
+			 <ref bean="demoFX2ComponentOne" />
 			</list>
 		</property>
 	</bean>
@@ -33,4 +34,10 @@
 			</list>
 		</property>
 	</bean>
+	    <bean id="demoFX2ComponentOne" class="org.jacp.javafx2.rcp.components.DemoFX2ComponentOne">
+                <property name="name" value="demoFX2ComponentOne" />
+                <property name="active" value="true" />
+                <property name="id" value="id001" />
+                <property name="executionTarget" value="PTopOne" />
+        </bean>
 </beans>
