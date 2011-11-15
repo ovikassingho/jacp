@@ -19,40 +19,43 @@ import org.jacp.api.componentLayout.Layout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 
-
 /**
  * Demo perspective class for jacp JavaFX2 implementation
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
-public class DemoFX2PerspectiveOne extends AFX2Perspective{
+public class DemoFX2PerspectiveOne extends AFX2Perspective {
 
 	@Override
 	public void handleMenuEntries(MenuBar menuBar) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleBarEntries(Map<Layout, Node> bars) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handlePerspective(IAction<Event, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
-		System.out.println("message from perspective one: "+ action.getLastMessage());
+		System.out.println("message from perspective one: "
+				+ action.getLastMessage());
 		BorderPane layout = new BorderPane();
+		layout.setMinWidth(1024);
 
-		final  IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().addMessage("id02","oneButtonBottomOne");
-		Button bc=  new Button("Button Perspective 1");
-        bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
-        bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
-		 Group top = new Group();
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
+		listenerBottomOne.getAction().addMessage("id02", "oneButtonBottomOne");
+		Button bc = new Button("Button Perspective 1");
+		bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+		bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
+		Group top = new Group();
 		layout.setTop(top);
-		 Group bottom = new Group();
+		Group bottom = new Group();
+
 		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
 		layout.setBottom(bottom);
 		layout.setCenter(bc);
@@ -61,7 +64,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective{
 		perspectiveLayout.setRootComponent(layout);
 		perspectiveLayout.registerTargetLayoutComponent("PBottomOne", bottom);
 		perspectiveLayout.registerTargetLayoutComponent("PTopOne", top);
-		
+
 	}
 
 }
