@@ -11,13 +11,12 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 
-public class DemoFX2ComponentOne extends AFX2Component {
+public class DemoFX2ComponentTwo extends AFX2Component {
 
 	@Override
 	public void handleMenuEntries(Node menuBar) {
@@ -33,8 +32,9 @@ public class DemoFX2ComponentOne extends AFX2Component {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		System.out.println("message to component one"+action.getLastMessage());
-		return  createDemoButtonBar(action);
+		System.out
+				.println("message to component two" + action.getLastMessage());
+		return createDemoButtonBar(action);
 	}
 
 	public Node createDemoButtonBar(IAction<Event, Object> action) {
@@ -45,19 +45,20 @@ public class DemoFX2ComponentOne extends AFX2Component {
 		ToolBar toolbar = new ToolBar();
 		toolbar.setPrefSize(1024, 50);
 
-
-
 		
-		Button bc = new Button("message 1");
+		
+		
+		Button bc = new Button("message 2");
 		if(action.getLastMessage().equals("me")) {
 			bc.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 		} else {
 			bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
 		}
-		bc.setOnMouseClicked(getListener("id002","message from DemoFX2ComponentOne"));
+		
+		bc.setOnMouseClicked(getListener("id001", "DemoFX2ComponentTwo"));
 		toolbar.getItems().add(bc);
 		Button button2 = new Button("me");
-		button2.setOnMouseClicked(getListener(null,"me"));
+		button2.setOnMouseClicked(getListener(null, "me"));
 		toolbar.getItems().add(button2);
 		vbox.getChildren().add(toolbar);
 		return vbox;
