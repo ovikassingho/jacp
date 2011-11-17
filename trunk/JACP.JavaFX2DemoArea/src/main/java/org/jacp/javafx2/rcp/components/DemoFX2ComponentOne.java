@@ -9,8 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -18,6 +18,11 @@ import org.jacp.api.componentLayout.Layout;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 
 public class DemoFX2ComponentOne extends AFX2Component {
+
+	VBox vbox;
+	Button counter = new Button("counter");
+	Button bc = new Button("message 1");
+	int c = 0;
 
 	@Override
 	public void handleMenuEntries(Node menuBar) {
@@ -33,47 +38,76 @@ public class DemoFX2ComponentOne extends AFX2Component {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		System.out.println("message to component one"+action.getLastMessage());
-		return  createDemoButtonBar(action);
+		System.out.println("message to component one "
+				+ action.getLastMessage() + " in thread"
+				+ Thread.currentThread() + " counter: " + c);
+		if (action.getLastMessage().equals("ping")) {
+			c++;
+
+		}
+		return null;
 	}
 
 	public Node createDemoButtonBar(IAction<Event, Object> action) {
-		VBox vbox = new VBox();
-		vbox.setPadding(new Insets(0, 0, 0, 0));
-		vbox.setSpacing(10);
-		vbox.autosize();
-		ToolBar toolbar = new ToolBar();
-		toolbar.setPrefSize(1024, 50);
-
-
-
-		
-		Button bc = new Button("message 1");
-		if(action.getLastMessage().equals("me")) {
-			bc.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-		} else {
-			bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+		if (vbox == null) {
+			vbox = new VBox();
+			vbox.setPadding(new Insets(0, 0, 0, 0));
+			vbox.setSpacing(10);
 		}
-		bc.setOnMouseClicked(getListener("id002","message from DemoFX2ComponentOne"));
-		toolbar.getItems().add(bc);
-		Button button2 = new Button("me");
-		button2.setOnMouseClicked(getListener(null,"me"));
-		toolbar.getItems().add(button2);
-		vbox.getChildren().add(toolbar);
+
+		vbox.getChildren().clear();
+		vbox.getChildren().add(createBar(action));
 		return vbox;
 	}
-	
-	private EventHandler<? super MouseEvent> getListener(final String id, final String message) {
+
+	private HBox createBar(IAction<Event, Object> action) {
+		HBox toolbar = new HBox();
+		toolbar.setPrefSize(1024, 50);
+
+		bc.setOnMouseClicked(getListener("id002",
+				"message from DemoFX2ComponentOne"));
+
+		Button button2 = new Button("me");
+		button2.setOnMouseClicked(getListener(null, "me"));
+
+		counter.setOnMouseClicked(getListener("id002", "start"));
+		toolbar.getChildren().add(bc);
+		toolbar.getChildren().add(button2);
+		toolbar.getChildren().add(counter);
+
+		return toolbar;
+	}
+
+	private EventHandler<? super MouseEvent> getListener(final String id,
+			final String message) {
 		final IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
-		if(id!=null) {
-			listener.getAction()
-			.addMessage(id, message);
-		}else {
+		if (id != null) {
+			listener.getAction().addMessage(id, message);
+		} else {
 			listener.getAction().setMessage(message);
 		}
 
-		
 		return (EventHandler<? super MouseEvent>) listener;
+	}
+
+	@Override
+	public Node postHandleAction(Node node, IAction<Event, Object> action) {
+		if (vbox == null) {
+			return createDemoButtonBar(action);
+		}
+		if (action.getLastMessage().equals("ping")) {
+			counter.setText(c + "");
+
+		} else {
+
+			if (action.getLastMessage().equals("me")) {
+				bc.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+			} else {
+				bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+			}
+		}
+		vbox.setVisible(true);
+		return vbox;
 	}
 
 }

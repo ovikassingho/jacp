@@ -29,7 +29,7 @@ public class DemoWorkbenchMain extends Application {
 
 	@Override
 	public void start(Stage arg0) throws Exception {
-		final IWorkbench<Region, Node, EventHandler<Event>, Event, Object, StageStyle> workbench = (IWorkbench<Region, Node, EventHandler<Event>, Event, Object, StageStyle>) launcher
+		final IWorkbench< Node, EventHandler<Event>, Event, Object> workbench = (IWorkbench< Node, EventHandler<Event>, Event, Object>) launcher
 				.getContext().getBean("workbench");
 		workbench.init(launcher);
 		((AFX2Workbench) workbench).start(arg0);

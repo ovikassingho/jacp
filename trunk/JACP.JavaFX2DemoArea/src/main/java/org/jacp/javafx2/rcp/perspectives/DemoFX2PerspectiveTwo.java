@@ -46,8 +46,8 @@ public class DemoFX2PerspectiveTwo extends AFX2Perspective{
 		layout.setTop(new Rectangle(1024, 50, Color.ALICEBLUE));
 		layout.setBottom(new Rectangle(1024, 50, Color.ALICEBLUE));
 		layout.setCenter(bc);
-		layout.setLeft(new Rectangle(50, 300, Color.BURLYWOOD));
-		layout.setRight(new Rectangle(50, 300, Color.BURLYWOOD));
+		layout.setLeft(new Rectangle(50, 250, Color.BURLYWOOD));
+		layout.setRight(new Rectangle(50, 250, Color.BURLYWOOD));
 		perspectiveLayout.setRootComponent(layout);
 		
 	}
