@@ -59,8 +59,8 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
 		layout.setBottom(bottom);
 		layout.setCenter(bc);
-		layout.setLeft(new Rectangle(50, 300, Color.DARKTURQUOISE));
-		layout.setRight(new Rectangle(50, 300, Color.DARKTURQUOISE));
+		layout.setLeft(new Rectangle(50, 250, Color.DARKTURQUOISE));
+		layout.setRight(new Rectangle(50, 250, Color.DARKTURQUOISE));
 		perspectiveLayout.setRootComponent(layout);
 		perspectiveLayout.registerTargetLayoutComponent("PBottomOne", bottom);
 		perspectiveLayout.registerTargetLayoutComponent("PTopOne", top);
