@@ -17,65 +17,82 @@
  */
 package org.jacp.javafx2.rcp.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.Layout;
 
-
 /**
  * Background Worker to execute components; handle method to init component
+ * 
  * @author Andy Moncsek
  */
-public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
+public class FX2ComponentInitWorker
+		extends
+		AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
-    private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
-    private final Map<Layout, Node> bars;
-    private final IAction<Event, Object> action;
-    private final MenuBar menu;
+	private final Map<String, Node> targetComponents;
+	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
+	private final Map<Layout, Node> bars;
+	private final IAction<Event, Object> action;
+	private final MenuBar menu;
+	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
+			1);
 
-    public FX2ComponentInitWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler<Event>, Event, Object> component, final Map<Layout, Node> bars, final IAction<Event, Object> action, final MenuBar menu) {
-        this.targetComponents = targetComponents;
-        this.component = component;
-        this.action = action;
-        this.bars = bars;
-        this.menu = menu;
-    }
+	public FX2ComponentInitWorker(
+			final Map<String, Node> targetComponents,
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final Map<Layout, Node> bars, final IAction<Event, Object> action,
+			final MenuBar menu) {
+		this.targetComponents = targetComponents;
+		this.component = component;
+		this.action = action;
+		this.bars = bars;
+		this.menu = menu;
+	}
 
-    @Override
-    protected IVComponent<Node, EventHandler<Event>, Event, Object> call() throws Exception {
-        synchronized (component) {
-			component.setBlocked(true);
-			log("3.4.4.2.1: subcomponent handle init START: "
-					+ component.getName());
-			final Node editorComponent = component.handle(action);
-			component.setRoot(editorComponent);
-			editorComponent.setVisible(true);
-			log("3.4.4.2.2: subcomponent handle init get valid container: "
-					+ component.getName());
-			final Node validContainer = getValidContainerById(
-					targetComponents, component.getExecutionTarget());
-			log("3.4.4.2.3: subcomponent handle init add component by type: "
-					+ component.getName());
-			
-			addComonent(validContainer, component, bars, menu);
+	@Override
+	protected IVComponent<Node, EventHandler<Event>, Event, Object> call()
+			throws Exception {
+		synchronized (this.component) {
+			this.component.setBlocked(true);
+			this.log("3.4.4.2.1: subcomponent handle init START: "
+					+ this.component.getName());
+			final Node editorComponent = this.component.handle(this.action);
+			this.component.setRoot(editorComponent);
+			this.log("3.4.4.2.2: subcomponent handle init get valid container: "
+					+ this.component.getName());
+			final Node validContainer = this.getValidContainerById(
+					this.targetComponents, this.component.getExecutionTarget());
+			this.log("3.4.4.2.3: subcomponent handle init add component by type: "
+					+ this.component.getName());
 
-			log("3.4.4.2.4: subcomponent handle init END: "
-					+ component.getName());
-			component.setBlocked(false);
-			return component;
+			this.addComonent(validContainer, this.component, this.action,
+					this.bars, this.menu);
+
+			this.waitOnAppThreadLockRelease();
+
+			this.log("3.4.4.2.4: subcomponent handle init END: "
+					+ this.component.getName());
+			this.component.setBlocked(false);
+			return this.component;
 		}
-    }
-    
-    /**
+	}
+
+	/**
 	 * handles "component add" in EDT must be called outside EDT
+	 * 
 	 * @param validContainer
 	 * @param component
 	 * @param bars
@@ -86,57 +103,57 @@ public class FX2ComponentInitWorker extends AFX2ComponentWorker<IVComponent<Node
 	private void addComonent(
 			final Node validContainer,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Map<Layout, Node> bars, final MenuBar menu)
-			throws InterruptedException{
+			final IAction<Event, Object> action, final Map<Layout, Node> bars,
+			final MenuBar menu) throws InterruptedException {
 
-		 Platform.runLater(new Runnable() {
+		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
-				// handle
-                            //TODO check addComponentByType
-				addComponentByType(validContainer, component, bars, menu);
-
+				FX2ComponentInitWorker.this
+						.executePostHandle(component, action);
+				FX2ComponentInitWorker.this.addComponentByType(validContainer,
+						component, bars, menu);
+				FX2ComponentInitWorker.this.appThreadlock.add(true);
 			}
 		});
 
 	}
-        
-        @Override
+
+	@Override
 	public final void done() {
-		synchronized (component) {
+		synchronized (this.component) {
 			try {
 				this.get();
 			} catch (final InterruptedException e) {
-				System.out.println("Exception in Component INIT Worker, Thread interrupted:");
-				e.printStackTrace();
+				this.log("Exception in Component INIT Worker, Thread interrupted: "
+						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			} catch (final ExecutionException e) {
-				System.out.println("Exception in Component INIT Worker, Thread Excecution Exception:");
-				e.printStackTrace();
+				this.log("Exception in Component INIT Worker, Thread Excecution Exception: "
+						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			} catch (final Exception e) {
-				System.out.println("Exception in Component INIT Worker, Thread Exception:");
-				e.printStackTrace();
+				this.log("Exception in Component INIT Worker, Thread Exception: "
+						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			}
-			component.setBlocked(false);
-			component.setBlocked(false);
-			// check if news messages received while handled in
-			// initialization
-			// worker; if so then start replace worker
-			if (component.hasIncomingMessage()) {
-                            
-                            // TODO add replace worker
-				//new ComponentReplaceWorker(targetComponents, component, bars,
-				//		menu).execute();
-			}
+			this.component.setBlocked(false);
+		}
+	}
+
+	private void waitOnAppThreadLockRelease() {
+
+		try {
+			this.appThreadlock.take();
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 }

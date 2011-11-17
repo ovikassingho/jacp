@@ -20,7 +20,7 @@ package org.jacp.javafx2.rcp.componentLayout;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.Node;
-import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -34,13 +34,13 @@ import org.jacp.api.util.Tupel;
  * @author Andy Moncsek
  */
 public class FX2WorkbenchLayout implements
-		IWorkbenchLayout<Region, Node, StageStyle> {
+		IWorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
-	private Region layout;
 	private Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
 	private Map<Layout, Node> toolbars = new ConcurrentHashMap<Layout, Node>();
 	private StageStyle style = StageStyle.DECORATED;
+	private Stage root;
 
 	@Override
 	public boolean isMenuEnabled() {
@@ -52,15 +52,6 @@ public class FX2WorkbenchLayout implements
 		this.menueEnabled = enabled;
 	}
 
-	@Override
-	public void setLayoutManager(Region layout) {
-		this.layout = layout;
-	}
-
-	@Override
-	public Region getLayoutManager() {
-		return this.layout;
-	}
 
 	@Override
 	public void setWorkbenchXYSize(int x, int y) {
@@ -84,13 +75,19 @@ public class FX2WorkbenchLayout implements
 	}
 
 	@Override
-	public void setStyle(StageStyle style) {
-		this.style = style;
+	public <S extends Enum> void setStyle(S style) {
+		this.style = (StageStyle) style;
+		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public StageStyle getStyle() {
-		return this.style;
+	public <S extends Enum> S getStyle() {
+		return (S) style;
 	}
+
+
+
+	
 
 }
