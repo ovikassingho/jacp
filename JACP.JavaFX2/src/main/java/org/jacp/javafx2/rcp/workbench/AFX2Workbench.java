@@ -17,10 +17,10 @@
  */
 package org.jacp.javafx2.rcp.workbench;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +41,6 @@ import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
-import org.jacp.javafx2.rcp.util.AFX2ComponentWorker;
 import org.jacp.javafx2.rcp.util.FX2Util;
 
 import javafx.application.Platform;
@@ -50,10 +49,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.BorderPane;
+
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -65,14 +64,14 @@ import javafx.stage.StageStyle;
  */
 public abstract class AFX2Workbench
 		implements
-		IWorkbench<Region, Node, EventHandler<Event>, Event, Object, StageStyle>,
+		IWorkbench<Node, EventHandler<Event>, Event, Object>,
 		IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 
 	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveHandler = new FX2PerspectiveCoordinator(
 			this);
 	private final int inset = 50;
-	private final IWorkbenchLayout<Region, Node, StageStyle> workbenchLayout = new FX2WorkbenchLayout();
+	private final IWorkbenchLayout<Node> workbenchLayout = new FX2WorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 	private MenuBar menu;
@@ -84,6 +83,9 @@ public abstract class AFX2Workbench
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void init(Launcher<?> launcher) {
 		this.launcher = launcher;
 
@@ -125,7 +127,11 @@ public abstract class AFX2Workbench
 
 		});
 	}
-
+	/**
+	 * JavaFX2 specific start sequence
+	 * @param stage
+	 * @throws Exception
+	 */
 	public final void start(final Stage stage) throws Exception {
 		this.stage = stage;
 		log("1: init workbench");
@@ -136,8 +142,29 @@ public abstract class AFX2Workbench
 		log("3: handle initialisation sequence");
 		handleInitialisationSequence();
 	}
+	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void handleInitialLayout(final IAction<Event, Object> action,
+			final IWorkbenchLayout<Node> layout) {
+		handleInitialLayout(action, layout, this.stage);
+	}
+	
+	/**
+	 * JavaFX2 specific initialization method to create a workbench instance
+	 * @param action
+	 * @param layout
+	 * @param stage
+	 */
+	public abstract void handleInitialLayout(final IAction<Event, Object> action,
+			final IWorkbenchLayout<Node> layout, final Stage stage) ;
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void setPerspectives(
 			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
 		this.perspectives = perspectives;
@@ -145,46 +172,70 @@ public abstract class AFX2Workbench
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
 		return this.perspectives;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void initWorkbenchMenu() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void initMenuBar() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final Node getDefaultMenu() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final Node handleMenuEntries(Node meuBar) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void handleBarEntries(Map<Layout, Node> bars) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public final IWorkbenchLayout<Region, Node, StageStyle> getWorkbenchLayout() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final IWorkbenchLayout<Node> getWorkbenchLayout() {
 		return workbenchLayout;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void registerComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> component) {
 		component.init(launcher);
@@ -192,12 +243,18 @@ public abstract class AFX2Workbench
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void unregisterComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> component) {
 		perspectiveHandler.removePerspective(component);
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void initComponents(final IAction<Event, Object> action) {
 		final List<IPerspective<EventHandler<Event>, Event, Object>> perspectivesTmp = getPerspectives();
 		for (int i = 0; i < perspectivesTmp.size(); i++) {
@@ -215,7 +272,6 @@ public abstract class AFX2Workbench
 					public final void run() {
 						initComponent(new FX2Action(perspective.getId(),
 								perspective.getId(), "init"), perspective);
-						refreshBarEntries();
 
 					}
 				}); // FX2 UTILS END
@@ -224,12 +280,7 @@ public abstract class AFX2Workbench
 		}
 	}
 
-	/**
-	 * refresh bar entries after perspective initialization
-	 */
-	private void refreshBarEntries() {
-		// TODO implement refresh bar entries
-	}
+	
 
 	/**
 	 * creates basic menu entry for perspective
@@ -242,6 +293,9 @@ public abstract class AFX2Workbench
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void initComponent(final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFX2Perspective) perspective)
@@ -332,6 +386,9 @@ public abstract class AFX2Workbench
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public final void handleAndReplaceComponent(
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
@@ -387,6 +444,8 @@ public abstract class AFX2Workbench
 	private void reassignChild(final Node parent, final Node oldComp,
 			final Node newComp) {
 		final ObservableList<Node> children = FX2Util.getChildren(parent);
+		oldComp.setVisible(false);
+		newComp.setVisible(true);
 		if (children.remove(oldComp)) {
 			children.add(newComp);
 			parent.setVisible(true);
@@ -474,9 +533,40 @@ public abstract class AFX2Workbench
 		int x = getWorkbenchLayout().getWorkbenchSize().getX();
 		int y = getWorkbenchLayout().getWorkbenchSize().getY();
 		this.root = new Group();
-		stage.initStyle(getWorkbenchLayout().getStyle());
-		// TODO check handling of layout.getLayoutManager();
-		stage.setScene(new Scene(root, x, y));
+		stage.initStyle((StageStyle) getWorkbenchLayout().getStyle());
+		if(!getWorkbenchLayout().getToolBars().isEmpty()){
+			BorderPane pane = new BorderPane();
+			Iterator<Entry<Layout, Node>> it = getWorkbenchLayout().getToolBars().entrySet().iterator();
+			while(it.hasNext()) {
+				Entry<Layout, Node> entry = it.next();
+				assignCorrectBarLayout(entry.getKey(), entry.getValue(), pane,x,y);				
+			}
+			pane.setCenter(this.root);
+			stage.setScene(new Scene(pane, x, y));
+		} else {
+			stage.setScene(new Scene(root, x, y));
+		}
+
+		
+		
+	}
+	/**
+	 * set toolBars to correct position
+	 * @param layout
+	 * @param bar
+	 * @param pane
+	 * @param x
+	 * @param y
+	 */
+	private void assignCorrectBarLayout(Layout layout, Node bar, BorderPane pane, int x, int y) {
+		if(pane.getPrefHeight()<0)pane.setPrefHeight(y*.0025);
+		if(pane.getPrefWidth()<0)pane.setPrefWidth(x);
+		switch(layout) {
+		case NORTH: pane.setTop(bar);break;
+		case SOUTH: pane.setBottom(bar); break;
+		case TOP: pane.setTop(bar); break;
+		case BOTTOM:pane.setBottom(bar); break;
+		}
 	}
 
 	/**

@@ -1,4 +1,8 @@
-8. Nov. 2011 - amo -  changed maven dependency from javafx2 system to compile scope, please install  "mvn install:install-file -Dfile=jfxrt.jar -DgroupId?=com.oracle -DartifactId?=javafx-runtime -Dpackaging=jar -Dversion=2.0"
-7. Nov. 2011 - amo -  clean up pom.xml, removed build settings for javafx2
-7. Nov. 2011 - amo -  add synchronization to launcher access in AStatelessComponent, performAction method changed to basic Event interface in FX2ActionListener 
-7. Nov. 2011 - amo -  removed demo package, moved contents to JACP.JavaFX2DemoArea
+17. Nov. 2011 - amo -  handleInitialLayout overloaded to pass Stage object
+17. Nov. 2011 - amo -  removed ChunkDTO (class was obsolete), reorganized ComponentReplaceWorker, changed lock behavior, introduced postHandle execution in worker (init and replace worker), 
+					   postHandle and remove/add method are encapsulated in one "invokeLater" block to be executed in application thread, 
+					   locking simplified by releasing lock at the end of "invokeLater" block
+08. Nov. 2011 - amo -  changed maven dependency from javafx2 system to compile scope, please install  "mvn install:install-file -Dfile=jfxrt.jar -DgroupId?=com.oracle -DartifactId?=javafx-runtime -Dpackaging=jar -Dversion=2.0"
+07. Nov. 2011 - amo -  clean up pom.xml, removed build settings for javafx2
+07. Nov. 2011 - amo -  add synchronization to launcher access in AStatelessComponent, performAction method changed to basic Event interface in FX2ActionListener 
+07. Nov. 2011 - amo -  removed demo package, moved contents to JACP.JavaFX2DemoArea

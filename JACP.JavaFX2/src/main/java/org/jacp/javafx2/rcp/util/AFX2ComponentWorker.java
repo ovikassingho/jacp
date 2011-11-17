@@ -72,17 +72,18 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      */
     protected final void addComponentByType(
             final Node validContainer,
-            final IVComponent<Node, EventHandler<Event>, Event, Object> editor,
+            final IVComponent<Node, EventHandler<Event>, Event, Object> component,
             final Map<Layout, Node> bars, final MenuBar menu) {
+    	
 
-        handleAdd(validContainer, editor.getRoot(), editor.getName());
+        handleAdd(validContainer, component.getRoot(), component.getName());
         if (menu != null) {
             // menu handling in EDT!!
-            editor.handleMenuEntries(menu);
+        	component.handleMenuEntries(menu);
         }
         if (!bars.isEmpty()) {
             // bar handling in EDT!!
-            handleUserBarEntries(editor, bars);
+            handleUserBarEntries(component, bars);
 
         }
 
@@ -188,8 +189,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
      */
     private void handleAdd(final Node validContainer,
             final Node uiComponent, final String name) {
-        uiComponent.setVisible(true);
-        if (validContainer != null) {
+        if (validContainer != null && uiComponent!=null) {
+            uiComponent.setVisible(true);
             final ObservableList<Node> children = FX2Util.getChildren(validContainer);
             children.add(uiComponent);
         }
@@ -291,7 +292,18 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
         component.setRoot(editorComponent);
         return editorComponent;
     }
-
+    /**
+     * executes post handle method in application main thread
+     * @param component
+     * @param action
+     */
+	protected void executePostHandle(final IVComponent<Node, EventHandler<Event>, Event, Object> component,final IAction<Event, Object> action) {
+		final Node root = component.getRoot();
+		final Node tmp = component.postHandle(root, action);
+		if(tmp!=null) {
+			component.setRoot(tmp);
+		}
+	}
     /**
      * returns the message target component id
      * 

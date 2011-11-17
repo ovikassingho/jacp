@@ -25,7 +25,6 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.stage.StageStyle;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
@@ -45,11 +44,11 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
-	private final IWorkbench<?, Node, EventHandler<Event>, Event, Object, StageStyle> workbench;
+	private final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench;
 	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 
 	public FX2PerspectiveCoordinator(
-			final IWorkbench<?, Node, EventHandler<Event>, Event, Object, StageStyle> workbench) {
+			final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench) {
 		setDaemon(true);
 		this.workbench = workbench;
 	}
