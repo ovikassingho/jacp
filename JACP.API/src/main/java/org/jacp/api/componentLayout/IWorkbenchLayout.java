@@ -26,7 +26,7 @@ import org.jacp.api.util.Tupel;
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbenchLayout<L, C, S> {
+public interface IWorkbenchLayout<C> {
 
 	/**
 	 * Check if menus are enabled.
@@ -41,20 +41,6 @@ public interface IWorkbenchLayout<L, C, S> {
 	 * @param enabled
 	 */
 	void setMenuEnabled(boolean enabled);
-
-	/**
-	 * Set the default layout manager to workspace.
-	 * 
-	 * @param layout
-	 */
-	void setLayoutManager(L layout);
-
-	/**
-	 * Get the defined layout manager.
-	 * 
-	 * @return the layout manager
-	 */
-	public abstract L getLayoutManager();
 
 	/**
 	 * Set the size of the workbench.
@@ -92,13 +78,15 @@ public interface IWorkbenchLayout<L, C, S> {
 	 * @param style
 	 *            , the style of workbench
 	 */
-	void setStyle(S style);
+	<S extends Enum> void setStyle(S style);
 
 	/**
 	 * Returns the workbench style.
 	 * 
 	 * @return style
 	 */
-	S getStyle();
+	<S extends Enum> S getStyle();
+
+
 
 }

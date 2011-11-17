@@ -23,8 +23,7 @@ package org.jacp.api.componentLayout;
  */
 public enum Layout {
 
-    NORTH("North"), SOUTH("South"), EAST("East"), WEST("West"), CENTER("Center"), LEFT(
-	    "left"), RIGHT("right"), TOP("top"), BOTTOM("bottom");
+    NORTH("North"), SOUTH("South"),  TOP("top"), BOTTOM("bottom");
 
     private String layout;
 

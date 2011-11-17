@@ -19,11 +19,12 @@ package org.jacp.api.component;
 
 import java.util.Map;
 
+import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.Layout;
 
 /**
- * Represents an UI component handled by a perspective. A IVComponent is an
-// * visible UI component displayed in a defined area of perspective.
+ * Represents an UI component handled by a perspective. A IVComponent is an // *
+ * visible UI component displayed in a defined area of perspective.
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -43,7 +44,7 @@ public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
 	 * 
 	 * @param root
 	 */
-	void setRoot(C root);
+	void setRoot(final C root);
 
 	/**
 	 * Returns the 'root' ui component created by the handle method.
@@ -53,10 +54,26 @@ public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
 	C getRoot();
 
 	/**
-	 * get defines bar entries
+	 * Get defined bar entries
 	 * 
 	 * @return a map with all defined menu bars
 	 */
 	Map<Layout, C> getBarEntries();
+
+	/**
+	 * To avoid toolkit specific threading issues the postHandle method always
+	 * called after the handle method. While the handle method is executed in a
+	 * separate thread the postHandle method is guaranteed to run in application
+	 * main thread. It is mostly save to create new components outside the main
+	 * thread in the handle method but when you like to recycle your components
+	 * you should use the postHandle method. In the postHandle method you should
+	 * avoid long running tasks. Use it only to create or update your ui
+	 * components.
+	 * 
+	 * @param node
+	 * @param action
+	 * @return an ui component
+	 */
+	C postHandle(final C node, final IAction<A, M> action);
 
 }
