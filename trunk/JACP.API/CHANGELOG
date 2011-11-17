@@ -1,1 +1,4 @@
-7. Nov. 2011 - amo - clean up, update JavaDoc, generate JavaDoc ... see doc Folder
+17. Nov. 2011 - amo - removed dependency to workbench style, changed to Enum
+17. Nov. 2011 - amo - removed dependency to layoutManager definition in WorkbenchLayout
+17. Nov. 2011 - amo - postHandle method introduced in IVComponent, this method should ensure that UI components are handled in main application thread 
+07. Nov. 2011 - amo - clean up, update JavaDoc, generate JavaDoc ... see doc Folder

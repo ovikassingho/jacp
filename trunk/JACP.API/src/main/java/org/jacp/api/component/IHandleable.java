@@ -30,7 +30,7 @@ import org.jacp.api.action.IAction;
  */
 public interface IHandleable<A, M> {
 	/**
-	 * Handles component when called.
+	 * Handles component when called. The handle method in subcomponents is always executed in a seperate thread;
 	 * 
 	 * @param action
 	 * @return view component

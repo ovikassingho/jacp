@@ -44,7 +44,7 @@ import org.jacp.api.componentLayout.Layout;
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbench<P, C, L, A, M, S> extends IBase<L, A, M>{
+public interface IWorkbench<C, L, A, M> extends IBase<L, A, M>{
 
 
 	/**
@@ -86,13 +86,13 @@ public interface IWorkbench<P, C, L, A, M, S> extends IBase<L, A, M>{
 	 * @param layout
 	 */
 	void handleInitialLayout(final IAction<A, M> action,
-			final IWorkbenchLayout<P, C, S> layout);
+			final IWorkbenchLayout<C> layout);
 
 	/**
 	 * Returns workbench layout object.
 	 * 
 	 * @return the workbench layout class, defining basic settings for the workbench
 	 */
-	IWorkbenchLayout<P, C, S> getWorkbenchLayout();
+	IWorkbenchLayout<C> getWorkbenchLayout();
 
 }
