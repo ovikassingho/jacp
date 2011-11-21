@@ -107,7 +107,7 @@ public abstract class AFX2Perspective implements
 	@Override
 	public final void onStart(final IBaseLayout<Node> layout) {
 		this.layout = (FX2ComponentLayout) layout;
-		// onStartPerspective((MenuBar)menuBar,bars);
+		onStartPerspective(this.layout);
 
 	}
 
@@ -116,7 +116,7 @@ public abstract class AFX2Perspective implements
 	 */
 	@Override
 	public void onTearDown(final IBaseLayout<Node> layout) {
-		// onTearDownPerspective((MenuBar)menuBar,bars);
+		onTearDownPerspective(this.layout);
 		this.layout = null;
 	}
 
