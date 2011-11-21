@@ -36,27 +36,31 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 public class StateLessComponentRunWorker extends
 		AFX2ComponentWorker<IBGComponent<EventHandler<Event>, Event, Object>> {
 	private final IBGComponent<EventHandler<Event>, Event, Object> component;
-	public StateLessComponentRunWorker(final IBGComponent<EventHandler<Event>, Event, Object> component) {
+
+	public StateLessComponentRunWorker(
+			final IBGComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
+
 	@Override
 	protected IBGComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final IBGComponent<EventHandler<Event>, Event, Object> comp = component;
+		final IBGComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {
 				final IAction<Event, Object> myAction = comp
-						.getNextIncomingMessage();;
+						.getNextIncomingMessage();
+				;
 				final Object value = comp.handle(myAction);
 				final String targetId = comp.getHandleTargetAndClear();
-				delegateReturnValue(comp, targetId, value);
+				this.delegateReturnValue(comp, targetId, value);
 			}
 			comp.setBlocked(false);
 		}
 		return comp;
 	}
-	
+
 	/**
 	 * delegate components handle return value to specified target
 	 * 
@@ -87,7 +91,7 @@ public class StateLessComponentRunWorker extends
 			// TODO add to error queue and restart thread if messages in queue
 		} finally {
 			// release lock
-			component.setBlocked(false);
+			this.component.setBlocked(false);
 		}
 
 	}

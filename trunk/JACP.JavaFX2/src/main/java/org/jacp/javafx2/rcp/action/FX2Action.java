@@ -19,7 +19,9 @@ package org.jacp.javafx2.rcp.action;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.event.Event;
+
 import org.jacp.api.action.IAction;
 
 /**
@@ -42,14 +44,14 @@ public final class FX2Action implements IAction<Event, Object> {
 
 	public FX2Action(final String sourceId, final Object message) {
 		this.sourceId = sourceId;
-		setMessage(message);
+		this.setMessage(message);
 	}
 
 	public FX2Action(final String sourceId, final String targetId,
 			final Object message) {
 		this.sourceId = sourceId;
 		this.target = targetId;
-		setMessage(message);
+		this.setMessage(message);
 	}
 
 	@Override
@@ -63,7 +65,7 @@ public final class FX2Action implements IAction<Event, Object> {
 	public void addMessage(String targetId, Object message) {
 		this.target = targetId;
 		this.message = message;
-		this.getMessageList().put(target, message);
+		this.getMessageList().put(this.target, message);
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public final class FX2Action implements IAction<Event, Object> {
 
 	@Override
 	public IAction<Event, Object> clone() {
-		final IAction<Event, Object> clone = new FX2Action(sourceId);
+		final IAction<Event, Object> clone = new FX2Action(this.sourceId);
 		clone.setActionEvent(this.event);
 		return clone;
 	}

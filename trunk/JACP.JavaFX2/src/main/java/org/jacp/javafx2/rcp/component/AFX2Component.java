@@ -17,22 +17,23 @@
  */
 package org.jacp.javafx2.rcp.component;
 
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
+import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
  * represents a basic FX2 component to extend from, uses this abstract class to
@@ -52,13 +53,13 @@ public abstract class AFX2Component implements
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
-	private final Map<Layout, Node> barEntries = new ConcurrentHashMap<Layout, Node>();
 	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
 	private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setRoot(final Node root) {
 		this.root = root;
 	}
@@ -66,6 +67,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final Node getRoot() {
 		return this.root;
 	}
@@ -73,13 +75,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public final Map<Layout, Node> getBarEntries() {
-		return this.barEntries;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public final String getExecutionTarget() {
 		return this.target;
 	}
@@ -87,6 +83,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setExecutionTarget(final String target) {
 		this.target = target;
 	}
@@ -94,6 +91,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setParentPerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.parentPerspective = perspective;
@@ -102,6 +100,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
 		return this.parentPerspective;
 	}
@@ -109,16 +108,18 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean hasIncomingMessage() {
-		return !incomingActions.isEmpty();
+		return !this.incomingActions.isEmpty();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void putIncomingMessage(final IAction<Event, Object> action) {
 		try {
-			incomingActions.put(action);
+			this.incomingActions.put(action);
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -127,10 +128,11 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final IAction<Event, Object> getNextIncomingMessage() {
-		if (hasIncomingMessage()) {
+		if (this.hasIncomingMessage()) {
 			try {
-				return incomingActions.take();
+				return this.incomingActions.take();
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -141,13 +143,15 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isBlocked() {
-		return blocked.get();
+		return this.blocked.get();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setBlocked(final boolean blocked) {
 		this.blocked.set(blocked);
 	}
@@ -155,15 +159,18 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(id), componentObserver);
+		return new FX2ActionListener(new FX2Action(this.id),
+				this.componentObserver);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final String getId() {
-		if (id == null) {
+		if (this.id == null) {
 			throw new UnsupportedOperationException("No id set");
 		}
 		return this.id;
@@ -172,6 +179,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setId(final String id) {
 		this.id = id;
 	}
@@ -179,6 +187,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isActive() {
 		return this.active;
 	}
@@ -186,6 +195,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setActive(final boolean active) {
 		this.active = active;
 	}
@@ -193,6 +203,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setActivated(final boolean isActive) {
 		this.isActived = isActive;
 	}
@@ -200,6 +211,7 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final boolean isActivated() {
 		return this.isActived;
 	}
@@ -207,16 +219,18 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final String getName() {
-		if (name == null) {
+		if (this.name == null) {
 			throw new UnsupportedOperationException("No name set");
 		}
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setName(final String name) {
 		this.name = name;
 	}
@@ -224,25 +238,28 @@ public abstract class AFX2Component implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final void setObserver(
 			final ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	/**
 	 * {@inheritDoc}
 	 */
 	public final <C> C handle(final IAction<Event, Object> action) {
-		return (C) handleAction(action);
+		return (C) this.handleAction(action);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final Node postHandle(final Node node,
 			final IAction<Event, Object> action) {
-		return postHandleAction(node,action);
+		return this.postHandleAction(node, action);
 	}
 
 	/**
@@ -254,11 +271,46 @@ public abstract class AFX2Component implements
 
 	/**
 	 * @see org.jacp.api.component.IVComponent#postHandle(Object, IAction)
-	 * {@inheritDoc}
+	 *      {@inheritDoc}
 	 * @param node
 	 * @param action
 	 * @return a node
 	 */
 	public abstract Node postHandleAction(final Node node,
 			final IAction<Event, Object> action);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void onStart(final IBaseLayout<Node> layout) {
+		this.onStartComponent((FX2ComponentLayout) layout);
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void onTearDown(final IBaseLayout<Node> layout) {
+		this.onTearDownComponent((FX2ComponentLayout) layout);
+
+	}
+
+	/**
+	 * Handle menu, bars and other UI components on component start.
+	 * 
+	 * @param menuBar
+	 * @param bars
+	 */
+	public abstract void onStartComponent(final FX2ComponentLayout layout);
+
+	/**
+	 * Clean up menu, bars and other components on component teardown.
+	 * 
+	 * @param menuBar
+	 * @param bars
+	 */
+	public abstract void onTearDownComponent(final FX2ComponentLayout layout);
+
 }

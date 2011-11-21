@@ -16,8 +16,7 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx2.rcp.component.AStatelessComponent;
 import org.jacp.javafx2.rcp.util.StateLessComponentRunWorker;
 
-public class StatelessComponentCoordinator
-		implements
+public class StatelessComponentCoordinator implements
 		IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> {
 	public static int MAX_INCTANCE_COUNT;
 
@@ -27,44 +26,47 @@ public class StatelessComponentCoordinator
 
 	private IBGComponent<EventHandler<Event>, Event, Object> baseComponent;
 	private final Launcher<?> launcher;
-	private ExecutorService executor = Executors
-			.newFixedThreadPool(MAX_INCTANCE_COUNT);
+	private final ExecutorService executor = Executors
+			.newFixedThreadPool(StatelessComponentCoordinator.MAX_INCTANCE_COUNT);
 
 	public StatelessComponentCoordinator(
 			final IBGComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final Launcher<?> launcher) {
 		this.launcher = launcher;
-		setBaseComponent(baseComponent);
+		this.setBaseComponent(baseComponent);
 	}
 
 	static {
 		final Runtime runtime = Runtime.getRuntime();
 		final int nrOfProcessors = runtime.availableProcessors();
-		MAX_INCTANCE_COUNT = nrOfProcessors + (nrOfProcessors / 2);
+		StatelessComponentCoordinator.MAX_INCTANCE_COUNT = nrOfProcessors
+				+ (nrOfProcessors / 2);
 	}
 
 	@Override
 	public void incomingMessage(IAction<Event, Object> message) {
-		synchronized (baseComponent) {
+		synchronized (this.baseComponent) {
 			// get active instance
-			final IBGComponent<EventHandler<Event>, Event, Object> comp = getActiveComponent();
+			final IBGComponent<EventHandler<Event>, Event, Object> comp = this
+					.getActiveComponent();
 			if (comp != null) {
-				if (componentInstances.size() < MAX_INCTANCE_COUNT) {
+				if (this.componentInstances.size() < StatelessComponentCoordinator.MAX_INCTANCE_COUNT) {
 					// create new instance
-					componentInstances
-							.add(getCloneBean(((AStatelessComponent) baseComponent)
-									.getClass()));
+					this.componentInstances
+							.add(this
+									.getCloneBean(((AStatelessComponent) this.baseComponent)
+											.getClass()));
 				} // End inner if
 					// run component in thread
-				instanceRun(comp, message);
+				this.instanceRun(comp, message);
 			} // End if
 			else {
 				// check if new instances can be created
-				if (componentInstances.size() < MAX_INCTANCE_COUNT) {
-					createInstanceAndRun(message);
+				if (this.componentInstances.size() < StatelessComponentCoordinator.MAX_INCTANCE_COUNT) {
+					this.createInstanceAndRun(message);
 				} // End if
 				else {
-					seekAndPutMessage(message);
+					this.seekAndPutMessage(message);
 				} // End else
 			} // End else
 
@@ -84,7 +86,7 @@ public class StatelessComponentCoordinator
 		comp.putIncomingMessage(message);
 		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 				comp);
-		executor.submit(worker);
+		this.executor.submit(worker);
 	}
 
 	/**
@@ -94,16 +96,17 @@ public class StatelessComponentCoordinator
 	 * @param message
 	 */
 	private void createInstanceAndRun(final IAction<Event, Object> message) {
-		final IBGComponent<EventHandler<Event>, Event, Object> comp = getCloneBean(((AStatelessComponent) baseComponent)
-				.getClass());
-		componentInstances.add(comp);
-		instanceRun(comp, message);
+		final IBGComponent<EventHandler<Event>, Event, Object> comp = this
+				.getCloneBean(((AStatelessComponent) this.baseComponent)
+						.getClass());
+		this.componentInstances.add(comp);
+		this.instanceRun(comp, message);
 	}
 
 	@Override
 	public <T extends IBGComponent<EventHandler<Event>, Event, Object>> IBGComponent<EventHandler<Event>, Event, Object> getCloneBean(
 			Class<T> clazz) {
-		return ((AStatelessComponent) baseComponent).init(launcher
+		return ((AStatelessComponent) this.baseComponent).init(this.launcher
 				.getBean(clazz));
 	}
 
@@ -113,8 +116,8 @@ public class StatelessComponentCoordinator
 	 * @return
 	 */
 	private final IBGComponent<EventHandler<Event>, Event, Object> getActiveComponent() {
-		for (int i = 0; i < componentInstances.size(); i++) {
-			final IBGComponent<EventHandler<Event>, Event, Object> comp = componentInstances
+		for (int i = 0; i < this.componentInstances.size(); i++) {
+			final IBGComponent<EventHandler<Event>, Event, Object> comp = this.componentInstances
 					.get(i);
 			if (!comp.isBlocked()) {
 				return comp;
@@ -130,13 +133,13 @@ public class StatelessComponentCoordinator
 	 * 
 	 * @param message
 	 */
-	private final void seekAndPutMessage(
-			final IAction<Event, Object> message) {
+	private final void seekAndPutMessage(final IAction<Event, Object> message) {
 		// if max count reached, seek through components and add
 		// message to queue of oldest component
-		final Integer seek = Integer.valueOf(threadCount.incrementAndGet())
-				% componentInstances.size();
-		final IBGComponent<EventHandler<Event>, Event, Object> comp = componentInstances
+		final Integer seek = Integer
+				.valueOf(this.threadCount.incrementAndGet())
+				% this.componentInstances.size();
+		final IBGComponent<EventHandler<Event>, Event, Object> comp = this.componentInstances
 				.get(seek);
 		// put message to queue
 		comp.putIncomingMessage(message);
@@ -148,7 +151,7 @@ public class StatelessComponentCoordinator
 	 * @return
 	 */
 	public final IBGComponent<EventHandler<Event>, Event, Object> getBaseComponent() {
-		return baseComponent;
+		return this.baseComponent;
 	}
 
 	/**
@@ -159,8 +162,8 @@ public class StatelessComponentCoordinator
 	public final void setBaseComponent(
 			final IBGComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		this.baseComponent = baseComponent;
-		componentInstances
-				.add(getCloneBean(((AStatelessComponent) baseComponent)
+		this.componentInstances
+				.add(this.getCloneBean(((AStatelessComponent) baseComponent)
 						.getClass()));
 	}
 
