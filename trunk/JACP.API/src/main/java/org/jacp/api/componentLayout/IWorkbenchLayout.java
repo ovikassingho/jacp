@@ -17,16 +17,15 @@
  */
 package org.jacp.api.componentLayout;
 
-import java.util.Map;
-
 import org.jacp.api.util.Tupel;
 
 /**
  * Defines the base layout of a workbench and the application.
- * 
+ * @param <C>
+ *            defines the base component where others extend from
  * @author Andy Moncsek
  */
-public interface IWorkbenchLayout<C> {
+public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 
 	/**
 	 * Check if menus are enabled.
@@ -63,14 +62,8 @@ public interface IWorkbenchLayout<C> {
 	 * @param name
 	 * @param toolBar
 	 */
-	void registerToolBar(final Layout name, final C toolBar);
+	void registerToolBar(final Layout name);
 
-	/**
-	 * Returns all registered tool bars of workbench.
-	 * 
-	 * @return a map containing the defined tool bars
-	 */
-	Map<Layout, C> getToolBars();
 
 	/**
 	 * Set the workbench style.
@@ -86,7 +79,5 @@ public interface IWorkbenchLayout<C> {
 	 * @return style
 	 */
 	<S extends Enum> S getStyle();
-
-
 
 }

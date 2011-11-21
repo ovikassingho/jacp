@@ -54,13 +54,6 @@ public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
 	C getRoot();
 
 	/**
-	 * Get defined bar entries
-	 * 
-	 * @return a map with all defined menu bars
-	 */
-	Map<Layout, C> getBarEntries();
-
-	/**
 	 * To avoid toolkit specific threading issues the postHandle method always
 	 * called after the handle method. While the handle method is executed in a
 	 * separate thread the postHandle method is guaranteed to run in application
