@@ -19,6 +19,7 @@ package org.jacp.javafx2.rcp.action;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.coordinator.ICoordinator;
@@ -33,10 +34,9 @@ import org.jacp.api.coordinator.ICoordinator;
 public class FX2ActionListener implements EventHandler<Event>,
 		IActionListener<EventHandler<Event>, Event, Object> {
 	private IAction<Event, Object> action;
-	private ICoordinator<EventHandler<Event>, Event, Object> coordinator;
+	private final ICoordinator<EventHandler<Event>, Event, Object> coordinator;
 
-	public FX2ActionListener(
-			final IAction<Event, Object> action,
+	public FX2ActionListener(final IAction<Event, Object> action,
 			final ICoordinator<EventHandler<Event>, Event, Object> coordinator) {
 		this.action = action;
 		this.coordinator = coordinator;
@@ -44,7 +44,7 @@ public class FX2ActionListener implements EventHandler<Event>,
 
 	@Override
 	public void notifyComponents(IAction<Event, Object> action) {
-		coordinator.handle(action);
+		this.coordinator.handle(action);
 	}
 
 	@Override
@@ -65,13 +65,13 @@ public class FX2ActionListener implements EventHandler<Event>,
 
 	@Override
 	public void handle(Event t) {
-		action.setActionEvent(t);
-		notifyComponents(action);
+		this.action.setActionEvent(t);
+		this.notifyComponents(this.action);
 	}
 
 	@Override
 	public void performAction(Event arg0) {
-		handle(arg0);
+		this.handle(arg0);
 	}
 
 }

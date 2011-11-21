@@ -37,16 +37,25 @@ public abstract class AStateComponent implements
 			500);
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getExecutionTarget() {
 		return this.target;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setExecutionTarget(String target) {
 		this.target = target;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setParentPerspective(
 			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.parentPerspective = perspective;
@@ -54,16 +63,25 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
 		return this.parentPerspective;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean hasIncomingMessage() {
 		return !this.incomingActions.isEmpty();
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void putIncomingMessage(IAction<Event, Object> action) {
 		try {
 			this.incomingActions.put(action);
@@ -73,8 +91,11 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public IAction<Event, Object> getNextIncomingMessage() {
-		if (hasIncomingMessage()) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final IAction<Event, Object> getNextIncomingMessage() {
+		if (this.hasIncomingMessage()) {
 			try {
 				return this.incomingActions.take();
 			} catch (final InterruptedException e) {
@@ -85,22 +106,34 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
-	public boolean isBlocked() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final boolean isBlocked() {
 		return this.blocked.get();
 	}
 
 	@Override
-	public void setBlocked(boolean blocked) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setBlocked(boolean blocked) {
 		this.blocked.set(blocked);
 	}
 
 	@Override
-	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
 				this.componentObserver);
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getId() {
 		if (this.id == null) {
 			throw new UnsupportedOperationException("No id set");
@@ -109,32 +142,50 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setId(String id) {
 		this.id = id;
 
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isActive() {
 		return this.active;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setActive(boolean active) {
 		this.active = active;
 	}
 
 	@Override
-	public void setActivated(boolean isActivated) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setActivated(boolean isActivated) {
 		this.isActivated = isActivated;
 	}
 
 	@Override
-	public boolean isActivated() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final boolean isActivated() {
 		return this.isActivated;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public String getName() {
 		if (this.name == null) {
 			throw new UnsupportedOperationException("No name set");
@@ -143,12 +194,18 @@ public abstract class AStateComponent implements
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	@Override
-	public void setObserver(
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setObserver(
 			ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
 
@@ -156,21 +213,30 @@ public abstract class AStateComponent implements
 
 	@SuppressWarnings("unchecked")
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public <C> C handle(final IAction<Event, Object> action) {
-		return (C) handleAction(action);
+		return (C) this.handleAction(action);
 	}
 
 	public abstract Object handleAction(IAction<Event, Object> action);
 
 	@Override
-	public String getHandleTargetAndClear() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final String getHandleTargetAndClear() {
 		final String tempTarget = String.valueOf(this.handleComponentTarget);
 		this.handleComponentTarget = null;
 		return tempTarget;
 	}
 
 	@Override
-	public void setHandleTarget(String componentTargetId) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setHandleTarget(String componentTargetId) {
 		this.handleComponentTarget = componentTargetId;
 	}
 

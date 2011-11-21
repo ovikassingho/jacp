@@ -19,8 +19,10 @@ package org.jacp.javafx2.rcp.componentLayout;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javafx.scene.Node;
-import javafx.stage.Stage;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToolBar;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -33,61 +35,77 @@ import org.jacp.api.util.Tupel;
  * 
  * @author Andy Moncsek
  */
-public class FX2WorkbenchLayout implements
-		IWorkbenchLayout<Node> {
+public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
-	private Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
-	private Map<Layout, Node> toolbars = new ConcurrentHashMap<Layout, Node>();
+	private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
+	private final Map<Layout, ToolBar> toolbars = new ConcurrentHashMap<Layout, ToolBar>();
+	private MenuBar menu;
 	private StageStyle style = StageStyle.DECORATED;
-	private Stage root;
 
 	@Override
 	public boolean isMenuEnabled() {
-		return menueEnabled;
+		return this.menueEnabled;
 	}
 
 	@Override
 	public void setMenuEnabled(boolean enabled) {
 		this.menueEnabled = enabled;
+		if (enabled && this.menu == null) {
+			this.menu = new MenuBar();
+			this.menu.setId("main-menu");
+		}
 	}
-
 
 	@Override
 	public void setWorkbenchXYSize(int x, int y) {
-		size.setX(x);
-		size.setY(y);
+		this.size.setX(x);
+		this.size.setY(y);
 	}
 
 	@Override
 	public Tupel<Integer, Integer> getWorkbenchSize() {
-		return size;
+		return this.size;
 	}
 
 	@Override
-	public void registerToolBar(Layout name, Node toolBar) {
-		toolbars.put(name, toolBar);
+	public void registerToolBar(Layout name) {
+		if (!this.toolbars.containsKey(name)) {
+			final ToolBar bar = new ToolBar();
+			bar.setId(name.getLayout() + "-bar");
+			this.toolbars.put(name, bar);
+		}
 	}
 
 	@Override
-	public Map<Layout, Node> getToolBars() {
-		return toolbars;
+	public ToolBar getToolBar(Layout name) {
+		return this.toolbars.get(name);
 	}
 
 	@Override
 	public <S extends Enum> void setStyle(S style) {
 		this.style = (StageStyle) style;
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends Enum> S getStyle() {
-		return (S) style;
+		return (S) this.style;
 	}
 
+	@Override
+	public MenuBar getMenu() {
+		return this.menu;
+	}
 
-
-	
+	/**
+	 * Returns the map with all tool bars registered.
+	 * 
+	 * @return
+	 */
+	public Map<Layout, ToolBar> getToolBarMap() {
+		return this.toolbars;
+	}
 
 }

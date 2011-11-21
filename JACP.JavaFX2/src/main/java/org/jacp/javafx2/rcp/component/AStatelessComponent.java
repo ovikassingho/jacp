@@ -35,6 +35,7 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.coordinator.StatelessComponentCoordinator;
+
 /**
  * represents a abstract stateless background component
  * 
@@ -92,13 +93,15 @@ public abstract class AStatelessComponent implements
 	public boolean hasIncomingMessage() {
 		return !this.incomingActions.isEmpty();
 	}
-	//TODO add double check idiom
+
+	// TODO add double check idiom
 	private final synchronized IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> getCooridinator() {
 		if (this.coordinator == null) {
 			if (this.launcher == null) {
 				throw new UnsupportedOperationException("no di launcher set");
 			}
-			this.coordinator = new StatelessComponentCoordinator(this, launcher);
+			this.coordinator = new StatelessComponentCoordinator(this,
+					this.launcher);
 		}
 		return this.coordinator;
 	}
@@ -114,7 +117,7 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public IAction<Event, Object> getNextIncomingMessage() {
-		if (hasIncomingMessage()) {
+		if (this.hasIncomingMessage()) {
 			try {
 				return this.incomingActions.take();
 			} catch (final InterruptedException e) {
@@ -136,7 +139,8 @@ public abstract class AStatelessComponent implements
 
 	@Override
 	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(this.id), this.componentObserver);
+		return new FX2ActionListener(new FX2Action(this.id),
+				this.componentObserver);
 	}
 
 	@Override
@@ -190,15 +194,14 @@ public abstract class AStatelessComponent implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public final <C> C handle(final IAction<Event, Object> action) {
-		return (C) handleAction(action);
+		return (C) this.handleAction(action);
 	}
 
 	public abstract Object handleAction(IAction<Event, Object> action);
-	
-	public final void addMessage(final IAction<Event, Object> message) {
-		getCooridinator().incomingMessage(message);
-	    }
 
+	public final void addMessage(final IAction<Event, Object> message) {
+		this.getCooridinator().incomingMessage(message);
+	}
 
 	@Override
 	public synchronized void setLauncher(Launcher<?> launcher) {

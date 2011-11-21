@@ -26,11 +26,10 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.MenuBar;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.componentLayout.Layout;
+import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
  * Background Worker to execute components handle method in separate thread and
@@ -47,19 +46,17 @@ public class FX2ComponentReplaceWorker
 
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
-	private final Map<Layout, Node> bars;
-	private final MenuBar menu;
+	private final FX2ComponentLayout layout;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public FX2ComponentReplaceWorker(
 			final Map<String, Node> targetComponents,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Map<Layout, Node> bars, final MenuBar menu) {
+			final FX2ComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
-		this.bars = bars;
-		this.menu = menu;
+		this.layout = layout;
 	}
 
 	@Override
@@ -85,7 +82,7 @@ public class FX2ComponentReplaceWorker
 							+ this.component.getName());
 
 					this.publish(this.component, myAction,
-							this.targetComponents, this.bars, this.menu,
+							this.targetComponents, this.layout,
 							previousContainer, currentTaget);
 
 					this.waitOnAppThreadLockRelease();
@@ -111,15 +108,15 @@ public class FX2ComponentReplaceWorker
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> myAction,
 			final Map<String, Node> targetComponents,
-			final Map<Layout, Node> bars, final MenuBar menu,
-			final Node previousContainer, final String currentTaget) {
+			final FX2ComponentLayout layout, final Node previousContainer,
+			final String currentTaget) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 
 				if (component.isActive()) {
 					FX2ComponentReplaceWorker.this.publishComponentValue(
-							component, myAction, targetComponents, bars, menu,
+							component, myAction, targetComponents, layout,
 							previousContainer, currentTaget);
 				} else {
 					// unregister component
@@ -160,8 +157,8 @@ public class FX2ComponentReplaceWorker
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action,
 			final Map<String, Node> targetComponents,
-			final Map<Layout, Node> bars, final MenuBar menu,
-			final Node previousContainer, final String currentTaget) {
+			final FX2ComponentLayout layout, final Node previousContainer,
+			final String currentTaget) {
 		if (previousContainer != null) {
 
 			this.executePostHandle(component, action);

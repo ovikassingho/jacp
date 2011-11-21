@@ -27,11 +27,10 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.MenuBar;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.componentLayout.Layout;
+import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
  * Background Worker to execute components; handle method to init component
@@ -44,22 +43,19 @@ public class FX2ComponentInitWorker
 
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
-	private final Map<Layout, Node> bars;
 	private final IAction<Event, Object> action;
-	private final MenuBar menu;
+	private final FX2ComponentLayout layout;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public FX2ComponentInitWorker(
 			final Map<String, Node> targetComponents,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Map<Layout, Node> bars, final IAction<Event, Object> action,
-			final MenuBar menu) {
+			final FX2ComponentLayout layout, final IAction<Event, Object> action) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
-		this.bars = bars;
-		this.menu = menu;
+		this.layout = layout;
 	}
 
 	@Override
@@ -79,7 +75,7 @@ public class FX2ComponentInitWorker
 					+ this.component.getName());
 
 			this.addComonent(validContainer, this.component, this.action,
-					this.bars, this.menu);
+					this.layout);
 
 			this.waitOnAppThreadLockRelease();
 
@@ -103,8 +99,8 @@ public class FX2ComponentInitWorker
 	private void addComonent(
 			final Node validContainer,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action, final Map<Layout, Node> bars,
-			final MenuBar menu) throws InterruptedException {
+			final IAction<Event, Object> action, final FX2ComponentLayout layout)
+			throws InterruptedException {
 
 		Platform.runLater(new Runnable() {
 
@@ -113,7 +109,7 @@ public class FX2ComponentInitWorker
 				FX2ComponentInitWorker.this
 						.executePostHandle(component, action);
 				FX2ComponentInitWorker.this.addComponentByType(validContainer,
-						component, bars, menu);
+						component);
 				FX2ComponentInitWorker.this.appThreadlock.add(true);
 			}
 		});

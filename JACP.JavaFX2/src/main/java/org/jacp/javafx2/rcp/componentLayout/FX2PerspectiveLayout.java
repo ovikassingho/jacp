@@ -19,7 +19,9 @@ package org.jacp.javafx2.rcp.componentLayout;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javafx.scene.Node;
+
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 
 /**
@@ -47,11 +49,11 @@ public class FX2PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 
 	@Override
 	public Map<String, Node> getTargetLayoutComponents() {
-		return targetComponents;
+		return this.targetComponents;
 	}
 
 	@Override
 	public void registerTargetLayoutComponent(String id, Node target) {
-		targetComponents.put(id, target);
+		this.targetComponents.put(id, target);
 	}
 }

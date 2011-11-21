@@ -18,9 +18,11 @@
 package org.jacp.javafx2.rcp.util;
 
 import java.util.Map;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+
 import org.jacp.api.component.IVComponent;
 
 /**
@@ -29,24 +31,31 @@ import org.jacp.api.component.IVComponent;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentAddWorker extends AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
+public class FX2ComponentAddWorker
+		extends
+		AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
-    private final Map<String, Node> targetComponents;
-    private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
+	private final Map<String, Node> targetComponents;
+	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 
-    public FX2ComponentAddWorker(final Map<String, Node> targetComponents, final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
-        this.targetComponents = targetComponents;
-        this.component = component;
-    }
+	public FX2ComponentAddWorker(
+			final Map<String, Node> targetComponents,
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
+		this.targetComponents = targetComponents;
+		this.component = component;
+	}
 
-    @Override
-    protected IVComponent<Node, EventHandler<Event>, Event, Object> call() throws Exception {
-        return null;
-    }
+	@Override
+	protected IVComponent<Node, EventHandler<Event>, Event, Object> call()
+			throws Exception {
+		return null;
+	}
 
-    @Override
-    public final void done() {
-        component.setExecutionTarget(getTargetComponentId(component.getExecutionTarget()));
-        handleNewComponentValue(component, targetComponents, null, "");
-    }
+	@Override
+	public final void done() {
+		this.component.setExecutionTarget(this
+				.getTargetComponentId(this.component.getExecutionTarget()));
+		this.handleNewComponentValue(this.component, this.targetComponents,
+				null, "");
+	}
 }

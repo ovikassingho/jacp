@@ -22,8 +22,10 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.coordinator.ICoordinator;
@@ -44,19 +46,19 @@ public abstract class AFX2Coordinator extends Thread implements
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
-			log(" observer thread size" + messages.size());
+			this.log(" observer thread size" + this.messages.size());
 			IAction<Event, Object> action = null;
 			try {
-				action = messages.take();
+				action = this.messages.take();
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 			final Map<String, Object> myMessages = action.getMessageList();
 			for (final String targetId : myMessages.keySet()) {
-				log(" handle message to: " + targetId);
-				handleMessage(targetId, action);
+				this.log(" handle message to: " + targetId);
+				this.handleMessage(targetId, action);
 			}
-			log(" observer thread DONE");
+			this.log(" observer thread DONE");
 		}
 	}
 
@@ -104,8 +106,8 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @return
 	 */
 	protected final String getTargetPerspectiveId(final String messageId) {
-		final String[] targetId = getTargetId(messageId);
-		if (!isLocalMessage(messageId)) {
+		final String[] targetId = this.getTargetId(messageId);
+		if (!this.isLocalMessage(messageId)) {
 			return targetId[0];
 		}
 		return messageId;
@@ -118,8 +120,8 @@ public abstract class AFX2Coordinator extends Thread implements
 	 * @return
 	 */
 	protected final String getTargetComponentId(final String messageId) {
-		final String[] targetId = getTargetId(messageId);
-		if (!isLocalMessage(messageId)) {
+		final String[] targetId = this.getTargetId(messageId);
+		if (!this.isLocalMessage(messageId)) {
 			return targetId[1];
 		}
 		return messageId;
@@ -127,7 +129,7 @@ public abstract class AFX2Coordinator extends Thread implements
 
 	@Override
 	public void handle(final IAction<Event, Object> action) {
-		messages.add(action);
+		this.messages.add(action);
 	}
 
 	@Override
@@ -143,6 +145,6 @@ public abstract class AFX2Coordinator extends Thread implements
 	}
 
 	protected void log(final String message) {
-		logger.fine(message);
+		this.logger.fine(message);
 	}
 }

@@ -33,18 +33,19 @@ import org.jacp.javafx2.rcp.action.FX2Action;
  * @author Andy Moncsek
  * 
  */
-public class StateComponentRunWorker
-		extends
+public class StateComponentRunWorker extends
 		AFX2ComponentWorker<IBGComponent<EventHandler<Event>, Event, Object>> {
 	private final IBGComponent<EventHandler<Event>, Event, Object> component;
-	
-	public StateComponentRunWorker(final IBGComponent<EventHandler<Event>, Event, Object> component) {
+
+	public StateComponentRunWorker(
+			final IBGComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
+
 	@Override
 	protected IBGComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final IBGComponent<EventHandler<Event>, Event, Object> comp = component;
+		final IBGComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {
@@ -54,15 +55,17 @@ public class StateComponentRunWorker
 				final String targetCurrent = comp.getExecutionTarget();
 				final Object value = comp.handle(myAction);
 				final String targetId = comp.getHandleTargetAndClear();
-				delegateReturnValue(comp, targetId, value);
-				checkAndHandleTargetChange(comp, targetCurrent);
+				this.delegateReturnValue(comp, targetId, value);
+				this.checkAndHandleTargetChange(comp, targetCurrent);
 			}
 			comp.setBlocked(false);
 		}
 		return comp;
 	}
+
 	/**
 	 * check if target has changed
+	 * 
 	 * @param comp
 	 * @param currentTaget
 	 */
@@ -71,7 +74,7 @@ public class StateComponentRunWorker
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
-			changeComponentTarget(comp);
+			this.changeComponentTarget(comp);
 		}
 	}
 
@@ -105,7 +108,7 @@ public class StateComponentRunWorker
 			// TODO add to error queue and restart thread if messages in queue
 		} finally {
 			// release lock
-			component.setBlocked(false);
+			this.component.setBlocked(false);
 		}
 	}
 }
