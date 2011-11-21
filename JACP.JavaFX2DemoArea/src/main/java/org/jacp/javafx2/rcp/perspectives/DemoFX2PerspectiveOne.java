@@ -4,6 +4,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -56,6 +59,16 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 	@Override
 	public void onStartPerspective(final FX2ComponentLayout layout) {
 		System.out.println("run on start perspective one bar:"+layout.getMenu() +" bars:"+layout.getToolBar(Layout.NORTH));
+		ToolBar north = layout.getToolBar(Layout.SOUTH);
+		Button b1= new Button("p1");
+		north.getItems().add(b1);
+		
+		MenuBar menu = layout.getMenu();
+		 final Menu menu1 = new Menu("File");
+		 final Menu menu2 = new Menu("Options");
+		 final Menu menu3 = new Menu("Help");
+		 
+		 menu.getMenus().addAll(menu1,menu2,menu3);
 		
 	}
 
