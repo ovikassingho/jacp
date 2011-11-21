@@ -1,7 +1,5 @@
 package org.jacp.javafx2.rcp.components;
 
-import java.util.Map;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,8 +11,8 @@ import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.javafx2.rcp.component.AFX2Component;
+import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 public class DemoFX2ComponentTwo extends AFX2Component {
 	VBox vbox = null;
@@ -22,17 +20,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	Button bc = new Button("message 2");
 	boolean flag =false;
 	int c=0;
-	@Override
-	public void handleMenuEntries(Node menuBar) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleBarEntries(Map<Layout, Node> bars) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
@@ -108,5 +96,18 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		}
 		return vbox;
 	}
+
+	@Override
+	public void onStartComponent(final FX2ComponentLayout layout) {
+
+		
+	}
+
+	@Override
+	public void onTearDownComponent(final FX2ComponentLayout layout) {
+		
+	}
+
+
 
 }
