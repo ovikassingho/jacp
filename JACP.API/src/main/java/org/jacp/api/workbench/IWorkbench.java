@@ -58,28 +58,6 @@ public interface IWorkbench<C, L, A, M> extends IBase<L, A, M>{
 	void initMenuBar();
 
 	/**
-	 * Returns the default workbench menu.
-	 * 
-	 * @return an instance representing a menu bar
-	 */
-	C getDefaultMenu();
-
-	/**
-	 * Add/remove menu entries from/to workbench instance.
-	 * 
-	 * @return an instance representing the menu bar
-	 */
-	C handleMenuEntries(final C meuBar);
-
-	/**
-	 * Add the default workbench actions to tool bar.
-	 * 
-	 * @param bars
-	 */
-	void handleBarEntries(final Map<Layout, C> bars);
-
-
-	/**
 	 * Handle the workbench layout.
 	 * 
 	 * @param action

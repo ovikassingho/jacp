@@ -17,10 +17,7 @@
  */
 package org.jacp.api.component;
 
-import java.util.Map;
-
-import org.jacp.api.componentLayout.Layout;
-
+import org.jacp.api.componentLayout.IBaseLayout;
 
 
 /**
@@ -32,19 +29,25 @@ import org.jacp.api.componentLayout.Layout;
  */
 public interface IExtendedComponent<C> {
 
-    /**
-     * Get the custom menu entries.
-     * 
-     * @param menuBar
-     */
-    void handleMenuEntries(final C menuBar);
+	/**
+	 * This method is always executed when the component is activated. Use this
+	 * entry point to add menu entries or bar entries or to create stuff only
+	 * need to create once.
+	 * 
+	 * @param menuBar
+	 * @param bars
+	 */
+	void onStart(final IBaseLayout<C> layout);
 
-    /**
-     * Add custom actions to tool bar; set key for bar type (south, north, east, west).
-     * 
-     * @param bars
-     */
-    void handleBarEntries(final Map<Layout, C> bars);
-    
+	/**
+	 * This method is always executed when the component is deactivated. Use
+	 * this method to clean up your component before it will be deactivated.
+	 * 
+	 * @param menuBar
+	 * @param bars
+	 */
+	void onTearDown(final IBaseLayout<C> layout);
+	
+
 
 }
