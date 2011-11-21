@@ -1,13 +1,9 @@
 package org.jacp.javafx2.rcp.perspectives;
 
-import java.util.Map;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -16,6 +12,7 @@ import javafx.scene.shape.Rectangle;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 
@@ -27,17 +24,6 @@ import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
  */
 public class DemoFX2PerspectiveOne extends AFX2Perspective {
 
-	@Override
-	public void handleMenuEntries(MenuBar menuBar) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleBarEntries(Map<Layout, Node> bars) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void handlePerspective(IAction<Event, Object> action,
@@ -66,5 +52,20 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		perspectiveLayout.registerTargetLayoutComponent("PTopOne", top);
 
 	}
+
+	@Override
+	public void onStartPerspective(final FX2ComponentLayout layout) {
+		System.out.println("run on start perspective one bar:"+layout.getMenu() +" bars:"+layout.getToolBar(Layout.NORTH));
+		
+	}
+
+	@Override
+	public void onTearDownPerspective(final FX2ComponentLayout layout) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 }

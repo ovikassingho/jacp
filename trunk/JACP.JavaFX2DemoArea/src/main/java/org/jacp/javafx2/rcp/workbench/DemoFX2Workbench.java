@@ -34,7 +34,11 @@ public class DemoFX2Workbench extends AFX2Workbench {
 			final IWorkbenchLayout<Node> layout, final Stage stage ) {
 		System.out.println("1: "+action.getLastMessage());
 		layout.setWorkbenchXYSize(1024, 400);
-		final ToolBar topBar = new ToolBar();
+		layout.registerToolBar(Layout.NORTH);
+		layout.registerToolBar(Layout.SOUTH);
+	    layout.setStyle(StageStyle.UNDECORATED);
+	    layout.setMenuEnabled(true);
+		final ToolBar topBar = (ToolBar) layout.getToolBar(Layout.NORTH);
 		 // add window dragging
 		topBar.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent event) {
@@ -61,15 +65,9 @@ public class DemoFX2Workbench extends AFX2Workbench {
 		});
 
 		topBar.getItems().add(close);
-
-		ToolBar bottomBar = new ToolBar();
-		bottomBar.setPrefSize(1024, 20);
-		
-		layout.registerToolBar(Layout.TOP, topBar);
-		layout.registerToolBar(Layout.BOTTOM, bottomBar);
-	    layout.setStyle(StageStyle.UNDECORATED);
 		System.out.println("2: "+action.getLastMessage());
 	}
+
 	
 
 

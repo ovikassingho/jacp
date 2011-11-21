@@ -4,10 +4,7 @@ import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.launcher.SpringLauncher;
