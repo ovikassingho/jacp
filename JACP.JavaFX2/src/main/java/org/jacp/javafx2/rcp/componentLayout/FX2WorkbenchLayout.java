@@ -82,13 +82,14 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 		return this.toolbars.get(name);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public <S extends Enum> void setStyle(S style) {
 		this.style = (StageStyle) style;
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <S extends Enum> S getStyle() {
 		return (S) this.style;

@@ -240,7 +240,6 @@ public abstract class AFX2Workbench
 			// TODO what if component removed an initialized later
 			// again?
 			this.log("3.4.2: create perspective menu");
-			this.createPerspectiveMenue(perspective);
 			if (perspective.isActive()) {
 				Platform.runLater(new Runnable() {
 					@Override
@@ -254,16 +253,6 @@ public abstract class AFX2Workbench
 			}
 
 		}
-	}
-
-	/**
-	 * creates basic menu entry for perspective
-	 * 
-	 * @param perspective
-	 */
-	private void createPerspectiveMenue(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		// TODO implement missing "create perspective menu" functionality
 	}
 
 	@Override
