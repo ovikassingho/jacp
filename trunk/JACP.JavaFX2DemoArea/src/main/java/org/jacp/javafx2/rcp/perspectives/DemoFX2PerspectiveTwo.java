@@ -23,7 +23,6 @@ public class DemoFX2PerspectiveTwo extends AFX2Perspective{
 	@Override
 	public void handlePerspective(IAction<Event, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
-		System.out.println("message from perspective two: "+ action.getLastMessage());
 		BorderPane layout = new BorderPane();
 		final  IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
 		listenerBottomOne.getAction().addMessage("id01","oneButtonBottomTwo");

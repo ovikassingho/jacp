@@ -41,12 +41,12 @@
 		<property name="name" value="demoFX2ComponentOne" />
 		<property name="active" value="true" />
 		<property name="id" value="id001" />
-		<property name="executionTarget" value="PTopOne" />
+		<property name="executionTarget" value="P0" />
 	</bean>
 	<bean id="demoFX2ComponentTwo" class="org.jacp.javafx2.rcp.components.DemoFX2ComponentTwo">
 		<property name="name" value="demoFX2ComponentTwo" />
 		<property name="active" value="false" />
 		<property name="id" value="id002" />
-		<property name="executionTarget" value="PBottomOne" />
+		<property name="executionTarget" value="P1" />
 	</bean>
 </beans>
