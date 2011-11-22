@@ -1,4 +1,5 @@
-21. Nov. 2001 - amo -  changed onStart and onTeardown behavior, created AFX2ComponentLayout, this component holds reference to main menu and toolBar; corrected methods, cleanup. Stage reference added to workbench handle method.
+22. Nov. 2011 - amo -  postHandle method added to workspace to handle menu entries and toolbars 
+21. Nov. 2011 - amo -  changed onStart and onTeardown behavior, created AFX2ComponentLayout, this component holds reference to main menu and toolBar; corrected methods, cleanup. Stage reference added to workbench handle method.
 17. Nov. 2011 - amo -  handleInitialLayout overloaded to pass Stage object
 17. Nov. 2011 - amo -  removed ChunkDTO (class was obsolete), reorganized ComponentReplaceWorker, changed lock behavior, introduced postHandle execution in worker (init and replace worker), 
 					   postHandle and remove/add method are encapsulated in one "invokeLater" block to be executed in application thread, 

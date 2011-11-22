@@ -106,19 +106,13 @@ public abstract class AFX2Workbench
 				// failure and restarts if needed!!
 				((FX2PerspectiveCoordinator) AFX2Workbench.this.perspectiveHandler)
 						.start();
-				// init menu instance#
-				AFX2Workbench.this.log("3.1: workbench menu");
-				AFX2Workbench.this.initMenuBar();
 				// init toolbar instance
 				AFX2Workbench.this.log("3.2: workbench tool bars");
 				// initToolBars();
 				// handle perspectives
 				AFX2Workbench.this.log("3.3: workbench init perspectives");
 				AFX2Workbench.this.initComponents(null);
-				// handle default and defined workspace menu
-				// entries
-				AFX2Workbench.this.log("3.5: workbench init menu");
-				AFX2Workbench.this.initWorkbenchMenu();
+
 			}
 
 		});
@@ -137,9 +131,18 @@ public abstract class AFX2Workbench
 		this.handleInitialLayout(new FX2Action("TODO", "init"),
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
+		postHandle(new FX2ComponentLayout(this.getWorkbenchLayout()
+				.getMenu(), this.getWorkbenchLayout()
+				.getToolBarMap()));
 		this.log("3: handle initialisation sequence");
 		this.handleInitialisationSequence();
 	}
+	
+	/**
+	 * Handle menu and bar entries created in @see {@link org.jacp.javafx2.rcp.workbench.AFX2Workbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
+	 * @param layout
+	 */
+	public abstract void postHandle(final FX2ComponentLayout layout);
 
 	@Override
 	/**
@@ -179,24 +182,7 @@ public abstract class AFX2Workbench
 		return this.perspectives;
 	}
 
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void initWorkbenchMenu() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void initMenuBar() {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	/**
 	 * {@inheritDoc}
@@ -205,7 +191,7 @@ public abstract class AFX2Workbench
 		return (FX2WorkbenchLayout) this.workbenchLayout;
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
 	/**
 	 * {@inheritDoc}
@@ -296,8 +282,10 @@ public abstract class AFX2Workbench
 			final IPerspectiveLayout<? extends Node, Node> layout) {
 		final Node comp = layout.getRootComponent();
 		comp.setVisible(true);
-		synchronized (this.root) { // TODO avoid synchronized block!!
-			this.root.getChildren().add(comp);
+		synchronized (this.root) { 
+			final ObservableList<Node> children = this.root.getChildren();
+			hideChildren(children);
+			children.add(comp);
 		}
 	}
 
@@ -356,7 +344,7 @@ public abstract class AFX2Workbench
 	}
 
 	/**
-	 * reassignment can only be done in FX main thread; TODO remove synchronized
+	 * reassignment can only be done in FX main thread; 
 	 */
 	private void handlePerspectiveReassignment(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective,
@@ -379,6 +367,8 @@ public abstract class AFX2Workbench
 	private void reassignChild(final Node parent, final Node oldComp,
 			final Node newComp) {
 		final ObservableList<Node> children = FX2Util.getChildren(parent);
+		// set all other components in in workbench to invisible
+		hideChildren(children);
 		oldComp.setVisible(false);
 		newComp.setVisible(true);
 		if (children.remove(oldComp)) {
@@ -387,6 +377,17 @@ public abstract class AFX2Workbench
 		}
 	}
 
+	/**
+	 * set all child components to invisible
+	 * @param children
+	 */
+	private void hideChildren(final ObservableList<Node> children) {
+				for(final Node child:children) {
+					child.setVisible(false);
+				}
+	}
+	
+	
 	/**
 	 * add all active subcomponents to replaced perspective
 	 * 
@@ -441,7 +442,7 @@ public abstract class AFX2Workbench
 		children.add(component.getRoot());
 	}
 
-	// TODO move to util class!! same code located in AFX2Component
+	
 
 	/**
 	 * get perspectives ui root container
@@ -464,8 +465,8 @@ public abstract class AFX2Workbench
 	 *            javafx.stage.Stage
 	 */
 	private void setBasicLayout(final Stage stage) {
-		final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
-		final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
+		int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
+		int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 		this.root = new Group();
 		stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
 		if (!this.getWorkbenchLayout().getToolBarMap().isEmpty()) {
@@ -478,6 +479,11 @@ public abstract class AFX2Workbench
 						pane, x, y, this.getWorkbenchLayout().isMenuEnabled());
 			}
 			pane.setCenter(this.root);
+			if(this.getWorkbenchLayout().getMenu()!=null) {
+				this.getWorkbenchLayout().getMenu().setMaxHeight(y * .025);
+				y = y+Double.valueOf((y * .08)+"").intValue();
+				
+			}
 			stage.setScene(new Scene(pane, x, y));
 		} else {
 			stage.setScene(new Scene(this.root, x, y));
