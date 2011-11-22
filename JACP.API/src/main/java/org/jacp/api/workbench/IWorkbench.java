@@ -48,16 +48,6 @@ public interface IWorkbench<C, L, A, M> extends IBase<L, A, M>{
 
 
 	/**
-	 * Initializes the default workbench menu.
-	 */
-	void initWorkbenchMenu();
-
-	/**
-	 * Set default menu bar instance to workspace.
-	 */
-	void initMenuBar();
-
-	/**
 	 * Handle the workbench layout.
 	 * 
 	 * @param action
