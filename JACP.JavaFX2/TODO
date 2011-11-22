@@ -1,1 +1,2 @@
+21. Nov. 2011 - amo - component change target behavior must be reactivated; onStartup, teardown in components is not Implemented !
 18. Nov. 2011 - amo - handle perspective teardown. Currently perspective can't be deactivated like components also it should be!

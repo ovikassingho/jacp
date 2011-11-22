@@ -132,12 +132,6 @@ public class FX2ComponentReplaceWorker
 	private void removeComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer) {
-		// bar entries
-		// final Map<Layout, Node> componentBarEnries =
-		// component.getBarEntries();
-		// when global bars and local bars are defined
-		// TODO handle menu bar entries
-
 		if (previousContainer != null) {
 			final Node parent = previousContainer.getParent();
 			if (parent != null) {
@@ -204,7 +198,7 @@ public class FX2ComponentReplaceWorker
 			this.handleNewComponentValue(component, this.targetComponents,
 					parent, currentTaget);
 
-		}
+		} 
 
 	}
 

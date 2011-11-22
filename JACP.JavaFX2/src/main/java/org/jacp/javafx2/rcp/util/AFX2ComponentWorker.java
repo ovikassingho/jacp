@@ -191,6 +191,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 		final Node root = component.getRoot();
 		final Node tmp = component.postHandle(root, action);
 		if (tmp != null) {
+			tmp.setVisible(true);
 			component.setRoot(tmp);
 		}
 	}
