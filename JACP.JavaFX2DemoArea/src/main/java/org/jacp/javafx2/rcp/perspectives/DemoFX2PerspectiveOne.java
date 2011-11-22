@@ -9,6 +9,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -31,8 +32,6 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 	@Override
 	public void handlePerspective(IAction<Event, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
-		System.out.println("message from perspective one: "
-				+ action.getLastMessage());
 		BorderPane layout = new BorderPane();
 		layout.setMinWidth(1024);
 
@@ -44,15 +43,22 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		Group top = new Group();
 		layout.setTop(top);
 		Group bottom = new Group();
-
+		Pane left = new Pane();
+		Pane right = new Pane();
+		left.setMinSize(50, 240);
+		right.setMinSize(50, 240);
+		left.setMaxSize(50, 240);
+		right.setMaxSize(50, 240);
 		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
 		layout.setBottom(bottom);
 		layout.setCenter(bc);
-		layout.setLeft(new Rectangle(50, 250, Color.DARKTURQUOISE));
-		layout.setRight(new Rectangle(50, 250, Color.DARKTURQUOISE));
+		layout.setLeft(left);
+		layout.setRight(right);
 		perspectiveLayout.setRootComponent(layout);
-		perspectiveLayout.registerTargetLayoutComponent("PBottomOne", bottom);
-		perspectiveLayout.registerTargetLayoutComponent("PTopOne", top);
+		perspectiveLayout.registerTargetLayoutComponent("P1", bottom);
+		perspectiveLayout.registerTargetLayoutComponent("P2", left);
+		perspectiveLayout.registerTargetLayoutComponent("P3", right);
+		perspectiveLayout.registerTargetLayoutComponent("P0", top);
 
 	}
 
@@ -63,12 +69,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		Button b1= new Button("p1");
 		north.getItems().add(b1);
 		
-		MenuBar menu = layout.getMenu();
-		 final Menu menu1 = new Menu("File");
-		 final Menu menu2 = new Menu("Options");
-		 final Menu menu3 = new Menu("Help");
-		 
-		 menu.getMenus().addAll(menu1,menu2,menu3);
+		
 		
 	}
 

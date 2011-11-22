@@ -18,17 +18,18 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	VBox vbox = null;
 	Button start = new Button("start");
 	Button bc = new Button("message 2");
+	Button move = new Button("move");
 	boolean flag =false;
 	int c=0;
 	
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		System.out
-				.println("message to component two "+action.getLastMessage()+" in thread"+ Thread.currentThread());
+/*		System.out
+				.println("message to component two "+action.getLastMessage()+" in thread"+ Thread.currentThread());*/
 		if(action.getLastMessage().equals("start")) {
 
-			for(int i=0;i<10000;i++){
+			for(int i=0;i<100000;i++){
 				EventHandler<? super MouseEvent> listener = getListener("id001", "ping");
 				listener.handle(null);
 				
@@ -36,6 +37,14 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 		}else if(action.getLastMessage().equals("stop")) {
 			flag =false;
+		} else if(action.getLastMessage().equals("move")) {
+			System.out.println("should move");
+			String target = this.getExecutionTarget();
+			if(target.equals("P0")) {
+				this.setExecutionTarget("P1");
+			} else {
+				this.setExecutionTarget("P0");
+			}
 		}
 		return  null;
 	}
@@ -66,8 +75,26 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		toolbar.getChildren().add(bc);
 		toolbar.getChildren().add(start);
 		toolbar.getChildren().add(button2);
+		toolbar.getChildren().add(move);
+		
+		move.setOnMouseClicked(new EventHandler<Event>() {
 
+			@Override
+			public void handle(Event arg0) {
+				if(true){
+					move();
+				}
+
+			}
+		});
 		return toolbar;
+	}
+	
+	public final void move() {
+		EventHandler<? super MouseEvent> listener = getListener("id001", "move");
+		listener.handle(null);
+		EventHandler<? super MouseEvent> listener2 = getListener(null,"move");
+		listener2.handle(null);
 	}
 	
 	private EventHandler<? super MouseEvent> getListener(final String id, final String message) {

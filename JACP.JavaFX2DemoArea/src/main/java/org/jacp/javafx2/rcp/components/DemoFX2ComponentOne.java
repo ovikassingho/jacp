@@ -19,17 +19,26 @@ public class DemoFX2ComponentOne extends AFX2Component {
 	VBox vbox;
 	Button counter = new Button("counter");
 	Button bc = new Button("message 1");
+	Button move = new Button("move");
 	int c = 0;
 
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		System.out.println("message to component one "
+/*		System.out.println("message to component one "
 				+ action.getLastMessage() + " in thread"
-				+ Thread.currentThread() + " counter: " + c);
+				+ Thread.currentThread() + " counter: " + c);*/
 		if (action.getLastMessage().equals("ping")) {
 			c++;
 
+		}else if(action.getLastMessage().equals("move")) {
+			System.out.println("should move");
+			String target = this.getExecutionTarget();
+			if(target.equals("P0")) {
+				this.setExecutionTarget("P1");
+			} else {
+				this.setExecutionTarget("P0");
+			}
 		}
 		return null;
 	}
@@ -60,6 +69,7 @@ public class DemoFX2ComponentOne extends AFX2Component {
 		toolbar.getChildren().add(bc);
 		toolbar.getChildren().add(button2);
 		toolbar.getChildren().add(counter);
+		toolbar.getChildren().add(move);
 
 		return toolbar;
 	}
@@ -85,7 +95,7 @@ public class DemoFX2ComponentOne extends AFX2Component {
 			counter.setText(c + "");
 
 		} else {
-
+			System.out.println("NOT PING");
 			if (action.getLastMessage().equals("me")) {
 				bc.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 			} else {
@@ -98,7 +108,7 @@ public class DemoFX2ComponentOne extends AFX2Component {
 
 	@Override
 	public void onStartComponent(final FX2ComponentLayout layout) {
-
+		System.out.println("run on start component");
 		
 	}
 
