@@ -2,10 +2,12 @@ package org.jacp.javafx2.rcp.perspectives;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -29,13 +31,25 @@ public class DemoFX2PerspectiveTwo extends AFX2Perspective{
 		Button bc=  new Button("Button Perspective 2");
         bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
         bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
-        bc.setOnMouseExited((EventHandler<? super MouseEvent>) listenerBottomOne);
-		layout.setTop(new Rectangle(1024, 50, Color.ALICEBLUE));
-		layout.setBottom(new Rectangle(1024, 50, Color.ALICEBLUE));
+        Group top = new Group();
+		layout.setTop(top);
+		Group bottom = new Group();
+		Pane left = new Pane();
+		Pane right = new Pane();
+		left.setMinSize(50, 240);
+		right.setMinSize(50, 240);
+		left.setMaxSize(50, 240);
+		right.setMaxSize(50, 240);
+		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
+		layout.setBottom(bottom);
 		layout.setCenter(bc);
-		layout.setLeft(new Rectangle(50, 250, Color.BURLYWOOD));
-		layout.setRight(new Rectangle(50, 250, Color.BURLYWOOD));
+		layout.setLeft(left);
+		layout.setRight(right);
 		perspectiveLayout.setRootComponent(layout);
+		perspectiveLayout.registerTargetLayoutComponent("P1", bottom);
+		perspectiveLayout.registerTargetLayoutComponent("P2", left);
+		perspectiveLayout.registerTargetLayoutComponent("P3", right);
+		perspectiveLayout.registerTargetLayoutComponent("P0", top);
 		
 	}
 	

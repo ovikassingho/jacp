@@ -39,7 +39,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		listenerBottomOne.getAction().addMessage("id02", "oneButtonBottomOne");
 		Button bc = new Button("Button Perspective 1");
 		bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
-		bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
+		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
 		Group top = new Group();
 		layout.setTop(top);
 		Group bottom = new Group();
