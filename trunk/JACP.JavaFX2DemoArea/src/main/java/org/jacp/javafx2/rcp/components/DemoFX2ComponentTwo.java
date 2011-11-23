@@ -31,6 +31,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	Button b1 = null;
 	MenuItem item = null;
 	String exec ="id02";
+	Button button2=null;
 	int c = 0;
 
 	@Override
@@ -61,20 +62,18 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		else if (action.getLastMessage().equals("beam")) {
 			// move to different perspective
 			if (exec.equals("id02")) {
-				exec ="id01";
-				move2.setText("move to: "+exec);
+	
 				this.setExecutionTarget("id02.P1");
 
 			} else {
-				exec ="id02";
-				move2.setText("move to: "+exec);
+
 				this.setExecutionTarget("id01.P1");
 			}
 		}
 		return null;
 	}
 
-	public Node createDemoButtonBar(IAction<Event, Object> action) {
+	public Node createDemoButtonBar() {
 		if (vbox == null) {
 			vbox = new VBox();
 			vbox.setPadding(new Insets(0, 0, 0, 0));
@@ -82,17 +81,17 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		}
 
 		vbox.getChildren().clear();
-		vbox.getChildren().add(createBar(action));
+		vbox.getChildren().add(createBar());
 		return vbox;
 	}
 
-	private HBox createBar(IAction<Event, Object> action) {
+	private HBox createBar() {
 		HBox toolbar = new HBox();
 		toolbar.setPrefSize(1024, 50);
 
 		bc.setOnMouseClicked(getListener("id001", "DemoFX2ComponentTwo"));
 
-		Button button2 = new Button("me");
+		button2.setOnMouseClicked(null);
 		button2.setOnMouseClicked(getListener(null, "me"));
 
 		start.setOnMouseClicked(getListener(null, "start"));
@@ -142,20 +141,30 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		} else {
 			listener.getAction().setMessage(message);
 		}
-
+		System.out.println("action: "+listener.getAction());
 		return (EventHandler<? super MouseEvent>) listener;
 	}
 
 	@Override
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
-		if (vbox == null) {
-			return createDemoButtonBar(action);
-		}
+		System.out.println("post handle");
 		if (action.getLastMessage().equals("me")) {
 			bc.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 		} else {
 
 			bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+		}
+		
+		if (action.getLastMessage().equals("beam")) {
+			// move to different perspective
+			if (exec.equals("id02")) {
+				exec ="id01";
+				move2.setText("move to: "+exec);
+
+			} else {
+				exec ="id02";
+				move2.setText("move to: "+exec);
+			}
 		}
 		return vbox;
 	}
@@ -170,7 +179,10 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		move2 = new Button("move to: "+exec);
 		b1 = new Button("close component 2");
 		item = new MenuItem("close component 2");
-
+		button2 = new Button("me"+exec);
+		if (vbox == null) {
+			createDemoButtonBar();
+		}
 		ToolBar north = layout.getToolBar(Layout.NORTH);
 
 		b1.setOnMouseClicked(new EventHandler<Event>() {
@@ -217,6 +229,15 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 				m.getItems().remove(item);
 			}
 		}
+		
+		start = null;
+		bc  = null;
+		move =  null;
+		move2  = null;
+		b1  = null;
+		item  = null;
+		vbox= null;
+		button2 =null;
 	}
 
 }
