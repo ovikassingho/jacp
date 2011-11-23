@@ -1,16 +1,24 @@
 package org.jacp.javafx2.rcp.components;
 
+
+import java.util.Iterator;
+
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.componentLayout.Layout;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
@@ -71,9 +79,24 @@ public class DemoFX2ComponentOne extends AFX2Component {
 		toolbar.getChildren().add(counter);
 		toolbar.getChildren().add(move);
 
+		move.setOnMouseClicked(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event arg0) {
+				if (true) {
+					move();
+				}
+
+			}
+		});
 		return toolbar;
 	}
-
+	public final void move() {
+		EventHandler<? super MouseEvent> listener = getListener("id002", "move");
+		listener.handle(null);
+		EventHandler<? super MouseEvent> listener2 = getListener(null, "move");
+		listener2.handle(null);
+	}
 	private EventHandler<? super MouseEvent> getListener(final String id,
 			final String message) {
 		final IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
@@ -108,7 +131,20 @@ public class DemoFX2ComponentOne extends AFX2Component {
 
 	@Override
 	public void onStartComponent(final FX2ComponentLayout layout) {
-		System.out.println("run on start component");
+		
+		ToolBar north = layout.getToolBar(Layout.SOUTH);
+		Button b1= new Button("c1");
+		north.getItems().add(b1);
+		MenuBar menu = layout.getMenu();
+		ObservableList<javafx.scene.control.Menu> menuList = menu.getMenus();
+		Iterator<javafx.scene.control.Menu> it = menuList.iterator();
+		while(it.hasNext()) {
+			javafx.scene.control.Menu m = it.next();
+			if(m.getText().equals("File")){
+				final MenuItem item = new MenuItem("Hello C1");
+				m.getItems().add(item);
+			}
+		}
 		
 	}
 
