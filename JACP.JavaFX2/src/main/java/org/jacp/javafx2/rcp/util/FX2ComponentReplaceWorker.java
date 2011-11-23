@@ -176,13 +176,15 @@ public class FX2ComponentReplaceWorker
 		final Node root = component.getRoot();
 		final Node parent = previousContainer.getParent();
 		// avoid remove/add when root component did not changed!
-		if (root == null || root != previousContainer || !currentTaget.equals(component.getExecutionTarget())) {
+		if (root == null || root != previousContainer) {
 			// remove old view
 			this.log(" //1.1.1.1.3// handle old component remove: "
 					+ component.getName());
 			if (parent != null && previousContainer != null) {
 				this.handleOldComponentRemove(parent, previousContainer);
 			}
+		} else if(!currentTaget.equals(component.getExecutionTarget())) {
+			removeComponentValue(component, previousContainer, layout);
 		}
 	}
 
