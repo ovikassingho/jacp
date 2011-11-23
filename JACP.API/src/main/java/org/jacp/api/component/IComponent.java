@@ -76,7 +76,7 @@ public interface IComponent<L, A, M> {
 	 * 
 	 * @param isActive
 	 */
-	void setActivated(boolean isActive);
+	void setStarted(boolean isActive);
 
 	/**
 	 * Get if component was activated, can occur if message was send before
@@ -84,7 +84,7 @@ public interface IComponent<L, A, M> {
 	 * 
 	 * @return the active status
 	 */
-	boolean isActivated();
+	boolean isStarted();
 
 	/**
 	 * Returns the name of a component.
