@@ -128,7 +128,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param futureTarget
 	 * @return
 	 */
-	private String getValidTargetId(final String currentTaget,
+	protected String getValidTargetId(final String currentTaget,
 			final String futureTarget) {
 		return currentTaget.length() < 2 ? this
 				.getTargetComponentId(futureTarget) : futureTarget;
@@ -140,7 +140,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param targetComponents
 	 */
-	private void handleTargetChange(
+	protected void handleTargetChange(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
@@ -175,7 +175,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		final Node editorComponent = component.handle(action);
-		component.setRoot(editorComponent);
+		if(editorComponent!=null)component.setRoot(editorComponent);
 		return editorComponent;
 	}
 

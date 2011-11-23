@@ -1,3 +1,5 @@
+23. Nov. 2011 - amo -  tearDown for AFX2Components implemented
+23. Nov. 2011 - amo -  changed initComponent in AFX2Perspective to check if it runs in application thread, otherwise execute in application thread;
 22. Nov. 2011 - amo -  postHandle method added to workspace to handle menu entries and toolbars 
 21. Nov. 2011 - amo -  changed onStart and onTeardown behavior, created AFX2ComponentLayout, this component holds reference to main menu and toolBar; corrected methods, cleanup. Stage reference added to workbench handle method.
 17. Nov. 2011 - amo -  handleInitialLayout overloaded to pass Stage object

@@ -26,6 +26,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -178,7 +179,7 @@ public abstract class AFX2Perspective implements
 				this.log("3.4.4.2: subcomponent init with custom action");
 				this.initComponent(action, component);
 			} // else END
-			else if (component.isActive() && !component.isActivated()) {
+			else if (component.isActive() && !component.isStarted()) {
 				this.log("3.4.4.2: subcomponent init with default action");
 				this.initComponent(
 						new FX2Action(component.getId(), component.getId(),
@@ -189,11 +190,30 @@ public abstract class AFX2Perspective implements
 	}
 
 	@Override
-	public final void initComponent(IAction<Event, Object> action,
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+	public final void initComponent(final IAction<Event, Object> action,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		if(Platform.isFxApplicationThread()) {
+			handleInit(action, component);
+		} else {
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					handleInit(action, component);
+				}
+			});
+		}
+		
+	}
+	/**
+	 * Execute component initialization.
+	 * @param action
+	 * @param component
+	 */
+	private void handleInit(final IAction<Event, Object> action,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (component instanceof AFX2Component) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getName());
-			component.setActivated(true);
+			component.setStarted(true);
 			this.runComponentOnStartupSequence(((AFX2Component) component));
 			final FX2ComponentInitWorker tmp = new FX2ComponentInitWorker(
 					this.perspectiveLayout.getTargetLayoutComponents(),
@@ -309,7 +329,7 @@ public abstract class AFX2Perspective implements
 	}
 
 	@Override
-	public boolean isActivated() {
+	public boolean isStarted() {
 		return this.isActivated;
 	}
 
@@ -335,7 +355,7 @@ public abstract class AFX2Perspective implements
 	}
 
 	@Override
-	public final void setActivated(boolean isActive) {
+	public final void setStarted(boolean isActive) {
 		this.isActivated = isActive;
 	}
 

@@ -170,7 +170,7 @@ public abstract class AStateComponent implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void setActivated(boolean isActivated) {
+	public final void setStarted(boolean isActivated) {
 		this.isActivated = isActivated;
 	}
 
@@ -178,7 +178,7 @@ public abstract class AStateComponent implements
 	/**
 	 * {@inheritDoc}
 	 */
-	public final boolean isActivated() {
+	public final boolean isStarted() {
 		return this.isActivated;
 	}
 

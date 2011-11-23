@@ -164,13 +164,13 @@ public abstract class AStatelessComponent implements
 	}
 
 	@Override
-	public void setActivated(boolean isActive) {
+	public void setStarted(boolean isActive) {
 		this.isActivated = isActive;
 
 	}
 
 	@Override
-	public boolean isActivated() {
+	public boolean isStarted() {
 		return this.isActivated;
 	}
 
