@@ -161,8 +161,14 @@ public abstract class AFX2Component implements
 	 */
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(this.id),
-				this.componentObserver);
+		FX2Action action = new FX2Action(this.id);
+		//System.out.println("coord: "+this.getCoordinator()+" this: "+this+" action: "+action);
+		return new FX2ActionListener(action,
+				this.getCoordinator());
+	}
+	
+	private ICoordinator<EventHandler<Event>, Event, Object>  getCoordinator(){
+		return this.componentObserver;
 	}
 
 	/**

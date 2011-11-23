@@ -44,6 +44,7 @@ public class FX2ActionListener implements EventHandler<Event>,
 
 	@Override
 	public void notifyComponents(IAction<Event, Object> action) {
+		//System.out.println("coordinator: "+coordinator+" action:"+action);
 		this.coordinator.handle(action);
 	}
 

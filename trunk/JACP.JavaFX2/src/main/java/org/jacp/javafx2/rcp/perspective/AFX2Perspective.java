@@ -264,6 +264,7 @@ public abstract class AFX2Perspective implements
 		// register new component at perspective
 		this.registerComponent(component);
 		if (component instanceof AFX2Component) {
+			runComponentOnStartupSequence((AFX2Component) component);
 			// add component ui root to correct target
 			this.addComponentUIValue(this.getIPerspectiveLayout()
 					.getTargetLayoutComponents(), component);

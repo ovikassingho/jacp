@@ -46,13 +46,6 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 		this.perspective = perspective;
 	}
 
-	public FX2ComponentCoordinator(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective,
-			final List<ISubComponent<EventHandler<Event>, Event, Object>> components) {
-		this.setDaemon(true);
-		this.perspective = perspective;
-		this.components = components;
-	}
 
 	@Override
 	public void addComponent(

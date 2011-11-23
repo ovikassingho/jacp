@@ -92,7 +92,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	protected void handleOldComponentRemove(final Node parent,
 			final Node currentContainer) {
 		final ObservableList<Node> children = FX2Util.getChildren(parent);
-		children.remove(currentContainer);
+		boolean success = children.remove(currentContainer);
+		System.out.println(success);
 	}
 
 	/**
