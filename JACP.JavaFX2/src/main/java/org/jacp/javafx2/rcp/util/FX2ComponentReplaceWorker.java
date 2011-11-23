@@ -29,6 +29,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
+import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
@@ -121,7 +122,7 @@ public class FX2ComponentReplaceWorker
 				} else {
 					// unregister component
 					FX2ComponentReplaceWorker.this.removeComponentValue(
-							component, previousContainer);
+							component, previousContainer,layout);
 				}
 				// release lock
 				FX2ComponentReplaceWorker.this.appThreadlock.add(true);
@@ -131,11 +132,15 @@ public class FX2ComponentReplaceWorker
 
 	private void removeComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer) {
+			final Node previousContainer,final FX2ComponentLayout layout) {
 		if (previousContainer != null) {
 			final Node parent = previousContainer.getParent();
 			if (parent != null) {
 				FX2Util.getChildren(parent).remove(component.getRoot());
+
+			}
+			if(component instanceof AFX2Component) {
+				((AFX2Component)component).onTearDownComponent(layout);
 			}
 		}
 
@@ -154,9 +159,8 @@ public class FX2ComponentReplaceWorker
 			final FX2ComponentLayout layout, final Node previousContainer,
 			final String currentTaget) {
 		if (previousContainer != null) {
-
 			this.executePostHandle(component, action);
-			this.removeOldComponentValue(component, previousContainer);
+			this.removeOldComponentValue(component, previousContainer,currentTaget);
 			this.addNewComponentValue(component, previousContainer,
 					currentTaget);
 
@@ -168,11 +172,11 @@ public class FX2ComponentReplaceWorker
 	 */
 	private void removeOldComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer) {
+			final Node previousContainer,final String currentTaget) {
 		final Node root = component.getRoot();
 		final Node parent = previousContainer.getParent();
 		// avoid remove/add when root component did not changed!
-		if (root == null || root != previousContainer) {
+		if (root == null || root != previousContainer || !currentTaget.equals(component.getExecutionTarget())) {
 			// remove old view
 			this.log(" //1.1.1.1.3// handle old component remove: "
 					+ component.getName());
@@ -197,13 +201,15 @@ public class FX2ComponentReplaceWorker
 			root.setVisible(true);
 			this.handleNewComponentValue(component, this.targetComponents,
 					parent, currentTaget);
-
-		} 
+		} else if(!currentTaget.equals(component.getExecutionTarget())) {
+			final String validId = this.getValidTargetId(currentTaget,
+					component.getExecutionTarget());
+			this.handleTargetChange(component, targetComponents, validId);
+		}
 
 	}
 
 	private void waitOnAppThreadLockRelease() {
-
 		try {
 			this.appThreadlock.take();
 		} catch (final InterruptedException e) {

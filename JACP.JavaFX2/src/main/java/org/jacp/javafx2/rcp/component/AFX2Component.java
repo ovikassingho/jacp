@@ -204,7 +204,7 @@ public abstract class AFX2Component implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setActivated(final boolean isActive) {
+	public final void setStarted(final boolean isActive) {
 		this.isActived = isActive;
 	}
 
@@ -212,7 +212,7 @@ public abstract class AFX2Component implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean isActivated() {
+	public final boolean isStarted() {
 		return this.isActived;
 	}
 

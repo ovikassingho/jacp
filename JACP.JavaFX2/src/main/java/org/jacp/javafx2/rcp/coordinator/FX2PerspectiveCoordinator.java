@@ -192,6 +192,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 						this.perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
+		//	responsiblePerspective.registerComponent(component);
 			this.handleTargetHit(responsiblePerspective, component);
 
 		} // End if
