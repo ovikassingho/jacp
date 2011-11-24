@@ -76,6 +76,7 @@ public abstract class AFX2Perspective implements
 	private final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
 	private final IComponentCoordinator<EventHandler<Event>, Event, Object> componentHandler = new FX2ComponentCoordinator(
 			this);
+	private final FX2ComponentAddWorker addWorker = new FX2ComponentAddWorker();
 	private ICoordinator<EventHandler<Event>, Event, Object> perspectiveObserver;
 	private FX2ComponentLayout layout;
 
@@ -441,8 +442,8 @@ public abstract class AFX2Perspective implements
 	 */
 	private void addComponentUIValue(final Map<String, Node> targetComponents,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.executor.execute(new FX2ComponentAddWorker(targetComponents,
-				((AFX2Component) component)));
+		addWorker.handleInApplicationThread(targetComponents,
+				((AFX2Component) component));
 	}
 
 	private void log(final String message) {

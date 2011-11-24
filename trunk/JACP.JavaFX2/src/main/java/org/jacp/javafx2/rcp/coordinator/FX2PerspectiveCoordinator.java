@@ -65,7 +65,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		else {
 			// TODO implement missing perspective handling!!
 			throw new UnsupportedOperationException(
-					"No responsible perspective found. Handling not implemented yet.");
+					"No responsible perspective found. Handling not implemented yet. target: "+target+" perspectives: "+perspectives);
 		} // End else
 	}
 

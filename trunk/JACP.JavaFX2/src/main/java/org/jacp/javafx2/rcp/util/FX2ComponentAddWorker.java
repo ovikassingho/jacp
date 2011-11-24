@@ -44,6 +44,10 @@ public class FX2ComponentAddWorker
 		this.targetComponents = targetComponents;
 		this.component = component;
 	}
+	
+	public FX2ComponentAddWorker() {
+		this(null,null);
+	}
 
 	@Override
 	protected IVComponent<Node, EventHandler<Event>, Event, Object> call()
@@ -56,6 +60,14 @@ public class FX2ComponentAddWorker
 		this.component.setExecutionTarget(this
 				.getTargetComponentId(this.component.getExecutionTarget()));
 		this.handleNewComponentValue(this.component, this.targetComponents,
+				null, "");
+	}
+	
+	public void handleInApplicationThread(final Map<String, Node> targetComponents,
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
+		component.setExecutionTarget(this
+				.getTargetComponentId(component.getExecutionTarget()));
+		this.handleNewComponentValue(component, targetComponents,
 				null, "");
 	}
 }
