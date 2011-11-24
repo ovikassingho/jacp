@@ -1,6 +1,5 @@
 package org.jacp.javafx2.rcp.components;
 
-
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -30,12 +29,16 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	Button move2 = null;
 	Button b1 = null;
 	MenuItem item = null;
-	String exec ="id02";
-	Button button2=null;
+	String exec = "id02";
+	Button button2 = null;
+	Button button3 = null;
+	HBox toolbar = null;
 	int c = 0;
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
+		System.out.println("handle");
+		c = c + 1;
 
 		if (action.getLastMessage().equals("start")) {
 
@@ -51,18 +54,16 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 			String target = this.getExecutionTarget();
 			if (target.equals("P0")) {
 				this.setExecutionTarget("P1");
-				
 			} else {
 				this.setExecutionTarget("P0");
 			}
 		} else if (action.getLastMessage().equals("close")) {
 			// shutdown
 			this.setActive(false);
-		}
-		else if (action.getLastMessage().equals("beam")) {
+		} else if (action.getLastMessage().equals("beam")) {
 			// move to different perspective
 			if (exec.equals("id02")) {
-	
+
 				this.setExecutionTarget("id02.P1");
 
 			} else {
@@ -74,11 +75,10 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	}
 
 	public Node createDemoButtonBar() {
-		if (vbox == null) {
-			vbox = new VBox();
-			vbox.setPadding(new Insets(0, 0, 0, 0));
-			vbox.setSpacing(10);
-		}
+
+		vbox = new VBox();
+		vbox.setPadding(new Insets(0, 0, 0, 0));
+		vbox.setSpacing(10);
 
 		vbox.getChildren().clear();
 		vbox.getChildren().add(createBar());
@@ -86,12 +86,11 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	}
 
 	private HBox createBar() {
-		HBox toolbar = new HBox();
+
 		toolbar.setPrefSize(1024, 50);
 
 		bc.setOnMouseClicked(getListener("id001", "DemoFX2ComponentTwo"));
 
-		button2.setOnMouseClicked(null);
 		button2.setOnMouseClicked(getListener(null, "me"));
 
 		start.setOnMouseClicked(getListener(null, "start"));
@@ -99,6 +98,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		toolbar.getChildren().add(bc);
 		toolbar.getChildren().add(start);
 		toolbar.getChildren().add(button2);
+
 		toolbar.getChildren().add(move);
 		toolbar.getChildren().add(move2);
 
@@ -117,7 +117,8 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 			@Override
 			public void handle(Event arg0) {
 				if (true) {
-					EventHandler<? super MouseEvent> listener2 = getListener(null, "beam");
+					EventHandler<? super MouseEvent> listener2 = getListener(
+							null, "beam");
 					listener2.handle(null);
 				}
 
@@ -141,7 +142,6 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		} else {
 			listener.getAction().setMessage(message);
 		}
-		System.out.println("action: "+listener.getAction());
 		return (EventHandler<? super MouseEvent>) listener;
 	}
 
@@ -154,35 +154,46 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 			bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
 		}
-		
+
 		if (action.getLastMessage().equals("beam")) {
 			// move to different perspective
 			if (exec.equals("id02")) {
-				exec ="id01";
-				move2.setText("move to: "+exec);
+				exec = "id01";
+				move2.setText("move to: " + exec);
 
 			} else {
-				exec ="id02";
-				move2.setText("move to: "+exec);
+				exec = "id02";
+				move2.setText("move to: " + exec);
 			}
 		}
+		String label = "me:" + c;
+		button2 = new Button(label);
 		return vbox;
 	}
 
 	@Override
 	public void onStartComponent(final FX2ComponentLayout layout) {
 		System.out.println("startup component");
-		
+
 		start = new Button("start");
 		bc = new Button("message 2");
 		move = new Button("move");
-		move2 = new Button("move to: "+exec);
+		move2 = new Button("move to: " + exec);
 		b1 = new Button("close component 2");
 		item = new MenuItem("close component 2");
-		button2 = new Button("me"+exec);
-		if (vbox == null) {
-			createDemoButtonBar();
+		String label = "me:" + c;
+		button2 = new Button(label);
+		
+		toolbar = new HBox();
+		
+		if(exec.equals("id01")) {
+			System.out.println("new target start");
+			button3 = new Button("test");
+			button3.setOnMouseClicked(getListener(null, "me"));
+			toolbar.getChildren().add(button3);
 		}
+		createDemoButtonBar();
+		
 		ToolBar north = layout.getToolBar(Layout.NORTH);
 
 		b1.setOnMouseClicked(new EventHandler<Event>() {
@@ -197,8 +208,8 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		});
 		north.getItems().add(b1);
 		MenuBar menu = layout.getMenu();
-		ObservableList<javafx.scene.control.Menu> menuList = menu.getMenus();	
-		for(Menu m : menuList){
+		ObservableList<javafx.scene.control.Menu> menuList = menu.getMenus();
+		for (Menu m : menuList) {
 			if (m.getText().equals("File")) {
 				item.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -213,31 +224,31 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 			}
 		}
 
-
 	}
 
 	@Override
 	public void onTearDownComponent(final FX2ComponentLayout layout) {
 		System.out.println("teardown component");
-		
+
 		ToolBar north = layout.getToolBar(Layout.NORTH);
 		north.getItems().remove(b1);
 		MenuBar menu = layout.getMenu();
 		ObservableList<javafx.scene.control.Menu> menuList = menu.getMenus();
-		for(Menu m : menuList){
+		for (Menu m : menuList) {
 			if (m.getText().equals("File")) {
 				m.getItems().remove(item);
 			}
 		}
-		
+
 		start = null;
-		bc  = null;
-		move =  null;
-		move2  = null;
-		b1  = null;
-		item  = null;
-		vbox= null;
-		button2 =null;
+		bc = null;
+		move = null;
+		move2 = null;
+		b1 = null;
+		item = null;
+		vbox = null;
+		button2 = null;
+		toolbar = null;
 	}
 
 }
