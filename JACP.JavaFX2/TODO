@@ -1,2 +1,13 @@
+24. Nov. 2011 - amo - resolve following bug:
+1  : action - beam (sets new executionTarget in component)
+1.1: handle method sets execution target in old perspective (correct)
+1.2: postHandleMethod executed in old perspective (incorrect should be handled in new perspective)
+1.3: componentRoot set to value created in old perspective (wrong, here we are using the incorrect observer!!)
+1.3: previousComponent removed (ok)
+1.4: teardown executed (correct)
+2  : delegate to new persective
+2.1: run on startup (correct)
+2.2: insert componentRoot to target in new perspective (incorrect!!, either handle AND posthandle or at least postHandle should be executed ) --> problem.... which action to use? init? move?
+
 21. Nov. 2011 - amo - component change target behavior must be reactivated; onStartup, teardown in components is not Implemented !
 18. Nov. 2011 - amo - handle perspective teardown. Currently perspective can't be deactivated like components also it should be!

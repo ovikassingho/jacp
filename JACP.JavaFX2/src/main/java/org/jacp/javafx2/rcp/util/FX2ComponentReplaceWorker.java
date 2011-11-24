@@ -114,7 +114,6 @@ public class FX2ComponentReplaceWorker
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-
 				if (component.isActive()) {
 					FX2ComponentReplaceWorker.this.publishComponentValue(
 							component, myAction, targetComponents, layout,
@@ -123,6 +122,10 @@ public class FX2ComponentReplaceWorker
 					// unregister component
 					FX2ComponentReplaceWorker.this.removeComponentValue(
 							component, previousContainer,layout);
+					// run teardown
+					if(component instanceof AFX2Component) {
+						((AFX2Component)component).onTearDownComponent(layout);
+					}
 				}
 				// release lock
 				FX2ComponentReplaceWorker.this.appThreadlock.add(true);
@@ -134,13 +137,9 @@ public class FX2ComponentReplaceWorker
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer,final FX2ComponentLayout layout) {
 		if (previousContainer != null) {
-			final Node parent = previousContainer.getParent();
+			final Node parent = previousContainer.getParent();			
 			if (parent != null) {
-				FX2Util.getChildren(parent).remove(component.getRoot());
-
-			}
-			if(component instanceof AFX2Component) {
-				((AFX2Component)component).onTearDownComponent(layout);
+				handleOldComponentRemove(parent, previousContainer);
 			}
 		}
 
@@ -162,7 +161,7 @@ public class FX2ComponentReplaceWorker
 			this.executePostHandle(component, action);
 			this.removeOldComponentValue(component, previousContainer,currentTaget);
 			this.addNewComponentValue(component, previousContainer,
-					currentTaget);
+					currentTaget,layout);
 
 		}
 	}
@@ -174,16 +173,9 @@ public class FX2ComponentReplaceWorker
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer,final String currentTaget) {
 		final Node root = component.getRoot();
-		final Node parent = previousContainer.getParent();
 		// avoid remove/add when root component did not changed!
-		if (root == null || root != previousContainer) {
+		if (!currentTaget.equals(component.getExecutionTarget()) || root == null || root != previousContainer) {
 			// remove old view
-			this.log(" //1.1.1.1.3// handle old component remove: "
-					+ component.getName());
-			if (parent != null && previousContainer != null) {
-				this.handleOldComponentRemove(parent, previousContainer);
-			}
-		} else if(!currentTaget.equals(component.getExecutionTarget())) {
 			removeComponentValue(component, previousContainer, layout);
 		}
 	}
@@ -193,21 +185,27 @@ public class FX2ComponentReplaceWorker
 	 */
 	private void addNewComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer, final String currentTaget) {
+			final Node previousContainer, final String currentTaget,final FX2ComponentLayout layout) {
 		final Node root = component.getRoot();
 		final Node parent = previousContainer.getParent();
-		if (root != null && root != previousContainer) {
+		if(!currentTaget.equals(component.getExecutionTarget())) {
+			final String validId = this.getValidTargetId(currentTaget,
+					component.getExecutionTarget());
+			final Node validContainer = this.getValidContainerById(
+					targetComponents, validId);
+			if (validContainer != null) {
+				handleLocalTargetChange(component, targetComponents, validContainer);
+			} else {
+				handlePerspectiveChange(component, targetComponents, validId, layout);
+			}
+		} else if (root != null && root != previousContainer) {
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
 			root.setVisible(true);
 			this.handleNewComponentValue(component, this.targetComponents,
 					parent, currentTaget);
-		} else if(!currentTaget.equals(component.getExecutionTarget())) {
-			final String validId = this.getValidTargetId(currentTaget,
-					component.getExecutionTarget());
-			this.handleTargetChange(component, targetComponents, validId);
-		}
+		}  
 
 	}
 

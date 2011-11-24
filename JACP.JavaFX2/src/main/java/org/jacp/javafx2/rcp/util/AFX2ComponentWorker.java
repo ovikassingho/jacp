@@ -31,6 +31,8 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
+import org.jacp.javafx2.rcp.component.AFX2Component;
+import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
  * handles component methods in own thread;
@@ -75,6 +77,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	private void handleAdd(final Node validContainer, final Node uiComponent,
 			final String name) {
 		if (validContainer != null && uiComponent != null) {
+			uiComponent.setDisable(false);
 			uiComponent.setVisible(true);
 			final ObservableList<Node> children = FX2Util
 					.getChildren(validContainer);
@@ -91,9 +94,10 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected void handleOldComponentRemove(final Node parent,
 			final Node currentContainer) {
+		currentContainer.setVisible(false);
+		currentContainer.setDisable(true);
 		final ObservableList<Node> children = FX2Util.getChildren(parent);
-		boolean success = children.remove(currentContainer);
-		System.out.println(success);
+		children.remove(currentContainer);
 	}
 
 	/**
@@ -136,7 +140,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	}
 
 	/**
-	 * handle component when target has changed
+	 * Handle component when target has changed
 	 * 
 	 * @param component
 	 * @param targetComponents
@@ -147,11 +151,43 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 		final Node validContainer = this.getValidContainerById(
 				targetComponents, target);
 		if (validContainer != null) {
-			this.addComponentByType(validContainer, component);
+			handleLocalTargetChange(component, targetComponents, validContainer);
 		} else {
 			// handle target outside current perspective
 			this.changeComponentTarget(component);
 		}
+	}
+
+	/**
+	 * Handle target change inside perspective.
+	 * @param component
+	 * @param targetComponents
+	 * @param validContainer
+	 */
+	protected void handleLocalTargetChange(
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final Map<String, Node> targetComponents, final Node validContainer) {
+		this.addComponentByType(validContainer, component);
+	}
+	/**
+	 * Handle target change to an other perspective.
+	 * @param component
+	 * @param targetComponents
+	 * @param target
+	 * @param layout
+	 */
+	protected void handlePerspectiveChange(
+			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final Map<String, Node> targetComponents, final String target,
+			final FX2ComponentLayout layout) {
+		// target component not found in current perspective, move to an other
+		// perspective
+		// run teardown
+		if (component instanceof AFX2Component) {
+			((AFX2Component) component).onTearDownComponent(layout);
+		}
+		// handle target outside current perspective
+		this.changeComponentTarget(component);
 	}
 
 	/**
@@ -176,7 +212,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		final Node editorComponent = component.handle(action);
-		if(editorComponent!=null)component.setRoot(editorComponent);
+		if (editorComponent != null)
+			component.setRoot(editorComponent);
 		return editorComponent;
 	}
 
