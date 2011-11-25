@@ -216,13 +216,9 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 					new FX2Action(responsiblePerspective.getId(),
 							responsiblePerspective.getId(), "init"));
 		} // End if
-		this.addToActivePerspective(responsiblePerspective, component);
-	}
-
-	private void addToActivePerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		responsiblePerspective.addActiveComponent(component);
+		responsiblePerspective.registerComponent(component);
+		responsiblePerspective.initComponent(new FX2Action(component.getId(), component.getId(),
+		"init"), component);
 	}
 
 	/**

@@ -415,11 +415,12 @@ public abstract class AFX2Workbench
 		for (int i = 0; i < subcomponents.size(); i++) {
 			final ISubComponent<EventHandler<Event>, Event, Object> subComp = subcomponents
 					.get(i);
-			if (subComp instanceof AFX2Component) {
+			if (subComp instanceof AFX2Component && subComp.isActive()) {
 				final Node editorComponent = ((AFX2Component) subComp)
 						.getRoot();
 				if (editorComponent != null) {
 					editorComponent.setVisible(true);
+					editorComponent.setDisable(false);
 					this.addComponentByType(((AFX2Component) subComp), layout);
 				} // End if
 			} // End outer if
