@@ -31,13 +31,11 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	MenuItem item = null;
 	String exec = "id02";
 	Button button2 = null;
-	Button button3 = null;
 	HBox toolbar = null;
 	int c = 0;
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		System.out.println("handle");
 		c = c + 1;
 
 		if (action.getLastMessage().equals("start")) {
@@ -50,7 +48,6 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 			}
 
 		} else if (action.getLastMessage().equals("move")) {
-			System.out.println("should move");
 			String target = this.getExecutionTarget();
 			if (target.equals("P0")) {
 				this.setExecutionTarget("P1");
@@ -147,7 +144,6 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 	@Override
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
-		System.out.println("post handle");
 		if (action.getLastMessage().equals("me")) {
 			bc.setStyle("-fx-background-color: red; -fx-text-fill: white;");
 		} else {
@@ -166,14 +162,11 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 				move2.setText("move to: " + exec);
 			}
 		}
-		String label = "me:" + c;
-		button2 = new Button(label);
 		return vbox;
 	}
 
 	@Override
 	public void onStartComponent(final FX2ComponentLayout layout) {
-		System.out.println("startup component");
 
 		start = new Button("start");
 		bc = new Button("message 2");
@@ -186,12 +179,6 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		
 		toolbar = new HBox();
 		
-		if(exec.equals("id01")) {
-			System.out.println("new target start");
-			button3 = new Button("test");
-			button3.setOnMouseClicked(getListener(null, "me"));
-			toolbar.getChildren().add(button3);
-		}
 		createDemoButtonBar();
 		
 		ToolBar north = layout.getToolBar(Layout.NORTH);
@@ -228,7 +215,6 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 	@Override
 	public void onTearDownComponent(final FX2ComponentLayout layout) {
-		System.out.println("teardown component");
 
 		ToolBar north = layout.getToolBar(Layout.NORTH);
 		north.getItems().remove(b1);
