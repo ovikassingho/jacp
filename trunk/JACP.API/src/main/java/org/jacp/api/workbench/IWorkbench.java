@@ -17,11 +17,8 @@
  */
 package org.jacp.api.workbench;
 
-import java.util.Map;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.componentLayout.Layout;
 
 
 /**

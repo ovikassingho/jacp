@@ -18,7 +18,7 @@
 package org.jacp.api.coordinator;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IBGComponent;
+import org.jacp.api.component.ICallbackComponent;
 
 /**
  * Handles instances of a state less component; delegates message to a non
@@ -46,7 +46,7 @@ public interface IStatelessComponentCoordinator<L, A, M> {
      * @param clazz
      * @return an cloned instance of a state less component.
      */
-    <T extends IBGComponent<L, A, M>> IBGComponent<L, A, M> getCloneBean(
+    <T extends ICallbackComponent<L, A, M>> ICallbackComponent<L, A, M> getCloneBean(
 	    final Class<T> clazz);
 
 }

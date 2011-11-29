@@ -18,7 +18,12 @@
 package org.jacp.api.component;
 
 /**
- * This interface defines methods for background/ non ui components.
+ * This interface defines methods for background/callback non UI components. It
+ * acts like a typical component with a handle method but the return value must
+ * not be a graphical component. This component is stateful, this means you can
+ * use private members as it is guaranteed that you allays call the same
+ * instance at runntime. The return value is send back to message caller or to
+ * component specified with handleTarget.
  * 
  * @author Andy Moncsek
  * 
@@ -29,7 +34,7 @@ package org.jacp.api.component;
  * @param <M>
  *            defines the basic message type
  */
-public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>,
+public interface ICallbackComponent<L, A, M> extends ISubComponent<L, A, M>,
 		Cloneable {
 
 	/**
@@ -42,9 +47,9 @@ public interface IBGComponent<L, A, M> extends ISubComponent<L, A, M>,
 	String getHandleTargetAndClear();
 
 	/**
-	 * Set component target id which is targeted by background component return value;
-	 * the return value will be handled like an average message and will be
-	 * delivered to targeted component
+	 * Set component target id which is targeted by background component return
+	 * value; the return value will be handled like an average message and will
+	 * be delivered to targeted component
 	 * 
 	 * @param componentTargetId
 	 */

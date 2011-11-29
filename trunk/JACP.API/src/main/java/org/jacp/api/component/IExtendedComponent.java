@@ -19,9 +19,12 @@ package org.jacp.api.component;
 
 import org.jacp.api.componentLayout.IBaseLayout;
 
-
 /**
- * Represents a extended component with menu entries and tool bar access.
+ * Represents an extended component with menu entries and tool bar access. The
+ * onStart/onTeardown methods gives you the reference to global bar and menu
+ * entries. This methods will be executed once on component startup and
+ * teardown; also when component is moving to an other perspective. Use both
+ * method to initialize and to clean up component.
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -47,7 +50,5 @@ public interface IExtendedComponent<C> {
 	 * @param bars
 	 */
 	void onTearDown(final IBaseLayout<C> layout);
-	
-
 
 }

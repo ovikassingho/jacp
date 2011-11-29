@@ -19,10 +19,15 @@ package org.jacp.api.component;
 
 import org.jacp.api.launcher.Launcher;
 
-
-
 /**
- * Represents a state less background component.
+ * Represents a state less background/callback component. This component has a
+ * typical handle method, the return value is typically a non UI value (but it
+ * can be). Every message to this component should be handled in a separate
+ * thread and component instance, managed by an executor (to avoid garbage). Do
+ * not use private members as it is not guaranteed that that you contact the
+ * same instance twice. This component type is good for scaling tasks like
+ * performing operations on many folders or tables in database. The return value
+ * will be send to message caller or to specified handleTargetId.
  * 
  * @author Andy Moncsek
  * 
@@ -33,10 +38,12 @@ import org.jacp.api.launcher.Launcher;
  * @param <M>
  *            defines the basic message type
  */
-public interface IStateLessBGComponent<L, A, M> extends IBGComponent<L, A, M> {
+public interface IStateLessCallabackComponent<L, A, M> extends
+		ICallbackComponent<L, A, M> {
 	/**
 	 * The launcher is needed to create many instances of a component
+	 * 
 	 * @param launcher
 	 */
-    void setLauncher(final Launcher<?> launcher);
+	void setLauncher(final Launcher<?> launcher);
 }
