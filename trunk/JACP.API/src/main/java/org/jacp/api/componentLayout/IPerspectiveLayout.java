@@ -19,9 +19,10 @@ package org.jacp.api.componentLayout;
 
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
 /**
  * Defines layout of a perspective and the container for included editors and
- * views (target components); for use in perspectives handle method
+ * views (target components); for use in perspectives handle method.
  * 
  * @param <M>
  *            type of root component
@@ -31,37 +32,59 @@ import java.util.Map;
  */
 public interface IPerspectiveLayout<M, B> {
 
-    /**
-     * Set Layout-Wrapper for perspective; this wrapper contains wrappers for
-     * editors and views, define a valid component which is valid to hold subcomponents
-     * 
-     * @param comp
-     */
-    void setRootComponent(final M comp);
+	/**
+	 * Set Layout-Wrapper for perspective; this wrapper contains wrappers for
+	 * editors and views, define a valid component which is valid to hold
+	 * subcomponents.
+	 * 
+	 * @param comp
+	 *            the new root component
+	 */
+	void setRootComponent(final M comp);
 
-    /**
-     * Get the ' layoutwrapper'  for perspective; a layout component is a component which can contain UI subcomponents.
-     * 
-     * @return the toolkit root component where all other UI components are included 
-     */
-    M getRootComponent();
+	/**
+	 * Get the ' layoutwrapper' for perspective; a layout component is a
+	 * component which can contain UI subcomponents.
+	 * 
+	 * @return the toolkit root component where all other UI components are
+	 *         included
+	 */
+	M getRootComponent();
 
-    /**
-     * Returns map of target components and ids key - id value - target
-     * component
-     * 
-     * @return a map with all target UI components
-     */
-    Map<String, B> getTargetLayoutComponents();
+	/**
+	 * Returns map of target components and ids key - id value - target
+	 * component.
+	 * 
+	 * @return a map with all target UI components
+	 */
+	Map<String, B> getTargetLayoutComponents();
 
-    /**
-     * Register a target component; a target component defines a wrapper where
-     * editors and views can "live" in; you can define a target for each editor
-     * or view component; create an root component, a complex layout an register
-     * all components where editors/views should displayed in
-     * 
-     * @param id
-     * @param target
-     */
-    void registerTargetLayoutComponent(final String id, final B target);
+	/**
+	 * Register a target component; a target component defines a wrapper where
+	 * editors and views can "live" in; you can define a target for each editor
+	 * or view component; create an root component, a complex layout an register
+	 * all components where editors/views should displayed in.
+	 * 
+	 * @param <B>
+	 *            the generic type
+	 * @param id
+	 *            the id
+	 * @param target
+	 *            the target
+	 * @return the b
+	 */
+	B registerTargetLayoutComponent(final String id, final B target);
+
+	/**
+	 * Register a target component; a target component defines a wrapper where
+	 * editors and views can "live" in; you can define a target for each editor
+	 * or view component; create an root component, a complex layout an register
+	 * all components where editors/views should displayed in. The Container will 
+	 * be spaned to the full space available 
+	 *
+	 * @param <B> the generic type
+	 * @param id the id
+	 * @return the b
+	 */
+	B registerTargetLayoutComponent(final String id);
 }
