@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
@@ -193,11 +192,11 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		item = new MenuItem("close component 2");
 		String label = "me:" + c;
 		button2 = new Button(label);
-		
+
 		toolbar = new HBox();
-		
+
 		createDemoButtonBar();
-		
+
 		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
 
 		b1.setOnMouseClicked(new EventHandler<Event>() {
