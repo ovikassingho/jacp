@@ -18,9 +18,7 @@
 package org.jacp.javafx2.rcp.componentLayout;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
@@ -28,10 +26,7 @@ import javafx.scene.control.ToolBar;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.api.util.ToolbarPriority;
-import org.jacp.api.util.ToolbarProperty;
 import org.jacp.api.util.Tupel;
 
 /**
@@ -44,8 +39,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
 	private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
-	private final Map<Layout, ToolBar> toolbars = new ConcurrentHashMap<Layout, ToolBar>();
-	private final Map<ToolbarProperty, ToolBar> registeredToolbars = new TreeMap<ToolbarProperty, ToolBar>();
+	private final Map<ToolbarPosition, ToolBar> registeredToolbars = new TreeMap<ToolbarPosition, ToolBar>();
 	private MenuBar menu;
 	private StageStyle style = StageStyle.DECORATED;
 
@@ -74,48 +68,15 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 		return this.size;
 	}
 
-	@Override
-	@Deprecated
-	public void registerToolBar(Layout name) {
-		if (!this.toolbars.containsKey(name)) {
-			final ToolBar bar = new ToolBar();
-			bar.setId(name.getLayout() + "-bar");
-			this.toolbars.put(name, bar);
-		}
-	}
-
 	private ToolBar initToolBar(ToolbarPosition position) {
 		final ToolBar bar = new ToolBar();
 		bar.setId(position.getName() + "-bar");
 		return bar;
 	}
 
-	private ToolbarProperty initToolBarProperty(ToolbarPosition position,
-			ToolbarPriority priority) {
-		ToolbarProperty property = new ToolbarProperty();
-		property.setPosition(position);
-		property.setPriority(priority);
-		return property;
-	}
-
-	@Override
-	public void registerToolBar(ToolbarPosition position,
-			ToolbarPriority priority) {
-		// TODO: @PETE: remove priority due to BorderPane can't handle
-		// priorities
-		registeredToolbars.put(initToolBarProperty(position, priority),
-				initToolBar(position));
-	}
-
 	@Override
 	public void registerToolBar(ToolbarPosition position) {
-		registerToolBar(position, ToolbarPriority.ONE);
-	}
-
-	@Override
-	@Deprecated
-	public ToolBar getToolBar(Layout name) {
-		return this.toolbars.get(name);
+		registeredToolbars.put(position, initToolBar(position));
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -137,33 +98,16 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	}
 
 	/**
-	 * Returns the map with all tool bars registered.
-	 * 
-	 * @return
-	 */
-	public Map<Layout, ToolBar> getToolBarMap() {
-		return this.toolbars;
-	}
-
-	/**
 	 * Gets the registered toolbars.
 	 * 
 	 * @return the registered toolbars
 	 */
-	public Map<ToolbarProperty, ToolBar> getRegisteredToolbars() {
+	public Map<ToolbarPosition, ToolBar> getRegisteredToolbars() {
 		return registeredToolbars;
 	}
 
 	public ToolBar getRegisteredToolBar(ToolbarPosition position) {
-		ToolBar toolbar = null;
-		Set<ToolbarProperty> keySet = this.registeredToolbars.keySet();
-		for (final ToolbarProperty prop : keySet) {
-			if (prop.getPosition().getId() == position.getId()) {
-				toolbar = this.registeredToolbars.get(prop);
-				break;
-			}
-		}
-		return toolbar;
+		return registeredToolbars.get(position);
 	}
 
 }

@@ -27,6 +27,8 @@ import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
@@ -84,6 +86,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			uiComponent.setVisible(true);
 			final ObservableList<Node> children = FX2Util
 					.getChildren(validContainer);
+			GridPane.setHgrow(uiComponent, Priority.ALWAYS);
+			GridPane.setVgrow(uiComponent, Priority.ALWAYS);
 			children.add(uiComponent);
 		}
 
@@ -201,11 +205,13 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected final void changeComponentTarget(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final ICoordinator<EventHandler<Event>, Event, Object> observer = component.getObserver();
-		if(observer instanceof IComponentCoordinator) {
-			IPerspective<EventHandler<Event>, Event, Object> parent = ((IComponentCoordinator<EventHandler<Event>, Event, Object>)observer).getParentPerspective();
-			parent.delegateTargetChange(
-					component.getExecutionTarget(), component);
+		final ICoordinator<EventHandler<Event>, Event, Object> observer = component
+				.getObserver();
+		if (observer instanceof IComponentCoordinator) {
+			IPerspective<EventHandler<Event>, Event, Object> parent = ((IComponentCoordinator<EventHandler<Event>, Event, Object>) observer)
+					.getParentPerspective();
+			parent.delegateTargetChange(component.getExecutionTarget(),
+					component);
 		}
 	}
 
