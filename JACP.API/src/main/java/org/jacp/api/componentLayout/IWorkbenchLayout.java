@@ -18,7 +18,6 @@
 package org.jacp.api.componentLayout;
 
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.api.util.ToolbarPriority;
 import org.jacp.api.util.Tupel;
 
 /**
@@ -58,26 +57,6 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	 * @return the tuple containing the workbench size
 	 */
 	Tupel<Integer, Integer> getWorkbenchSize();
-
-	/**
-	 * Register a tool bar for workbench.
-	 * 
-	 * @param name
-	 * @param toolBar
-	 */
-	@Deprecated
-	void registerToolBar(final Layout name);
-
-	/**
-	 * Register a toolbar for the workbench
-	 * 
-	 * @param position
-	 *            - NORTH, WEST, EAST, SOUTH
-	 * @param priority
-	 *            - priority 1-4
-	 */
-	void registerToolBar(final ToolbarPosition position,
-			final ToolbarPriority priority);
 
 	/**
 	 * Register a toolbar for the workbench
