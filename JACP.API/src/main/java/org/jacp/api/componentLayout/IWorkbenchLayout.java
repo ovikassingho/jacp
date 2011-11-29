@@ -17,10 +17,13 @@
  */
 package org.jacp.api.componentLayout;
 
+import org.jacp.api.util.ToolbarPosition;
+import org.jacp.api.util.ToolbarPriority;
 import org.jacp.api.util.Tupel;
 
 /**
  * Defines the base layout of a workbench and the application.
+ * 
  * @param <C>
  *            defines the base component where others extend from
  * @author Andy Moncsek
@@ -62,8 +65,31 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	 * @param name
 	 * @param toolBar
 	 */
+	@Deprecated
 	void registerToolBar(final Layout name);
 
+	/**
+	 * Register a toolbar for the workbench
+	 * 
+	 * @param position
+	 *            - NORTH, WEST, EAST, SOUTH
+	 * @param priority
+	 *            - priority 1-4
+	 */
+	void registerToolBar(final ToolbarPosition position,
+			final ToolbarPriority priority);
+
+	/**
+	 * Register a toolbar for the workbench
+	 * 
+	 * All toolbars are added with the same priority, thus the priority is given
+	 * by the order of registration.
+	 * 
+	 * @param position
+	 *            - NORTH, WEST, EAST, SOUTH
+	 * 
+	 */
+	void registerToolBar(final ToolbarPosition position);
 
 	/**
 	 * Set the workbench style.
