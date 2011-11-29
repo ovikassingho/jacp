@@ -19,9 +19,14 @@ import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-
+/**
+ * Demo ui component one
+ * @author Andy Moncsek
+ *
+ */
 public class DemoFX2ComponentOne extends AFX2Component {
 
 	VBox vbox;
@@ -29,13 +34,14 @@ public class DemoFX2ComponentOne extends AFX2Component {
 	Button bc = new Button("message 1");
 	Button move = new Button("move");
 	int c = 0;
+	String twoTarget="id01";
 
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-/*		System.out.println("message to component one "
+		System.out.println("message to component one "
 				+ action.getLastMessage() + " in thread"
-				+ Thread.currentThread() + " counter: " + c);*/
+				+ Thread.currentThread() + " counter: " + c);
 		if (action.getLastMessage().equals("ping")) {
 			c++;
 
@@ -47,6 +53,12 @@ public class DemoFX2ComponentOne extends AFX2Component {
 			} else {
 				this.setExecutionTarget("P0");
 			}
+		} else if(action.getLastMessage().toString().contains("id0"))  {
+			twoTarget=action.getLastMessage().toString();
+		}else if(action.getLastMessage().toString().equals("messageTo"))  {
+			EventHandler<? super MouseEvent> listener = getListener(
+					twoTarget+".id002", "message from DemoFX2ComponentOne");
+			listener.handle(null);
 		}
 		return null;
 	}
@@ -67,8 +79,8 @@ public class DemoFX2ComponentOne extends AFX2Component {
 		HBox toolbar = new HBox();
 		toolbar.setPrefSize(1024, 50);
 
-		bc.setOnMouseClicked(getListener("id002",
-				"message from DemoFX2ComponentOne"));
+		bc.setOnMouseClicked(getListener(null,
+				"messageTo"));
 
 		Button button2 = new Button("me");
 		button2.setOnMouseClicked(getListener(null, "me"));
@@ -132,7 +144,7 @@ public class DemoFX2ComponentOne extends AFX2Component {
 	@Override
 	public void onStartComponent(final FX2ComponentLayout layout) {
 		
-		ToolBar north = layout.getToolBar(Layout.SOUTH);
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
 		Button b1= new Button("c1");
 		north.getItems().add(b1);
 		MenuBar menu = layout.getMenu();

@@ -18,9 +18,14 @@ import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-
+/**
+ * Demo ui component two
+ * @author Andy Moncsek
+ *
+ */
 public class DemoFX2ComponentTwo extends AFX2Component {
 	VBox vbox = null;
 	Button start = null;
@@ -36,14 +41,20 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		c = c + 1;
+		c = c+1;
+		System.out.println("message to component two >>"
+				+ action.getLastMessage() + "<< in thread"
+				+ Thread.currentThread() + " counter: " + c);
 
 		if (action.getLastMessage().equals("start")) {
 
-			for (int i = 0; i < 100000; i++) {
-				EventHandler<? super MouseEvent> listener = getListener(
+			for (int i = 0; i < 10000; i++) {
+				/*EventHandler<? super MouseEvent> listener = getListener(
 						"id01.id001", "ping");
-				listener.handle(null);
+				listener.handle(null);*/
+				EventHandler<? super MouseEvent> listener2 = getListener(
+						"id01.id004", "ping");
+				listener2.handle(null);
 
 			}
 
@@ -62,11 +73,17 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 			if (exec.equals("id02")) {
 
 				this.setExecutionTarget("id02.P1");
-
+				EventHandler<? super MouseEvent> listener = getListener(
+						"id01.id001", "id02");
+				listener.handle(null);
 			} else {
 
 				this.setExecutionTarget("id01.P1");
+				EventHandler<? super MouseEvent> listener = getListener(
+						"id01.id001", "id01");
+				listener.handle(null);
 			}
+			
 		}
 		return null;
 	}
@@ -86,7 +103,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 		toolbar.setPrefSize(1024, 50);
 
-		bc.setOnMouseClicked(getListener("id001", "DemoFX2ComponentTwo"));
+		bc.setOnMouseClicked(getListener("id01.id001", "DemoFX2ComponentTwo"));
 
 		button2.setOnMouseClicked(getListener(null, "me"));
 
@@ -181,7 +198,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 		
 		createDemoButtonBar();
 		
-		ToolBar north = layout.getToolBar(Layout.NORTH);
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
 
 		b1.setOnMouseClicked(new EventHandler<Event>() {
 
@@ -216,7 +233,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 	@Override
 	public void onTearDownComponent(final FX2ComponentLayout layout) {
 
-		ToolBar north = layout.getToolBar(Layout.NORTH);
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
 		north.getItems().remove(b1);
 		MenuBar menu = layout.getMenu();
 		ObservableList<javafx.scene.control.Menu> menuList = menu.getMenus();
