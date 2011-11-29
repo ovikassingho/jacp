@@ -17,10 +17,8 @@
  */
 package org.jacp.javafx2.rcp.workbench;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +26,6 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -36,6 +33,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -46,12 +44,10 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.api.util.ToolbarProperty;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
@@ -136,8 +132,7 @@ public abstract class AFX2Workbench
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
 		postHandle(new FX2ComponentLayout(this.getWorkbenchLayout().getMenu(),
-				this.getWorkbenchLayout().getToolBarMap(), this
-						.getWorkbenchLayout().getRegisteredToolbars()));
+				this.getWorkbenchLayout().getRegisteredToolbars()));
 		this.log("3: handle initialisation sequence");
 		this.handleInitialisationSequence();
 	}
@@ -290,6 +285,8 @@ public abstract class AFX2Workbench
 			final ObservableList<Node> children = this.root.getChildren();
 			hideChildren(children);
 			GridPane.setConstraints(comp, 0, 0);
+			GridPane.setHgrow(comp, Priority.ALWAYS);
+			GridPane.setVgrow(comp, Priority.ALWAYS);
 			children.add(comp);
 		}
 	}
@@ -310,7 +307,6 @@ public abstract class AFX2Workbench
 			((IExtendedComponent<Node>) perspective)
 					.onStart(new FX2ComponentLayout(this.getWorkbenchLayout()
 							.getMenu(), this.getWorkbenchLayout()
-							.getToolBarMap(), this.getWorkbenchLayout()
 							.getRegisteredToolbars()));
 		}
 		if (this.getTargetPerspectiveId(action.getTargetId()).equals(
@@ -446,7 +442,10 @@ public abstract class AFX2Workbench
 				component.getExecutionTarget());
 		final ObservableList<Node> children = FX2Util
 				.getChildren(validContainer);
-		children.add(component.getRoot());
+		Node root = component.getRoot();
+		GridPane.setHgrow(root, Priority.ALWAYS);
+		GridPane.setVgrow(root, Priority.ALWAYS);
+		children.add(root);
 	}
 
 	/**
@@ -490,13 +489,13 @@ public abstract class AFX2Workbench
 
 			final BorderPane toolbarPane = new BorderPane();
 			baseLayoutPane.setCenter(toolbarPane);
-			Map<ToolbarProperty, ToolBar> toolbars = Collections
-					.synchronizedMap(this.getWorkbenchLayout()
-							.getRegisteredToolbars());
-			Set<ToolbarProperty> keySet = toolbars.keySet();
-			for (final ToolbarProperty property : keySet) {
-				this.assignCorrectToolBarLayout(property.getPosition(),
-						toolbars.get(property), toolbarPane);
+
+			final Map<ToolbarPosition, ToolBar> registeredToolbars = this
+					.getWorkbenchLayout().getRegisteredToolbars();
+
+			for (final ToolbarPosition position : registeredToolbars.keySet()) {
+				this.assignCorrectToolBarLayout(position,
+						registeredToolbars.get(position), toolbarPane);
 			}
 
 			// add root to the center
@@ -539,39 +538,6 @@ public abstract class AFX2Workbench
 	 * @param x
 	 * @param y
 	 */
-	private void assignCorrectBarLayout(Layout layout, ToolBar bar,
-			BorderPane pane, int x, int y, boolean menu) {
-		if (pane.getPrefHeight() < 0) {
-			pane.setPrefHeight(y * .0025);
-		}
-		if (pane.getPrefWidth() < 0) {
-			pane.setPrefWidth(x);
-		}
-		switch (layout) {
-		case NORTH:
-			this.handleApplicationNorthArea(pane, bar, menu, x, y);
-			break;
-		case SOUTH:
-			pane.setBottom(bar);
-			break;
-		case TOP:
-			this.handleApplicationNorthArea(pane, bar, menu, x, y);
-			break;
-		case BOTTOM:
-			pane.setBottom(bar);
-			break;
-		}
-	}
-
-	/**
-	 * set toolBars to correct position
-	 * 
-	 * @param layout
-	 * @param bar
-	 * @param pane
-	 * @param x
-	 * @param y
-	 */
 	private void assignCorrectToolBarLayout(ToolbarPosition position,
 			ToolBar bar, BorderPane pane) {
 		switch (position) {
@@ -595,30 +561,6 @@ public abstract class AFX2Workbench
 		bar.setMaxHeight(Double.MAX_VALUE);
 		box.getChildren().add(bar);
 		return box;
-	}
-
-	/**
-	 * handle top bar with main menu
-	 * 
-	 * @param pane
-	 * @param bar
-	 * @param menu
-	 * @param x
-	 * @param y
-	 */
-	private void handleApplicationNorthArea(BorderPane pane, Node bar,
-			boolean menu, int x, int y) {
-		if (!menu) {
-			pane.setTop(bar);
-		} else {
-			final GridPane grid = new GridPane();
-			final MenuBar mainMenu = this.getWorkbenchLayout().getMenu();
-			mainMenu.setPrefWidth(x);
-			grid.setPrefWidth(x);
-			grid.add(mainMenu, 0, 0);
-			grid.add(bar, 0, 1);
-			pane.setTop(grid);
-		}
 	}
 
 	/**
