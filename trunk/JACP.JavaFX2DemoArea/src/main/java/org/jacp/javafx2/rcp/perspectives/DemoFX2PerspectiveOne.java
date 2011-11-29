@@ -2,20 +2,14 @@ package org.jacp.javafx2.rcp.perspectives;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
@@ -28,7 +22,6 @@ import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
  * 
  */
 public class DemoFX2PerspectiveOne extends AFX2Perspective {
-
 
 	@Override
 	public void handlePerspective(IAction<Event, Object> action,
@@ -66,22 +59,27 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 
 	@Override
 	public void onStartPerspective(final FX2ComponentLayout layout) {
-		System.out.println("run on start perspective one bar:"+layout.getMenu() +" bars:"+layout.getToolBar(Layout.NORTH));
+		System.out.println("run on start perspective one bar:"
+				+ layout.getMenu() + " bars:"
+				+ layout.getRegisteredToolBar(ToolbarPosition.NORTH));
 		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-		Button b1= new Button("p1");
+
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
+		listenerBottomOne.getAction().addMessage("id99",
+				"oneButtonBottomImageDemo");
+		Button bc = new Button("Image Demo");
+		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
+
+		Button b1 = new Button("p1");
 		north.getItems().add(b1);
-		
-		
-		
+		north.getItems().add(bc);
+
 	}
 
 	@Override
 	public void onTearDownPerspective(final FX2ComponentLayout layout) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
-
 
 }

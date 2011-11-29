@@ -15,10 +15,8 @@ import javafx.stage.StageStyle;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.componentLayout.Layout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
 /**
  * Test workbench for jacp javafx2
@@ -41,13 +39,13 @@ public class DemoFX2Workbench extends AFX2Workbench {
 			final IWorkbenchLayout<Node> layout, final Stage stage) {
 		this.stage = stage;
 		System.out.println("1: " + action.getLastMessage());
-		layout.setWorkbenchXYSize(1024, 400);
-		//layout.registerToolBar(Layout.NORTH);
+		layout.setWorkbenchXYSize(1024, 768);
+		// layout.registerToolBar(Layout.NORTH);
 		layout.registerToolBar(ToolbarPosition.NORTH);
-	//	layout.registerToolBar(ToolbarPosition.EAST);
-	//	layout.registerToolBar(ToolbarPosition.WEST);
+		layout.registerToolBar(ToolbarPosition.EAST);
+		layout.registerToolBar(ToolbarPosition.WEST);
 		layout.registerToolBar(ToolbarPosition.SOUTH);
-		//layout.registerToolBar(Layout.SOUTH);
+		// layout.registerToolBar(Layout.SOUTH);
 		layout.setStyle(StageStyle.DECORATED);
 		layout.setMenuEnabled(true);
 		System.out.println("2: " + action.getLastMessage());
@@ -57,7 +55,8 @@ public class DemoFX2Workbench extends AFX2Workbench {
 	public void postHandle(FX2ComponentLayout layout) {
 
 		// ////////////// TOOLBAR ////////////////////////7
-		final ToolBar topBar = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
+		final ToolBar topBar = layout
+				.getRegisteredToolBar(ToolbarPosition.NORTH);
 		// add window dragging
 		topBar.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override

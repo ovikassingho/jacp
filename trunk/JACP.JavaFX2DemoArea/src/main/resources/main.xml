@@ -9,9 +9,7 @@
 			<list>
 				<ref bean="perspectiveTwo" />
 				<ref bean="perspectiveOne" />
-
-
-
+				<ref bean="demoFX2PerspectiveImageOne" />
 			</list>
 		</property>
 	</bean>
@@ -39,6 +37,25 @@
 			</list>
 		</property>
 	</bean>
+
+
+	<bean id="demoFX2PerspectiveImageOne"
+		class="org.jacp.javafx2.rcp.perspectives.DemoFX2PerspectiveImageOne">
+		<property name="name" value="perspectiveImageOne" />
+		<property name="id" value="id99" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+				<!-- <ref bean="demoFX2ComponentOne" /> <ref bean="demoFX2ComponentTwo" 
+					/> -->
+				<ref bean="breadCrumbBar" />
+				<ref bean="mainContent" />
+				<ref bean="leftMenu" />
+				<ref bean="bottomBar" />
+			</list>
+		</property>
+	</bean>
+
 	<bean id="demoFX2ComponentOne" class="org.jacp.javafx2.rcp.components.DemoFX2ComponentOne">
 		<property name="name" value="demoFX2ComponentOne" />
 		<property name="active" value="true" />
@@ -51,14 +68,48 @@
 		<property name="id" value="id002" />
 		<property name="executionTarget" value="P1" />
 	</bean>
-	<bean id="demoBGStatefulComponentOne" class="org.jacp.javafx2.rcp.components.DemoBGStatefulComponentOne">
+	<bean id="demoBGStatefulComponentOne"
+		class="org.jacp.javafx2.rcp.components.DemoBGStatefulComponentOne">
 		<property name="name" value="demoBGStatefulComponentOne" />
 		<property name="active" value="true" />
 		<property name="id" value="id003" />
 	</bean>
-	<bean id="demoBGStatelessComponentOne" class="org.jacp.javafx2.rcp.components.DemoBGStatelessComponentOne" scope="prototype">
+	<bean id="demoBGStatelessComponentOne"
+		class="org.jacp.javafx2.rcp.components.DemoBGStatelessComponentOne"
+		scope="prototype">
 		<property name="name" value="demoBGStatelessComponentOne" />
 		<property name="active" value="true" />
 		<property name="id" value="id004" />
 	</bean>
+	<!-- EXTENDED DEMO -->
+
+	<bean id="breadCrumbBar"
+		class="org.jacp.javafx2.rcp.components.DemoFX2ComponentBreadCrumb">
+		<property name="name" value="breadCrumbBar" />
+		<property name="active" value="true" />
+		<property name="id" value="id999" />
+		<property name="executionTarget" value="PBreadCrumb" />
+	</bean>
+	<bean id="mainContent"
+		class="	org.jacp.javafx2.rcp.components.DemoFX2ComponentMainContent">
+		<property name="name" value="mainContent" />
+		<property name="active" value="true" />
+		<property name="id" value="id998" />
+		<property name="executionTarget" value="PmainContent" />
+	</bean>
+	<bean id="leftMenu"
+		class="org.jacp.javafx2.rcp.components.DemoFX2ComponentLeftMenu">
+		<property name="name" value="leftMenu" />
+		<property name="active" value="true" />
+		<property name="id" value="id997" />
+		<property name="executionTarget" value="PleftMenu" />
+	</bean>
+	<bean id="bottomBar"
+		class="org.jacp.javafx2.rcp.components.DemoFX2ComponentBottomBar">
+		<property name="name" value="bottomBar" />
+		<property name="active" value="true" />
+		<property name="id" value="id996" />
+		<property name="executionTarget" value="PbottomBar" />
+	</bean>
+
 </beans>
