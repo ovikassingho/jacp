@@ -10,13 +10,6 @@ import org.jacp.api.util.ToolbarPosition;
  *            defines the base component where others extend from
  */
 public interface IBaseLayout<C> {
-	/**
-	 * Returns all registered tool bars of workbench.
-	 * 
-	 * @return a map containing the defined tool bars
-	 */
-	@Deprecated
-	C getToolBar(Layout layout);
 
 	/**
 	 * Gets the registered tool bar.
