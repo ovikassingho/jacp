@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
@@ -33,22 +34,23 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 	public void handlePerspective(IAction<Event, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
 		BorderPane layout = new BorderPane();
-		layout.setMinWidth(1024);
+		layout.setStyle("-fx-background-color: green;");
 
 		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
 		listenerBottomOne.getAction().addMessage("id02", "oneButtonBottomOne");
 		Button bc = new Button("Button Perspective 1");
 		bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
 		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
-		Group top = new Group();
+		Pane top = new Pane();
+		top.setStyle("-fx-background-color: yellow;");
 		layout.setTop(top);
-		Group bottom = new Group();
+		Pane bottom = new Pane();
+		bottom.setStyle("-fx-background-color: blue;");
 		Pane left = new Pane();
 		Pane right = new Pane();
 		left.setMinSize(50, 240);
 		right.setMinSize(50, 240);
-		left.setMaxSize(50, 240);
-		right.setMaxSize(50, 240);
+
 		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
 		layout.setBottom(bottom);
 		layout.setCenter(bc);
@@ -65,7 +67,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 	@Override
 	public void onStartPerspective(final FX2ComponentLayout layout) {
 		System.out.println("run on start perspective one bar:"+layout.getMenu() +" bars:"+layout.getToolBar(Layout.NORTH));
-		ToolBar north = layout.getToolBar(Layout.SOUTH);
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
 		Button b1= new Button("p1");
 		north.getItems().add(b1);
 		

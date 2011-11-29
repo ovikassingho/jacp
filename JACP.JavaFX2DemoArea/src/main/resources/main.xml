@@ -24,6 +24,8 @@
 			<list>
 				<ref bean="demoFX2ComponentOne" />
 				<ref bean="demoFX2ComponentTwo" />
+				<ref bean="demoBGStatefulComponentOne" />
+				<ref bean="demoBGStatelessComponentOne" />
 			</list>
 		</property>
 	</bean>
@@ -48,5 +50,15 @@
 		<property name="active" value="false" />
 		<property name="id" value="id002" />
 		<property name="executionTarget" value="P1" />
+	</bean>
+	<bean id="demoBGStatefulComponentOne" class="org.jacp.javafx2.rcp.components.DemoBGStatefulComponentOne">
+		<property name="name" value="demoBGStatefulComponentOne" />
+		<property name="active" value="true" />
+		<property name="id" value="id003" />
+	</bean>
+	<bean id="demoBGStatelessComponentOne" class="org.jacp.javafx2.rcp.components.DemoBGStatelessComponentOne" scope="prototype">
+		<property name="name" value="demoBGStatelessComponentOne" />
+		<property name="active" value="true" />
+		<property name="id" value="id004" />
 	</bean>
 </beans>

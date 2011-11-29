@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.Layout;
+import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
@@ -40,7 +41,6 @@ public class DemoFX2PerspectiveTwo extends AFX2Perspective{
 		right.setMinSize(50, 240);
 		left.setMaxSize(50, 240);
 		right.setMaxSize(50, 240);
-		// bottom.getChildren().add(new Rectangle(1024, 50, Color.BLACK));
 		layout.setBottom(bottom);
 		layout.setCenter(bc);
 		layout.setLeft(left);
@@ -56,7 +56,7 @@ public class DemoFX2PerspectiveTwo extends AFX2Perspective{
 	@Override
 	public void onStartPerspective(final FX2ComponentLayout layout) {
 		System.out.println("run on start perspective two bar:"+layout.getMenu() +" bars:"+layout.getToolBar(Layout.NORTH));
-		ToolBar north = layout.getToolBar(Layout.SOUTH);
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
 		Button b1= new Button("p2");
 		north.getItems().add(b1);
 	}
