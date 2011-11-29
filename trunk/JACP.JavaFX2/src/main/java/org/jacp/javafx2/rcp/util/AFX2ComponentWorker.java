@@ -169,6 +169,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final Map<String, Node> targetComponents, final Node validContainer) {
 		this.addComponentByType(validContainer, component);
 	}
+
 	/**
 	 * Handle target change to an other perspective.
 	 * @param component
