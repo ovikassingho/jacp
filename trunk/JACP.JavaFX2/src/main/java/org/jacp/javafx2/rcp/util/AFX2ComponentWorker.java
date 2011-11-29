@@ -31,6 +31,9 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
+import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
@@ -198,8 +201,12 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected final void changeComponentTarget(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		component.getParentPerspective().delegateTargetChange(
-				component.getExecutionTarget(), component);
+		final ICoordinator<EventHandler<Event>, Event, Object> observer = component.getObserver();
+		if(observer instanceof IComponentCoordinator) {
+			IPerspective<EventHandler<Event>, Event, Object> parent = ((IComponentCoordinator<EventHandler<Event>, Event, Object>)observer).getParentPerspective();
+			parent.delegateTargetChange(
+					component.getExecutionTarget(), component);
+		}
 	}
 
 	/**

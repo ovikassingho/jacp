@@ -9,9 +9,8 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.IBGComponent;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.coordinator.ICoordinator;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 
@@ -21,8 +20,8 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * @author Andy Moncsek
  * 
  */
-public abstract class AStateComponent implements
-		IBGComponent<EventHandler<Event>, Event, Object> {
+public abstract class ACallbackComponent implements
+		ICallbackComponent<EventHandler<Event>, Event, Object> {
 
 	private String id;
 	private String target = "";
@@ -32,7 +31,6 @@ public abstract class AStateComponent implements
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
 	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
-	private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
 
@@ -50,24 +48,6 @@ public abstract class AStateComponent implements
 	 */
 	public void setExecutionTarget(String target) {
 		this.target = target;
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setParentPerspective(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.parentPerspective = perspective;
-
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
-		return this.parentPerspective;
 	}
 
 	@Override
@@ -209,6 +189,14 @@ public abstract class AStateComponent implements
 			ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
 
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
+		return this.componentObserver;
 	}
 
 	@SuppressWarnings("unchecked")

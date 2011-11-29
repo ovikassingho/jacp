@@ -163,4 +163,13 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+	
+	
+	/**
+	 * returns associated perspective
+	 * @return
+	 */
+	public final IPerspective<EventHandler<Event>, Event, Object> getParentPerspective(){
+		return this.perspective;
+	}
 }
