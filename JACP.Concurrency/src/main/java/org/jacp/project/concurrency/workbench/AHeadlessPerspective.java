@@ -101,6 +101,14 @@ public abstract class AHeadlessPerspective implements
 
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ICoordinator<EventListener, Event, Object> getObserver(){
+		return this.perspectiveObserver;
+	}
+	
 	@Override
 	public <C> C handle(IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
@@ -116,7 +124,6 @@ public abstract class AHeadlessPerspective implements
 		log("register component: " + component.getId());
 		// componentHandler.addComponent(component);
 		subcomponents.add(component);
-		component.setParentPerspective(this);
 
 	}
 
@@ -126,7 +133,6 @@ public abstract class AHeadlessPerspective implements
 		log("unregister component: " + component.getId());
 		// componentHandler.removeComponent(component);
 		subcomponents.remove(component);
-		component.setParentPerspective(null);
 
 	}
 
