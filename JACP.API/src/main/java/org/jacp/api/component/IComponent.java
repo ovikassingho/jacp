@@ -101,10 +101,16 @@ public interface IComponent<L, A, M> {
 	void setName(String name);
 
 	/**
-	 * set Observer to handle changes in components.
+	 * Set Observer to handle changes in components.
 	 * 
 	 * @param observer
 	 */
 	void setObserver(final ICoordinator<L, A, M> observer);
+	
+	/**
+	 * returns the currently associated obsever instance.
+	 * @return ICoordinator
+	 */
+	ICoordinator<L, A, M> getObserver();
 
 }

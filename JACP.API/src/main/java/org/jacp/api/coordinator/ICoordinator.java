@@ -98,4 +98,5 @@ public interface ICoordinator<L, A, M> {
 	 */
 	void delegateTargetChange(final String target,
 			final ISubComponent<L, A, M> component);
+
 }

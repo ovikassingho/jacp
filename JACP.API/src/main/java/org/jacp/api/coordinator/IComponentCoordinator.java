@@ -18,6 +18,7 @@
 package org.jacp.api.coordinator;
 
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * Notifies the components included in perspective.
@@ -46,5 +47,12 @@ public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
      * @param component
      */
     void removeComponent(final ISubComponent<L, A, M> component);
+    
+	
+	/**
+	 * returns associated perspective
+	 * @return
+	 */
+	IPerspective<L, A, M> getParentPerspective();
 
 }

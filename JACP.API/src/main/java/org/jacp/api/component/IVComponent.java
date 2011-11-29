@@ -17,10 +17,8 @@
  */
 package org.jacp.api.component;
 
-import java.util.Map;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.componentLayout.Layout;
 
 /**
  * Represents an UI component handled by a perspective. A IVComponent is an // *

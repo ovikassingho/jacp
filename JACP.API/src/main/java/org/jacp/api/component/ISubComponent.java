@@ -48,19 +48,6 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void setExecutionTarget(final String target);
 
-	/**
-	 * Set the responsible perspective.
-	 * 
-	 * @param perspective
-	 */
-	void setParentPerspective(final IPerspective<L, A, M> perspective);
-
-	/**
-	 * Returns the responsible perspective.
-	 * 
-	 * @return the parent perspective of 
-	 */
-	IPerspective<L, A, M> getParentPerspective();
 
 	/**
 	 * Returns true if component has message in pipe.
