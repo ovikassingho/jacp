@@ -1,4 +1,6 @@
-25. Nov. 2001 - amo -  FX2Pwerspective Coordinator fixed when component was delegate to new perspective the initialization sequence was wrong (see bug 24.Nov); now the standard init sequence is used and an init message is send
+29. Nov. 2001 - amo -  update, see changes in API; renamed BG components 
+25. Nov. 2001 - amo -  bug removed, solved with previous changes 
+25. Nov. 2001 - amo -  FX2Perspective Coordinator fixed when component was delegate to new perspective the initialization sequence was wrong (see bug 24.Nov); now the standard init sequence is used and an init message is send
 25. Nov. 2001 - amo -  removed bug where removed components and the return node were reactivated when perspective was changed; fixed by checking if component is active
 24. Nov. 2001 - amo -  bug found when component changed execution target to an other perspective; returned (root)Node is reused from "old" perspectve so that all actions do not fin a local target becose they are related to the observer of the old perspective. see TODO for more details. 
 24. Nov. 2001 - amo -  changed FX2ComponentRelpaceWorker, changed behavior when component change execution target; split methods in *LocalTargerChange and PerspectiveChange.

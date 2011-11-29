@@ -24,7 +24,7 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.IBGComponent;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.javafx2.rcp.action.FX2Action;
 
 /**
@@ -34,24 +34,23 @@ import org.jacp.javafx2.rcp.action.FX2Action;
  * 
  */
 public class StateLessComponentRunWorker extends
-		AFX2ComponentWorker<IBGComponent<EventHandler<Event>, Event, Object>> {
-	private final IBGComponent<EventHandler<Event>, Event, Object> component;
+		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
+	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
 
 	public StateLessComponentRunWorker(
-			final IBGComponent<EventHandler<Event>, Event, Object> component) {
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
 
 	@Override
-	protected IBGComponent<EventHandler<Event>, Event, Object> call()
+	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final IBGComponent<EventHandler<Event>, Event, Object> comp = this.component;
+		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {
 				final IAction<Event, Object> myAction = comp
 						.getNextIncomingMessage();
-				;
 				final Object value = comp.handle(myAction);
 				final String targetId = comp.getHandleTargetAndClear();
 				this.delegateReturnValue(comp, targetId, value);
@@ -69,7 +68,7 @@ public class StateLessComponentRunWorker extends
 	 * @param value
 	 */
 	private void delegateReturnValue(
-			final IBGComponent<EventHandler<Event>, Event, Object> comp,
+			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final String targetId, final Object value) {
 		if (value != null && targetId != null) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp

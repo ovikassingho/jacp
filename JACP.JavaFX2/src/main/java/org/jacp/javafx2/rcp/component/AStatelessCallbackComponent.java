@@ -26,15 +26,15 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.IBGComponent;
-import org.jacp.api.component.IStateLessBGComponent;
+import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IStateLessCallabackComponent;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
-import org.jacp.javafx2.rcp.coordinator.StatelessComponentCoordinator;
+import org.jacp.javafx2.rcp.coordinator.StatelessCallbackCoordinator;
 
 /**
  * represents a abstract stateless background component
@@ -42,8 +42,9 @@ import org.jacp.javafx2.rcp.coordinator.StatelessComponentCoordinator;
  * @author Andy Moncsek
  * 
  */
-public abstract class AStatelessComponent implements
-		IStateLessBGComponent<EventHandler<Event>, Event, Object> {
+
+public abstract class AStatelessCallbackComponent implements
+		IStateLessCallabackComponent<EventHandler<Event>, Event, Object> {
 	private String id;
 	private String target = "";
 	private String name;
@@ -52,7 +53,6 @@ public abstract class AStatelessComponent implements
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
 	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
-	private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
 	private IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> coordinator;
@@ -79,17 +79,6 @@ public abstract class AStatelessComponent implements
 	}
 
 	@Override
-	public void setParentPerspective(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.parentPerspective = perspective;
-	}
-
-	@Override
-	public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
-		return this.parentPerspective;
-	}
-
-	@Override
 	public boolean hasIncomingMessage() {
 		return !this.incomingActions.isEmpty();
 	}
@@ -100,7 +89,7 @@ public abstract class AStatelessComponent implements
 			if (this.launcher == null) {
 				throw new UnsupportedOperationException("no di launcher set");
 			}
-			this.coordinator = new StatelessComponentCoordinator(this,
+			this.coordinator = new StatelessCallbackCoordinator(this,
 					this.launcher);
 		}
 		return this.coordinator;
@@ -190,6 +179,14 @@ public abstract class AStatelessComponent implements
 			ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
+		return this.componentObserver;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -211,7 +208,7 @@ public abstract class AStatelessComponent implements
 	@Override
 	protected final Object clone() {
 		try {
-			final AStatelessComponent comp = (AStatelessComponent) super
+			final AStatelessCallbackComponent comp = (AStatelessCallbackComponent) super
 					.clone();
 			comp.setId(this.id);
 			comp.setActive(this.active);
@@ -219,7 +216,6 @@ public abstract class AStatelessComponent implements
 			comp.setExecutionTarget(this.target);
 			comp.setHandleTarget(this.handleComponentTarget);
 			comp.setObserver(this.componentObserver);
-			comp.setParentPerspective(this.parentPerspective);
 			return comp;
 		} catch (final CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -233,15 +229,14 @@ public abstract class AStatelessComponent implements
 	 * @param comp
 	 * @return
 	 */
-	public final synchronized IBGComponent<EventHandler<Event>, Event, Object> init(
-			final IBGComponent<EventHandler<Event>, Event, Object> comp) {
+	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
+			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
 		comp.setId(this.id);
 		comp.setActive(this.active);
 		comp.setName(this.name);
 		comp.setExecutionTarget(this.target);
 		comp.setHandleTarget(this.handleComponentTarget);
 		comp.setObserver(this.componentObserver);
-		comp.setParentPerspective(this.parentPerspective);
 		return comp;
 	}
 

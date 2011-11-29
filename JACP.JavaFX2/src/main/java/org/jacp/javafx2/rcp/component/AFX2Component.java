@@ -54,7 +54,6 @@ public abstract class AFX2Component implements
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
 	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
-	private IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 
 	/**
 	 * {@inheritDoc}
@@ -88,23 +87,7 @@ public abstract class AFX2Component implements
 		this.target = target;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final void setParentPerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.parentPerspective = perspective;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() {
-		return this.parentPerspective;
-	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -162,12 +145,9 @@ public abstract class AFX2Component implements
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
-				this.getCoordinator());
+				this.getObserver());
 	}
 	
-	private ICoordinator<EventHandler<Event>, Event, Object>  getCoordinator(){
-		return this.componentObserver;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -246,6 +226,14 @@ public abstract class AFX2Component implements
 	public final void setObserver(
 			final ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.componentObserver = observer;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
+		return this.componentObserver;
 	}
 
 	@Override

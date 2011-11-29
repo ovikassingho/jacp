@@ -33,7 +33,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.IBGComponent;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ILayoutAbleComponent;
 import org.jacp.api.component.ISubComponent;
@@ -46,8 +46,8 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.component.AFX2Component;
-import org.jacp.javafx2.rcp.component.AStateComponent;
-import org.jacp.javafx2.rcp.component.AStatelessComponent;
+import org.jacp.javafx2.rcp.component.ACallbackComponent;
+import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentCoordinator;
@@ -154,7 +154,6 @@ public abstract class AFX2Perspective implements
 		this.log("register component: " + component.getId());
 		this.componentHandler.addComponent(component);
 		this.subcomponents.add(component);
-		component.setParentPerspective(this);
 
 	}
 
@@ -164,7 +163,6 @@ public abstract class AFX2Perspective implements
 		this.log("unregister component: " + component.getId());
 		this.componentHandler.removeComponent(component);
 		this.subcomponents.remove(component);
-		component.setParentPerspective(null);
 	}
 
 	@Override
@@ -221,17 +219,17 @@ public abstract class AFX2Perspective implements
 					((AFX2Component) component), this.layout, action);
 			this.executor.execute(tmp);
 		}// if END
-		else if (component instanceof AStateComponent) {
+		else if (component instanceof ACallbackComponent) {
 			this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
 			this.putMessageToQueue(component, action);
-			this.runStateComponent(action, ((AStateComponent) component));
+			this.runStateComponent(action, ((ACallbackComponent) component));
 		}// else if END
-		else if (component instanceof AStatelessComponent) {
+		else if (component instanceof AStatelessCallbackComponent) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
-			((AStatelessComponent) component).setLauncher(this.launcher);
-			((AStatelessComponent) component).addMessage(action);
+			((AStatelessCallbackComponent) component).setLauncher(this.launcher);
+			((AStatelessCallbackComponent) component).addMessage(action);
 		}// else if END
 
 	}
@@ -345,6 +343,14 @@ public abstract class AFX2Perspective implements
 			ICoordinator<EventHandler<Event>, Event, Object> observer) {
 		this.perspectiveObserver = observer;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
+		return this.perspectiveObserver;
+	}
 
 	@Override
 	public final void setId(String id) {
@@ -387,7 +393,7 @@ public abstract class AFX2Perspective implements
 	 * @param component
 	 */
 	private final void runStateComponent(final IAction<Event, Object> action,
-			final IBGComponent<EventHandler<Event>, Event, Object> component) {
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.executor.execute(new StateComponentRunWorker(component));
 	}
 
@@ -422,13 +428,13 @@ public abstract class AFX2Perspective implements
 			this.putMessageToQueue(component, action);
 			this.runFXComponent(perspectiveLayout, component, layout);
 
-		} else if (component instanceof AStateComponent) {
+		} else if (component instanceof ACallbackComponent) {
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.putMessageToQueue(component, action);
-			this.runStateComponent(action, ((AStateComponent) component));
-		} else if (component instanceof AStatelessComponent) {
+			this.runStateComponent(action, ((ACallbackComponent) component));
+		} else if (component instanceof AStatelessCallbackComponent) {
 			this.log("RUN STATELESS COMPONENTS:::" + component.getName());
-			((AStatelessComponent) component).addMessage(action);
+			((AStatelessCallbackComponent) component).addMessage(action);
 		}
 
 	}
