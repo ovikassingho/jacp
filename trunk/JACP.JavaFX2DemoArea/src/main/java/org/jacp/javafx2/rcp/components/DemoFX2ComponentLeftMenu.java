@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -49,6 +50,10 @@ public class DemoFX2ComponentLeftMenu extends AFX2Component {
 		}
 		accordion.getPanes().addAll(tps);
 		accordion.setExpandedPane(tps.get(0));
+
+		GridPane.setHgrow(accordion, Priority.ALWAYS);
+		GridPane.setVgrow(accordion, Priority.ALWAYS);
+
 		return accordion;
 
 	}

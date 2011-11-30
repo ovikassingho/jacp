@@ -3,6 +3,8 @@ package org.jacp.javafx2.rcp.components;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import net.miginfocom.layout.CC;
@@ -38,6 +40,9 @@ public class DemoFX2ComponentMainContent extends AFX2Component {
 			x++;
 		}
 
+		mainContent.setStyle("-fx-background-color: blue;");
+		GridPane.setHgrow(mainContent, Priority.ALWAYS);
+		GridPane.setVgrow(mainContent, Priority.ALWAYS);
 		return mainContent;
 	}
 
