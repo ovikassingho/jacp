@@ -10,7 +10,9 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import net.miginfocom.layout.CC;
 
 import org.jacp.api.action.IAction;
@@ -49,19 +51,25 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		 * 
 		 */
 
-		MigPane mainLayout = new MigPane("fill");
+		MigPane mainLayout = new MigPane("debug,fill");
 
 		// register left button menu
-		Node leftMenu = perspectiveLayout
-				.registerTargetLayoutComponent("PleftMenu");
+		GridPane leftMenu = new GridPane();
+
+		perspectiveLayout.registerTargetLayoutComponent("PleftMenu", leftMenu);
 
 		// register main content
-		Node mainContent = perspectiveLayout
-				.registerTargetLayoutComponent("PmainContent");
+
+		GridPane mainContent = new GridPane();
+		mainContent.setStyle("-fx-background-color:yellow;");
+		perspectiveLayout.registerTargetLayoutComponent("PmainContent",
+				mainContent);
 
 		// Breadcrumb (top Component)
-		Node breadCrumbBar = perspectiveLayout
-				.registerTargetLayoutComponent("PBreadCrumb");
+		GridPane breadCrumbBar = new GridPane();
+
+		perspectiveLayout.registerTargetLayoutComponent("PBreadCrumb",
+				breadCrumbBar);
 		mainLayout.add(breadCrumbBar, new CC().dockNorth().growX());
 
 		SplitPane splitPane = new SplitPane();
@@ -79,8 +87,10 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		// Bottom Picture Bar (bottom)
 
-		Node bottomBar = perspectiveLayout
-				.registerTargetLayoutComponent("PbottomBar");
+		GridPane bottomBar = new GridPane();
+
+		perspectiveLayout
+				.registerTargetLayoutComponent("PbottomBar", bottomBar);
 		mainLayout.add(bottomBar, new CC().dockSouth());
 		bottomBar.setStyle("-fx-border-color: black;");
 
@@ -93,7 +103,8 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		// Register all Components
 		perspectiveLayout.setRootComponent(mainLayout);
 		// register breadcrumb
-
+		GridPane.setHgrow(mainLayout, Priority.ALWAYS);
+		GridPane.setVgrow(mainLayout, Priority.ALWAYS);
 		// register bottom Picture Bar
 
 	}

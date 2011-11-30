@@ -32,6 +32,7 @@ public class DemoFX2ComponentBreadCrumb extends AFX2Component {
 		box.setMaxWidth(Double.MAX_VALUE);
 		box.setId("page-toolbar");
 		box.getChildren().addAll(bar);
+		GridPane.setHgrow(box, Priority.ALWAYS);
 		return box;
 	}
 

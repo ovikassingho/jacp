@@ -3,6 +3,7 @@ package org.jacp.javafx2.rcp.components;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.effect.Reflection;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -38,6 +39,9 @@ public class DemoFX2ComponentBottomBar extends AFX2Component {
 			x++;
 
 		}
+
+		GridPane.setHgrow(bottom, Priority.ALWAYS);
+		GridPane.setVgrow(bottom, Priority.ALWAYS);
 		return bottom;
 
 	}
