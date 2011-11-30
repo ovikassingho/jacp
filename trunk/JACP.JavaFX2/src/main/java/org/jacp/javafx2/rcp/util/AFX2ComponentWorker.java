@@ -86,8 +86,6 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			uiComponent.setVisible(true);
 			final ObservableList<Node> children = FX2Util
 					.getChildren(validContainer);
-			GridPane.setHgrow(uiComponent, Priority.ALWAYS);
-			GridPane.setVgrow(uiComponent, Priority.ALWAYS);
 			children.add(uiComponent);
 		}
 

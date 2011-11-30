@@ -285,8 +285,6 @@ public abstract class AFX2Workbench
 			final ObservableList<Node> children = this.root.getChildren();
 			hideChildren(children);
 			GridPane.setConstraints(comp, 0, 0);
-			GridPane.setHgrow(comp, Priority.ALWAYS);
-			GridPane.setVgrow(comp, Priority.ALWAYS);
 			children.add(comp);
 		}
 	}

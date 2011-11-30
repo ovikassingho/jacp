@@ -54,15 +54,8 @@ public class FX2PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 	}
 
 	@Override
-	public Node registerTargetLayoutComponent(String id, Node target) {
+	public void registerTargetLayoutComponent(String id, Node target) {
 		this.targetComponents.put(id, target);
-		return target;
-	}
-
-	@Override
-	public Node registerTargetLayoutComponent(String id) {
-		GridPane container = new GridPane();
-		return this.registerTargetLayoutComponent(id, container);
 	}
 
 }
