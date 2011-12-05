@@ -18,9 +18,11 @@
 package org.jacp.api.perspective;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
@@ -51,7 +53,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * 
 	 * @param launcher
 	 */
-	void init(final Launcher<?> launcher);
+	void init(final Launcher<?> launcher,final BlockingQueue<IDelegateDTO<L, A, M>> queue);
 
 	/**
 	 * Returns all subcomponents in perspective.
@@ -99,7 +101,6 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void delegateComponentMassege(final String target,
 			final IAction<A, M> action);
-
 	/**
 	 * Delegates message to responsible perspectiveObserver to notify target
 	 * perspective, check if message is local (message to component it self) or

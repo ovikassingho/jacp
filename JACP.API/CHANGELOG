@@ -1,7 +1,8 @@
+05. Dez. 2011 - amo - introduced IComponentDelegator and IDelegator to extract delegate methods from coordinator, removed circular dependency between components and coordinator
 29. Nov. 2011 - amo - changed dependencies between observer, component and perspective; renamed BG components to "callback".
 23. Nov. 2011 - amo - renamed method isActivated to isStarted in ISubcomponent; method name sounds like isActive, to avoid mistakes method renamed
 22. Nov. 2011 - amo - Menu handling removed from IWorkbench
-21. Nov. 2001 - amo - IBaseLayout introduced to hold reference to menu and toolbars; API changes caused by IBaseLayout
+21. Nov. 2011 - amo - IBaseLayout introduced to hold reference to menu and toolbars; API changes caused by IBaseLayout
 17. Nov. 2011 - amo - removed dependency to workbench style, changed to Enum
 17. Nov. 2011 - amo - removed dependency to layoutManager definition in WorkbenchLayout
 17. Nov. 2011 - amo - postHandle method introduced in IVComponent, this method should ensure that UI components are handled in main application thread 
