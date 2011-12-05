@@ -28,7 +28,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -44,6 +43,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
+import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
@@ -53,6 +53,7 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
+import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 import org.jacp.javafx2.rcp.util.FX2Util;
@@ -71,6 +72,7 @@ public abstract class AFX2Workbench
 	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveHandler = new FX2PerspectiveCoordinator(
 			this);
+	private final IComponentDelegator<EventHandler<Event>, Event, Object> delegator = new FX2ComponentDelegator(this);
 	private final IWorkbenchLayout<Node> workbenchLayout = new FX2WorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
@@ -85,6 +87,7 @@ public abstract class AFX2Workbench
 	/**
 	 * {@inheritDoc}
 	 */
+	// TODO init method also defined in perspective!!!!
 	public void init(Launcher<?> launcher) {
 		this.launcher = launcher;
 
@@ -106,6 +109,7 @@ public abstract class AFX2Workbench
 				// failure and restarts if needed!!
 				((FX2PerspectiveCoordinator) AFX2Workbench.this.perspectiveHandler)
 						.start();
+				((FX2ComponentDelegator)AFX2Workbench.this.delegator).start();
 				// init toolbar instance
 				AFX2Workbench.this.log("3.2: workbench tool bars");
 				// initToolBars();
@@ -196,9 +200,10 @@ public abstract class AFX2Workbench
 	 * {@inheritDoc}
 	 */
 	public final void registerComponent(
-			final IPerspective<EventHandler<Event>, Event, Object> component) {
-		component.init(this.launcher);
-		this.perspectiveHandler.addPerspective(component);
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		perspective.init(this.launcher,this.delegator.getDelegateQueue());
+		this.perspectiveHandler.addPerspective(perspective);
+		this.delegator.addPerspective(perspective);
 	}
 
 	@Override
@@ -206,8 +211,9 @@ public abstract class AFX2Workbench
 	 * {@inheritDoc}
 	 */
 	public final void unregisterComponent(
-			final IPerspective<EventHandler<Event>, Event, Object> component) {
-		this.perspectiveHandler.removePerspective(component);
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		this.perspectiveHandler.removePerspective(perspective);
+		this.delegator.removePerspective(perspective);
 	}
 
 	@Override

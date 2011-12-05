@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.component.IVComponent;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * Handles ui return value of component and add to correct perspective target
@@ -37,16 +38,18 @@ public class FX2ComponentAddWorker
 
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
+	private final IPerspective<EventHandler<Event>, Event, Object> parent;
 
 	public FX2ComponentAddWorker(
-			final Map<String, Node> targetComponents,
+			final Map<String, Node> targetComponents,final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
 		this.targetComponents = targetComponents;
 		this.component = component;
+		this.parent = parent;
 	}
 	
 	public FX2ComponentAddWorker() {
-		this(null,null);
+		this(null,null,null);
 	}
 
 	@Override
@@ -59,15 +62,15 @@ public class FX2ComponentAddWorker
 	public final void done() {
 		this.component.setExecutionTarget(this
 				.getTargetComponentId(this.component.getExecutionTarget()));
-		this.handleNewComponentValue(this.component, this.targetComponents,
+		this.handleNewComponentValue(this.parent,this.component, this.targetComponents,
 				null, "");
 	}
 	
-	public void handleInApplicationThread(final Map<String, Node> targetComponents,
+	public void handleInApplicationThread(final Map<String, Node> targetComponents,final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
 		component.setExecutionTarget(this
 				.getTargetComponentId(component.getExecutionTarget()));
-		this.handleNewComponentValue(component, targetComponents,
+		this.handleNewComponentValue(parent,component, targetComponents,
 				null, "");
 	}
 }

@@ -29,6 +29,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
+import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
@@ -48,16 +49,19 @@ public class FX2ComponentReplaceWorker
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 	private final FX2ComponentLayout layout;
+	private final IPerspective<EventHandler<Event>, Event, Object> parent;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public FX2ComponentReplaceWorker(
 			final Map<String, Node> targetComponents,
+			final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.layout = layout;
+		this.parent = parent;
 	}
 
 	@Override
@@ -121,10 +125,10 @@ public class FX2ComponentReplaceWorker
 				} else {
 					// unregister component
 					FX2ComponentReplaceWorker.this.removeComponentValue(
-							component, previousContainer,layout);
+							component, previousContainer, layout);
 					// run teardown
-					if(component instanceof AFX2Component) {
-						((AFX2Component)component).onTearDownComponent(layout);
+					if (component instanceof AFX2Component) {
+						((AFX2Component) component).onTearDownComponent(layout);
 					}
 				}
 				// release lock
@@ -135,9 +139,9 @@ public class FX2ComponentReplaceWorker
 
 	private void removeComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer,final FX2ComponentLayout layout) {
+			final Node previousContainer, final FX2ComponentLayout layout) {
 		if (previousContainer != null) {
-			final Node parent = previousContainer.getParent();			
+			final Node parent = previousContainer.getParent();
 			if (parent != null) {
 				handleOldComponentRemove(parent, previousContainer);
 			}
@@ -159,9 +163,10 @@ public class FX2ComponentReplaceWorker
 			final String currentTaget) {
 		if (previousContainer != null) {
 			this.executePostHandle(component, action);
-			this.removeOldComponentValue(component, previousContainer,currentTaget);
+			this.removeOldComponentValue(component, previousContainer,
+					currentTaget);
 			this.addNewComponentValue(component, previousContainer,
-					currentTaget,layout);
+					currentTaget, layout);
 
 		}
 	}
@@ -171,10 +176,11 @@ public class FX2ComponentReplaceWorker
 	 */
 	private void removeOldComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer,final String currentTaget) {
+			final Node previousContainer, final String currentTaget) {
 		final Node root = component.getRoot();
 		// avoid remove/add when root component did not changed!
-		if (!currentTaget.equals(component.getExecutionTarget()) || root == null || root != previousContainer) {
+		if (!currentTaget.equals(component.getExecutionTarget())
+				|| root == null || root != previousContainer) {
 			// remove old view
 			removeComponentValue(component, previousContainer, layout);
 		}
@@ -185,27 +191,29 @@ public class FX2ComponentReplaceWorker
 	 */
 	private void addNewComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer, final String currentTaget,final FX2ComponentLayout layout) {
+			final Node previousContainer, final String currentTaget,
+			final FX2ComponentLayout layout) {
 		final Node root = component.getRoot();
-		final Node parent = previousContainer.getParent();
-		if(!currentTaget.equals(component.getExecutionTarget())) {
+		final Node parentNode = previousContainer.getParent();
+		if (!currentTaget.equals(component.getExecutionTarget())) {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
 			final Node validContainer = this.getValidContainerById(
 					targetComponents, validId);
 			if (validContainer != null) {
-				handleLocalTargetChange(component, targetComponents, validContainer);
+				handleLocalTargetChange(component, targetComponents,
+						validContainer);
 			} else {
-				handlePerspectiveChange(component, targetComponents, validId, layout);
+				handlePerspectiveChange(this.parent, component, layout);
 			}
 		} else if (root != null && root != previousContainer) {
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
 			root.setVisible(true);
-			this.handleNewComponentValue(component, this.targetComponents,
-					parent, currentTaget);
-		}  
+			this.handleNewComponentValue(this.parent, component,
+					this.targetComponents, parentNode, currentTaget);
+		}
 
 	}
 

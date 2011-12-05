@@ -28,10 +28,8 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStateLessCallabackComponent;
-import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.launcher.Launcher;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.coordinator.StatelessCallbackCoordinator;
@@ -52,10 +50,11 @@ public abstract class AStatelessCallbackComponent implements
 	private volatile boolean active = true;
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
+	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
 	private IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> coordinator;
+
 	private Launcher<?> launcher;
 
 	@Override
@@ -129,7 +128,7 @@ public abstract class AStatelessCallbackComponent implements
 	@Override
 	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
-				this.componentObserver);
+				this.globalMessageQueue);
 	}
 
 	@Override
@@ -174,19 +173,14 @@ public abstract class AStatelessCallbackComponent implements
 
 	}
 
-	@Override
-	public void setObserver(
-			ICoordinator<EventHandler<Event>, Event, Object> observer) {
-		this.componentObserver = observer;
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
-		return this.componentObserver;
+	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
+		this.globalMessageQueue = messageQueue;
 	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -215,7 +209,7 @@ public abstract class AStatelessCallbackComponent implements
 			comp.setName(this.name);
 			comp.setExecutionTarget(this.target);
 			comp.setHandleTarget(this.handleComponentTarget);
-			comp.setObserver(this.componentObserver);
+			comp.setMessageQueue(this.globalMessageQueue);
 			return comp;
 		} catch (final CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -236,7 +230,7 @@ public abstract class AStatelessCallbackComponent implements
 		comp.setName(this.name);
 		comp.setExecutionTarget(this.target);
 		comp.setHandleTarget(this.handleComponentTarget);
-		comp.setObserver(this.componentObserver);
+		comp.setMessageQueue(this.globalMessageQueue);
 		return comp;
 	}
 

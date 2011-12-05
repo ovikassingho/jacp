@@ -20,6 +20,7 @@ package org.jacp.javafx2.rcp.perspective;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,13 +35,14 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ILayoutAbleComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
-import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.api.coordinator.IDalegator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
@@ -50,6 +52,7 @@ import org.jacp.javafx2.rcp.component.ACallbackComponent;
 import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
+import org.jacp.javafx2.rcp.coordinator.DelegateDTO;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentCoordinator;
 import org.jacp.javafx2.rcp.util.FX2ComponentAddWorker;
 import org.jacp.javafx2.rcp.util.FX2ComponentInitWorker;
@@ -77,9 +80,9 @@ public abstract class AFX2Perspective implements
 	private final IComponentCoordinator<EventHandler<Event>, Event, Object> componentHandler = new FX2ComponentCoordinator(
 			this);
 	private final FX2ComponentAddWorker addWorker = new FX2ComponentAddWorker();
-	private ICoordinator<EventHandler<Event>, Event, Object> perspectiveObserver;
+	private BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> queue;
 	private FX2ComponentLayout layout;
-
+	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FX2PerspectiveLayout();
 	private final ExecutorService executor = Executors
 			.newFixedThreadPool(AFX2Perspective.MAX_INCTANCE_COUNT);
@@ -92,8 +95,9 @@ public abstract class AFX2Perspective implements
 	}
 
 	@Override
-	public final void init(Launcher<?> launcher) {
+	public final void init(Launcher<?> launcher, final  BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> queue) {
 		this.launcher = launcher;
+		this.queue=queue;
 		((FX2ComponentCoordinator) this.componentHandler).start();
 
 	}
@@ -279,7 +283,7 @@ public abstract class AFX2Perspective implements
 			// unregister component in current perspective
 			this.unregisterComponent(component);
 			// delegate to perspective observer
-			this.perspectiveObserver.delegateTargetChange(target, component);
+			queue.add(new DelegateDTO(target, component));
 
 		}
 
@@ -288,19 +292,19 @@ public abstract class AFX2Perspective implements
 	@Override
 	public final void delegateComponentMassege(String target,
 			IAction<Event, Object> action) {
-		this.componentHandler.delegateMessage(target, action);
+		((IDalegator<EventHandler<Event>, Event, Object>)componentHandler).delegateMessage(target, action);
 	}
 
 	@Override
 	public final void delegateMassege(String target,
 			IAction<Event, Object> action) {
-		this.perspectiveObserver.delegateMessage(target, action);
+		queue.add(new DelegateDTO(target, action));
 	}
 
 	@Override
 	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
-				this.perspectiveObserver);
+				this.globalMessageQueue);
 	}
 
 	@Override
@@ -338,19 +342,6 @@ public abstract class AFX2Perspective implements
 		this.name = name;
 	}
 
-	@Override
-	public final void setObserver(
-			ICoordinator<EventHandler<Event>, Event, Object> observer) {
-		this.perspectiveObserver = observer;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
-		return this.perspectiveObserver;
-	}
 
 	@Override
 	public final void setId(String id) {
@@ -373,6 +364,14 @@ public abstract class AFX2Perspective implements
 		this.registerSubcomponents(subComponents);
 
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
+		this.globalMessageQueue = messageQueue;
+	}
 
 	/**
 	 * set component blocked and add message to queue
@@ -394,7 +393,7 @@ public abstract class AFX2Perspective implements
 	 */
 	private final void runStateComponent(final IAction<Event, Object> action,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-		this.executor.execute(new StateComponentRunWorker(component));
+		this.executor.execute(new StateComponentRunWorker(this,component));
 	}
 
 	/**
@@ -408,7 +407,7 @@ public abstract class AFX2Perspective implements
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		this.executor.execute(new FX2ComponentReplaceWorker(perspectiveLayout
-				.getTargetLayoutComponents(), ((AFX2Component) component),
+				.getTargetLayoutComponents(),this, ((AFX2Component) component),
 				layout));
 	}
 
@@ -448,7 +447,7 @@ public abstract class AFX2Perspective implements
 	 */
 	private void addComponentUIValue(final Map<String, Node> targetComponents,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		addWorker.handleInApplicationThread(targetComponents,
+		addWorker.handleInApplicationThread(targetComponents,this,
 				((AFX2Component) component));
 	}
 

@@ -44,6 +44,7 @@ public class FX2ComponentLayout implements IBaseLayout<Node> {
 		this.registeredToolBars = registeredToolBars;
 	}
 
+	@Override
 	public ToolBar getRegisteredToolBar(ToolbarPosition position) {
 		return this.registeredToolBars.get(position);
 	}
