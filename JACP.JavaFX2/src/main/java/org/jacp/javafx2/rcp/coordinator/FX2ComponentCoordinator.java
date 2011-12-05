@@ -27,6 +27,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.coordinator.IDalegator;
 import org.jacp.api.perspective.IPerspective;
 
 /**
@@ -35,7 +36,7 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  */
 public class FX2ComponentCoordinator extends AFX2Coordinator implements
-		IComponentCoordinator<EventHandler<Event>, Event, Object> {
+		IComponentCoordinator<EventHandler<Event>, Event, Object>, IDalegator<EventHandler<Event>, Event, Object> {
 
 	private List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
 	private final IPerspective<EventHandler<Event>, Event, Object> perspective;
@@ -50,14 +51,14 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	@Override
 	public void addComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		component.setObserver(this);
+		component.setMessageQueue(this.getMessages()); 
 		this.components.add(component);
 	}
 
 	@Override
 	public void removeComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		component.setObserver(null);
+		component.setMessageQueue(null);		
 		this.components.remove(component);
 
 	}
@@ -169,6 +170,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	 * returns associated perspective
 	 * @return
 	 */
+	@Override
 	public final IPerspective<EventHandler<Event>, Event, Object> getParentPerspective(){
 		return this.perspective;
 	}

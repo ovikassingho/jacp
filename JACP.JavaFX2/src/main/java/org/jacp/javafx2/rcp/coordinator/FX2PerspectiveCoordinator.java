@@ -27,11 +27,9 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
-import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
-import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
 /**
@@ -110,48 +108,11 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		} // End if
 		else {
 			// delegate to addressed component
-			perspective.delegateComponentMassege(target, action);
+			perspective.delegateMassege(target, action);
 		} // End else
 	}
 
-	@Override
-	public void delegateMessage(final String target,
-			final IAction<Event, Object> action) {
-		// Find local Target; if target is perspective handle target or
-		// delegate
-		// message to responsible component observer
-		if (this.isLocalMessage(target)) {
-			this.handleMessage(target, action);
-		} // End if
-		else {
-			this.callComponentDelegate(target, action);
-		} // End else
-	}
-
-	/**
-	 * delegate to responsible componentObserver in correct perspective
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	private void callComponentDelegate(final String target,
-			final IAction<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = this
-				.getObserveableById(this.getTargetPerspectiveId(target),
-						this.perspectives);
-		// TODO REMOVE null handling... use DUMMY instead (maybe like
-		// Collections.EMPTY...)
-		if (perspective != null) {
-			if (!perspective.isActive()) {
-				this.handleInActive(perspective, action);
-			} // End inner if
-			else {
-				perspective.delegateComponentMassege(target, action);
-			} // End else
-
-		} // End if
-
-	}
+	
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
@@ -183,63 +144,19 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		});
 	}
 
-	@Override
-	public void delegateTargetChange(final String target,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		// find responsible perspective
-		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = this
-				.getObserveableById(this.getTargetPerspectiveId(target),
-						this.perspectives);
-		// find correct target in perspective
-		if (responsiblePerspective != null) {
-			this.handleTargetHit(responsiblePerspective, component);
-
-		} // End if
-		else {
-			this.handleTargetMiss();
-		} // End else
-	}
-
-	/**
-	 * handle component delegate when target was found
-	 * 
-	 * @param responsiblePerspective
-	 * @param component
-	 */
-	private void handleTargetHit(
-			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (!responsiblePerspective.isActive()) {
-			// 1. init perspective (do not register component before perspective
-			// is active, otherwise component will be handled once again)
-			this.handleInActive(responsiblePerspective,
-					new FX2Action(responsiblePerspective.getId(),
-							responsiblePerspective.getId(), "init"));
-		} // End if
-		responsiblePerspective.registerComponent(component);
-		responsiblePerspective.initComponent(new FX2Action(component.getId(), component.getId(),
-		"init"), component);
-	}
-
-	/**
-	 * handle component delegate when no target found
-	 */
-	private void handleTargetMiss() {
-		throw new UnsupportedOperationException(
-				"No responsible perspective found. Handling not implemented yet.");
-	}
+	
 
 	@Override
 	public void addPerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.setObserver(this);
+		perspective.setMessageQueue(this.getMessages());
 		this.perspectives.add(perspective);
 	}
 
 	@Override
 	public void removePerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.setObserver(null);
+		perspective.setMessageQueue(null);
 		this.perspectives.remove(perspective);
 	}
 

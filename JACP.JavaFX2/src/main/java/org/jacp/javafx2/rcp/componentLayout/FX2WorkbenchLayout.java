@@ -106,6 +106,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 		return registeredToolbars;
 	}
 
+	@Override
 	public ToolBar getRegisteredToolBar(ToolbarPosition position) {
 		return registeredToolbars.get(position);
 	}

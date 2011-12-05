@@ -27,15 +27,13 @@ import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IActionListener;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.coordinator.IComponentCoordinator;
-import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
@@ -104,6 +102,24 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 		final ObservableList<Node> children = FX2Util.getChildren(parent);
 		children.remove(currentContainer);
 	}
+	
+	/**
+	 * delegate components handle return value to specified target
+	 * 
+	 * @param comp
+	 * @param targetId
+	 * @param value
+	 */
+	protected void delegateReturnValue(
+			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+			final String targetId, final Object value,final IAction<Event, Object> myAction) {
+		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
+			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
+					.getActionListener();
+			listener.setAction(new FX2Action(comp.getId(), targetId, value));
+			listener.notifyComponents(listener.getAction());
+		}
+	}
 
 	/**
 	 * set new ui component to parent ui component, be careful! call this method
@@ -113,20 +129,20 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentTaget
 	 */
-	protected void handleNewComponentValue(
+	protected void handleNewComponentValue(final IPerspective<EventHandler<Event>, Event, Object> parentPersp,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node parent,
 			final String currentTaget) {
 		if (parent == null) {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
-			this.handleTargetChange(component, targetComponents, validId);
+			this.handleTargetChange(parentPersp,component, targetComponents, validId);
 		} else if (currentTaget.equals(component.getExecutionTarget())) {
 			this.addComponentByType(parent, component);
 		} else {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
-			this.handleTargetChange(component, targetComponents, validId);
+			this.handleTargetChange(parentPersp,component, targetComponents, validId);
 		}
 	}
 
@@ -150,7 +166,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param targetComponents
 	 */
-	protected void handleTargetChange(
+	protected void handleTargetChange(final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
@@ -159,7 +175,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			handleLocalTargetChange(component, targetComponents, validContainer);
 		} else {
 			// handle target outside current perspective
-			this.changeComponentTarget(component);
+			this.changeComponentTarget(parent,component);
 		}
 	}
 
@@ -182,9 +198,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param target
 	 * @param layout
 	 */
-	protected void handlePerspectiveChange(
+	protected void handlePerspectiveChange(final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Map<String, Node> targetComponents, final String target,
 			final FX2ComponentLayout layout) {
 		// target component not found in current perspective, move to an other
 		// perspective
@@ -193,7 +208,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			((AFX2Component) component).onTearDownComponent(layout);
 		}
 		// handle target outside current perspective
-		this.changeComponentTarget(component);
+		this.changeComponentTarget(parent,component);
 	}
 
 	/**
@@ -201,16 +216,10 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected final void changeComponentTarget(
+	protected final void changeComponentTarget(IPerspective<EventHandler<Event>, Event, Object> parent,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final ICoordinator<EventHandler<Event>, Event, Object> observer = component
-				.getObserver();
-		if (observer instanceof IComponentCoordinator) {
-			IPerspective<EventHandler<Event>, Event, Object> parent = ((IComponentCoordinator<EventHandler<Event>, Event, Object>) observer)
-					.getParentPerspective();
-			parent.delegateTargetChange(component.getExecutionTarget(),
-					component);
-		}
+		parent.delegateTargetChange(component.getExecutionTarget(),
+				component);
 	}
 
 	/**

@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
-
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 
 /**

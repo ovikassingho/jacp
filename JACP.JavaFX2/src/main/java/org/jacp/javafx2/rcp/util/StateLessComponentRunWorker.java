@@ -23,9 +23,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.javafx2.rcp.action.FX2Action;
 
 /**
  * this class handles running stateless background components
@@ -33,7 +31,8 @@ import org.jacp.javafx2.rcp.action.FX2Action;
  * @author Andy Moncsek
  * 
  */
-public class StateLessComponentRunWorker extends
+public class StateLessComponentRunWorker
+		extends
 		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
 
@@ -51,31 +50,14 @@ public class StateLessComponentRunWorker extends
 			while (comp.hasIncomingMessage()) {
 				final IAction<Event, Object> myAction = comp
 						.getNextIncomingMessage();
+				comp.setHandleTarget(myAction.getSourceId());
 				final Object value = comp.handle(myAction);
 				final String targetId = comp.getHandleTargetAndClear();
-				this.delegateReturnValue(comp, targetId, value);
+				this.delegateReturnValue(comp, targetId, value, myAction);
 			}
 			comp.setBlocked(false);
 		}
 		return comp;
-	}
-
-	/**
-	 * delegate components handle return value to specified target
-	 * 
-	 * @param comp
-	 * @param targetId
-	 * @param value
-	 */
-	private void delegateReturnValue(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
-			final String targetId, final Object value) {
-		if (value != null && targetId != null) {
-			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
-					.getActionListener();
-			listener.setAction(new FX2Action(comp.getId(), targetId, value));
-			listener.notifyComponents(listener.getAction());
-		}
 	}
 
 	@Override

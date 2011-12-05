@@ -17,10 +17,13 @@
  */
 package org.jacp.javafx2.rcp.coordinator;
 
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import javafx.event.Event;
@@ -47,6 +50,7 @@ public abstract class AFX2Coordinator extends Thread implements
 	public final void run() {
 		while (!Thread.interrupted()) {
 			this.log(" observer thread size" + this.messages.size());
+			
 			IAction<Event, Object> action = null;
 			try {
 				action = this.messages.take();
@@ -61,7 +65,8 @@ public abstract class AFX2Coordinator extends Thread implements
 			this.log(" observer thread DONE");
 		}
 	}
-
+	
+	
 	/**
 	 * returns cloned action with valid message TODO add to interface
 	 * 
@@ -144,6 +149,12 @@ public abstract class AFX2Coordinator extends Thread implements
 		return null;
 	}
 
+	protected BlockingQueue<IAction<Event, Object>> getMessages() {
+		return messages;
+	}
+	
+	
+	
 	protected void log(final String message) {
 		this.logger.fine(message);
 	}

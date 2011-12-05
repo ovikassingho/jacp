@@ -17,12 +17,13 @@
  */
 package org.jacp.javafx2.rcp.action;
 
+import java.util.concurrent.BlockingQueue;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.coordinator.ICoordinator;
 
 /**
  * This class represents the JACP FX2 Event listener... this class can be
@@ -34,18 +35,17 @@ import org.jacp.api.coordinator.ICoordinator;
 public class FX2ActionListener implements EventHandler<Event>,
 		IActionListener<EventHandler<Event>, Event, Object> {
 	private IAction<Event, Object> action;
-	private final ICoordinator<EventHandler<Event>, Event, Object> coordinator;
+	private final BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
 	public FX2ActionListener(final IAction<Event, Object> action,
-			final ICoordinator<EventHandler<Event>, Event, Object> coordinator) {
+			final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
 		this.action = action;
-		this.coordinator = coordinator;
+		this.globalMessageQueue = globalMessageQueue;
 	}
 
 	@Override
 	public void notifyComponents(IAction<Event, Object> action) {
-		//System.out.println("coordinator: "+coordinator+" action:"+action);
-		this.coordinator.handle(action);
+		this.globalMessageQueue.add(action);
 	}
 
 	@Override

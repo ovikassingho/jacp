@@ -25,6 +25,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 
 /**
@@ -36,10 +37,12 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 public class StateComponentRunWorker extends
 		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
+	private final IPerspective<EventHandler<Event>, Event, Object> parent;
 
-	public StateComponentRunWorker(
+	public StateComponentRunWorker(final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
+		this.parent = parent;
 	}
 
 	@Override
@@ -74,27 +77,11 @@ public class StateComponentRunWorker extends
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
-			this.changeComponentTarget(comp);
+			this.changeComponentTarget(this.parent,comp);
 		}
 	}
 
-	/**
-	 * delegate components handle return value to specified target
-	 * 
-	 * @param comp
-	 * @param targetId
-	 * @param value
-	 */
-	private void delegateReturnValue(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
-			final String targetId, final Object value,final IAction<Event, Object> myAction) {
-		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
-			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
-					.getActionListener();
-			listener.setAction(new FX2Action(comp.getId(), targetId, value));
-			listener.notifyComponents(listener.getAction());
-		}
-	}
+	
 
 	@Override
 	protected final void done() {

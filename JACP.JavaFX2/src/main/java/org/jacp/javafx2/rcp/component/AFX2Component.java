@@ -29,8 +29,6 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IBaseLayout;
-import org.jacp.api.coordinator.ICoordinator;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
@@ -53,7 +51,8 @@ public abstract class AFX2Component implements
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
-	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
+	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+	private volatile BlockingQueue<Boolean> appThreadlock;
 
 	/**
 	 * {@inheritDoc}
@@ -145,7 +144,7 @@ public abstract class AFX2Component implements
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
-				this.getObserver());
+				this.globalMessageQueue);
 	}
 	
 
@@ -223,18 +222,12 @@ public abstract class AFX2Component implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setObserver(
-			final ICoordinator<EventHandler<Event>, Event, Object> observer) {
-		this.componentObserver = observer;
+	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
+		this.globalMessageQueue = messageQueue;
+		this.appThreadlock = appThreadlock;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
-		return this.componentObserver;
-	}
+	
 
 	@Override
 	@SuppressWarnings("unchecked")

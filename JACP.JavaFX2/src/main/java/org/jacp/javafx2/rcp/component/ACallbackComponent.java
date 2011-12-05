@@ -30,9 +30,10 @@ public abstract class ACallbackComponent implements
 	private volatile boolean active;
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-	private ICoordinator<EventHandler<Event>, Event, Object> componentObserver;
+	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
+	private volatile BlockingQueue<Boolean> appThreadlock;
 
 	@Override
 	/**
@@ -107,7 +108,7 @@ public abstract class ACallbackComponent implements
 	 */
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
-				this.componentObserver);
+				this.globalMessageQueue);
 	}
 
 	@Override
@@ -181,23 +182,16 @@ public abstract class ACallbackComponent implements
 		this.name = name;
 	}
 
-	@Override
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void setObserver(
-			ICoordinator<EventHandler<Event>, Event, Object> observer) {
-		this.componentObserver = observer;
-
+	@Override
+	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
+		this.globalMessageQueue = messageQueue;
+		this.appThreadlock = appThreadlock;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final ICoordinator<EventHandler<Event>, Event, Object> getObserver(){
-		return this.componentObserver;
-	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
