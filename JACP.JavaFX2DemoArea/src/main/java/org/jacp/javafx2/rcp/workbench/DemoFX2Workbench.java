@@ -42,8 +42,8 @@ public class DemoFX2Workbench extends AFX2Workbench {
 		layout.setWorkbenchXYSize(1024, 768);
 		// layout.registerToolBar(Layout.NORTH);
 		layout.registerToolBar(ToolbarPosition.NORTH);
-		layout.registerToolBar(ToolbarPosition.EAST);
-		layout.registerToolBar(ToolbarPosition.WEST);
+		//layout.registerToolBar(ToolbarPosition.EAST);
+		//layout.registerToolBar(ToolbarPosition.WEST);
 		layout.registerToolBar(ToolbarPosition.SOUTH);
 		// layout.registerToolBar(Layout.SOUTH);
 		layout.setStyle(StageStyle.DECORATED);

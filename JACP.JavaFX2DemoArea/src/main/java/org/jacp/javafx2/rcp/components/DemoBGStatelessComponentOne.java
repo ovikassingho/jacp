@@ -15,7 +15,7 @@ public class DemoBGStatelessComponentOne extends AStatelessCallbackComponent{
 	public Object handleAction(IAction<Event, Object> action) {
 		System.out.println("message to BG stateless compoent one: >>"+ action.getLastMessage() + "<< in thread"
 				+ Thread.currentThread() + " :: "+ this);
-		return null;
+		return "pong";
 	}
 
 }
