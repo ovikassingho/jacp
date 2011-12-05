@@ -18,7 +18,6 @@
 package org.jacp.api.component;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.perspective.IPerspective;
 
 /**
  * Defines a subcomponent handled by a root component. A subcomponent is running in a perspective environment an can be represented by an visible UI or non visible background component.

@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
-import org.jacp.api.component.ISubComponent;
 
 /**
  * Defines a basic observer for component messages; handles the message and
@@ -51,16 +50,7 @@ public interface ICoordinator<L, A, M> {
 	 */
 	void handleMessage(final String id, final IAction<A, M> action);
 
-	/**
-	 * Delegate message from a subcomponent to target perspective. If no target
-	 * was found for current action in this perspective, delegate the message to
-	 * upper level (the workbench) and try to find the component in an other
-	 * perspective.
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	void delegateMessage(final String target, final IAction<A, M> action);
+
 
 	/**
 	 * Returns a specific, observed perspective or component by id.
@@ -90,13 +80,6 @@ public interface ICoordinator<L, A, M> {
 	<P extends IComponent<L, A, M>> void handleInActive(final P component,
 			final IAction<A, M> action);
 
-	/**
-	 * Delegate the component target change to an other perspective.
-	 * 
-	 * @param target
-	 * @param component
-	 */
-	void delegateTargetChange(final String target,
-			final ISubComponent<L, A, M> component);
+
 
 }

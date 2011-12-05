@@ -17,8 +17,10 @@
  */
 package org.jacp.api.component;
 
+import java.util.concurrent.BlockingQueue;
+
+import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.coordinator.ICoordinator;
 
 /**
  * This Interface represents a very basic component that can exists in JACP
@@ -101,16 +103,11 @@ public interface IComponent<L, A, M> {
 	void setName(String name);
 
 	/**
-	 * Set Observer to handle changes in components.
+	 * Set message queue to component
 	 * 
 	 * @param observer
 	 */
-	void setObserver(final ICoordinator<L, A, M> observer);
+	void setMessageQueue(final BlockingQueue<IAction<A, M>> messageQueue);
 	
-	/**
-	 * returns the currently associated obsever instance.
-	 * @return ICoordinator
-	 */
-	ICoordinator<L, A, M> getObserver();
 
 }
