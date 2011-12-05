@@ -16,7 +16,7 @@ public class DemoBGStatefulComponentOne extends ACallbackComponent{
 		c = c+1;
 		System.out.println("message to BG compoent one: >>"+ action.getLastMessage() + "<< in thread"
 				+ Thread.currentThread() + " counter: " + c+" :: "+ this);
-		return "hello component two";
+		return "pong";
 	}
 
 }
