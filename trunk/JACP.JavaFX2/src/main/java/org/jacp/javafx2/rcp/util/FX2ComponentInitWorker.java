@@ -70,7 +70,7 @@ public class FX2ComponentInitWorker
 			this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 					+ this.component.getName());
 			// expect always local target id
-			component.setExecutionTarget(this.getTargetComponentId(component.getExecutionTarget()));
+			component.setExecutionTarget(FX2Util.getTargetComponentId(component.getExecutionTarget()));
 			final Node validContainer = this.getValidContainerById(
 					this.targetComponents, component.getExecutionTarget());
 			this.log("3.4.4.2.3: subcomponent handle init add component by type: "

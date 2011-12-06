@@ -18,6 +18,7 @@
 package org.jacp.javafx2.rcp.coordinator;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.application.Platform;
@@ -27,9 +28,12 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IDelegateDTO;
+import org.jacp.api.coordinator.IDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
+import org.jacp.javafx2.rcp.util.FX2Util;
 import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
 /**
@@ -45,7 +49,6 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 
 	public FX2PerspectiveCoordinator(
 			final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench) {
-		this.setDaemon(true);
 		this.workbench = workbench;
 	}
 
@@ -53,7 +56,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	public void handleMessage(final String target,
 			final IAction<Event, Object> action) {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = this
-				.getObserveableById(this.getTargetPerspectiveId(target),
+				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
 			final IAction<Event, Object> actionClone = this.getValidAction(
@@ -95,24 +98,29 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	 * @param action
 	 * @param perspective
 	 */
-	private void handleMessageToActivePerspective(final String target,
+	private void handleMessageToActivePerspective(final String targetId,
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		// if perspective already active handle perspective and replace
 		// with newly created layout component in workbench
 		this.log(" //1.1.1.1// perspective HIT handle ACTIVE: "
 				+ action.getTargetId());
-		if (this.isLocalMessage(target)) {
+		if (FX2Util.isLocalMessage(targetId)) {
 			// message is addressing perspective
 			this.handleActive(perspective, action);
 		} // End if
 		else {
 			// delegate to addressed component
-			perspective.delegateMassege(target, action);
+			((IDelegator<EventHandler<Event>, Event, Object>)perspective).delegateMessage(targetId, action);
+			delegateMessageToCorrectPerspective(targetId, action,perspective.getDelegateQueue());
+			
 		} // End else
 	}
-
-	
+	//TODO add to API
+	public final void delegateMessageToCorrectPerspective(String target,
+			IAction<Event, Object> action,BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> queue) {
+		queue.add(new DelegateDTO(target, action));
+	}
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(

@@ -53,7 +53,7 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
-import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
+import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 import org.jacp.javafx2.rcp.util.FX2Util;
@@ -72,7 +72,7 @@ public abstract class AFX2Workbench
 	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveHandler = new FX2PerspectiveCoordinator(
 			this);
-	private final IComponentDelegator<EventHandler<Event>, Event, Object> delegator = new FX2ComponentDelegator(this);
+	private final IComponentDelegator<EventHandler<Event>, Event, Object> delegator = new FX2PerspectiveDelegator(this);
 	private final IWorkbenchLayout<Node> workbenchLayout = new FX2WorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
@@ -109,7 +109,7 @@ public abstract class AFX2Workbench
 				// failure and restarts if needed!!
 				((FX2PerspectiveCoordinator) AFX2Workbench.this.perspectiveHandler)
 						.start();
-				((FX2ComponentDelegator)AFX2Workbench.this.delegator).start();
+				((FX2PerspectiveDelegator)AFX2Workbench.this.delegator).start();
 				// init toolbar instance
 				AFX2Workbench.this.log("3.2: workbench tool bars");
 				// initToolBars();

@@ -60,7 +60,7 @@ public class FX2ComponentAddWorker
 
 	@Override
 	public final void done() {
-		this.component.setExecutionTarget(this
+		this.component.setExecutionTarget(FX2Util
 				.getTargetComponentId(this.component.getExecutionTarget()));
 		this.handleNewComponentValue(this.parent,this.component, this.targetComponents,
 				null, "");
@@ -68,7 +68,7 @@ public class FX2ComponentAddWorker
 	
 	public void handleInApplicationThread(final Map<String, Node> targetComponents,final IPerspective<EventHandler<Event>, Event, Object> parent,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
-		component.setExecutionTarget(this
+		component.setExecutionTarget(FX2Util
 				.getTargetComponentId(component.getExecutionTarget()));
 		this.handleNewComponentValue(parent,component, targetComponents,
 				null, "");

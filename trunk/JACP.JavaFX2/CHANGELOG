@@ -1,3 +1,4 @@
+06. Dez. 2011 - amo -  moved Id checking methods to FX2Util class
 05. Dez. 2011 - amo -  introduced ComponentDelegator to extract delegate methods from coordinator, be careful methods me change!!! Implementation is not final, removed circular dependency
 29. Nov. 2011 - amo -  update, see changes in API; renamed BG components 
 25. Nov. 2011 - amo -  bug removed, solved with previous changes 

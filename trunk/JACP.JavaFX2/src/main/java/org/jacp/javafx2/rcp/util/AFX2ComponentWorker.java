@@ -36,6 +36,7 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
+import org.jacp.javafx2.rcp.coordinator.DelegateDTO;
 
 /**
  * handles component methods in own thread;
@@ -156,7 +157,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected String getValidTargetId(final String currentTaget,
 			final String futureTarget) {
-		return currentTaget.length() < 2 ? this
+		return currentTaget.length() < 2 ? FX2Util
 				.getTargetComponentId(futureTarget) : futureTarget;
 	}
 
@@ -218,8 +219,21 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected final void changeComponentTarget(IPerspective<EventHandler<Event>, Event, Object> parent,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		parent.delegateTargetChange(component.getExecutionTarget(),
-				component);
+		delegateTargetChange(component.getExecutionTarget(),
+				component,parent);
+	}
+	
+	private void delegateTargetChange(String targetId,
+			ISubComponent<EventHandler<Event>, Event, Object> component,IPerspective<EventHandler<Event>, Event, Object> parent) {
+		final String parentId = FX2Util.getTargetParentId(targetId);
+		if (!parent.getId().equals(parentId)) {
+			// unregister component in current perspective
+			parent.unregisterComponent(component);
+			// delegate to perspective observer
+			parent.getDelegateQueue().add(new DelegateDTO(targetId, component));
+
+		}
+
 	}
 
 	/**
@@ -255,39 +269,9 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 		}
 	}
 
-	/**
-	 * returns the message target component id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String getTargetComponentId(final String messageId) {
-		final String[] targetId = this.getTargetId(messageId);
-		if (!this.isLocalMessage(messageId)) {
-			return targetId[1];
-		}
-		return messageId;
-	}
+	
 
-	/**
-	 * when id has no separator it is a local message
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final boolean isLocalMessage(final String messageId) {
-		return !messageId.contains(".");
-	}
-
-	/**
-	 * returns target message with perspective and component name as array
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String[] getTargetId(final String messageId) {
-		return messageId.split("\\.");
-	}
+	
 
 	protected void log(final String message) {
 		if (Logger.getLogger(AFX2ComponentWorker.class.getName()).isLoggable(

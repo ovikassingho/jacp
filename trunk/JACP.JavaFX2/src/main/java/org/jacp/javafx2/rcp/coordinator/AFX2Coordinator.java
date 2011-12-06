@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 import javafx.event.Event;
@@ -82,55 +80,7 @@ public abstract class AFX2Coordinator extends Thread implements
 		return actionClone;
 	}
 
-	/**
-	 * when id has no separator it is a local message // TODO remove code
-	 * duplication
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final boolean isLocalMessage(final String messageId) {
-		return !messageId.contains(".");
-	}
 
-	/**
-	 * returns target message with perspective and component name // TODO remove
-	 * code duplication
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String[] getTargetId(final String messageId) {
-		return messageId.split("\\.");
-	}
-
-	/**
-	 * returns the message target perspective id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String getTargetPerspectiveId(final String messageId) {
-		final String[] targetId = this.getTargetId(messageId);
-		if (!this.isLocalMessage(messageId)) {
-			return targetId[0];
-		}
-		return messageId;
-	}
-
-	/**
-	 * returns the message target component id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String getTargetComponentId(final String messageId) {
-		final String[] targetId = this.getTargetId(messageId);
-		if (!this.isLocalMessage(messageId)) {
-			return targetId[1];
-		}
-		return messageId;
-	}
 
 	@Override
 	public void handle(final IAction<Event, Object> action) {
