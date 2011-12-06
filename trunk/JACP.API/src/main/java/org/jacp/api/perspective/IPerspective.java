@@ -53,7 +53,8 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * 
 	 * @param launcher
 	 */
-	void init(final Launcher<?> launcher,final BlockingQueue<IDelegateDTO<L, A, M>> queue);
+	void init(final Launcher<?> launcher,
+			final BlockingQueue<IDelegateDTO<L, A, M>> queue);
 
 	/**
 	 * Returns all subcomponents in perspective.
@@ -70,7 +71,8 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	void setSubcomponents(final List<ISubComponent<L, A, M>> subComponents);
 
 	/**
-	 * Handle a message call on perspective instance. This method should be override to handle the layout of an perspective.
+	 * Handle a message call on perspective instance. This method should be
+	 * override to handle the layout of an perspective.
 	 * 
 	 * @param action
 	 */
@@ -84,31 +86,20 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	void addActiveComponent(final ISubComponent<L, A, M> component);
 
 	/**
-	 * Delegate target change to an other perspective.
-	 * 
-	 * @param target
-	 * @param component
-	 */
-	void delegateTargetChange(final String target,
-			final ISubComponent<L, A, M> component);
-
-	/**
 	 * Delegates massage to responsible componentObserver to notify target
-	 * component.
+	 * component. TODO move to idelegate
 	 * 
 	 * @param target
 	 * @param action
 	 */
 	void delegateComponentMassege(final String target,
 			final IAction<A, M> action);
+
 	/**
-	 * Delegates message to responsible perspectiveObserver to notify target
-	 * perspective, check if message is local (message to component it self) or
-	 * if message has to be delegate to an other component.
+	 * Returns delegate queue to delegate actions to correct target
 	 * 
-	 * @param target
-	 * @param action
+	 * @return the delegate queue
 	 */
-	void delegateMassege(final String target, final IAction<A, M> action);
+	BlockingQueue<IDelegateDTO<L, A, M>> getDelegateQueue();
 
 }

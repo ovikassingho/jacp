@@ -30,7 +30,7 @@ import org.jacp.api.perspective.IPerspective;
  * @param <A>
  * @param <M>
  */
-public interface IComponentDelegator<L, A, M> extends IDalegator<L, A, M>{
+public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M>{
 	
 	/**
 	 * handles delegate
