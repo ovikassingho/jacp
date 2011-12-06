@@ -219,12 +219,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected final void changeComponentTarget(IPerspective<EventHandler<Event>, Event, Object> parent,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		delegateTargetChange(component.getExecutionTarget(),
-				component,parent);
-	}
-	
-	private void delegateTargetChange(String targetId,
-			ISubComponent<EventHandler<Event>, Event, Object> component,IPerspective<EventHandler<Event>, Event, Object> parent) {
+		final String targetId = component.getExecutionTarget();
 		final String parentId = FX2Util.getTargetParentId(targetId);
 		if (!parent.getId().equals(parentId)) {
 			// unregister component in current perspective
@@ -233,8 +228,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			parent.getDelegateQueue().add(new DelegateDTO(targetId, component));
 
 		}
-
 	}
+	
 
 	/**
 	 * runs subcomponents handle method

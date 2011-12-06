@@ -29,7 +29,6 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IDelegateDTO;
-import org.jacp.api.coordinator.IDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.workbench.IWorkbench;
@@ -111,7 +110,6 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		} // End if
 		else {
 			// delegate to addressed component
-			((IDelegator<EventHandler<Event>, Event, Object>)perspective).delegateMessage(targetId, action);
 			delegateMessageToCorrectPerspective(targetId, action,perspective.getDelegateQueue());
 			
 		} // End else
