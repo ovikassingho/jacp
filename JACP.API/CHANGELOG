@@ -1,3 +1,4 @@
+06. Dez. 2011 - amo - remove delegateMessage and delegateTarget change from IPerspective, add dependency to delegate queue
 05. Dez. 2011 - amo - introduced IComponentDelegator and IDelegator to extract delegate methods from coordinator, removed circular dependency between components and coordinator
 29. Nov. 2011 - amo - changed dependencies between observer, component and perspective; renamed BG components to "callback".
 23. Nov. 2011 - amo - renamed method isActivated to isStarted in ISubcomponent; method name sounds like isActive, to avoid mistakes method renamed

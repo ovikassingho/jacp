@@ -29,7 +29,7 @@ import org.jacp.api.component.ISubComponent;
  * @param <A>
  * @param <M>
  */
-public interface IDalegator<L, A, M> {
+public interface IDelegator<L, A, M> {
 	/**
 	 * Delegate message from a subcomponent to target perspective. If no target
 	 * was found for current action in this perspective, delegate the message to
