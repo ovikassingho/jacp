@@ -59,4 +59,81 @@ public class FX2Util {
 		return null;
 
 	}
+	
+	/**
+	 * returns the message (parent) target id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	public static String getTargetParentId(final String messageId) {
+		final String[] parentId = getTargetId(messageId);
+		if (isFullValidId(parentId)) {
+			return parentId[0];
+		}
+		return messageId;
+	}
+	
+	/**
+	 * a target id is valid, when it does contain a perspective and a component
+	 * id (perspectiveId.componentId)
+	 * 
+	 * @param targetId
+	 * @return
+	 */
+	private static boolean isFullValidId(final String[] targetId) {
+		if (targetId != null && targetId.length == 2) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	/**
+	 * returns the message target perspective id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	public static final String getTargetPerspectiveId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (!isLocalMessage(messageId)) {
+			return targetId[0];
+		}
+		return messageId;
+	}
+	
+	/**
+	 * returns the message target component id
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	public static final String getTargetComponentId(final String messageId) {
+		final String[] targetId = getTargetId(messageId);
+		if (!isLocalMessage(messageId)) {
+			return targetId[1];
+		}
+		return messageId;
+	}
+	
+	/**
+	 * when id has no separator it is a local message
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	public static final boolean isLocalMessage(final String messageId) {
+		return !messageId.contains(".");
+	}
+
+	/**
+	 * returns target message with perspective and component name as array
+	 * 
+	 * @param messageId
+	 * @return
+	 */
+	protected static final String[] getTargetId(final String messageId) {
+		return messageId.split("\\.");
+	}
 }

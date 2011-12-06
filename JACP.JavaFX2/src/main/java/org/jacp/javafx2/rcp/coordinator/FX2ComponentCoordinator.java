@@ -18,6 +18,7 @@
 package org.jacp.javafx2.rcp.coordinator;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.event.Event;
@@ -25,10 +26,12 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
-import org.jacp.api.coordinator.IDalegator;
+import org.jacp.api.coordinator.IDelegator;
 import org.jacp.api.perspective.IPerspective;
+import org.jacp.javafx2.rcp.util.FX2Util;
 
 /**
  * observe component actions and delegates to correct component
@@ -36,14 +39,13 @@ import org.jacp.api.perspective.IPerspective;
  * @author Andy Moncsek
  */
 public class FX2ComponentCoordinator extends AFX2Coordinator implements
-		IComponentCoordinator<EventHandler<Event>, Event, Object>, IDalegator<EventHandler<Event>, Event, Object> {
+		IComponentCoordinator<EventHandler<Event>, Event, Object>, IDelegator<EventHandler<Event>, Event, Object> {
 
 	private List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
 	private final IPerspective<EventHandler<Event>, Event, Object> perspective;
 
 	public FX2ComponentCoordinator(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.setDaemon(true);
 		this.perspective = perspective;
 	}
 
@@ -67,7 +69,8 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	public void handleMessage(String targetId, IAction<Event, Object> action) {
 		synchronized (action) {
 			final ISubComponent<EventHandler<Event>, Event, Object> component = this
-					.getObserveableById(this.getTargetComponentId(targetId),
+					.getObserveableById(FX2Util
+							.getTargetComponentId(targetId),
 							this.components);
 			this.log(" //1.1// component message to: " + action.getTargetId());
 			if (component != null) {
@@ -115,9 +118,9 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	 */
 	private void handleComponentMiss(final String targetId,
 			final IAction<Event, Object> action) {
-		final boolean local = this.isLocalMessage(targetId);
+		final boolean local = FX2Util.isLocalMessage(targetId);
 		if (!local) {
-			final String targetPerspectiveId = this
+			final String targetPerspectiveId = FX2Util
 					.getTargetPerspectiveId(targetId);
 			if (this.perspective.getId().equals(targetPerspectiveId)) {
 				// TODO target is in same perspective but component was not
@@ -125,14 +128,15 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 				throw new UnsupportedOperationException(
 						"invalid component id handling not supported yet.");
 			}
-			// delegate to parent perspective, then find responsible
-			// perspective
-			this.perspective.delegateMassege(targetId, action);
-
-		} else {
-			// possible message to perspective
-			this.perspective.delegateMassege(targetId, action);
 		}
+		// possible message to perspective
+		delegateMessageToCorrectPerspective(targetId, action,perspective.getDelegateQueue());
+		
+	}
+	//TODO add to API
+	public final void delegateMessageToCorrectPerspective(String target,
+			IAction<Event, Object> action,BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> queue) {
+		queue.add(new DelegateDTO(target, action));
 	}
 
 	@Override

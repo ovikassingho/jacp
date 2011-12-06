@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2010,2011.
+ * AHCP Project
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.jacp.javafx2.rcp.coordinator;
 
 import java.util.List;
@@ -21,7 +38,14 @@ import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
-public class FX2ComponentDelegator extends Thread implements
+/**
+ * The perspective coordinator provides messages to perspective, this messages
+ * can also have a component as target but must pass the correct perspective.
+ * 
+ * @author Andy Moncsek
+ * 
+ */
+public class FX2PerspectiveDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench;
@@ -29,7 +53,7 @@ public class FX2ComponentDelegator extends Thread implements
 	private volatile BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> dtos = new ArrayBlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>>(
 			100);
 
-	public FX2ComponentDelegator(
+	public FX2PerspectiveDelegator(
 			final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench) {
 		this.workbench = workbench;
 	}
@@ -125,8 +149,6 @@ public class FX2ComponentDelegator extends Thread implements
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = this
 				.getObserveableById(this.getTargetPerspectiveId(target),
 						this.perspectives);
-		// TODO REMOVE null handling... use DUMMY instead (maybe like
-		// Collections.EMPTY...)
 		if (perspective != null) {
 			if (!perspective.isActive()) {
 				this.handleInActive(perspective, action);
@@ -238,7 +260,7 @@ public class FX2ComponentDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				((AFX2Workbench) FX2ComponentDelegator.this.workbench)
+				((AFX2Workbench) FX2PerspectiveDelegator.this.workbench)
 						.initComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
@@ -276,7 +298,7 @@ public class FX2ComponentDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public final void run() {
-				((AFX2Workbench) FX2ComponentDelegator.this.workbench)
+				((AFX2Workbench) FX2PerspectiveDelegator.this.workbench)
 						.handleAndReplaceComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
@@ -299,18 +321,17 @@ public class FX2ComponentDelegator extends Thread implements
 		return this.dtos;
 	}
 
-
 	@Override
 	public void addPerspective(
 			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspectives.add(perspective);
-		
+
 	}
 
 	@Override
 	public void removePerspective(
 			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspectives.remove(perspective);
-		
+
 	}
 }

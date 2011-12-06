@@ -42,7 +42,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
-import org.jacp.api.coordinator.IDalegator;
+import org.jacp.api.coordinator.IDelegator;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
@@ -57,6 +57,7 @@ import org.jacp.javafx2.rcp.coordinator.FX2ComponentCoordinator;
 import org.jacp.javafx2.rcp.util.FX2ComponentAddWorker;
 import org.jacp.javafx2.rcp.util.FX2ComponentInitWorker;
 import org.jacp.javafx2.rcp.util.FX2ComponentReplaceWorker;
+import org.jacp.javafx2.rcp.util.FX2Util;
 import org.jacp.javafx2.rcp.util.StateComponentRunWorker;
 
 /**
@@ -171,7 +172,7 @@ public abstract class AFX2Perspective implements
 
 	@Override
 	public final void initComponents(IAction<Event, Object> action) {
-		final String targetId = this.getTargetComponentId(action.getTargetId());
+		final String targetId = FX2Util.getTargetComponentId(action.getTargetId());
 		this.log("3.4.4.1: subcomponent targetId: " + targetId);
 		final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this
 				.getSubcomponents();
@@ -276,30 +277,11 @@ public abstract class AFX2Perspective implements
 	}
 
 	@Override
-	public synchronized void delegateTargetChange(String target,
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final String parentId = this.getTargetParentId(target);
-		if (!this.id.equals(parentId)) {
-			// unregister component in current perspective
-			this.unregisterComponent(component);
-			// delegate to perspective observer
-			queue.add(new DelegateDTO(target, component));
-
-		}
-
-	}
-
-	@Override
 	public final void delegateComponentMassege(String target,
 			IAction<Event, Object> action) {
-		((IDalegator<EventHandler<Event>, Event, Object>)componentHandler).delegateMessage(target, action);
+		((IDelegator<EventHandler<Event>, Event, Object>)componentHandler).delegateMessage(target, action);
 	}
 
-	@Override
-	public final void delegateMassege(String target,
-			IAction<Event, Object> action) {
-		queue.add(new DelegateDTO(target, action));
-	}
 
 	@Override
 	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
@@ -471,56 +453,7 @@ public abstract class AFX2Perspective implements
 		}
 	}
 
-	/**
-	 * returns the message target id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	private String getTargetComponentId(final String messageId) {
-		final String[] targetId = this.getTargetId(messageId);
-		if (this.isFullValidId(targetId)) {
-			return targetId[1];
-		}
-		return messageId;
-	}
-
-	/**
-	 * returns the message (parent) target id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	private String getTargetParentId(final String messageId) {
-		final String[] parentId = this.getTargetId(messageId);
-		if (this.isFullValidId(parentId)) {
-			return parentId[0];
-		}
-		return messageId;
-	}
-
-	/**
-	 * returns target message with perspective and component name
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	private String[] getTargetId(final String messageId) {
-		return messageId.split("\\.");
-	}
-
-	/**
-	 * a target id is valid, when it does contain a perspective and a component
-	 * id (perspectiveId.componentId)
-	 * 
-	 * @param targetId
-	 * @return
-	 */
-	private boolean isFullValidId(final String[] targetId) {
-		if (targetId != null && targetId.length == 2) {
-			return true;
-		}
-
-		return false;
+	public final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> getDelegateQueue(){
+		return this.queue;
 	}
 }
