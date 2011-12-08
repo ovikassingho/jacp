@@ -28,8 +28,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
@@ -49,19 +49,18 @@ public class FX2ComponentReplaceWorker
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 	private final FX2ComponentLayout layout;
-	private final IPerspective<EventHandler<Event>, Event, Object> parent;
+	private final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public FX2ComponentReplaceWorker(
-			final Map<String, Node> targetComponents,
-			final IPerspective<EventHandler<Event>, Event, Object> parent,
+			final Map<String, Node> targetComponents,final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.layout = layout;
-		this.parent = parent;
+		this.delegateQueue = delegateQueue;
 	}
 
 	@Override
@@ -204,14 +203,14 @@ public class FX2ComponentReplaceWorker
 				handleLocalTargetChange(component, targetComponents,
 						validContainer);
 			} else {
-				handlePerspectiveChange(this.parent, component, layout);
+				handlePerspectiveChange(this.delegateQueue, component, layout);
 			}
 		} else if (root != null && root != previousContainer) {
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
 			root.setVisible(true);
-			this.handleNewComponentValue(this.parent, component,
+			this.handleNewComponentValue(this.delegateQueue, component,
 					this.targetComponents, parentNode, currentTaget);
 		}
 

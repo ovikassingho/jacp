@@ -24,16 +24,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
+import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.util.FX2Util;
-import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
 /**
  * Observe perspectives and delegates message to correct component
@@ -43,13 +40,8 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
-	private final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench;
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
-
-	public FX2PerspectiveCoordinator(
-			final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench) {
-		this.workbench = workbench;
-	}
+	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 
 	@Override
 	public void handleMessage(final String target,
@@ -126,8 +118,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public final void run() {
-				((AFX2Workbench) FX2PerspectiveCoordinator.this.workbench)
-						.handleAndReplaceComponent(
+				FX2PerspectiveCoordinator.this.componentHandler.handleAndReplaceComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
 			} // End run
@@ -142,7 +133,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				((AFX2Workbench) FX2PerspectiveCoordinator.this.workbench)
+				FX2PerspectiveCoordinator.this.componentHandler
 						.initComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
@@ -155,7 +146,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	@Override
 	public void addPerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.setMessageQueue(this.getMessages());
+		perspective.setMessageQueue(this.getMessageQueue());
 		this.perspectives.add(perspective);
 	}
 
@@ -164,6 +155,21 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspective.setMessageQueue(null);
 		this.perspectives.remove(perspective);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+		return componentHandler;
+	}
+
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(IComponentHandler<P, IAction<Event, Object>> handler) {
+		componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+		
 	}
 
 }

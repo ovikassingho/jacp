@@ -1,10 +1,14 @@
+08. Dez. 2011 - amo -  changed dependencies between statelesscallback component and scheduler to remove circular dependency
+08. Dez. 2011 - amo -  finished refractoring to replace componentHandler methods with methods in workbench and perspective, goal was to remove circular dependency; restructured workbench and perspective initialization 
+07. Dez. 2011 - amo -  introduced handler components; this components do initialization and replacement of subcomponents which was previously handled by workbench and perspective itself; this changes should decouple dependency between workers and components
+07. Dez. 2011 - amo -  removed perspective dependencies in *Worker classes, instead provide a reference to delegate queue
 06. Dez. 2011 - amo -  moved Id checking methods to FX2Util class
 05. Dez. 2011 - amo -  introduced ComponentDelegator to extract delegate methods from coordinator, be careful methods me change!!! Implementation is not final, removed circular dependency
 29. Nov. 2011 - amo -  update, see changes in API; renamed BG components 
 25. Nov. 2011 - amo -  bug removed, solved with previous changes 
 25. Nov. 2011 - amo -  FX2Perspective Coordinator fixed when component was delegate to new perspective the initialization sequence was wrong (see bug 24.Nov); now the standard init sequence is used and an init message is send
 25. Nov. 2011 - amo -  removed bug where removed components and the return node were reactivated when perspective was changed; fixed by checking if component is active
-24. Nov. 2011 - amo -  bug found when component changed execution target to an other perspective; returned (root)Node is reused from "old" perspectve so that all actions do not fin a local target becose they are related to the observer of the old perspective. see TODO for more details. 
+24. Nov. 2011 - amo -  bug found when component changed execution target to an other perspective; returned (root)Node is reused from "old" perspective so that all actions do not fin a local target because they are related to the observer of the old perspective. see TODO for more details. 
 24. Nov. 2011 - amo -  changed FX2ComponentRelpaceWorker, changed behavior when component change execution target; split methods in *LocalTargerChange and PerspectiveChange.
 24. Nov. 2011 - amo -  FX2Component add worker now is handled in application thread, it only acts as proxy to the methods in AFX2ComponentWorker; all methods involved must be executed in application thread
 23. Nov. 2011 - amo -  tearDown for AFX2Components implemented

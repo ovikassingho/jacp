@@ -19,6 +19,7 @@
 package org.jacp.javafx2.rcp.util;
 
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,9 +31,9 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
@@ -130,20 +131,20 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentTaget
 	 */
-	protected void handleNewComponentValue(final IPerspective<EventHandler<Event>, Event, Object> parentPersp,
+	protected void handleNewComponentValue(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node parent,
 			final String currentTaget) {
 		if (parent == null) {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
-			this.handleTargetChange(parentPersp,component, targetComponents, validId);
+			this.handleTargetChange(delegateQueue,component, targetComponents, validId);
 		} else if (currentTaget.equals(component.getExecutionTarget())) {
 			this.addComponentByType(parent, component);
 		} else {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
-			this.handleTargetChange(parentPersp,component, targetComponents, validId);
+			this.handleTargetChange(delegateQueue,component, targetComponents, validId);
 		}
 	}
 
@@ -167,7 +168,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param targetComponents
 	 */
-	protected void handleTargetChange(final IPerspective<EventHandler<Event>, Event, Object> parent,
+	protected void handleTargetChange(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
@@ -176,7 +177,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			handleLocalTargetChange(component, targetComponents, validContainer);
 		} else {
 			// handle target outside current perspective
-			this.changeComponentTarget(parent,component);
+			this.changeComponentTarget(delegateQueue,component);
 		}
 	}
 
@@ -199,7 +200,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param target
 	 * @param layout
 	 */
-	protected void handlePerspectiveChange(final IPerspective<EventHandler<Event>, Event, Object> parent,
+	protected void handlePerspectiveChange(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		// target component not found in current perspective, move to an other
@@ -209,7 +210,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			((AFX2Component) component).onTearDownComponent(layout);
 		}
 		// handle target outside current perspective
-		this.changeComponentTarget(parent,component);
+		this.changeComponentTarget(delegateQueue,component);
 	}
 
 	/**
@@ -217,15 +218,14 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected final void changeComponentTarget(IPerspective<EventHandler<Event>, Event, Object> parent,
+	protected final void changeComponentTarget(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final String targetId = component.getExecutionTarget();
+		final String parentIdOld = component.getParentId();
 		final String parentId = FX2Util.getTargetParentId(targetId);
-		if (!parent.getId().equals(parentId)) {
-			// unregister component in current perspective
-			parent.unregisterComponent(component);
+		if (!parentIdOld.equals(parentId)) {
 			// delegate to perspective observer
-			parent.getDelegateQueue().add(new DelegateDTO(targetId, component));
+			delegateQueue.add(new DelegateDTO(targetId, component));
 
 		}
 	}

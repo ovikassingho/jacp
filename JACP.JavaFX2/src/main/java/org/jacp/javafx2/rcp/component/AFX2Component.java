@@ -45,6 +45,7 @@ public abstract class AFX2Component implements
 	private String id;
 	private String target;
 	private String name;
+	private String parentId;
 	private Node root;
 	private boolean active;
 	private boolean isActived = false;
@@ -52,7 +53,6 @@ public abstract class AFX2Component implements
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
 	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
-	private volatile BlockingQueue<Boolean> appThreadlock;
 
 	/**
 	 * {@inheritDoc}
@@ -218,13 +218,22 @@ public abstract class AFX2Component implements
 		this.name = name;
 	}
 
+	@Override
+	public String getParentId() {
+		return parentId;
+	}
+
+	@Override
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
 		this.globalMessageQueue = messageQueue;
-		this.appThreadlock = appThreadlock;
 	}
 	
 	

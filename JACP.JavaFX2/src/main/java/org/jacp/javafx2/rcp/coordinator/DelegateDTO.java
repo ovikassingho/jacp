@@ -49,15 +49,18 @@ public class DelegateDTO implements IDelegateDTO<EventHandler<Event>, Event, Obj
 		this.action = action;
 	}
 
+	@Override
 	public String getTarget() {
 		return target;
 	}
 
+	@Override
 	public ISubComponent<EventHandler<Event>, Event, Object> getComponent() {
 		return component;
 	}
 
 
+	@Override
 	public IAction<Event, Object> getAction() {
 		return action;
 	}

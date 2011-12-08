@@ -80,13 +80,6 @@ public abstract class AFX2Coordinator extends Thread implements
 		return actionClone;
 	}
 
-
-
-	@Override
-	public void handle(final IAction<Event, Object> action) {
-		this.messages.add(action);
-	}
-
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
 			final String id, final List<P> components) {
@@ -99,7 +92,8 @@ public abstract class AFX2Coordinator extends Thread implements
 		return null;
 	}
 
-	protected BlockingQueue<IAction<Event, Object>> getMessages() {
+	@Override
+	public BlockingQueue<IAction<Event, Object>> getMessageQueue() {
 		return messages;
 	}
 	

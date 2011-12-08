@@ -18,13 +18,14 @@
 package org.jacp.javafx2.rcp.util;
 
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IVComponent;
-import org.jacp.api.perspective.IPerspective;
 
 /**
  * Handles ui return value of component and add to correct perspective target
@@ -36,20 +37,10 @@ public class FX2ComponentAddWorker
 		extends
 		AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
-	private final Map<String, Node> targetComponents;
-	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
-	private final IPerspective<EventHandler<Event>, Event, Object> parent;
-
-	public FX2ComponentAddWorker(
-			final Map<String, Node> targetComponents,final IPerspective<EventHandler<Event>, Event, Object> parent,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
-		this.targetComponents = targetComponents;
-		this.component = component;
-		this.parent = parent;
-	}
+	
 	
 	public FX2ComponentAddWorker() {
-		this(null,null,null);
+		
 	}
 
 	@Override
@@ -60,17 +51,13 @@ public class FX2ComponentAddWorker
 
 	@Override
 	public final void done() {
-		this.component.setExecutionTarget(FX2Util
-				.getTargetComponentId(this.component.getExecutionTarget()));
-		this.handleNewComponentValue(this.parent,this.component, this.targetComponents,
-				null, "");
 	}
 	
-	public void handleInApplicationThread(final Map<String, Node> targetComponents,final IPerspective<EventHandler<Event>, Event, Object> parent,
+	public void handleInApplicationThread(final Map<String, Node> targetComponents,final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>>delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
 		component.setExecutionTarget(FX2Util
 				.getTargetComponentId(component.getExecutionTarget()));
-		this.handleNewComponentValue(parent,component, targetComponents,
+		this.handleNewComponentValue(delegateQueue,component, targetComponents,
 				null, "");
 	}
 }
