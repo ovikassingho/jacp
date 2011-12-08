@@ -17,16 +17,15 @@
  */
 package org.jacp.javafx2.rcp.util;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.perspective.IPerspective;
-import org.jacp.javafx2.rcp.action.FX2Action;
+import org.jacp.api.component.IDelegateDTO;
 
 /**
  * this class handles running stateful background components
@@ -37,12 +36,12 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 public class StateComponentRunWorker extends
 		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
-	private final IPerspective<EventHandler<Event>, Event, Object> parent;
+	private final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue;
 
-	public StateComponentRunWorker(final IPerspective<EventHandler<Event>, Event, Object> parent,
+	public StateComponentRunWorker(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
-		this.parent = parent;
+		this.delegateQueue = delegateQueue;
 	}
 
 	@Override
@@ -77,7 +76,7 @@ public class StateComponentRunWorker extends
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
-			this.changeComponentTarget(this.parent,comp);
+			this.changeComponentTarget(this.delegateQueue,comp);
 		}
 	}
 

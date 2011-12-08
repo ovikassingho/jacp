@@ -17,9 +17,14 @@
  */
 package org.jacp.javafx2.rcp.component;
 
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -28,11 +33,11 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStateLessCallabackComponent;
-import org.jacp.api.coordinator.IStatelessComponentCoordinator;
 import org.jacp.api.launcher.Launcher;
+import org.jacp.api.scheduler.IStatelessComponentScheduler;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
-import org.jacp.javafx2.rcp.coordinator.StatelessCallbackCoordinator;
+import org.jacp.javafx2.rcp.scheduler.StatelessCallbackScheduler;
 
 /**
  * represents a abstract stateless background component
@@ -43,19 +48,29 @@ import org.jacp.javafx2.rcp.coordinator.StatelessCallbackCoordinator;
 
 public abstract class AStatelessCallbackComponent implements
 		IStateLessCallabackComponent<EventHandler<Event>, Event, Object> {
+	public static int MAX_INCTANCE_COUNT;
 	private String id;
 	private String target = "";
 	private String name;
+	private String parentId;
 	private volatile String handleComponentTarget;
 	private volatile boolean active = true;
 	private boolean isActivated = false;
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
+	private final AtomicInteger threadCount = new AtomicInteger(0);
 	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
-	private IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> coordinator;
+	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
 
-	private Launcher<?> launcher;
+	private final ExecutorService executor = Executors
+			.newFixedThreadPool(MAX_INCTANCE_COUNT);
+
+	static {
+		final Runtime runtime = Runtime.getRuntime();
+		final int nrOfProcessors = runtime.availableProcessors();
+		MAX_INCTANCE_COUNT = nrOfProcessors	+ (nrOfProcessors / 2)+5;
+	}
 
 	@Override
 	public final String getHandleTargetAndClear() {
@@ -82,17 +97,6 @@ public abstract class AStatelessCallbackComponent implements
 		return !this.incomingActions.isEmpty();
 	}
 
-	// TODO add double check idiom
-	private final synchronized IStatelessComponentCoordinator<EventHandler<Event>, Event, Object> getCooridinator() {
-		if (this.coordinator == null) {
-			if (this.launcher == null) {
-				throw new UnsupportedOperationException("no di launcher set");
-			}
-			this.coordinator = new StatelessCallbackCoordinator(this,
-					this.launcher);
-		}
-		return this.coordinator;
-	}
 
 	@Override
 	public void putIncomingMessage(IAction<Event, Object> action) {
@@ -173,14 +177,24 @@ public abstract class AStatelessCallbackComponent implements
 
 	}
 
+	@Override
+	public String getParentId() {
+		return parentId;
+	}
+
+	@Override
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
+	public final void setMessageQueue(
+			BlockingQueue<IAction<Event, Object>> messageQueue) {
 		this.globalMessageQueue = messageQueue;
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -190,14 +204,6 @@ public abstract class AStatelessCallbackComponent implements
 
 	public abstract Object handleAction(IAction<Event, Object> action);
 
-	public final void addMessage(final IAction<Event, Object> message) {
-		this.getCooridinator().incomingMessage(message);
-	}
-
-	@Override
-	public synchronized void setLauncher(Launcher<?> launcher) {
-		this.launcher = launcher;
-	}
 
 	@Override
 	protected final Object clone() {
@@ -232,6 +238,20 @@ public abstract class AStatelessCallbackComponent implements
 		comp.setHandleTarget(this.handleComponentTarget);
 		comp.setMessageQueue(this.globalMessageQueue);
 		return comp;
+	}
+
+	@Override
+	public final List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
+		return this.componentInstances;
+	}
+
+	@Override
+	public AtomicInteger getThreadCounter() {
+		return this.threadCount;
+	}
+	
+	public ExecutorService getExecutorService(){
+		return this.executor;
 	}
 
 }

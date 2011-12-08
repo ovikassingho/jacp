@@ -10,7 +10,6 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 
@@ -26,6 +25,7 @@ public abstract class ACallbackComponent implements
 	private String id;
 	private String target = "";
 	private String name;
+	private String parentId;
 	private volatile String handleComponentTarget;
 	private volatile boolean active;
 	private boolean isActivated = false;
@@ -33,7 +33,6 @@ public abstract class ACallbackComponent implements
 	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
 			500);
-	private volatile BlockingQueue<Boolean> appThreadlock;
 
 	@Override
 	/**
@@ -182,13 +181,22 @@ public abstract class ACallbackComponent implements
 		this.name = name;
 	}
 
+	@Override
+	public String getParentId() {
+		return parentId;
+	}
+
+	@Override
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
 		this.globalMessageQueue = messageQueue;
-		this.appThreadlock = appThreadlock;
 	}
 	
 

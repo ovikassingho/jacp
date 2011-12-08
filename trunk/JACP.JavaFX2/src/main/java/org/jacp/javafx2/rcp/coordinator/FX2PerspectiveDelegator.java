@@ -26,21 +26,20 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentDelegator;
+import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
-import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
+import org.jacp.javafx2.rcp.util.FX2Util;
 
 /**
- * The perspective coordinator provides messages to perspective, this messages
- * can also have a component as target but must pass the correct perspective.
+ * The perspective delegator provides messages between components in different
+ * perspectives and handles components when changing targets between different
+ * perspectives
  * 
  * @author Andy Moncsek
  * 
@@ -48,15 +47,10 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 public class FX2PerspectiveDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench;
+	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 	private volatile BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> dtos = new ArrayBlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>>(
 			100);
-
-	public FX2PerspectiveDelegator(
-			final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench) {
-		this.workbench = workbench;
-	}
 
 	@Override
 	public final void run() {
@@ -80,14 +74,23 @@ public class FX2PerspectiveDelegator extends Thread implements
 		}
 	}
 
+	@Override
 	public void delegateTargetChange(final String target,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		// find responsible perspective
 		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = this
-				.getObserveableById(this.getTargetPerspectiveId(target),
+				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
 						this.perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
+			final String parentId = component.getParentId();
+			// unregister component from previous parent
+			if(!parentId.equals(responsiblePerspective.getId())) {
+				final IPerspective<EventHandler<Event>, Event, Object> currentParent = this
+						.getObserveableById(FX2Util.getTargetPerspectiveId(parentId),
+								this.perspectives);
+				currentParent.unregisterComponent(component);
+			}
 			this.handleTargetHit(responsiblePerspective, component);
 
 		} // End if
@@ -113,7 +116,7 @@ public class FX2PerspectiveDelegator extends Thread implements
 							responsiblePerspective.getId(), "init"));
 		} // End if
 		responsiblePerspective.registerComponent(component);
-		responsiblePerspective.initComponent(new FX2Action(component.getId(),
+		responsiblePerspective.getComponentHandler().initComponent(new FX2Action(component.getId(),
 				component.getId(), "init"), component);
 	}
 
@@ -125,12 +128,13 @@ public class FX2PerspectiveDelegator extends Thread implements
 				"No responsible perspective found. Handling not implemented yet.");
 	}
 
+	@Override
 	public void delegateMessage(final String target,
 			final IAction<Event, Object> action) {
 		// Find local Target; if target is perspective handle target or
 		// delegate
 		// message to responsible component observer
-		if (this.isLocalMessage(target)) {
+		if (FX2Util.isLocalMessage(target)) {
 			this.handleMessage(target, action);
 		} // End if
 		else {
@@ -147,60 +151,24 @@ public class FX2PerspectiveDelegator extends Thread implements
 	private void callComponentDelegate(final String target,
 			final IAction<Event, Object> action) {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = this
-				.getObserveableById(this.getTargetPerspectiveId(target),
+				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
 			if (!perspective.isActive()) {
 				this.handleInActive(perspective, action);
 			} // End inner if
 			else {
-				perspective.delegateComponentMassege(target, action);
+				perspective.getComponentsMessageQueue().add(action);
 			} // End else
 
 		} // End if
 
 	}
 
-	/**
-	 * when id has no separator it is a local message // TODO remove code
-	 * duplication
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final boolean isLocalMessage(final String messageId) {
-		return !messageId.contains(".");
-	}
-
-	/**
-	 * returns target message with perspective and component name // TODO remove
-	 * code duplication
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String[] getTargetId(final String messageId) {
-		return messageId.split("\\.");
-	}
-
-	/**
-	 * returns the message target perspective id
-	 * 
-	 * @param messageId
-	 * @return
-	 */
-	protected final String getTargetPerspectiveId(final String messageId) {
-		final String[] targetId = this.getTargetId(messageId);
-		if (!this.isLocalMessage(messageId)) {
-			return targetId[0];
-		}
-		return messageId;
-	}
-
 	public void handleMessage(final String target,
 			final IAction<Event, Object> action) {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = this
-				.getObserveableById(this.getTargetPerspectiveId(target),
+				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
 			final IAction<Event, Object> actionClone = this.getValidAction(
@@ -260,7 +228,7 @@ public class FX2PerspectiveDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				((AFX2Workbench) FX2PerspectiveDelegator.this.workbench)
+				FX2PerspectiveDelegator.this.componentHandler
 						.initComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
@@ -283,13 +251,13 @@ public class FX2PerspectiveDelegator extends Thread implements
 		// with newly created layout component in workbench
 		this.log(" //1.1.1.1// perspective HIT handle ACTIVE: "
 				+ action.getTargetId());
-		if (this.isLocalMessage(target)) {
+		if (FX2Util.isLocalMessage(target)) {
 			// message is addressing perspective
 			this.handleActive(perspective, action);
 		} // End if
 		else {
 			// delegate to addressed component
-			perspective.delegateComponentMassege(target, action);
+			perspective.getComponentsMessageQueue().add(action);
 		} // End else
 	}
 
@@ -298,7 +266,7 @@ public class FX2PerspectiveDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public final void run() {
-				((AFX2Workbench) FX2PerspectiveDelegator.this.workbench)
+				FX2PerspectiveDelegator.this.componentHandler
 						.handleAndReplaceComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
@@ -333,5 +301,13 @@ public class FX2PerspectiveDelegator extends Thread implements
 			IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspectives.remove(perspective);
 
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
+			IComponentHandler<P, IAction<Event, Object>> handler) {
+		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+		
 	}
 }
