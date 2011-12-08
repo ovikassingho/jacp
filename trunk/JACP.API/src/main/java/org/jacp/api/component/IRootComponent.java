@@ -17,6 +17,8 @@
  */
 package org.jacp.api.component;
 
+import org.jacp.api.handler.IComponentHandler;
+
 /**
  * All root components have containing sub components (workspace ->
  * perspectives; perspective - editors) and listeners; all sub components have
@@ -52,21 +54,6 @@ public interface IRootComponent<T, A> {
 	 */
 	void initComponents(final A action);
 
-	/**
-	 * Handles initialization of a single component.
-	 * 
-	 * @param action
-	 * @param component
-	 */
-	void initComponent(final A action, final T component);
-
-	/**
-	 * Runs 'handle' method and replace of subcomponent in perspective.
-	 * 
-	 * @param component
-	 * @param action
-	 */
-	void handleAndReplaceComponent(final A action,
-			final T component);
+	IComponentHandler<T, A> getComponentHandler();
 
 }

@@ -19,44 +19,53 @@ package org.jacp.api.coordinator;
 
 import java.util.concurrent.BlockingQueue;
 
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IDelegateDTO;
+import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
 
 /**
  * A component delegate handles delegate actions.
+ * 
  * @author Andy Moncsek
- *
+ * 
  * @param <L>
  * @param <A>
  * @param <M>
  */
-public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M>{
-	
+public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M> {
+
 	/**
 	 * handles delegate
+	 * 
 	 * @param dto
 	 */
 	void delegate(IDelegateDTO<L, A, M> dto);
-	
+
 	/**
 	 * returns the queue where delegate actions should be added
+	 * 
 	 * @return
 	 */
 	BlockingQueue<IDelegateDTO<L, A, M>> getDelegateQueue();
-	
-    /**
-     * Add the perspective to observe.
-     *TODO merge with IPerspectiveCoordinator
-     * @param perspective
-     */
-    void addPerspective(final IPerspective<L, A, M> perspective);
 
-    /**
-     * Remove the perspective; e.g. when perspective is deactivated
-     * TODO merge with IPerspectiveCoordinator
-     * @param perspective
-     */
-    void removePerspective(
-	    final IPerspective<L, A, M> perspective);
+	/**
+	 * Add the perspective to observe. TODO merge with IPerspectiveCoordinator
+	 * 
+	 * @param perspective
+	 */
+	void addPerspective(final IPerspective<L, A, M> perspective);
+
+	/**
+	 * Remove the perspective; e.g. when perspective is deactivated TODO merge
+	 * with IPerspectiveCoordinator
+	 * 
+	 * @param perspective
+	 */
+	void removePerspective(final IPerspective<L, A, M> perspective);
+
+	<P extends IComponent<L, A, M>>void setComponentHandler(
+			IComponentHandler<P, IAction<A, M>> handler);
 
 }

@@ -18,9 +18,11 @@
 package org.jacp.api.coordinator;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.handler.IComponentHandler;
 
 /**
  * Defines a basic observer for component messages; handles the message and
@@ -35,12 +37,6 @@ import org.jacp.api.component.IComponent;
  *            defines the basic message type
  */
 public interface ICoordinator<L, A, M> {
-	/**
-	 * Handles an action and delegates it to an addressed perspective.
-	 * 
-	 * @param action
-	 */
-	void handle(final IAction<A, M> action);
 
 	/**
 	 * Handles message to specific component addressed by the id.
@@ -79,7 +75,23 @@ public interface ICoordinator<L, A, M> {
 	 */
 	<P extends IComponent<L, A, M>> void handleInActive(final P component,
 			final IAction<A, M> action);
-
-
-
+	/**
+	 * Returns the message queue of coordinator.
+	 * @return
+	 */
+	BlockingQueue<IAction<A, M>> getMessageQueue();
+	
+	
+	/**
+	 * returns associated componentHandler
+	 * @return
+	 */
+    <P extends IComponent<L,A,M>>IComponentHandler<P, IAction<A,M>> getComponentHandler();
+	/**
+	 * set associated componentHandler
+	 * @return
+	 */
+    <P extends IComponent<L,A,M>> void setComponentHandler(final IComponentHandler<P, IAction<A,M>> handler);
+    
+ 
 }
