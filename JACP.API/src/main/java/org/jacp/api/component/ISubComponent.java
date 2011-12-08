@@ -82,4 +82,14 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 	 * @param blocked
 	 */
 	void setBlocked(final boolean blocked);
+	/**
+	 * set the id of parent component
+	 * @param id
+	 */
+	void setParentId(final String parentId);
+	/**
+	 * returns the id of parent component
+	 * @return the parent id
+	 */
+	String getParentId();
 }

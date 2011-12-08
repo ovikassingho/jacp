@@ -15,10 +15,11 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.jacp.api.coordinator;
+package org.jacp.api.scheduler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IStateLessCallabackComponent;
 
 /**
  * Handles instances of a state less component; delegates message to a non
@@ -31,13 +32,13 @@ import org.jacp.api.component.ICallbackComponent;
  * @param <A>
  * @param <M>
  */
-public interface IStatelessComponentCoordinator<L, A, M> {
+public interface IStatelessComponentScheduler<L, A, M> {
     /**
      * Handles incoming message to managed state less component.
      * 
      * @param message
      */
-    void incomingMessage(final IAction<A, M> message);
+    void incomingMessage(final IAction<A, M> message,IStateLessCallabackComponent<L, A, M> component);
 
     /**
      * Returns a new instance of managed state less component.
@@ -46,7 +47,7 @@ public interface IStatelessComponentCoordinator<L, A, M> {
      * @param clazz
      * @return an cloned instance of a state less component.
      */
-    <T extends ICallbackComponent<L, A, M>> ICallbackComponent<L, A, M> getCloneBean(
+    <T extends ICallbackComponent<L, A, M>> ICallbackComponent<L, A, M> getCloneBean(IStateLessCallabackComponent<L, A, M> component,
 	    final Class<T> clazz);
 
 }

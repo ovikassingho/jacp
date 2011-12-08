@@ -17,7 +17,11 @@
  */
 package org.jacp.api.component;
 
-import org.jacp.api.launcher.Launcher;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
+
+
 
 /**
  * Represents a state less background/callback component. This component has a
@@ -40,10 +44,26 @@ import org.jacp.api.launcher.Launcher;
  */
 public interface IStateLessCallabackComponent<L, A, M> extends
 		ICallbackComponent<L, A, M> {
+
 	/**
-	 * The launcher is needed to create many instances of a component
+	 * return instances of current state less component
 	 * 
-	 * @param launcher
+	 * @return
 	 */
-	void setLauncher(final Launcher<?> launcher);
+	List<ICallbackComponent<L, A, M>> getInstances();
+
+	/**
+	 * returns thread counter to coordinate amount of existing instances of
+	 * sateless callback component
+	 * 
+	 * @return
+	 */
+	AtomicInteger getThreadCounter();
+
+	/**
+	 * returns associated executor service
+	 * 
+	 * @return
+	 */
+	ExecutorService getExecutorService();
 }

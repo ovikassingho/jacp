@@ -26,6 +26,7 @@ import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 
 /**
@@ -55,6 +56,12 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void init(final Launcher<?> launcher,
 			final BlockingQueue<IDelegateDTO<L, A, M>> queue);
+	
+	/**
+	 * post init method to set correct component handler and to initialize components depending on objects created in startUp sequence 
+	 * @param componentHandler
+	 */
+	void postInit(IComponentHandler<ISubComponent<L, A, M>, IAction<A,M>> componentHandler);
 
 	/**
 	 * Returns all subcomponents in perspective.
@@ -85,15 +92,6 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void addActiveComponent(final ISubComponent<L, A, M> component);
 
-	/**
-	 * Delegates massage to responsible componentObserver to notify target
-	 * component. TODO move to idelegate
-	 * 
-	 * @param target
-	 * @param action
-	 */
-	void delegateComponentMassege(final String target,
-			final IAction<A, M> action);
 
 	/**
 	 * Returns delegate queue to delegate actions to correct target
@@ -101,5 +99,10 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * @return the delegate queue
 	 */
 	BlockingQueue<IDelegateDTO<L, A, M>> getDelegateQueue();
+	/**
+	 * returns the components coordinator message queue;
+	 * @return messgage queue
+	 */
+	BlockingQueue<IAction<A, M>> getComponentsMessageQueue();
 
 }

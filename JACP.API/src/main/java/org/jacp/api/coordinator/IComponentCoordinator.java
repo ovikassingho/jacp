@@ -17,8 +17,13 @@
  */
 package org.jacp.api.coordinator;
 
+
+import java.util.concurrent.BlockingQueue;
+
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.perspective.IPerspective;
+import org.jacp.api.handler.IComponentHandler;
 
 /**
  * Notifies the components included in perspective.
@@ -50,9 +55,22 @@ public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
     
 	
 	/**
-	 * returns associated perspective
+	 * returns associated componentHandler
 	 * @return
 	 */
-	IPerspective<L, A, M> getParentPerspective();
+    @Override
+	@SuppressWarnings("unchecked")
+	IComponentHandler<ISubComponent<L,A,M>, IAction<A,M>> getComponentHandler();
+    
+    /**
+     * set delegate queue
+     * @param delegateQueue
+     */
+    void setDelegateQueue(final BlockingQueue<IDelegateDTO<L,A,M>> delegateQueue);
+    /**
+     * set id of parent component
+     * @param parentId
+     */
+    void setParentId(final String parentId);
 
 }
