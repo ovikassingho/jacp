@@ -25,8 +25,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
-import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
@@ -42,7 +42,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 
 	private List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
 	private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-	private BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue;
+	private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
 	private String parentId;
 
 	@Override
@@ -63,7 +63,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	@Override
 	public void handleMessage(String targetId, IAction<Event, Object> action) {
 		synchronized (action) {
-			final ISubComponent<EventHandler<Event>, Event, Object> component = this
+			final ISubComponent<EventHandler<Event>, Event, Object> component = FX2Util
 					.getObserveableById(FX2Util.getTargetComponentId(targetId),
 							this.components);
 			this.log(" //1.1// component message to: " + action.getTargetId());
@@ -89,7 +89,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	private void handleComponentHit(final String targetId,
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final IAction<Event, Object> actionClone = this.getValidAction(action,
+		final IAction<Event, Object> actionClone = FX2Util.getValidAction(action,
 				targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
 			this.log(" //1.1.1.1// component HIT handle ACTIVE: "
@@ -129,12 +129,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 
 	}
 
-	private final void delegateMessageToCorrectPerspective(
-			String target,
-			IAction<Event, Object> action,
-			BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> queue) {
-		queue.add(new DelegateDTO(target, action));
-	}
+	
 
 	@Override
 	public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
@@ -169,8 +164,8 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 	}
 
 	@Override
-	public void setDelegateQueue(
-			BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue) {
+	public void setMessageDelegateQueue(
+			BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue) {
 		this.delegateQueue = delegateQueue;
 		
 	}

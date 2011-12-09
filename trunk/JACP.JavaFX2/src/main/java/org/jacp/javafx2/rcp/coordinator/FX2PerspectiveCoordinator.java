@@ -18,7 +18,6 @@
 package org.jacp.javafx2.rcp.coordinator;
 
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.application.Platform;
@@ -26,7 +25,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
-import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
@@ -46,11 +44,11 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 	@Override
 	public void handleMessage(final String target,
 			final IAction<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = this
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = FX2Util
 				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
-			final IAction<Event, Object> actionClone = this.getValidAction(
+			final IAction<Event, Object> actionClone = FX2Util.getValidAction(
 					action, target, action.getMessageList().get(target));
 			this.handleComponentHit(target, actionClone, perspective);
 		} // End if
@@ -102,15 +100,11 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		} // End if
 		else {
 			// delegate to addressed component
-			delegateMessageToCorrectPerspective(targetId, action,perspective.getDelegateQueue());
+			delegateMessageToCorrectPerspective(targetId, action,perspective.getMessageDelegateQueue());
 			
 		} // End else
 	}
-	//TODO add to API
-	public final void delegateMessageToCorrectPerspective(String target,
-			IAction<Event, Object> action,BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> queue) {
-		queue.add(new DelegateDTO(target, action));
-	}
+	
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(

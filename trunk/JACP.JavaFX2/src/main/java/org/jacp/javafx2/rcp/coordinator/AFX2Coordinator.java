@@ -18,7 +18,6 @@
 package org.jacp.javafx2.rcp.coordinator;
 
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -28,7 +27,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IComponent;
+import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.coordinator.ICoordinator;
 
 /**
@@ -64,33 +63,19 @@ public abstract class AFX2Coordinator extends Thread implements
 		}
 	}
 	
-	
 	/**
-	 * returns cloned action with valid message TODO add to interface
-	 * 
+	 * add message to delegate queue
+	 * @param target
 	 * @param action
-	 * @param message
-	 * @return
+	 * @param queue
 	 */
-	protected final IAction<Event, Object> getValidAction(
-			final IAction<Event, Object> action, final String target,
-			final Object message) {
-		final IAction<Event, Object> actionClone = action.clone();
-		actionClone.addMessage(target, message);
-		return actionClone;
+	protected final void delegateMessageToCorrectPerspective(
+			String target,
+			IAction<Event, Object> action,
+			BlockingQueue<IDelegateDTO<Event, Object>> queue) {
+		queue.add(new DelegateDTO(target, action));
 	}
 
-	@Override
-	public <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
-			final String id, final List<P> components) {
-		for (int i = 0; i < components.size(); i++) {
-			final P p = components.get(i);
-			if (p.getId().equals(id)) {
-				return p;
-			}
-		}
-		return null;
-	}
 
 	@Override
 	public BlockingQueue<IAction<Event, Object>> getMessageQueue() {

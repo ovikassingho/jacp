@@ -30,7 +30,6 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IStateLessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -60,7 +59,7 @@ public class FX2PerspectiveHandler
 	private final Launcher<?> launcher;
 	private StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
-	private final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue;
+	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private final ExecutorService executor = Executors
 			.newFixedThreadPool(MAX_INCTANCE_COUNT);
 
@@ -74,11 +73,11 @@ public class FX2PerspectiveHandler
 			final Launcher<?> launcher,
 			final FX2ComponentLayout layout,
 			final IPerspectiveLayout<Node, Node> perspectiveLayout,
-			final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue) {
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
 		this.layout = layout;
 		this.launcher = launcher;
 		this.perspectiveLayout = perspectiveLayout;
-		this.delegateQueue = delegateQueue;
+		this.componentDelegateQueue = componentDelegateQueue;
 		scheduler = new StatelessCallbackScheduler(this.launcher);
 	}
 
@@ -139,12 +138,25 @@ public class FX2PerspectiveHandler
 		}
 
 	}
+	/**
+	 * run at startup method in perspective
+	 * 
+	 * @param component
+	 */
+	private void runComponentOnStartupSequence(final AFX2Component component) {
+		component.onStartComponent(this.layout);
+	}
 
+	/**
+	 * handle state less callback component
+	 * @param component
+	 * @param action
+	 */
 	private final void runStatelessCallbackComponent(
 			IStateLessCallabackComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		
-		scheduler.incomingMessage(action,((AStatelessCallbackComponent) component));
+		scheduler.incomingMessage(action,component);
 	}
 
 	/**
@@ -158,8 +170,21 @@ public class FX2PerspectiveHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		this.executor.execute(new FX2ComponentReplaceWorker(perspectiveLayout
-				.getTargetLayoutComponents(), this.delegateQueue,
+				.getTargetLayoutComponents(), this.componentDelegateQueue,
 				((AFX2Component) component), layout));
+	}
+
+	/**
+	 * run background components thread
+	 * 
+	 * @param action
+	 * @param component
+	 */
+	private final void runStateComponent(
+			final IAction<Event, Object> action,
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		this.executor.execute(new StateComponentRunWorker(this.componentDelegateQueue,
+				component));
 	}
 
 	/**
@@ -204,28 +229,6 @@ public class FX2PerspectiveHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		component.putIncomingMessage(action);
-	}
-
-	/**
-	 * run background components thread
-	 * 
-	 * @param action
-	 * @param component
-	 */
-	private final void runStateComponent(
-			final IAction<Event, Object> action,
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-		this.executor.execute(new StateComponentRunWorker(this.delegateQueue,
-				component));
-	}
-
-	/**
-	 * run at startup method in perspective
-	 * 
-	 * @param component
-	 */
-	private void runComponentOnStartupSequence(final AFX2Component component) {
-		component.onStartComponent(this.layout);
 	}
 
 	private void log(final String message) {

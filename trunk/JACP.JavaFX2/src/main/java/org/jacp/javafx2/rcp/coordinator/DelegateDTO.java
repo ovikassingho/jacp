@@ -18,34 +18,22 @@
 package org.jacp.javafx2.rcp.coordinator;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IDelegateDTO;
-import org.jacp.api.component.ISubComponent;
+import org.jacp.api.action.IDelegateDTO;
 
 /**
  * DTO interface to transfer components to desired target
  * @author Andy Moncsek
  *
  */
-public class DelegateDTO implements IDelegateDTO<EventHandler<Event>, Event, Object>{
+public class DelegateDTO implements IDelegateDTO<Event, Object>{
 	private final String target;
-	private final ISubComponent<EventHandler<Event>, Event, Object> component;
 	private final IAction<Event, Object> action;
 	
 	
 	public DelegateDTO(final String target,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.target = target;
-		this.component = component;
-		this.action = null;
-	}
-	public DelegateDTO(final String target,
 			IAction<Event, Object> action) {
 		this.target = target;
-		this.component = null;
-
 		this.action = action;
 	}
 
@@ -53,12 +41,6 @@ public class DelegateDTO implements IDelegateDTO<EventHandler<Event>, Event, Obj
 	public String getTarget() {
 		return target;
 	}
-
-	@Override
-	public ISubComponent<EventHandler<Event>, Event, Object> getComponent() {
-		return component;
-	}
-
 
 	@Override
 	public IAction<Event, Object> getAction() {
