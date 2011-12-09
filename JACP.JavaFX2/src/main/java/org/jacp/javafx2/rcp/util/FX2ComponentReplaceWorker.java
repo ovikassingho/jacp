@@ -28,7 +28,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IDelegateDTO;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
@@ -49,18 +49,18 @@ public class FX2ComponentReplaceWorker
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 	private final FX2ComponentLayout layout;
-	private final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue;
+	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public FX2ComponentReplaceWorker(
-			final Map<String, Node> targetComponents,final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
+			final Map<String, Node> targetComponents,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.layout = layout;
-		this.delegateQueue = delegateQueue;
+		this.componentDelegateQueue = componentDelegateQueue;
 	}
 
 	@Override
@@ -203,14 +203,14 @@ public class FX2ComponentReplaceWorker
 				handleLocalTargetChange(component, targetComponents,
 						validContainer);
 			} else {
-				handlePerspectiveChange(this.delegateQueue, component, layout);
+				handlePerspectiveChange(this.componentDelegateQueue, component, layout);
 			}
 		} else if (root != null && root != previousContainer) {
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
 			root.setVisible(true);
-			this.handleNewComponentValue(this.delegateQueue, component,
+			this.handleNewComponentValue(this.componentDelegateQueue, component,
 					this.targetComponents, parentNode, currentTaget);
 		}
 

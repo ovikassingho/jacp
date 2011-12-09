@@ -164,7 +164,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 				component.getExecutionTarget());
 		final ObservableList<Node> children = FX2Util
 				.getChildren(validContainer);
-		Node root = component.getRoot();
+		final Node root = component.getRoot();
 		GridPane.setHgrow(root, Priority.ALWAYS);
 		GridPane.setVgrow(root, Priority.ALWAYS);
 		children.add(root);
@@ -227,7 +227,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 			if(perspective instanceof ILayoutAbleComponent) {
 				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((ILayoutAbleComponent<Node>)perspective).getIPerspectiveLayout();
 				perspective.postInit(new FX2PerspectiveHandler(this.launcher, tmpLayout,
-						 perspectiveLayout, perspective.getDelegateQueue()));
+						 perspectiveLayout, perspective.getComponentDelegateQueue()));
 			} else {
 				
 			}

@@ -145,7 +145,7 @@ public class StatelessCallbackScheduler implements
 		return seek;
 	}
 
-	private class StateLessComponentRunWorker
+	class StateLessComponentRunWorker
 			extends
 			AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 		private final ICallbackComponent<EventHandler<Event>, Event, Object> component;

@@ -31,13 +31,11 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.coordinator.DelegateDTO;
 
 /**
  * handles component methods in own thread;
@@ -131,7 +129,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentTaget
 	 */
-	protected void handleNewComponentValue(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected void handleNewComponentValue(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node parent,
 			final String currentTaget) {
@@ -168,7 +166,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param targetComponents
 	 */
-	protected void handleTargetChange(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected void handleTargetChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
@@ -200,7 +198,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param target
 	 * @param layout
 	 */
-	protected void handlePerspectiveChange(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected void handlePerspectiveChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
 		// target component not found in current perspective, move to an other
@@ -218,14 +216,14 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected final void changeComponentTarget(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected final void changeComponentTarget(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final String targetId = component.getExecutionTarget();
 		final String parentIdOld = component.getParentId();
 		final String parentId = FX2Util.getTargetParentId(targetId);
 		if (!parentIdOld.equals(parentId)) {
 			// delegate to perspective observer
-			delegateQueue.add(new DelegateDTO(targetId, component));
+			delegateQueue.add(component);
 
 		}
 	}

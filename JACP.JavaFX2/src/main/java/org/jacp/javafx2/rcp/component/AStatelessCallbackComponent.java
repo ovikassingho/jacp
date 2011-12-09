@@ -33,11 +33,8 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStateLessCallabackComponent;
-import org.jacp.api.launcher.Launcher;
-import org.jacp.api.scheduler.IStatelessComponentScheduler;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
-import org.jacp.javafx2.rcp.scheduler.StatelessCallbackScheduler;
 
 /**
  * represents a abstract stateless background component
@@ -250,6 +247,7 @@ public abstract class AStatelessCallbackComponent implements
 		return this.threadCount;
 	}
 	
+	@Override
 	public ExecutorService getExecutorService(){
 		return this.executor;
 	}

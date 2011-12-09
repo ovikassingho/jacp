@@ -37,7 +37,7 @@ public class FX2PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 	private final Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();
 
 	@Override
-	public void setRootComponent(Node comp) {
+	public void registerRootComponent(Node comp) {
 		this.rootComponent = comp;
 	}
 

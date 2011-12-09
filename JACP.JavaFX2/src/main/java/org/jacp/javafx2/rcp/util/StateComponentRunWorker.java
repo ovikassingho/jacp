@@ -25,7 +25,7 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IDelegateDTO;
+import org.jacp.api.component.ISubComponent;
 
 /**
  * this class handles running stateful background components
@@ -36,9 +36,9 @@ import org.jacp.api.component.IDelegateDTO;
 public class StateComponentRunWorker extends
 		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
-	private final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue;
+	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
 
-	public StateComponentRunWorker(final BlockingQueue<IDelegateDTO<EventHandler<Event>, Event, Object>> delegateQueue,
+	public StateComponentRunWorker(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 		this.delegateQueue = delegateQueue;

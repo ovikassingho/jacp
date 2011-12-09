@@ -40,6 +40,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.coordinator.IComponentDelegator;
+import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
@@ -49,7 +50,8 @@ import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
-import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveDelegator;
+import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
+import org.jacp.javafx2.rcp.coordinator.FX2MessageDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
 import org.jacp.javafx2.rcp.handler.FX2WorkbenchHandler;
 
@@ -68,56 +70,14 @@ public abstract class AFX2Workbench
 
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FX2PerspectiveCoordinator();
-	private final IComponentDelegator<EventHandler<Event>, Event, Object> delegator = new FX2PerspectiveDelegator();
+	private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FX2ComponentDelegator();
+	private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new FX2MessageDelegator();
 	private final IWorkbenchLayout<Node> workbenchLayout = new FX2WorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 	private Stage stage;
 	private GridPane root;
 
-	public AFX2Workbench(final String name) {
-
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	// TODO init method also defined in perspective!!!!
-	public void init(Launcher<?> launcher) {
-		this.launcher = launcher;
-
-	}
-
-	/**
-	 * handles sequence for workbench size, menu bar, tool bar and perspective
-	 * initialisation
-	 */
-	private void handleInitialisationSequence() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				AFX2Workbench.this.stage.show();
-				// start perspective Observer worker thread
-				// TODO create status daemon which observes
-				// thread component on
-				// failure and restarts if needed!!
-				((FX2PerspectiveCoordinator) AFX2Workbench.this.perspectiveCoordinator)
-						.start();
-				((FX2PerspectiveDelegator) AFX2Workbench.this.delegator)
-						.start();
-				// init toolbar instance
-				AFX2Workbench.this.log("3.2: workbench tool bars");
-				// initToolBars();
-				// handle perspectives
-				AFX2Workbench.this.log("3.3: workbench init perspectives");
-				AFX2Workbench.this.initComponents(null);
-
-			}
-
-		});
-	}
 
 	/**
 	 * JavaFX2 specific start sequence
@@ -138,83 +98,19 @@ public abstract class AFX2Workbench
 		componentHandler = new FX2WorkbenchHandler(this.launcher,
 				this.workbenchLayout, this.root, this.perspectives);
 		this.perspectiveCoordinator.setComponentHandler(componentHandler);
-		this.delegator.setComponentHandler(componentHandler);
+		this.componentDelegator.setComponentHandler(componentHandler);
+		this.messageDelegator.setComponentHandler(componentHandler);
 		this.handleInitialisationSequence();
 	}
 
-	/**
-	 * Handle menu and bar entries created in @see
-	 * {@link org.jacp.javafx2.rcp.workbench.AFX2Workbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
-	 * 
-	 * @param layout
-	 */
-	public abstract void postHandle(final FX2ComponentLayout layout);
-
 	@Override
 	/**
 	 * {@inheritDoc}
 	 */
-	public void handleInitialLayout(final IAction<Event, Object> action,
-			final IWorkbenchLayout<Node> layout) {
-		this.handleInitialLayout(action, layout, this.stage);
-	}
+	// TODO init method also defined in perspective!!!!
+	public void init(Launcher<?> launcher) {
+		this.launcher = launcher;
 
-	/**
-	 * JavaFX2 specific initialization method to create a workbench instance
-	 * 
-	 * @param action
-	 * @param layout
-	 * @param stage
-	 */
-	public abstract void handleInitialLayout(
-			final IAction<Event, Object> action,
-			final IWorkbenchLayout<Node> layout, final Stage stage);
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void setPerspectives(
-			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
-		this.perspectives = perspectives;
-
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
-		return this.perspectives;
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final FX2WorkbenchLayout getWorkbenchLayout() {
-		return (FX2WorkbenchLayout) this.workbenchLayout;
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void registerComponent(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.init(this.launcher, this.delegator.getDelegateQueue());
-		this.perspectiveCoordinator.addPerspective(perspective);
-		this.delegator.addPerspective(perspective);
-	}
-
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final void unregisterComponent(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.perspectiveCoordinator.removePerspective(perspective);
-		this.delegator.removePerspective(perspective);
 	}
 
 	@Override
@@ -242,8 +138,122 @@ public abstract class AFX2Workbench
 					}
 				}); // FX2 UTILS END
 			}
-
+	
 		}
+	}
+
+	/**
+	 * handles sequence for workbench size, menu bar, tool bar and perspective
+	 * initialisation
+	 */
+	private void handleInitialisationSequence() {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				AFX2Workbench.this.stage.show();
+				// start perspective Observer worker thread
+				// TODO create status daemon which observes
+				// thread component on
+				// failure and restarts if needed!!
+				((FX2PerspectiveCoordinator) AFX2Workbench.this.perspectiveCoordinator)
+						.start();
+				((FX2ComponentDelegator) AFX2Workbench.this.componentDelegator)
+						.start();
+				((FX2MessageDelegator) AFX2Workbench.this.messageDelegator)
+				.start();
+				// init toolbar instance
+				AFX2Workbench.this.log("3.2: workbench tool bars");
+				// initToolBars();
+				// handle perspectives
+				AFX2Workbench.this.log("3.3: workbench init perspectives");
+				AFX2Workbench.this.initComponents(null);
+
+			}
+
+		});
+	}
+
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void handleInitialLayout(final IAction<Event, Object> action,
+			final IWorkbenchLayout<Node> layout) {
+		this.handleInitialLayout(action, layout, this.stage);
+	}
+
+	/**
+	 * JavaFX2 specific initialization method to create a workbench instance
+	 * 
+	 * @param action
+	 * @param layout
+	 * @param stage
+	 */
+	public abstract void handleInitialLayout(
+			final IAction<Event, Object> action,
+			final IWorkbenchLayout<Node> layout, final Stage stage);
+
+	/**
+	 * Handle menu and bar entries created in @see
+	 * {@link org.jacp.javafx2.rcp.workbench.AFX2Workbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
+	 * 
+	 * @param layout
+	 */
+	public abstract void postHandle(final FX2ComponentLayout layout);
+
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void registerComponent(
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		perspective.init(this.componentDelegator.getComponentDelegateQueue(),this.messageDelegator.getMessageDelegateQueue());
+		this.perspectiveCoordinator.addPerspective(perspective);
+		this.componentDelegator.addPerspective(perspective);
+		this.messageDelegator.addPerspective(perspective);
+	}
+
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void unregisterComponent(
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		this.perspectiveCoordinator.removePerspective(perspective);
+		this.componentDelegator.removePerspective(perspective);
+		this.messageDelegator.removePerspective(perspective);
+	}
+
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public final FX2WorkbenchLayout getWorkbenchLayout() {
+		return (FX2WorkbenchLayout) this.workbenchLayout;
+	}
+
+	@Override
+	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+		return componentHandler;
+	}
+
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public final void setPerspectives(
+			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
+		this.perspectives = perspectives;
+	
+	}
+
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
+		return this.perspectives;
 	}
 
 	/**
@@ -258,7 +268,7 @@ public abstract class AFX2Workbench
 		// the main content Pane, will be "centered"
 		this.root = new GridPane();
 		root.setId("root-pane");
-
+	
 		stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
 		//
 		// add the toolbars in a specific order
@@ -266,14 +276,14 @@ public abstract class AFX2Workbench
 			// holds only the decorator (if set) and the menu bar.
 			final BorderPane baseLayoutPane = new BorderPane();
 			// TODO: handle the custom decorator
-
+	
 			// add the menu if needed
 			if (this.getWorkbenchLayout().isMenuEnabled())
 				baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
-
+	
 			final BorderPane toolbarPane = new BorderPane();
 			baseLayoutPane.setCenter(toolbarPane);
-
+	
 			final Map<ToolbarPosition, ToolBar> registeredToolbars = this
 					.getWorkbenchLayout().getRegisteredToolbars();
 			final Iterator<Entry<ToolbarPosition, ToolBar>> it = registeredToolbars
@@ -284,12 +294,12 @@ public abstract class AFX2Workbench
 				final ToolBar toolBar = entry.getValue();
 				this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);
 			}
-
+	
 			// add root to the center
 			toolbarPane.setCenter(this.root);
-
+	
 			stage.setScene(new Scene(baseLayoutPane, x, y));
-
+	
 		} else {
 			stage.setScene(new Scene(this.root, x, y));
 		}
@@ -327,11 +337,6 @@ public abstract class AFX2Workbench
 		bar.setMaxHeight(Double.MAX_VALUE);
 		box.getChildren().add(bar);
 		return box;
-	}
-
-	@Override
-	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
-		return componentHandler;
 	}
 
 	private void log(final String message) {

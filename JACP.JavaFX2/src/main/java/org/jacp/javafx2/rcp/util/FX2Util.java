@@ -2,10 +2,16 @@ package org.jacp.javafx2.rcp.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponent;
+
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 
@@ -136,4 +142,31 @@ public class FX2Util {
 	protected static final String[] getTargetId(final String messageId) {
 		return messageId.split("\\.");
 	}
+	
+	public static <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
+			final String id, final List<P> components) {
+		for (int i = 0; i < components.size(); i++) {
+			final P p = components.get(i);
+			if (p.getId().equals(id)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * returns cloned action with valid message TODO add to interface
+	 * 
+	 * @param action
+	 * @param message
+	 * @return
+	 */
+	public static final IAction<Event, Object> getValidAction(
+			final IAction<Event, Object> action, final String target,
+			final Object message) {
+		final IAction<Event, Object> actionClone = action.clone();
+		actionClone.addMessage(target, message);
+		return actionClone;
+	}
+
 }
