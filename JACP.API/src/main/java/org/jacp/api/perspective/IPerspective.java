@@ -19,15 +19,13 @@ package org.jacp.api.perspective;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
-import org.jacp.api.component.IDelegateDTO;
 import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.api.launcher.Launcher;
 
 /**
  * Defines a perspective, a perspective is a root component handled by an
@@ -49,13 +47,11 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 		IHandleable<A, M> {
 
 	/**
-	 * The initialization method. The launcher is the access to the DI container
-	 * instance.
+	 * The initialization method. 
 	 * 
-	 * @param launcher
+	 * @param the delegate queue
 	 */
-	void init(final Launcher<?> launcher,
-			final BlockingQueue<IDelegateDTO<L, A, M>> queue);
+	void init(final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue);
 	
 	/**
 	 * post init method to set correct component handler and to initialize components depending on objects created in startUp sequence 
@@ -85,20 +81,20 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void handlePerspective(final IAction<A, M> action);
 
+
 	/**
-	 * Add an active component after component.handle was executed.
+	 * Returns delegate queue to delegate components to correct target
 	 * 
-	 * @param component
+	 * @return the delegate queue
 	 */
-	void addActiveComponent(final ISubComponent<L, A, M> component);
-
-
+	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
+	
 	/**
 	 * Returns delegate queue to delegate actions to correct target
 	 * 
 	 * @return the delegate queue
 	 */
-	BlockingQueue<IDelegateDTO<L, A, M>> getDelegateQueue();
+	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
 	/**
 	 * returns the components coordinator message queue;
 	 * @return messgage queue

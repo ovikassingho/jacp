@@ -17,7 +17,6 @@
  */
 package org.jacp.api.coordinator;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
@@ -46,17 +45,6 @@ public interface ICoordinator<L, A, M> {
 	 */
 	void handleMessage(final String id, final IAction<A, M> action);
 
-
-
-	/**
-	 * Returns a specific, observed perspective or component by id.
-	 * 
-	 * @param id
-	 * @return the corresponding component, perspective or null when nothing
-	 *         found
-	 */
-	<P extends IComponent<L, A, M>> P getObserveableById(final String id,
-			final List<P> perspectives);
 
 	/**
 	 * Handle a message to an active component.

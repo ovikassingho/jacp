@@ -15,38 +15,31 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.jacp.api.coordinator;
-
-import java.util.concurrent.BlockingQueue;
+package org.jacp.api.action;
 
 
-import org.jacp.api.component.ISubComponent;
 
 /**
- * A component delegate handles delegate actions.
+ * DTO interface to transfer messages to desired target in different perspective
  * 
  * @author Andy Moncsek
  * 
- * @param <L>
  * @param <A>
+ *            defines the basic action type
  * @param <M>
+ *            defines the basic message type
  */
-public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M>{
+public interface IDelegateDTO<A, M> {
 
 	/**
-	 * Handles delegate of a component.
+	 * get the target id to transfer to
 	 * 
-	 * @param dto
+	 * @return targetId
 	 */
-	void delegateComponent(ISubComponent<L, A, M> component);
-
+	String getTarget();
 	/**
-	 * Get the delegate queue to add components to be delegated.
-	 * 
-	 * @return delegateQueue
+	 * returns the action
+	 * @return
 	 */
-	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
-
-	
-
+	public IAction<A, M> getAction();
 }

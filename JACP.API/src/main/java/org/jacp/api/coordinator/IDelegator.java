@@ -18,7 +18,9 @@
 package org.jacp.api.coordinator;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * Basic delegate interface
@@ -31,22 +33,26 @@ import org.jacp.api.component.ISubComponent;
  */
 public interface IDelegator<L, A, M> {
 	/**
-	 * Delegate message from a subcomponent to target perspective. If no target
-	 * was found for current action in this perspective, delegate the message to
-	 * upper level (the workbench) and try to find the component in an other
-	 * perspective.
+	 * Add the perspective to observe. TODO merge with IPerspectiveCoordinator
 	 * 
-	 * @param target
-	 * @param action
+	 * @param perspective
 	 */
-	void delegateMessage(final String target, final IAction<A, M> action);
+	void addPerspective(final IPerspective<L, A, M> perspective);
 
 	/**
-	 * Delegate the component target change to an other perspective.
+	 * Remove the perspective; e.g. when perspective is deactivated TODO merge
+	 * with IPerspectiveCoordinator
 	 * 
-	 * @param target
-	 * @param component
+	 * @param perspective
 	 */
-	void delegateTargetChange(final String target,
-			final ISubComponent<L, A, M> component);
+	void removePerspective(final IPerspective<L, A, M> perspective);
+	
+	/**
+	 * Set the associated component handler.
+	 * 
+	 * @param handler
+	 */
+	<P extends IComponent<L, A, M>> void setComponentHandler(
+			IComponentHandler<P, IAction<A, M>> handler);
+
 }
