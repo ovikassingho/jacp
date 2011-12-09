@@ -1,3 +1,4 @@
+09. Dez. 2011 - amo - split the delegator interface in message and component delegator
 08. Dez. 2011 - amo - renamed statelesscomponentcoordinator in *Scheduler; removed dependency between statelesscomponent and scheduler, introduced new package
 08. Dez. 2011 - amo - extract componentHandler interface to move methods from workbench and perspective; this handler coordinates creation and replacement of components, introduced new package
 06. Dez. 2011 - amo - remove delegateMessage and delegateTarget change from IPerspective, add dependency to delegate queue

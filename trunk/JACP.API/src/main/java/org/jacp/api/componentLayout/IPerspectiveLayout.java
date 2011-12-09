@@ -40,7 +40,7 @@ public interface IPerspectiveLayout<M, B> {
 	 * @param comp
 	 *            the new root component
 	 */
-	void setRootComponent(final M comp);
+	void registerRootComponent(final M comp);
 
 	/**
 	 * Get the ' layoutwrapper' for perspective; a layout component is a

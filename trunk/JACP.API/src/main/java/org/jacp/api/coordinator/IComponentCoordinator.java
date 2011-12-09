@@ -21,7 +21,7 @@ package org.jacp.api.coordinator;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IDelegateDTO;
+import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.handler.IComponentHandler;
 
@@ -66,7 +66,7 @@ public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
      * set delegate queue
      * @param delegateQueue
      */
-    void setDelegateQueue(final BlockingQueue<IDelegateDTO<L,A,M>> delegateQueue);
+    void setMessageDelegateQueue(final BlockingQueue<IDelegateDTO<A,M>> delegateQueue);
     /**
      * set id of parent component
      * @param parentId

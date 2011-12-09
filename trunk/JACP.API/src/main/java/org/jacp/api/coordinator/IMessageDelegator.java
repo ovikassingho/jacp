@@ -15,40 +15,30 @@
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.jacp.api.component;
+package org.jacp.api.coordinator;
 
+import java.util.concurrent.BlockingQueue;
 
-import org.jacp.api.action.IAction;
-
+import org.jacp.api.action.IDelegateDTO;
 /**
- * DTO interface to transfer components to desired target
- * 
+ * Defines an interface for a message delegator.
  * @author Andy Moncsek
- * 
+ *
  * @param <L>
- *            defines the action listener type
  * @param <A>
- *            defines the basic action type
  * @param <M>
- *            defines the basic message type
  */
-public interface IDelegateDTO<L, A, M> {
+public interface IMessageDelegator<L, A, M> extends IDelegator<L, A, M> {
+	
 	/**
-	 * Get the component to transfer
-	 * 
-	 * @return the component
+	 * Delegate message to correct perspective/component
+	 * @param messageDTO
 	 */
-	ISubComponent<L, A, M> getComponent();
-
+	void delegateMessage(final IDelegateDTO<A, M> messageDTO);
 	/**
-	 * get the target id to transfer to
-	 * 
-	 * @return targetId
-	 */
-	String getTarget();
-	/**
-	 * returns the action
+	 * Returns the delegate queue.
 	 * @return
 	 */
-	public IAction<A, M> getAction();
+	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
+
 }
