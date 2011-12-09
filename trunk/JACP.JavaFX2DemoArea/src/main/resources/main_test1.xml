@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="workbench" class="org.jacp.javafx2.rcp.test1.TestOneFX2Workbench">
+		<property name="perspectives">
+			<list>
+			<ref bean="perspectiveOne" />
+			</list>
+		</property>
+	</bean>
+
+<bean id="perspectiveOne" class="org.jacp.javafx2.rcp.test1.TestOnePerspectiveOne">
+		<property name="name" value="perspectiveOne" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+</beans>
