@@ -29,10 +29,6 @@ public class DemoFX2Workbench extends AFX2Workbench {
 	private double mouseDragOffsetY = 0;
 	private Stage stage;
 
-	public DemoFX2Workbench() {
-		super("UnitTestWorkbench");
-
-	}
 
 	@Override
 	public void handleInitialLayout(final IAction<Event, Object> action,

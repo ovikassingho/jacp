@@ -101,7 +101,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
 
 		// Register all Components
-		perspectiveLayout.setRootComponent(mainLayout);
+		perspectiveLayout.registerRootComponent(mainLayout);
 		// register breadcrumb
 		GridPane.setHgrow(mainLayout, Priority.ALWAYS);
 		GridPane.setVgrow(mainLayout, Priority.ALWAYS);
@@ -135,6 +135,5 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 	}
 
-
-
+	
 }

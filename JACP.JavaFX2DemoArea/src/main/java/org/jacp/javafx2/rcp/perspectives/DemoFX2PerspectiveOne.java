@@ -49,7 +49,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		layout.setCenter(bc);
 		layout.setLeft(left);
 		layout.setRight(right);
-		perspectiveLayout.setRootComponent(layout);
+		perspectiveLayout.registerRootComponent(layout);
 		perspectiveLayout.registerTargetLayoutComponent("P1", bottom);
 		perspectiveLayout.registerTargetLayoutComponent("P2", left);
 		perspectiveLayout.registerTargetLayoutComponent("P3", right);
