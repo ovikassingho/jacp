@@ -15,7 +15,7 @@
 <bean id="perspectiveOne" class="org.jacp.javafx2.rcp.test1.TestOnePerspectiveOne">
 		<property name="name" value="perspectiveOne" />
 		<property name="id" value="id01" />
-		<property name="active" value="true" />
+		<property name="active" value="false" />
 		<property name="subcomponents">
 			<list>
 
