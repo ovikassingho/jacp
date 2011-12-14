@@ -264,12 +264,12 @@ public abstract class AFX2Perspective implements
 	}
 
 	@Override
-	public IPerspectiveLayout<? extends Node, Node> getIPerspectiveLayout() {
+	public final IPerspectiveLayout<? extends Node, Node> getIPerspectiveLayout() {
 		return this.perspectiveLayout;
 	}
 
 	@Override
-	public IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action(this.id),
 				this.globalMessageQueue);
 	}

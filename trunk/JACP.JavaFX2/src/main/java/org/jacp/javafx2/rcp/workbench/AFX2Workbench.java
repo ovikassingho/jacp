@@ -35,8 +35,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.coordinator.IComponentDelegator;
@@ -48,6 +50,7 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx2.rcp.action.FX2Action;
+import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
@@ -87,6 +90,18 @@ public abstract class AFX2Workbench
 	 */
 	public final void start(final Stage stage) throws Exception {
 		this.stage = stage;
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent arg0) {
+				//TODO close all threads, use thread group to interrupt
+			//	((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
+			//	((FX2ComponentDelegator)componentDelegator).interrupt();
+			//	((FX2MessageDelegator)messageDelegator).interrupt();
+				System.exit(0);
+				
+			}
+		});
 		this.log("1: init workbench");
 		// init user defined workspace
 		this.handleInitialLayout(new FX2Action("TODO", "init"),
@@ -254,6 +269,12 @@ public abstract class AFX2Workbench
 	 */
 	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
 		return this.perspectives;
+	}
+	
+	@Override
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
+		return new FX2ActionListener(new FX2Action("workbench"),
+				perspectiveCoordinator.getMessageQueue());
 	}
 
 	/**

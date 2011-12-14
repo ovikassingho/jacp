@@ -47,7 +47,7 @@ public class FX2MessageDelegator extends Thread implements
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<IDelegateDTO<Event,Object>>(10000);
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
-
+	
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {

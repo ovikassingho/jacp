@@ -33,7 +33,7 @@ import org.jacp.api.component.IVComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
- * Background Worker to execute components; handle method to init component
+ * Background Worker to execute components; handle method to init component.
  * 
  * @author Andy Moncsek
  */
@@ -65,8 +65,7 @@ public class FX2ComponentInitWorker
 			this.component.setBlocked(true);
 			this.log("3.4.4.2.1: subcomponent handle init START: "
 					+ this.component.getName());
-			final Node editorComponent = this.component.handle(this.action);
-			this.component.setRoot(editorComponent);
+			prepareAndHandleComponent(this.component, this.action);
 			this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 					+ this.component.getName());
 			// expect always local target id
