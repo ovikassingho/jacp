@@ -66,7 +66,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final Node validContainer,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
 		this.handleAdd(validContainer, component.getRoot(), component.getName());
-		validContainer.setVisible(true);
+		handleViewState(validContainer, true);
 
 	}
 
@@ -80,8 +80,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	private void handleAdd(final Node validContainer, final Node uiComponent,
 			final String name) {
 		if (validContainer != null && uiComponent != null) {
-			uiComponent.setDisable(false);
-			uiComponent.setVisible(true);
+			handleViewState(uiComponent, true);
 			final ObservableList<Node> children = FX2Util
 					.getChildren(validContainer);
 			children.add(uiComponent);
@@ -95,12 +94,21 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentContainer
 	 */
-	protected void handleOldComponentRemove(final Node parent,
+	protected final void handleOldComponentRemove(final Node parent,
 			final Node currentContainer) {
-		currentContainer.setVisible(false);
-		currentContainer.setDisable(true);
+		handleViewState(currentContainer, false);
 		final ObservableList<Node> children = FX2Util.getChildren(parent);
 		children.remove(currentContainer);
+	}
+	
+	/**
+	 * set visibility and enable/disable
+	 * @param uiComponent
+	 * @param state
+	 */
+	protected final void handleViewState(final Node uiComponent, boolean state) {
+		uiComponent.setVisible(state);
+		uiComponent.setDisable(!state);
 	}
 	
 	/**
@@ -192,7 +200,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	}
 
 	/**
-	 * Handle target change to an other perspective.
+	 * Handle target change to an other perspective. If target component not found in current perspective, move to an other  perspective and run teardown.
 	 * @param component
 	 * @param targetComponents
 	 * @param target
@@ -201,9 +209,6 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	protected void handlePerspectiveChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
-		// target component not found in current perspective, move to an other
-		// perspective
-		// run teardown
 		if (component instanceof AFX2Component) {
 			((AFX2Component) component).onTearDownComponent(layout);
 		}
@@ -236,13 +241,12 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param action
 	 * @return
 	 */
-	protected final Node prepareAndHandleComponent(
+	protected final void prepareAndHandleComponent(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		final Node editorComponent = component.handle(action);
 		if (editorComponent != null)
 			component.setRoot(editorComponent);
-		return editorComponent;
 	}
 
 	/**

@@ -209,7 +209,7 @@ public class FX2ComponentReplaceWorker
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
-			root.setVisible(true);
+			handleViewState(root,true);
 			this.handleNewComponentValue(this.componentDelegateQueue, component,
 					this.targetComponents, parentNode, currentTaget);
 		}
