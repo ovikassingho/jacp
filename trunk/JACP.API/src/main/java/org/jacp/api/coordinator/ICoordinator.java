@@ -65,19 +65,19 @@ public interface ICoordinator<L, A, M> {
 			final IAction<A, M> action);
 	/**
 	 * Returns the message queue of coordinator.
-	 * @return
+	 * @return the message queue
 	 */
 	BlockingQueue<IAction<A, M>> getMessageQueue();
 	
 	
 	/**
-	 * returns associated componentHandler
-	 * @return
+	 * Returns the associated componentHandler.
+	 * @return the component handler
 	 */
     <P extends IComponent<L,A,M>>IComponentHandler<P, IAction<A,M>> getComponentHandler();
 	/**
 	 * set associated componentHandler
-	 * @return
+	 *  @param handler
 	 */
     <P extends IComponent<L,A,M>> void setComponentHandler(final IComponentHandler<P, IAction<A,M>> handler);
     

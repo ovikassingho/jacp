@@ -53,14 +53,6 @@ public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
      */
     void removeComponent(final ISubComponent<L, A, M> component);
     
-	
-	/**
-	 * returns associated componentHandler
-	 * @return
-	 */
-    @Override
-	@SuppressWarnings("unchecked")
-	IComponentHandler<ISubComponent<L,A,M>, IAction<A,M>> getComponentHandler();
     
     /**
      * set delegate queue

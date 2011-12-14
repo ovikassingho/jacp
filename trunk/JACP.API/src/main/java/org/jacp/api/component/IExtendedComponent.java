@@ -37,8 +37,7 @@ public interface IExtendedComponent<C> {
 	 * entry point to add menu entries or bar entries or to create stuff only
 	 * need to create once.
 	 * 
-	 * @param menuBar
-	 * @param bars
+	 * @param layout
 	 */
 	void onStart(final IBaseLayout<C> layout);
 
@@ -46,8 +45,7 @@ public interface IExtendedComponent<C> {
 	 * This method is always executed when the component is deactivated. Use
 	 * this method to clean up your component before it will be deactivated.
 	 * 
-	 * @param menuBar
-	 * @param bars
+	 * @param layout
 	 */
 	void onTearDown(final IBaseLayout<C> layout);
 

@@ -18,15 +18,15 @@
 package org.jacp.api.workbench;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IActionListener;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 
-
 /**
- * Base component for an JACP UI application, handles perspectives and containing
- * components. A workbench is the root of all JACP perspectives an component. You can have 1 workbench including (1-n) perspectives which can include (1-n) components.
+ * Base component for an JACP UI application, handles perspectives and
+ * containing components. A workbench is the root of all JACP perspectives an
+ * component. You can have 1 workbench including (1-n) perspectives which can
+ * include (1-n) components.
  * 
- * @param <P>
- *            defines the default layout manager
  * 
  * @param <C>
  *            defines the base component where others extend from
@@ -36,13 +36,10 @@ import org.jacp.api.componentLayout.IWorkbenchLayout;
  *            defines the basic action type
  * @param <M>
  *            defines the basic message type
- * @param <S>
- *            defines the workbench style
  * 
  * @author Andy Moncsek
  */
-public interface IWorkbench<C, L, A, M> extends IBase<L, A, M>{
-
+public interface IWorkbench<C, L, A, M> extends IBase<L, A, M> {
 
 	/**
 	 * Handle the workbench layout.
@@ -56,8 +53,16 @@ public interface IWorkbench<C, L, A, M> extends IBase<L, A, M>{
 	/**
 	 * Returns workbench layout object.
 	 * 
-	 * @return the workbench layout class, defining basic settings for the workbench
+	 * @return the workbench layout class, defining basic settings for the
+	 *         workbench
 	 */
 	IWorkbenchLayout<C> getWorkbenchLayout();
 
+
+	/**
+	 * Returns an action listener (for local, target and global use).
+	 * 
+	 * @return the action listener instance
+	 */
+	IActionListener<L, A, M> getActionListener();
 }

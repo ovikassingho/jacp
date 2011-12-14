@@ -22,7 +22,7 @@ public interface IBaseLayout<C> {
 	/**
 	 * Returns the application menu instance.
 	 * 
-	 * @return
+	 * @return the menu instance
 	 */
 	C getMenu();
 }
