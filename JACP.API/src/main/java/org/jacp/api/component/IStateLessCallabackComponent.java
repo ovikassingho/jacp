@@ -48,7 +48,7 @@ public interface IStateLessCallabackComponent<L, A, M> extends
 	/**
 	 * return instances of current state less component
 	 * 
-	 * @return
+	 * @return an new callback instance
 	 */
 	List<ICallbackComponent<L, A, M>> getInstances();
 
@@ -56,14 +56,14 @@ public interface IStateLessCallabackComponent<L, A, M> extends
 	 * returns thread counter to coordinate amount of existing instances of
 	 * sateless callback component
 	 * 
-	 * @return
+	 * @return the counter
 	 */
 	AtomicInteger getThreadCounter();
 
 	/**
 	 * returns associated executor service
 	 * 
-	 * @return
+	 * @return the execution service
 	 */
 	ExecutorService getExecutorService();
 }

@@ -65,13 +65,10 @@ public interface IPerspectiveLayout<M, B> {
 	 * or view component; create an root component, a complex layout an register
 	 * all components where editors/views should displayed in.
 	 * 
-	 * @param <B>
-	 *            the generic type
 	 * @param id
 	 *            the id
 	 * @param target
 	 *            the target
-	 * @return the b
 	 */
 	void registerTargetLayoutComponent(final String id, final B target);
 

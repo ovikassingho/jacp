@@ -36,7 +36,7 @@ public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M>{
 	/**
 	 * Handles delegate of a component.
 	 * 
-	 * @param dto
+	 * @param component
 	 */
 	void delegateComponent(ISubComponent<L, A, M> component);
 

@@ -39,7 +39,7 @@ public interface IDelegateDTO<A, M> {
 	String getTarget();
 	/**
 	 * returns the action
-	 * @return
+	 * @return the action
 	 */
 	public IAction<A, M> getAction();
 }

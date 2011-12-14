@@ -49,7 +49,8 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	/**
 	 * The initialization method. 
 	 * 
-	 * @param the delegate queue
+	 * @param componentDelegateQueue
+	 * @param messageDelegateQueue
 	 */
 	void init(final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue);
 	

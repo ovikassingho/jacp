@@ -20,8 +20,8 @@ package org.jacp.api.action;
 import java.util.Map;
 
 /**
- * Represents an action used by specific listener, targets a component and
- * contains a message, every target get a specific instance of an action (clone)
+ * Represents an action used by specific listener. An Action targets a component and
+ * contains a message; every target get a specific instance of an action (clone)
  * containing only his specific message and action event.
  * 
  * @param <M>

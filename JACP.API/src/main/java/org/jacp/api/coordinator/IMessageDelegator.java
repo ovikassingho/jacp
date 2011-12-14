@@ -37,7 +37,7 @@ public interface IMessageDelegator<L, A, M> extends IDelegator<L, A, M> {
 	void delegateMessage(final IDelegateDTO<A, M> messageDTO);
 	/**
 	 * Returns the delegate queue.
-	 * @return
+	 * @return the delegate queue
 	 */
 	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
 

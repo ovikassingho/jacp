@@ -1,3 +1,4 @@
+14. Dez. 2011 - amo - add getActionListener() to IWorkbench to allow workbench to send messages
 09. Dez. 2011 - amo - split the delegator interface in message and component delegator
 08. Dez. 2011 - amo - renamed statelesscomponentcoordinator in *Scheduler; removed dependency between statelesscomponent and scheduler, introduced new package
 08. Dez. 2011 - amo - extract componentHandler interface to move methods from workbench and perspective; this handler coordinates creation and replacement of components, introduced new package

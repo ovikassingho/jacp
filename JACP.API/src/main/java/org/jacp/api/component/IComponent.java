@@ -105,7 +105,7 @@ public interface IComponent<L, A, M> {
 	/**
 	 * Set message queue to component
 	 * 
-	 * @param observer
+	 * @param messageQueue
 	 */
 	void setMessageQueue(final BlockingQueue<IAction<A, M>> messageQueue);
 	
