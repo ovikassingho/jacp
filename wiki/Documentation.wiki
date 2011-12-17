@@ -64,6 +64,7 @@ The workbench is the root node of your client project, providing simple interfac
 The *{{{postHandle(FX2ComponentLayout layout)}}}* method is executed when finishing “handleInitialLayout” and gives you access to the initialized menu and tool bars (if you defined them). 
  * {{{layout.getMenu()}}} will give you the reference to the main menu instance
  * {{{layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}} returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
+
 A workbench can handle many perspectives, but only one can be displayed simultaneously. The current perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided in the background, so a perspective provides the typical layout of your application, not the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic layout settings like declaring toolbars and a menu.
 
 =The Perspective=
