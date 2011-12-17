@@ -53,3 +53,10 @@ The “Application Launcher” is the entry point where you define the spring xm
 
 </beans>
 }}}
+
+=The Workbench=
+The workbench is the root node of your client project, providing simple interfaces to configure the basic behaviour of your client. It consists of two methods you have to implement, the *handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout,Stage stage)* and *postHandle(FX2ComponentLayout layout)*. The action will always contain the default initialization message “init”, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  IWorkbenchLayout<Node> layout reference is your entry to configure following thinks on your application:
+ * *WorkbenchXYSize(x,y):* defines the initial workbench size
+ * *MenuEnabled(boolean):* enable main menu if needed, the entries are defined later; here you only declare if a menu is activated
+ * *Style(StageStyle):* here you define the default StageStyle (decorated/undecorated)
+ * *registerToolBar(ToolbarPosition):* enable tool bars in NORTH,SOUTH, EAST, WEST; those registered toolbars are accessible in all perspective and components, but you are free to define custom toolbars in your component which are not accessible for all others.
