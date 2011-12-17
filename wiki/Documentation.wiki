@@ -9,3 +9,4 @@ The JACP JavaFX Project is an API to create Rich Clients in MVC style with JavaF
 = The Application Launcher =
 
 The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of spring, JavaFX 2 and JACP  is started. It defines a main method so you have to declare your xml in the launchers constructor and can start the project.  The structure of a JACP/Spring application looks like this:
+<img src="http://jacp.googlecode.com/svn/wiki/JACP_Overview.png"/>
