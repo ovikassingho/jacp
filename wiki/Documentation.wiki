@@ -60,3 +60,7 @@ The workbench is the root node of your client project, providing simple interfac
  * *{{{MenuEnabled(boolean):}}}* enable main menu if needed, the entries are defined later; here you only declare if a menu is activated
  * *{{{Style(StageStyle):}}}* here you define the default {{{StageStyle}}} (decorated/undecorated)
  * *{{{registerToolBar(ToolbarPosition):}}}* enable tool bars in NORTH,SOUTH, EAST, WEST; those registered toolbars are accessible in all perspective and components, but you are free to define custom toolbars in your component which are not accessible for all others.
+
+The *{{{postHandle(FX2ComponentLayout layout)}}}* method is executed when finishing “handleInitialLayout” and gives you access to the initialized menu and tool bars (if you defined them). 
+ * {{{layout.getMenu()}}} will give you the reference to the main menu instance
+ * {{{layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}} returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
