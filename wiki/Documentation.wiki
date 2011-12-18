@@ -3,13 +3,15 @@
 
 = JACP JavaFX 2 documentation =
 
-The JACP JavaFX Project is an API to create Rich Clients in MVC style with JavaFX 2. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components behave like controllers and triggered by messages similar to Spring MVC controllers. Components have a defined life cycle, their handle() methods is always executed in a separate thread, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your component and to use the complete Spring stack in your JACP Application.
+The JACP JavaFX Project is an API to create Rich Clients in MVC style with JavaFX 2. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components behave like controllers and triggered by messages similar to Spring MVC controllers. Components have a defined life cycle, their handle() methods is always executed in a separate thread, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
 
 
 = The Application Launcher =
 
-The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of spring, JavaFX 2 and JACP  is started. It defines a main method so you have to declare your xml in the launchers constructor and can start the project.  The structure of a JACP/Spring application looks like this:
+The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX 2 and JACP  is started. It defines a main method so you have to declare your xml in the launchers constructor and can start the project.  The structure of a JACP/Spring application looks like this:
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Overview.png"/>
+
+Below you find an example xml of a simple JACP project:
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
@@ -67,11 +69,50 @@ The *{{{postHandle(FX2ComponentLayout layout)}}}* method is executed when finish
 
 A workbench can handle many perspectives, but only one can be displayed simultaneously. The current perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided in the background, so a perspective provides the typical layout of your application, not the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic layout settings like declaring toolbars and a menu.
 
+*Example workbench*:
+{{{
+public class Workbench extends AFX2Workbench {
+	private double mouseDragOffsetX = 0;
+	private double mouseDragOffsetY = 0;
+	private Stage stage;
+
+
+	@Override
+	public void handleInitialLayout(final IAction<Event, Object> action,
+			final IWorkbenchLayout<Node> layout, final Stage stage) {
+		this.stage = stage;
+		layout.setWorkbenchXYSize(1024, 768);
+		layout.registerToolBar(ToolbarPosition.NORTH);
+		layout.registerToolBar(ToolbarPosition.SOUTH);
+		layout.setStyle(StageStyle.DECORATED);
+		layout.setMenuEnabled(true);
+	}
+
+	@Override
+	public void postHandle(FX2ComponentLayout layout) {
+		final ToolBar topBar = layout
+				.getRegisteredToolBar(ToolbarPosition.NORTH);
+		Button close = new Button("close");
+		close.setOnMouseClicked(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event arg0) {
+				System.exit(0);
+
+			}
+		});
+		topBar.getItems().add(close);
+	}
+
+}
+}}}
+
+
 =The Perspective=
-A perspective is a container like all other components (it’s children) and behave quite similar to components. It has a handle (handlePerspective) method and can be triggered by messages  from other perspectives and components. Different to components is, that a perspective will *always run on JavaFX main thread*, so this is NOT the place where you put some complex code or long running tasks. The real task of a perspective is to define the layout of your current view. The ability to trigger a perspective by messages gives you the freedom to change his layout at runntime and to adopt the view for your current needs. 
+A perspective is a container like all other components (it’s children) and behave quite similar to components. It has a handle (handlePerspective) method and can be triggered by messages  from other perspectives and components. Different to components is, that a perspective will *always run on {{{JavaFX}}} main thread*, so this is NOT the place where you put some complex code or long running tasks. The real task of a perspective is to define the layout of your current view. The ability to trigger perspectives by messages gives you the freedom to change the layout at runntime and to adopt the view for your current needs. 
 A typical UI application has a root node and a large tree of components which represents your UI structure. The leave nodes of such a component tree are your user-nodes containing buttons, textfields and so on.
-The root node in JACP is provided by the workbench, a perspective represents your (complex) UI tree and defines placeholders for your components (see picture 1). So, for a typical business application you can create a SplitPane in your perspective, which is the root node (or the root of this subtree), place a ScrollPane on the left and on the right and register those ScrollPanes as “targets” for your components. 
-This means you define the basic layout of your view in the perspective but the Buttons, TextFields and so on are implemented in your components later. The UI subtree created here can be as complex as you want but you will always have to register the root and the leave (targets) of this complex UI. The ability to register the root and the leaves is provided by the IPerspectiveLayout interface, the *handlePerspective* mehtod gives you a reference to the perspective specific instance of this interface.
+The root node in JACP is provided by the workbench, a perspective represents your (complex) UI tree and defines placeholders for your components (see picture 1). So, for a typical business application you can create a {{{SplitPane}}} in your perspective, which is the root node (or the root of this subtree), place a {{{ScrollPane}}} on the left and on the right and register those {{{ScrollPanes}}} as “targets” for your components. 
+This means you define the basic layout of your view in the perspective but the Buttons, {{{TextFields}}} and so on are implemented in your components later. The UI subtree created here can be as complex as you want but you will always have to register the root and the leave (targets) of this complex UI. The ability to register the root and the leaves is provided by the {{{IPerspectiveLayout}}} interface, the *{{{handlePerspective}}}* mehtod gives you a reference to the perspective specific instance of this interface.
  * {{{layout.registerRootComponent(node):}}} register the root node of your perspective UI 
  * {{{layout.registerTargetLayoutComponent("top", nodeTop)}}} register a leave component (a target where your components can register at)
 You can register as many targets as you want, they are just placeholders were an UI subtree of your components can be linked in. Like all other components a perspective has a defined life cycle.
