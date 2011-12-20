@@ -117,5 +117,5 @@ This means you define the basic layout of your view in the perspective but the B
 You can register as many targets as you want, they are just a placeholder were an UI subtree of your components can be linked in. Like all other components a perspective has a defined life cycle.
 
 == The perspective lifecycle ==
-When a perspective is activated the {{{“onStartPerspective”}}} method is executed, followed by {{{“handlePerspective”}}} and when the perspective is de-activated the {{{“onTearDownPerspective” is executed. 
-The purpose of {{{“onStartPerspective”}}} is, to add Menu and ToolBar entries to the Client, while in the {{{“onTearDownPerspective”}}} method you should remove all entries.  
+When a perspective is activated the {{{“onStartPerspective”}}} method is executed, followed by {{{“handlePerspective”}}} and when the perspective is de-activated the {{{“onTearDownPerspective”}}} is executed. 
+The purpose of {{{“onStartPerspective”}}} is, to add Menu and {{{ToolBar}}} entries to the Client, while in the {{{“onTearDownPerspective”}}} method you should remove all entries.  
