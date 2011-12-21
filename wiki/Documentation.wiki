@@ -114,7 +114,7 @@ This means you define the basic layout of your view in the perspective but the B
  * {{{layout.registerRootComponent(node):}}} register the root node of your perspective UI 
  * {{{layout.registerTargetLayoutComponent("top", nodeTop)}}} register a leave component (a target where your components can register at)
  
-You can register as many targets as you want, they are just a placeholder were an UI subtree of your components can be linked in. Like all other
+You can register as many targets as you want, they are just a placeholder were an UI subtree of your components can be linked in. Like all other <br/>
 components a perspective has a defined life cycle.
 
 == The perspective lifecycle ==
