@@ -104,7 +104,7 @@ public class Workbench extends AFX2Workbench {
 
 
 =The Perspective=
-A perspective is a container like all other components (it’s children) and behave quite similar to components. It has a handle (handlePerspective) method and can be triggered by messages  from other perspectives and components. Different to components is, that a perspective will *always run on {{{FX Application thread}}}*, so this is NOT the place where you put some complex code or long running tasks. The real task of a perspective is to define the layout of your current view. The ability to trigger perspectives by messages gives you the freedom to change the layout at runntime and to adopt the view for your current needs. 
+A perspective is a container like all other components (it’s children) and behave quite similar to components. It has a handle (handlePerspective) method and can be triggered by messages  from other perspectives and components. Different to components is, that a perspective will *always run on {{{FX Application thread}}}*, so this is NOT the place where you put some complex code or long running tasks. The real task of a perspective is to define the layout of your current view. The ability to trigger perspectives by messages gives you the freedom to change the layout at runtime and to adopt the view for your current needs. 
 A typical UI application has a root node and a large tree of components which represents your UI structure. The leave nodes of such a component tree are your user-nodes containing buttons, {{{TextFields}}} and so on.
 The root node in JACP is provided by the workbench, a perspective represents your (complex) UI tree and defines placeholders for your components (see picture 1). So, for a typical business application you can create a {{{SplitPane}}} in your perspective, which is the root node (or the root of this subtree), place a {{{ScrollPane}}} on the left and on the right and register those {{{ScrollPanes}}} as “Targets” for your components. 
 
@@ -114,10 +114,14 @@ This means you define the basic layout of your view in the perspective but the B
  * {{{layout.registerRootComponent(node):}}} register the root node of your perspective UI 
  * {{{layout.registerTargetLayoutComponent("top", nodeTop)}}} register a leave component (a target where your components can register at)
  
-You can register as many targets as you want, they are just a placeholder were an UI subtree of your components can be linked in. Like all other components a perspective has a defined life cycle.
+ You can register as many targets as you want, they are just a placeholder were an UI subtree of your components can be linked in. Like all other components a perspective has a defined life cycle.
 
 == The perspective lifecycle ==
 When a perspective is activated the {{{“onStartPerspective”}}} method is executed, followed by {{{“handlePerspective”}}} and when the perspective is de-activated the {{{“onTearDownPerspective”}}} is executed. 
 The purpose of {{{“onStartPerspective”}}} is, to add Menu and {{{ToolBar}}} entries to the Client, while in the {{{“onTearDownPerspective”}}} method you should remove all entries.  
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Perspective_Lifecycle.png"/>
+
+= The Components = 
+Components are the place where you put all the complex UI code, service calls and long running tasks in. All components have an input and a output. The input is always an {{{Action}}} and the output is either a view (in case you use an UI component) or any type of object. Currently you can use three types of components: {{{AFX2Components}}} are UI components, {{{ACallback- and AStatelessCallbackComponents}}} are non-UI components. All components in common is, that they have a {{{“handle”}}} method that is not running on main application thread, so the execution of this block of code will not stop the execution of the rest of your UI. 
+
