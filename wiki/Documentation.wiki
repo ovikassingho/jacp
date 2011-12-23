@@ -131,3 +131,6 @@ Components are the place where you put all the complex UI code, service calls an
 == {{{ACallbackComponent}}} == 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
+== {{{AStatelessCallbackComponents}}} == 
+<img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
+
