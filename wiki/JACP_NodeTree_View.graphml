@@ -14,459 +14,198 @@
   <key for="edge" id="d10" yfiles.type="edgegraphics"/>
   <graph edgedefault="directed" id="G">
     <data key="d7"/>
-    <node id="n0" yfiles.foldertype="group">
+    <node id="n0">
+      <data key="d5"/>
       <data key="d6">
-        <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="328.4000000000001" width="549.0" x="204.0" y="201.0"/>
-          <y:Fill color2="#FFFF9940" hasColor="false" transparent="false"/>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="143.0" width="548.5504683852724" x="201.0" y="548.3687500000003"/>
+          <y:Fill color="#99CC00" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="internal" modelPosition="t" textColor="#C0C0C0" visible="true" width="4.0" x="272.5" y="4.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" rotationAngle="270.0" textColor="#000000" visible="true" width="104.44140625" x="3.0" y="126.97929687500005">Perspective        <y:LabelModel>
-              <y:RowNodeLabelModel offset="3.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:StyleProperties>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.main" value="#99ccff"/>
-            <y:Property class="java.awt.Color" name="yed.table.section.color" value="#7192b2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.lang.String" name="yed.table.lane.style" value="lane.style.rows"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.alternating" value="#abc8e2"/>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.alternating" value="#abc8e2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property class="java.lang.Double" name="yed.table.header.height" value="24.0"/>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.main" value="#99ccff"/>
-          </y:StyleProperties>
-          <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
-          <y:Insets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:BorderInsets bottom="51" bottomF="50.600000000000136" left="198" leftF="198.0" right="229" rightF="228.89906322945512" top="136" topF="136.4000000000001"/>
-          <y:Table autoResizeTable="true" defaultColumnWidth="120.0" defaultMinimumColumnWidth="80.0" defaultMinimumRowHeight="50.0" defaultRowHeight="80.0">
-            <y:DefaultColumnInsets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-            <y:Insets bottom="0.0" left="0.0" right="0.0" top="30.0"/>
-            <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="525.0">
-                <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-              </y:Column>
-            </y:Columns>
-            <y:Rows>
-              <y:Row height="298.4000000000001" id="row_0" minimumHeight="50.0">
-                <y:Insets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-              </y:Row>
-            </y:Rows>
-          </y:Table>
-        </y:TableNode>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="sides" modelPosition="w" textColor="#000000" visible="true" width="73.66796875" x="-77.66796875" y="62.515625">Component</y:NodeLabel>
+        </y:GenericNode>
       </data>
-      <graph edgedefault="directed" id="n0:">
-        <node id="n0::n0">
-          <data key="d6">
-            <y:ShapeNode>
-              <y:Geometry height="46.0" width="46.0" x="478.1009367705449" y="432.79999999999995"/>
-              <y:Fill color="#FFCC00" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="5.3408203125" y="14.015625">Node</y:NodeLabel>
-              <y:Shape type="roundrectangle"/>
-            </y:ShapeNode>
-          </data>
-        </node>
-        <node id="n0::n1">
-          <data key="d6">
-            <y:ShapeNode>
-              <y:Geometry height="46.0" width="46.0" x="426.0" y="367.4000000000001"/>
-              <y:Fill color="#FFCC00" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="5.3408203125" y="14.015625">Node</y:NodeLabel>
-              <y:Shape type="roundrectangle"/>
-            </y:ShapeNode>
-          </data>
-        </node>
-        <node id="n0::n2">
-          <data key="d6">
-            <y:ShapeNode>
-              <y:Geometry height="46.0" width="46.0" x="426.0" y="432.79999999999995"/>
-              <y:Fill color="#FFCC00" transparent="false"/>
-              <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="5.3408203125" y="14.015625">Node</y:NodeLabel>
-              <y:Shape type="roundrectangle"/>
-            </y:ShapeNode>
-          </data>
-        </node>
-      </graph>
     </node>
-    <node id="n1" yfiles.foldertype="group">
+    <node id="n1">
+      <data key="d5"/>
       <data key="d6">
-        <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="187.80000000000018" width="549.0" x="204.0" y="499.5999999999999"/>
-          <y:Fill color2="#0042F440" hasColor="false" transparent="false"/>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="316.0" width="549.0000000000001" x="200.55046838527232" y="225.15312500000022"/>
+          <y:Fill color="#99CCFF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="4.0" x="272.5" y="4.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" rotationAngle="270.0" textColor="#000000" visible="true" width="79.919921875" x="3.0" y="68.94003906250009">Components<y:LabelModel>
-              <y:RowNodeLabelModel offset="3.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:StyleProperties>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.main" value="#ccff66"/>
-            <y:Property class="java.awt.Color" name="yed.table.section.color" value="#7192b2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.lang.String" name="yed.table.lane.style" value="lane.style.rows"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.alternating" value="#abc8e2"/>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.alternating" value="#abc8e2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property class="java.lang.Double" name="yed.table.header.height" value="24.0"/>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.main" value="#ccff66"/>
-          </y:StyleProperties>
-          <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
-          <y:Insets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:BorderInsets bottom="0" bottomF="0.0" left="1" leftF="1.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:Table autoResizeTable="true" defaultColumnWidth="120.0" defaultMinimumColumnWidth="80.0" defaultMinimumRowHeight="50.0" defaultRowHeight="80.0">
-            <y:DefaultColumnInsets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-            <y:Insets bottom="0.0" left="0.0" right="0.0" top="30.0"/>
-            <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="525.0">
-                <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-              </y:Column>
-            </y:Columns>
-            <y:Rows>
-              <y:Row height="157.80000000000018" id="row_0" minimumHeight="50.0">
-                <y:Insets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-              </y:Row>
-            </y:Rows>
-          </y:Table>
-        </y:TableNode>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="sides" modelPosition="w" textColor="#000000" visible="true" width="73.92578125" x="-77.92578125" y="149.015625">Perspective</y:NodeLabel>
+        </y:GenericNode>
       </data>
-      <graph edgedefault="directed" id="n1:"/>
     </node>
-    <node id="n2" yfiles.foldertype="group">
+    <node id="n2">
+      <data key="d5"/>
       <data key="d6">
-        <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="309.5999999999999" width="113.80187354108966" x="578.9990632294553" y="377.8000000000002"/>
-          <y:Fill color="#FFFF00" color2="#FFFF00" transparent="false"/>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="93.0" width="549.0000000000001" x="200.55046838527232" y="125.93750000000023"/>
+          <y:Fill color="#3366FF" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.4609375" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="67.46435546875" x="23.16875903616983" y="4.0">Target 2</y:NodeLabel>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" rotationAngle="270.0" textColor="#000000" visible="true" width="4.0" x="3.0" y="167.79999999999995">
-            <y:LabelModel>
-              <y:RowNodeLabelModel offset="3.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:StyleProperties>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.main" value="#ffff00"/>
-            <y:Property class="java.awt.Color" name="yed.table.section.color" value="#7192b2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.lang.String" name="yed.table.lane.style" value="lane.style.rows"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.alternating" value="#abc8e2"/>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.alternating" value="#abc8e2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.main" value="#ffff00"/>
-            <y:Property class="java.lang.Double" name="yed.table.header.height" value="24.0"/>
-          </y:StyleProperties>
-          <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
-          <y:Insets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:BorderInsets bottom="0" bottomF="0.0" left="2" leftF="1.8018735410896625" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:Table autoResizeTable="true" defaultColumnWidth="120.0" defaultMinimumColumnWidth="80.0" defaultMinimumRowHeight="50.0" defaultRowHeight="80.0">
-            <y:DefaultColumnInsets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-            <y:Insets bottom="0.0" left="0.0" right="0.0" top="30.0"/>
-            <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="89.80187354108966">
-                <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-              </y:Column>
-            </y:Columns>
-            <y:Rows>
-              <y:Row height="279.5999999999999" id="row_0" minimumHeight="50.0">
-                <y:Insets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-              </y:Row>
-            </y:Rows>
-          </y:Table>
-        </y:TableNode>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="sides" modelPosition="w" textColor="#000000" visible="true" width="71.8984375" x="-75.8984375" y="37.515625">Workbench</y:NodeLabel>
+        </y:GenericNode>
       </data>
-      <graph edgedefault="directed" id="n2:"/>
     </node>
-    <node id="n3" yfiles.foldertype="group">
+    <node id="n3">
+      <data key="d5"/>
       <data key="d6">
-        <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="111.86250000000001" width="549.0" x="204.0" y="120.13749999999999"/>
-          <y:Fill color2="#000080" hasColor="false" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="internal" modelPosition="t" textColor="#C0C0C0" visible="true" width="4.0" x="272.5" y="4.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" rotationAngle="270.0" textColor="#C0C0C0" visible="true" width="71.8984375" x="3.0" y="34.982031250000006">Workbench<y:LabelModel>
-              <y:RowNodeLabelModel offset="3.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
+        <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
+          <y:Geometry height="298.0" width="127.30093677054492" x="252.1514051558172" y="370.5999999999999"/>
+          <y:Fill color="#FFFFFFE6" color2="#FFFF00" transparent="false"/>
+          <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="54.771484375" x="36.26472619777246" y="4.0">Target 1</y:NodeLabel>
           <y:StyleProperties>
-            <y:Property name="yed.table.header.color.main"/>
-            <y:Property class="java.awt.Color" name="yed.table.section.color" value="#7192b2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.lang.String" name="yed.table.lane.style" value="lane.style.rows"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.alternating" value="#abc8e2"/>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.alternating" value="#abc8e2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.main" value="#000080"/>
-            <y:Property class="java.lang.Double" name="yed.table.header.height" value="24.0"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ACTIVITY_TYPE_STATELESS_TASK_PLAIN"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
           </y:StyleProperties>
-          <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
-          <y:Insets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:BorderInsets bottom="0" bottomF="0.0" left="1" leftF="1.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:Table autoResizeTable="true" defaultColumnWidth="120.0" defaultMinimumColumnWidth="80.0" defaultMinimumRowHeight="50.0" defaultRowHeight="80.0">
-            <y:DefaultColumnInsets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-            <y:Insets bottom="0.0" left="0.0" right="0.0" top="30.0"/>
-            <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="525.0">
-                <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-              </y:Column>
-            </y:Columns>
-            <y:Rows>
-              <y:Row height="81.86250000000001" id="row_0" minimumHeight="50.0">
-                <y:Insets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-              </y:Row>
-            </y:Rows>
-          </y:Table>
-        </y:TableNode>
+        </y:GenericNode>
       </data>
-      <graph edgedefault="directed" id="n3:"/>
     </node>
-    <node id="n4" yfiles.foldertype="group">
+    <node id="n4">
+      <data key="d5"/>
       <data key="d6">
-        <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="128.8625" width="433.9000000000001" x="258.1004683852724" y="218.9375000000002"/>
-          <y:Fill color2="#FFFF9940" hasColor="false" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="4.0" x="214.95000000000005" y="4.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="custom" rotationAngle="270.0" textColor="#000000" visible="true" width="28.322265625" x="3.0" y="65.2701171875">root<y:LabelModel>
-              <y:RowNodeLabelModel offset="3.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
+        <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
+          <y:Geometry height="298.0" width="127.30093677054492" x="573.3495316147275" y="370.5999999999999"/>
+          <y:Fill color="#FFFFFFE6" color2="#FFFF00" transparent="false"/>
+          <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="54.771484375" x="36.26472619777246" y="4.0">Target 2</y:NodeLabel>
           <y:StyleProperties>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.main" value="#ffff00"/>
-            <y:Property class="java.awt.Color" name="yed.table.section.color" value="#7192b2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.lang.String" name="yed.table.lane.style" value="lane.style.rows"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.alternating" value="#abc8e2"/>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.alternating" value="#abc8e2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.main" value="#ffff00"/>
-            <y:Property class="java.lang.Double" name="yed.table.header.height" value="24.0"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ACTIVITY_TYPE_STATELESS_TASK_PLAIN"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
           </y:StyleProperties>
-          <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
-          <y:Insets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:BorderInsets bottom="0" bottomF="0.0" left="1" leftF="1.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:Table autoResizeTable="true" defaultColumnWidth="120.0" defaultMinimumColumnWidth="80.0" defaultMinimumRowHeight="50.0" defaultRowHeight="80.0">
-            <y:DefaultColumnInsets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-            <y:Insets bottom="0.0" left="0.0" right="0.0" top="30.0"/>
-            <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="409.9000000000001">
-                <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-              </y:Column>
-            </y:Columns>
-            <y:Rows>
-              <y:Row height="98.86250000000001" id="row_0" minimumHeight="50.0">
-                <y:Insets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-              </y:Row>
-            </y:Rows>
-          </y:Table>
-        </y:TableNode>
+        </y:GenericNode>
       </data>
-      <graph edgedefault="directed" id="n4:"/>
     </node>
-    <node id="n5" yfiles.foldertype="group">
+    <node id="n5">
+      <data key="d5"/>
       <data key="d6">
-        <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="309.5999999999999" width="113.80187354108966" x="258.90093677054483" y="377.8000000000002"/>
-          <y:Fill color="#FFFF00" color2="#FFFF00" transparent="false"/>
-          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.4609375" modelName="internal" modelPosition="t" textColor="#000000" visible="true" width="67.46435546875" x="23.16875903616983" y="4.0">Target 1</y:NodeLabel>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" modelName="custom" rotationAngle="270.0" textColor="#000000" visible="true" width="4.0" x="3.0" y="167.79999999999995">
-            <y:LabelModel>
-              <y:RowNodeLabelModel offset="3.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
+        <y:GenericNode configuration="com.yworks.bpmn.Activity.withShadow">
+          <y:Geometry height="111.86250000000001" width="448.49906322945526" x="252.1514051558172" y="244.65000000000006"/>
+          <y:Fill color="#FFFFFFE6" color2="#FFFF00" transparent="false"/>
+          <y:BorderStyle color="#123EA2" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="tl" textColor="#000000" visible="true" width="28.322265625" x="4.0" y="4.000000000000028">root</y:NodeLabel>
           <y:StyleProperties>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.main" value="#ffff00"/>
-            <y:Property class="java.awt.Color" name="yed.table.section.color" value="#7192b2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.lang.String" name="yed.table.lane.style" value="lane.style.rows"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_ROW_SELECTION_STYLE">
-              <y:SimpleStyle fillColor="#474A4380" lineColor="#000000" lineType="line" lineWidth="3.0"/>
-            </y:Property>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.alternating" value="#abc8e2"/>
-            <y:Property class="java.awt.Color" name="yed.table.header.color.alternating" value="#abc8e2"/>
-            <y:Property name="y.view.tabular.TableNodePainter.ALTERNATE_COLUMN_STYLE">
-              <y:SimpleStyle fillColor="#474A4340" lineColor="#000000" lineType="line" lineWidth="1.0"/>
-            </y:Property>
-            <y:Property class="java.lang.Double" name="yed.table.header.height" value="24.0"/>
-            <y:Property class="java.awt.Color" name="yed.table.lane.color.main" value="#ffff00"/>
+            <y:Property class="com.yworks.yfiles.bpmn.view.BPMNTypeEnum" name="com.yworks.bpmn.type" value="ACTIVITY_TYPE_STATELESS_TASK_PLAIN"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.line.color" value="#000000"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill" value="#ffffff"/>
+            <y:Property class="java.awt.Color" name="com.yworks.bpmn.icon.fill2" value="#d4d4d4"/>
           </y:StyleProperties>
-          <y:State autoResize="true" closed="false" closedHeight="80.0" closedWidth="100.0"/>
-          <y:Insets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:BorderInsets bottom="0" bottomF="0.0" left="2" leftF="1.8018735410896625" right="0" rightF="0.0" top="0" topF="0.0"/>
-          <y:Table autoResizeTable="true" defaultColumnWidth="120.0" defaultMinimumColumnWidth="80.0" defaultMinimumRowHeight="50.0" defaultRowHeight="80.0">
-            <y:DefaultColumnInsets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-            <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-            <y:Insets bottom="0.0" left="0.0" right="0.0" top="30.0"/>
-            <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="89.80187354108966">
-                <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
-              </y:Column>
-            </y:Columns>
-            <y:Rows>
-              <y:Row height="279.5999999999999" id="row_0" minimumHeight="50.0">
-                <y:Insets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
-              </y:Row>
-            </y:Rows>
-          </y:Table>
-        </y:TableNode>
+        </y:GenericNode>
       </data>
-      <graph edgedefault="directed" id="n5:"/>
     </node>
     <node id="n6">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="42.0" width="62.0" x="441.0" y="170.06875"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="40.796875" x="10.6015625" y="12.015625">Group</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="50.868750000000205" width="65.0" x="442.55046838527244" y="147.7812499999999"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="40.796875" x="12.1015625" y="16.450000000000102">Group</y:NodeLabel>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n7">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="74.0" width="74.0" x="435.0" y="262.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="74.0" width="74.0" x="438.05046838527244" y="261.3687500000002"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="60.185546875" x="6.9072265625" y="28.015625">SplitPane</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n8">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="79.0" width="79.0" x="596.4000000000001" y="416.29999999999995"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="66.736328125" x="6.1318359375" y="30.515625">ScrollPane</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="74.0" width="74.0" x="600.0" y="425.5999999999999"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="66.736328125" x="3.6318359375" y="28.015625">ScrollPane</y:NodeLabel>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n9">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="79.0" width="79.0" x="276.30187354108966" y="418.4000000000001"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="66.736328125" x="6.1318359375" y="30.515625">ScrollPane</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="74.0" width="74.0" x="600.0" y="577.3999999999996"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="19.3408203125" y="28.015625">Node</y:NodeLabel>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n10">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="79.0" width="79.0" x="276.30187354108966" y="561.76875"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="21.8408203125" y="30.515625">Node</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="44.0" width="44.0" x="479.1009367705449" y="435.9000000000001"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="4.3408203125" y="13.015625">Node</y:NodeLabel>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n11">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="79.0" width="79.0" x="596.4000000000001" y="561.76875"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="21.8408203125" y="30.515625">Node</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="44.0" width="44.0" x="427.0" y="368.30000000000007"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="4.3408203125" y="13.015625">Node</y:NodeLabel>
+        </y:GenericNode>
       </data>
     </node>
     <node id="n12">
+      <data key="d5"/>
       <data key="d6">
-        <y:ShapeNode>
-          <y:Geometry height="46.0" width="46.0" x="478.1009367705449" y="366.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="5.3408203125" y="14.015625">Node</y:NodeLabel>
-          <y:Shape type="roundrectangle"/>
-        </y:ShapeNode>
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="44.0" width="44.0" x="479.1009367705449" y="368.30000000000007"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="4.3408203125" y="13.015625">Node</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n13">
+      <data key="d5"/>
+      <data key="d6">
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="44.0" width="44.0" x="427.0" y="435.9000000000001"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="4.3408203125" y="13.015625">Node</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n14">
+      <data key="d5"/>
+      <data key="d6">
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="74.0" width="74.0" x="276.0" y="422.1999999999998"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="66.736328125" x="3.6318359375" y="28.015625">ScrollPane</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="n15">
+      <data key="d5"/>
+      <data key="d6">
+        <y:GenericNode configuration="ShinyPlateNode3">
+          <y:Geometry height="74.0" width="74.0" x="276.0" y="578.7999999999997"/>
+          <y:Fill color="#FF9900" transparent="false"/>
+          <y:BorderStyle hasColor="false" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="35.318359375" x="19.3408203125" y="28.015625">Node</y:NodeLabel>
+        </y:GenericNode>
       </data>
     </node>
     <edge id="e0" source="n6" target="n7">
@@ -479,7 +218,27 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e1" source="n8" target="n11">
+    <edge id="e1" source="n7" target="n11">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="-26.05046838527244" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="n7" target="n12">
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="26.05046838527244" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e3" source="n12" target="n10">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -489,7 +248,7 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e2" source="n9" target="n10">
+    <edge id="e4" source="n11" target="n13">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -499,27 +258,27 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e3" source="n7" target="n12">
+    <edge id="e5" source="n10" target="n8">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="29.100936770544877" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="-4.699999999999818"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e4" source="n7" target="n0::n1">
+    <edge id="e6" source="n13" target="n14">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="-23.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:Path sx="0.0" sy="1.2999999999997272" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="e5" source="n12" target="n0::n0">
+    <edge id="e7" source="n8" target="n9">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -529,30 +288,10 @@
         </y:PolyLineEdge>
       </data>
     </edge>
-    <edge id="n0::e0" source="n0::n1" target="n0::n2">
+    <edge id="e8" source="n14" target="n15">
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e6" source="n0::n0" target="n8">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="-28.5" ty="0.0"/>
-          <y:LineStyle color="#000000" type="line" width="1.0"/>
-          <y:Arrows source="none" target="standard"/>
-          <y:BendStyle smoothed="false"/>
-        </y:PolyLineEdge>
-      </data>
-    </edge>
-    <edge id="e7" source="n0::n2" target="n9">
-      <data key="d10">
-        <y:PolyLineEdge>
-          <y:Path sx="0.0" sy="0.0" tx="32.59812645891043" ty="-2.1000000000001364"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
