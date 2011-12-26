@@ -110,7 +110,7 @@ The root node in JACP is provided by the workbench, a perspective represents you
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_NodeTree_View.png"/>
 
-This means you define the basic layout of your view in the perspective but the Buttons, {{{TextFields}}} and so on are implemented in your components later. The UI subtree created here can be as complex as you want but you will always have to register the root and the leave (targets) of this complex UI. The ability to register the root and the leaves is provided by the {{{IPerspectiveLayout}}} interface, the *{{{handlePerspective}}}* mehtod gives you a reference to the perspective specific instance of this interface.
+This means that you define the basic layout of your current view on perspective layer, but the {{{Buttons}}}, {{{TextFields}}} and so on are implemented in your components later. The UI subtree created here can be as complex as you want but you will always have to register the *root* and the *leave (targets)* of this complex UI. The ability to register the root and the leaves is provided by the {{{IPerspectiveLayout}}} interface, the *{{{handlePerspective}}}* mehtod gives you a reference to the perspective specific instance of this interface.
  * {{{layout.registerRootComponent(node):}}} register the root node of your perspective UI 
  * {{{layout.registerTargetLayoutComponent("top", nodeTop)}}} register a leave component (a target where your components can register at)
  
@@ -126,7 +126,7 @@ The purpose of {{{“onStartPerspective”}}} is, to add Menu and {{{ToolBar}}} 
 Components are the place where you put all the complex UI code, service calls and long running tasks in. All components have an input and an output. The input is always an {{{Action}}} and the output is either a view (in case you use an UI component) or any type of object. Currently you can use three types of components: {{{AFX2Components}}} are UI components, {{{ACallback- and AStatelessCallbackComponents}}} are non-UI components. All components in common is, that they have a {{{“handle”}}} method that is not running on main application thread, so the execution of this block of code will not stop the execution of the rest of your UI. 
 
 == {{{AFX2Component}}} == 
-This type of component is used to create UI parts like views or editors in other RCP frameworks. While you created your basic layout on perspective level this type of component will be used to fill your UI with functionality like forms, tables and so on. *AFX2Components* are *controller* classes and returning a *view* to the parent perspective. The created view will be integrated at a defined target of your perspective UI. 
+This type of component is used to create UI parts like views or editors in other RCP frameworks. While you created your basic layout on perspective level {{{AFX2Component}}} are used to fill your UI with functionality like {{{Forms}}}, {{{Tables}}} and so on. *AFX2Components* are *controller* classes and returning a *view* to the parent perspective. The created view will be integrated at a defined target of your perspective UI. 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
