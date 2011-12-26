@@ -122,6 +122,46 @@ The purpose of {{{“onStartPerspective”}}} is, to add Menu and {{{ToolBar}}} 
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Perspective_Lifecycle.png"/>
 
+*Example perspective*
+{{{
+public class PerspectiveOne extends AFX2Perspective {
+
+ 	@Override
+        public void onStartPerspective(FX2ComponentLayout layout) {
+
+        }
+
+        @Override
+        public void onTearDownPerspective(FX2ComponentLayout layout) {
+
+
+        }
+
+        @Override
+        public void handlePerspective(IAction<Event, Object> action,
+                        FX2PerspectiveLayout perspectiveLayout) {
+			// declare the root
+			SplitPane root = new SplitPane();
+		
+			// declare the targets
+			ScrollPane scrollPaneLeft = new ScrollPane();
+			ScrollPane scrollPaneRight = new ScrollPane();
+		
+			root.getItems().addAll(scrollPaneLeft, scrollPaneRight);
+			
+			// register the root
+			perspectiveLayout.registerRootComponent(root);
+		
+			// register the targets
+			perspectiveLayout.registerTargetLayoutComponent("leftTarget", scrollPaneLeft);
+			perspectiveLayout.registerTargetLayoutComponent("rightTarget", scrollPaneRight);
+
+		} 
+
+}
+
+}}}
+
 = The Components = 
 Components are the place where you put all the complex UI code, service calls and long running tasks in. All components have an input and an output. The input is always an {{{Action}}} and the output is either a view (in case you use an UI component) or any type of object. Currently you can use three types of components: {{{AFX2Components}}} are UI components, {{{ACallback- and AStatelessCallbackComponents}}} are non-UI components. All components in common is, that they have a {{{“handle”}}} method that is not running on main application thread, so the execution of this block of code will not stop the execution of the rest of your UI. 
 
