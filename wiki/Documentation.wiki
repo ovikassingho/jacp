@@ -167,6 +167,10 @@ Components are the place where you put all the complex UI code, service calls an
 
 == {{{AFX2Component}}} == 
 This type of component is used to create UI parts like views or editors in other RCP frameworks. While you created your basic layout on perspective level {{{AFX2Component}}} are used to fill your UI with functionality like {{{Forms}}}, {{{Tables}}} and so on. *AFX2Components* are *controller* classes and returning a *view* to the parent perspective. The created view will be integrated at a defined target of your perspective UI. 
+The interface of AFX2Component defines following four methods:
+ * *{{{onStartComponent(FX2ComponentLayout layout):}}}* define Menu- , ToolBar-entries and custom Node elements for this components. If the current component has Menu- or ToolBar-entries define them here; the FX2ComponentLayout contains the reference to main ToolBars and Menu.
+ * *{{{onTearDownComponent(FX2ComponentLayout layout):}}}* remove Menu- and ToolBar-entries; if you defined any entries remove them from main ToolBar and Menu. This method is for cleaning purposes.
+ * *{{{Node handleAction(IAction<Event, Object> action):}}}* Handle any complex operations like DB access, service calls or create new UI components, unless you are modify existing UI elements, you are free to create any new UI-components. This method will be executed in a separate Thread and will not block the FX application thread from execution. 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
