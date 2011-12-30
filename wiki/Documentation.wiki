@@ -175,7 +175,7 @@ The interface of AFX2Component defines following four methods you have to implem
 
 Some methods defined by the interface are used to modify the control flow of your component:
   * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
-  * *{{{setExecutionTarget(String targetId) }}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId.targetId".
+  * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId.targetId".
   
 *Example UI component*
 {{{
@@ -254,8 +254,13 @@ DemoFX2ComponentOne extends AFX2Component {
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
-An {{{ACallbackComponent}}} is a stateful non UI component. Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{ACallbackComponent}}} is any kind of object that will be returned to the calling component. You are free to redirect the return value to any component you want.
+An {{{ACallbackComponent}}} is a stateful non UI component. Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. This type of component is a controller component that can be used to handle long running tasks and service calls. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
+ *  *{{{Object handleAction(IAction<Event, Object> action)}}}*: The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{ACallbackComponent}}} is any kind of object that will be returned to the calling component. You are free to redirect the return value to any component you want.
 
+Some methods defined by the interface are used to modify the control flow of your component:
+  * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
+  * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId". The {{{executionTarget}}} in this context means "the runtime perspective". You can move the component to any perspective you want. By moving a component to a perspective can speed up the message calls. Locale message calls are executed faster.  
+  * *{{{setHandleTarget(String targetId):}}}*  modify the target of the return value; by default the return value is always send to the caller component but you can "redirect" it to any component you want.
 * {{{ACallbackComponent}}} lifecycle *
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
