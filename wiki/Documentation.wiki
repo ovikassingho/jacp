@@ -250,10 +250,11 @@ DemoFX2ComponentOne extends AFX2Component {
 	}
 }
 }}}
-=== {{{AFX2Component}}} lifecycle === 
+* {{{AFX2Component}}} lifecycle * 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
+An {{{ACallbackComponent}}} is a stateful non UI component. Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. The input parameter "action" contains the specific message to this component. You can modify the state of your component be checking the content of your action message. The output (return value) of an {{{ACallbackComponent}}} is any kind of object that will be returned to the calling component. You are free to redirect the return value to any component you want.
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
 == {{{AStatelessCallbackComponents}}} == 
