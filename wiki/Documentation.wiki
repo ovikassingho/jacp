@@ -176,6 +176,81 @@ The interface of AFX2Component defines following four methods you have to implem
 Some methods defined by the interface are used to modify the control flow of your component:
   * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
   * *{{{setExecutionTarget(String targetId) }}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId.targetId".
+  
+*Example UI component*
+{{{
+DemoFX2ComponentOne extends AFX2Component {
+
+	GridPane grid;
+	Text category;
+	Button button;
+	MenuItem item;
+
+	@Override
+	public Node handleAction(IAction<Event, Object> action) {		
+		if (action.getLastMessage().equals("init")) {
+			this.grid = new GridPane();
+			this.grid.setHgap(10);
+			this.grid.setVgap(10);
+			this.grid.setPadding(new Insets(0, 0, 0, 10));
+			this.category = new Text("Hello:");
+			this.category.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
+			this.grid.add(category, 1, 0); 
+			return this.grid;
+		}
+		return null;
+	}	
+
+	
+	@Override
+	public Node postHandleAction(Node node, IAction<Event, Object> action) {
+		if (!action.getLastMessage().equals("init")) {
+			this.category = new Text("World:");
+			this.category.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
+		}
+		return this.grid;
+	}
+
+	@Override
+	public void onStartComponent(final FX2ComponentLayout layout) {		
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
+		MenuBar menu = layout.getMenu();
+		// create button in tool bar
+		button= new Button("Button 1");
+		north.getItems().add(button);	
+
+		ObservableList<Menu> menuList = menu.getMenus();
+		Iterator<Menu> it = menuList.iterator();
+		while(it.hasNext()) {
+			Menu m = it.next();
+			if(m.getText().equals("File")){
+				// add menu item
+				item = new MenuItem("Hello");
+				m.getItems().add(item);
+			}
+		}		
+	}
+
+	@Override
+	public void onTearDownComponent(final FX2ComponentLayout layout) {
+		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
+		MenuBar menu = layout.getMenu();
+		
+		//remove button from tool bar
+		north.getItems().remove(button);
+		
+		ObservableList<Menu> menuList = menu.getMenus();
+		Iterator<Menu> it = menuList.iterator();
+		while(it.hasNext()) {
+			Menu m = it.next();
+			if(m.getText().equals("File")){
+				m.getItems().remove(item);
+			}
+		}		
+	}
+}
+}}}
+=== {{{AFX2Component}}} lifecycle === 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
