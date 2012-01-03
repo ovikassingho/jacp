@@ -1,18 +1,21 @@
 package org.jacp.javafx2.rcp.components;
 
 import javafx.event.Event;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import net.miginfocom.layout.CC;
 
 import org.jacp.api.action.IAction;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.tbee.javafx.scene.layout.MigPane;
 
 public class DemoFX2ComponentMainContent extends AFX2Component {
 
@@ -24,26 +27,28 @@ public class DemoFX2ComponentMainContent extends AFX2Component {
 
 	@Override
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
-		MigPane mainContent = new MigPane("fill", "35[]15", "15[]15");
+		Pane group = new Pane();
+		FlowPane mainContent = new FlowPane(Orientation.VERTICAL);
+		// Pane mainContent = new Pane();
+		mainContent.setPadding(new Insets(30));
+
 		int x = 0;
 		while (x < 20) {
 			Rectangle r = new Rectangle(80, 80);
 			r.setFill(Color.LIGHTGRAY);
 			r.getStyleClass().add("main-container");
 			r.setEffect(new DropShadow());
+			FlowPane.setMargin(r, new Insets(20));
 
-			if ((x + 1) % 5 == 0)
-				mainContent.add(r, new CC().wrap());
-			else {
-				mainContent.add(r);
-			}
+			mainContent.getChildren().add(r);
 			x++;
 		}
 
-		mainContent.setStyle("-fx-background-color: blue;");
-		GridPane.setHgrow(mainContent, Priority.ALWAYS);
-		GridPane.setVgrow(mainContent, Priority.ALWAYS);
-		return mainContent;
+		// mainContent.setStyle("-fx-background-color: blue;");
+		GridPane.setVgrow(group, Priority.ALWAYS);
+		GridPane.setHgrow(group, Priority.ALWAYS);
+		group.getChildren().add(mainContent);
+		return group;
 	}
 
 	@Override

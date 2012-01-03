@@ -1,18 +1,18 @@
 package org.jacp.javafx2.rcp.components;
 
 import javafx.event.Event;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.effect.Reflection;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import org.jacp.api.action.IAction;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.tbee.javafx.scene.layout.MigPane;
 
 public class DemoFX2ComponentBottomBar extends AFX2Component {
 
@@ -23,26 +23,25 @@ public class DemoFX2ComponentBottomBar extends AFX2Component {
 	}
 
 	private Node getBottomBar(IAction<Event, Object> action) {
-		MigPane bottom = new MigPane("fill", "30[]30", "15[]15");
-
+		Pane p = new Pane();
+		HBox bottom = new HBox();
+		bottom.setPrefHeight(80);
 		int x = 0;
 		while (x < 9) {
 			Rectangle r = new Rectangle(60, 60);
 			r.setFill(Color.LIGHTGREY);
 			r.setStroke(Color.BLACK);
+			HBox.setMargin(r, new Insets(10));
 			Reflection ref = new Reflection();
 			ref.setTopOffset(0.1);
 			ref.setFraction(0.15);
 			r.setEffect(ref);
-			bottom.add(r);
-
+			bottom.getChildren().add(r);
 			x++;
 
 		}
-
-		GridPane.setHgrow(bottom, Priority.ALWAYS);
-		GridPane.setVgrow(bottom, Priority.ALWAYS);
-		return bottom;
+		p.getChildren().add(bottom);
+		return p;
 
 	}
 
