@@ -2,7 +2,6 @@ package org.jacp.javafx2.rcp.perspectives;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -13,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import net.miginfocom.layout.CC;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -21,7 +19,6 @@ import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
-import org.tbee.javafx.scene.layout.MigPane;
 
 /**
  * Demo perspective class for jacp JavaFX2 implementation
@@ -35,7 +32,6 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 	public void handlePerspective(IAction<Event, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
 		/*
-		 * Building the main Layout using MigLayout
 		 * 
 		 * ----------------------------------------
 		 * |              BreadCrumb              |
@@ -51,7 +47,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		 * 
 		 */
 
-		MigPane mainLayout = new MigPane("debug,fill");
+		BorderPane mainLayout = new BorderPane();
 
 		// register left button menu
 		GridPane leftMenu = new GridPane();
@@ -61,7 +57,6 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		// register main content
 
 		GridPane mainContent = new GridPane();
-		mainContent.setStyle("-fx-background-color:yellow;");
 		perspectiveLayout.registerTargetLayoutComponent("PmainContent",
 				mainContent);
 
@@ -70,20 +65,23 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		perspectiveLayout.registerTargetLayoutComponent("PBreadCrumb",
 				breadCrumbBar);
-		mainLayout.add(breadCrumbBar, new CC().dockNorth().growX());
+		mainLayout.setTop(breadCrumbBar);
+
+		// Main Content Area to the right
 
 		SplitPane splitPane = new SplitPane();
 
-		// Main Content Area to the right
-		BorderPane main = new BorderPane();
-		main.setCenter(mainContent);
+		Pane main = new Pane();
+		// GridPane.setHgrow(mainContent, Priority.ALWAYS);
+		// GridPane.setVgrow(mainContent, Priority.ALWAYS);
+		main.getChildren().add(mainContent);
 
 		splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		splitPane.setDividerPosition(0, 0.25f);
 		splitPane.getItems().addAll(leftMenu, main);
 		splitPane.setId("page-splitpane");
 
-		mainLayout.add(splitPane, new CC().grow());
+		mainLayout.setCenter(splitPane);
 
 		// Bottom Picture Bar (bottom)
 
@@ -91,7 +89,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		perspectiveLayout
 				.registerTargetLayoutComponent("PbottomBar", bottomBar);
-		mainLayout.add(bottomBar, new CC().dockSouth());
+		mainLayout.setBottom(bottomBar);
 		bottomBar.setStyle("-fx-border-color: black;");
 
 		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
@@ -101,10 +99,9 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
 
 		// Register all Components
-		perspectiveLayout.registerRootComponent(mainLayout);
-		// register breadcrumb
-		GridPane.setHgrow(mainLayout, Priority.ALWAYS);
 		GridPane.setVgrow(mainLayout, Priority.ALWAYS);
+		GridPane.setHgrow(mainLayout, Priority.ALWAYS);
+		perspectiveLayout.registerRootComponent(mainLayout);
 		// register bottom Picture Bar
 
 	}
@@ -135,5 +132,4 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 	}
 
-	
 }

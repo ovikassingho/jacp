@@ -41,18 +41,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.miglayout</groupId>
-			<artifactId>javafx-miglayout</artifactId>
-			<version>2.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.miglayout.main</groupId>
-			<artifactId>java-miglayout</artifactId>
-			<version>4.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
 			<version>${project.version}</version>

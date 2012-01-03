@@ -19,7 +19,7 @@ import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
 
-public class TestOneFX2Workbench extends AFX2Workbench{
+public class TestOneFX2Workbench extends AFX2Workbench {
 
 	@Override
 	public void handleInitialLayout(IAction<Event, Object> action,
@@ -29,7 +29,8 @@ public class TestOneFX2Workbench extends AFX2Workbench{
 		layout.registerToolBar(ToolbarPosition.SOUTH);
 		layout.setStyle(StageStyle.DECORATED);
 		layout.setMenuEnabled(true);
-		System.out.println("TestOneFX2Workbench action: " + action.getLastMessage());
+		System.out.println("TestOneFX2Workbench action: "
+				+ action.getLastMessage());
 	}
 
 	@Override
@@ -46,13 +47,12 @@ public class TestOneFX2Workbench extends AFX2Workbench{
 
 		menuDemos.getItems().add(getMenuItemDemo1());
 		menuToolbarDemos.getItems().add(getMenuItemDemo1());
-		
 
 		toolBarMenu.getMenus().addAll(menuToolbarDemos);
 		north.getItems().add(toolBarMenu);
-		
+
 	}
-	
+
 	private MenuItem getMenuItemExit() {
 		MenuItem item = new MenuItem("Exit");
 		item.setOnAction(new EventHandler<ActionEvent>() {
@@ -62,10 +62,10 @@ public class TestOneFX2Workbench extends AFX2Workbench{
 
 			}
 		});
-		
+
 		return item;
 	}
-	
+
 	private MenuItem getMenuItemDemo1() {
 		MenuItem item = new MenuItem("Demo 1");
 		item.setOnAction(new EventHandler<ActionEvent>() {
@@ -77,10 +77,9 @@ public class TestOneFX2Workbench extends AFX2Workbench{
 
 			}
 		});
-		
+
 		return item;
 	}
-	
 
 	private EventHandler<? super MouseEvent> getListener(final String id,
 			final String message) {
