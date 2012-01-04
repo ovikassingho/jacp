@@ -3,41 +3,19 @@ package org.jacp.javafx2.rcp.main;
 import javafx.application.Application;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import org.jacp.api.launcher.Launcher;
-import org.jacp.api.workbench.IWorkbench;
-import org.jacp.javafx2.rcp.launcher.SpringLauncher;
-import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.jacp.project.launcher.AFX2SpringLauncher;
 
-public class TestOneWorkbenchMain extends Application {
-	final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(
-			"main_test1.xml");
-
-	private Scene scene;
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-
-		Application.launch(args);
-
+public class TestOneWorkbenchMain extends AFX2SpringLauncher {
+	public TestOneWorkbenchMain() {
+		super("main_test1.xml");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void start(Stage stage) throws Exception {
-		final IWorkbench< Node, EventHandler<Event>, Event, Object> workbench = (IWorkbench< Node, EventHandler<Event>, Event, Object>) launcher
-				.getContext().getBean("workbench");
-		workbench.init(launcher);
-		((AFX2Workbench) workbench).start(stage);
+	public void postInit(Stage stage) {
 		// Adding CSS to the stage
 		boolean is3dSupported = Platform
 				.isSupported(ConditionalFeature.SCENE3D);
@@ -47,11 +25,22 @@ public class TestOneWorkbenchMain extends Application {
 			scene.setCamera(new PerspectiveCamera());
 		}
 		scene.getStylesheets().addAll(
-				TestOneWorkbenchMain.class.getResource("main.css")
+				DemoWorkbenchMain.class.getResource("main.css")
 						.toExternalForm(),
 				// Workaround for CSS issue with HTML Editor
 				com.sun.javafx.scene.web.skin.HTMLEditorSkin.class.getResource(
 						"html-editor.css").toExternalForm());
+
+	}
+
+	private Scene scene;
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		Application.launch(args);
 
 	}
 
