@@ -205,12 +205,12 @@ Some methods defined by the interface are used to modify the control flow of you
   
 *Example UI component*
 {{{
-DemoFX2ComponentOne extends AFX2Component {
+public class DemoFX2ComponentOne extends AFX2Component {
 
-	GridPane grid;
-	Text category;
-	Button button;
-	MenuItem item;
+	private GridPane grid;
+	private Text category;
+	private Button button;
+	private MenuItem item;
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {		
