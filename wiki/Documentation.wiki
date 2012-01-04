@@ -1,14 +1,40 @@
-#labels Documentation,JavaFX2,Jacp
+#labels Documentation, JACP, JavaFX2, Spring
 #JACP JavaFX 2 Documentation page
 
 = JACP JavaFX 2 documentation =
 
-The JACP JavaFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2*. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components behave like controllers and triggered by *messages* similar to Spring MVC controllers. Components have a defined life cycle, their handle() methods is always executed in a *separate thread*, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
+The JACP JavaFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2* and *Spring* (or other DI frameworks). It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components behave like controllers and triggered by *messages* similar to Spring MVC controllers. Components have a defined life cycle, their handle() methods is always executed in a *separate thread*, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
 
 
 = The Application Launcher =
 
-The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX 2 and JACP  is started. It defines a main method so you have to declare your xml in the launchers constructor and can start the project.  The structure of a JACP/Spring application looks like this:
+The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX 2 and JACP  is started. The {{{postInit(Stage stage)}}} method gives you the ability to make custom changes on the JavaFX2 Stage instance. You have to define a {{{main}}} method on your own and start the JavaFX2 context by using the default {{{JavaFX2 Application}}} class.
+
+*Example Application Lauchner*
+{{{
+public class WorkbenchMain extends AFX2SpringLauncher {
+	public TestOneWorkbenchMain() {
+		// define the spring xml
+		super("main.xml");
+	}
+
+	@Override
+	public void postInit(Stage stage) {
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+	    // start the JavaFX2 context
+		Application.launch(args);
+
+	}
+
+}
+}}}
+
+The structure of a JACP/Spring application looks like this:
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Overview_v1.png"/>
 
 Below you find an example xml of a simple JACP project:
@@ -261,10 +287,20 @@ Some methods defined by the interface are used to modify the control flow of you
   * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
   * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId". The {{{executionTarget}}} in this context means "the runtime perspective". You can move the component to any perspective you want. Moving a component to a specific perspective can speed up the message calls in one perspective context. Locale message calls are executed faster.  
   * *{{{setHandleTarget(String targetId):}}}*  modify the target of the return value; by default the return value is always send to the caller component but you can "redirect" it to any component you want.
+
+*Example {{{ACallbackComponent}}}*
+
 * {{{ACallbackComponent}}} lifecycle *
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
 == {{{AStatelessCallbackComponents}}} == 
+An {{{AStatelessCallbackComponents}}} is a stateless non UI component.  Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{ACallbackComponent}}} it is a controller component, but in contrast to {{{ACallbackComponent}}} it has more than one instance. The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}} handle method and JACP creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponents}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{ACallbackComponent}}}. 
+
+*Example {{{AStatelessCallbackComponents}}}*
+
+* {{{AStatelessCallbackComponents}}} lifecycle *
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
 
+= JACP Messaging = 
+The JACP Framework is all about messaging. While you are free to use the default JavaFX2 listener concepts in your View/UI, you can use the JACP listeners to trigger messages to other JACP components. Messaging is the basic concept to change the state of an JACP component (and perspective too). All messages to JACP components are handled in a separate threads so you outsource complex computations from *FX application thread* to a *worker thread*. The JACP listener concept fits well to the default {{{JavaFX 2}}} listeners (a JACP listener implements an {{{JavaFX 2}}} EventHandler) so you can add an JACP listener to any JavaFX2 component to handle it's mouse-, keyboard- and other events. The JACP listener encapsulate the {{{JavaFX 2}}} event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component handle method.
