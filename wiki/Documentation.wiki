@@ -281,7 +281,7 @@ DemoFX2ComponentOne extends AFX2Component {
 
 == {{{ACallbackComponent}}} == 
 An {{{ACallbackComponent}}} is a stateful non UI component. Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. This type of component is a controller component that can be used to handle long running tasks and service calls. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
- *  *{{{Object handleAction(IAction<Event, Object> action)}}}*: The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{ACallbackComponent}}} is any kind of object that will be returned to the calling component. You are free to redirect the return value to any component you want.
+ *  *{{{Object handleAction(IAction<Event, Object> action)}}}*: The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{ACallbackComponent}}} is any kind of object that will be returned to the calling component (request/response semantic). You are free to redirect the return value to any component you want.
 
 Some methods defined by the interface are used to modify the control flow of your component:
   * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
@@ -289,15 +289,46 @@ Some methods defined by the interface are used to modify the control flow of you
   * *{{{setHandleTarget(String targetId):}}}*  modify the target of the return value; by default the return value is always send to the caller component but you can "redirect" it to any component you want.
 
 *Example {{{ACallbackComponent}}}*
+{{{
+public class StatefulComponent extends ACallbackComponent{
+	int c = 0;
+	@Override
+	public Object handleAction(IAction<Event, Object> action) {
+		c = c++;
+		if(action.getLastMessage().equals("ping")) return "pong";
+		return "ping";
+	}
+
+}
+}}}
 
 * {{{ACallbackComponent}}} lifecycle *
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
 == {{{AStatelessCallbackComponents}}} == 
-An {{{AStatelessCallbackComponents}}} is a stateless non UI component.  Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{ACallbackComponent}}} it is a controller component, but in contrast to {{{ACallbackComponent}}} it has more than one instance. The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}} handle method and JACP creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponents}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{ACallbackComponent}}}. 
+An {{{AStatelessCallbackComponents}}} is a stateless non UI component.  Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{ACallbackComponent}}} it is a controller component, but in contrast it can have more than one running instance. The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}} `handle` method and JACP creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponents}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{ACallbackComponent}}} (request/response). 
 
 *Example {{{AStatelessCallbackComponents}}}*
+
+{{{
+public class StatelessComponentOne extends AStatelessCallbackComponent{
+
+	@Override
+	public Object handleAction(IAction<Event, Object> action) {
+		if(action.getLastMessage() instanceof File){
+			File folder = (File) action.getLastMessage();
+			if(folder.isDirectory()) {
+				for(String file: folder.list()){
+					System.out.println(file);
+				}
+			}
+		}
+		return " ";
+	}
+
+}
+}}}
 
 * {{{AStatelessCallbackComponents}}} lifecycle *
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
