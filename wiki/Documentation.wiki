@@ -335,3 +335,5 @@ public class StatelessComponentOne extends AStatelessCallbackComponent{
 
 = JACP Messaging = 
 The JACP Framework is all about messaging. While you are free to use the default JavaFX2 listener concepts in your View/UI, you can use the JACP listeners to trigger messages to other JACP components. Messaging is the basic concept to change the state of an JACP component (and perspective too). All messages to JACP components are handled in a separate threads so you outsource complex computations from *FX application thread* to a *worker thread*. The JACP listener concept fits well to the default {{{JavaFX 2}}} listeners (a JACP listener implements an {{{JavaFX 2}}} {{{EventHandler}}}) so you can add an JACP listener to any JavaFX2 component to handle it's mouse-, keyboard- and other events. The JACP listener encapsulate the {{{JavaFX 2}}} event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component handle method.
+
+<img src="http://jacp.googlecode.com/svn/wiki/JACP_ComponentMessage_View.png"/>
