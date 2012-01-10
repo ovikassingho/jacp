@@ -355,7 +355,7 @@ Button button = new Button("click me");
 button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 }}}
 
-You can also trigger messages without involving a JavaFX2 Node by invoking the listeners {{{handle(event)}}} method.
+You can also trigger messages without involving a JavaFX2 Node by invoking the listeners {{{performAction(event)}}} method.
 
 
 
