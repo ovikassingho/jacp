@@ -1,7 +1,9 @@
 package org.jacp.javafx2.rcp.perspectives;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -12,12 +14,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
+import org.jacp.javafx2.rcp.components.optionPane.JACPDialogButton;
+import org.jacp.javafx2.rcp.components.optionPane.JACPDialogUtil;
+import org.jacp.javafx2.rcp.components.optionPane.JACPModalDialog;
+import org.jacp.javafx2.rcp.components.optionPane.JACPOptionDialog;
+import org.jacp.javafx2.rcp.components.optionPane.JACPoptionDialogV2;
+import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 
 /**
@@ -56,7 +65,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		// register main content
 
-		GridPane mainContent = new GridPane();
+		Pane mainContent = new Pane();
 		perspectiveLayout.registerTargetLayoutComponent("PmainContent",
 				mainContent);
 
@@ -71,7 +80,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		SplitPane splitPane = new SplitPane();
 
-		Pane main = new Pane();
+		Group main = new Group();
 		// GridPane.setHgrow(mainContent, Priority.ALWAYS);
 		// GridPane.setVgrow(mainContent, Priority.ALWAYS);
 		main.getChildren().add(mainContent);
@@ -117,6 +126,101 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
 		ToolBar south = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
 		south.getItems().add(bc);
+
+		JACPToolBar north = (JACPToolBar) layout
+				.getRegisteredToolBar(ToolbarPosition.NORTH);
+		Button b = new Button("click");
+		b.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				JACPOptionDialog dialog = JACPDialogUtil.createDialog(
+						"JACP Option Pane", "This is a JACP OptionPane.",
+						JACPDialogButton.NO, JACPDialogButton.YES,
+						JACPDialogButton.NO);
+				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						System.out.println("Click");
+					}
+				});
+
+				dialog.setOnNoAction(new EventHandler<ActionEvent>(
+
+				) {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						System.out.println("CLACK");
+
+					}
+				});
+				dialog.showDialog();
+
+			}
+		});
+
+		Button custom = new Button("custom");
+		custom.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+
+				VBox box = new VBox();
+				box.setMaxSize(600, VBox.USE_PREF_SIZE);
+				box.setStyle("-fx-background-color: #cccccc;");
+				Button b = new Button("click");
+				b.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						JACPModalDialog.getInstance().hideModalMessage();
+					}
+				});
+				box.getChildren().add(b);
+				box.setMinHeight(50);
+				JACPModalDialog.getInstance().showModalMessage(box);
+			}
+		});
+
+		Button bv2 = new Button("clack");
+		bv2.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				JACPoptionDialogV2 dialog = JACPDialogUtil.createV2Dialog(
+						"JACP Option Pane", "This is a JACP OptionPane.",
+						JACPDialogButton.NO);
+				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						System.out.println("Click");
+					}
+				});
+
+				dialog.setOnNoAction(new EventHandler<ActionEvent>(
+
+				) {
+
+					@Override
+					public void handle(ActionEvent arg0) {
+						System.out.println("CLACK");
+
+					}
+				});
+				dialog.showDialog();
+
+			}
+		});
+		north.addOnEnd(b);
+		north.add(bv2);
+		north.addOnEnd(custom);
+
+		// north.getItems().add(b);
+		// north.getItems().add(bv2);
+		// north.getItems().add(custom);
 
 		MenuBar menu = layout.getMenu();
 		final Menu menu2 = new Menu("Options");
