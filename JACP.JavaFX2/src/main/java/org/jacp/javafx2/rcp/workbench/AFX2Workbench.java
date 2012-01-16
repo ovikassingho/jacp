@@ -25,14 +25,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -53,6 +60,10 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
+import org.jacp.javafx2.rcp.components.optionPane.JACPDialogButton;
+import org.jacp.javafx2.rcp.components.optionPane.JACPDialogUtil;
+import org.jacp.javafx2.rcp.components.optionPane.JACPModalDialog;
+import org.jacp.javafx2.rcp.components.optionPane.JACPOptionDialog;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2MessageDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
@@ -80,7 +91,8 @@ public abstract class AFX2Workbench
 	private Launcher<?> launcher;
 	private Stage stage;
 	private GridPane root;
-
+	private JACPModalDialog dimmer;
+	private final double MAX_BLUR = 4.0;
 
 	/**
 	 * JavaFX2 specific start sequence
@@ -94,12 +106,12 @@ public abstract class AFX2Workbench
 
 			@Override
 			public void handle(WindowEvent arg0) {
-				//TODO close all threads, use thread group to interrupt
-			//	((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
-			//	((FX2ComponentDelegator)componentDelegator).interrupt();
-			//	((FX2MessageDelegator)messageDelegator).interrupt();
+				// TODO close all threads, use thread group to interrupt
+				// ((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
+				// ((FX2ComponentDelegator)componentDelegator).interrupt();
+				// ((FX2MessageDelegator)messageDelegator).interrupt();
 				System.exit(0);
-				
+
 			}
 		});
 		this.log("1: init workbench");
@@ -153,7 +165,7 @@ public abstract class AFX2Workbench
 					}
 				}); // FX2 UTILS END
 			}
-	
+
 		}
 	}
 
@@ -176,7 +188,7 @@ public abstract class AFX2Workbench
 				((FX2ComponentDelegator) AFX2Workbench.this.componentDelegator)
 						.start();
 				((FX2MessageDelegator) AFX2Workbench.this.messageDelegator)
-				.start();
+						.start();
 				// init toolbar instance
 				AFX2Workbench.this.log("3.2: workbench tool bars");
 				// initToolBars();
@@ -223,7 +235,8 @@ public abstract class AFX2Workbench
 	 */
 	public final void registerComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.init(this.componentDelegator.getComponentDelegateQueue(),this.messageDelegator.getMessageDelegateQueue());
+		perspective.init(this.componentDelegator.getComponentDelegateQueue(),
+				this.messageDelegator.getMessageDelegateQueue());
 		this.perspectiveCoordinator.addPerspective(perspective);
 		this.componentDelegator.addPerspective(perspective);
 		this.messageDelegator.addPerspective(perspective);
@@ -260,7 +273,7 @@ public abstract class AFX2Workbench
 	public final void setPerspectives(
 			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
 		this.perspectives = perspectives;
-	
+
 	}
 
 	@Override
@@ -270,7 +283,7 @@ public abstract class AFX2Workbench
 	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
 		return this.perspectives;
 	}
-	
+
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FX2ActionListener(new FX2Action("workbench"),
@@ -287,24 +300,34 @@ public abstract class AFX2Workbench
 		int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
 		int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 		// the main content Pane, will be "centered"
+
+		StackPane absoluteRoot = new StackPane();
+		final BorderPane baseLayoutPane = new BorderPane();
+		// top most pane
 		this.root = new GridPane();
 		root.setId("root-pane");
-	
+		JACPModalDialog.initDialog(baseLayoutPane);
+		dimmer = JACPModalDialog.getInstance();
+		dimmer.setVisible(false);
+		GaussianBlur blur = new GaussianBlur();
+		blur.setRadius(0);
+		baseLayoutPane.setEffect(blur);
+
 		stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
-		//
+
 		// add the toolbars in a specific order
 		if (!this.getWorkbenchLayout().getRegisteredToolbars().isEmpty()) {
 			// holds only the decorator (if set) and the menu bar.
-			final BorderPane baseLayoutPane = new BorderPane();
+
 			// TODO: handle the custom decorator
-	
+
 			// add the menu if needed
 			if (this.getWorkbenchLayout().isMenuEnabled())
 				baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
-	
+
 			final BorderPane toolbarPane = new BorderPane();
 			baseLayoutPane.setCenter(toolbarPane);
-	
+
 			final Map<ToolbarPosition, ToolBar> registeredToolbars = this
 					.getWorkbenchLayout().getRegisteredToolbars();
 			final Iterator<Entry<ToolbarPosition, ToolBar>> it = registeredToolbars
@@ -315,16 +338,20 @@ public abstract class AFX2Workbench
 				final ToolBar toolBar = entry.getValue();
 				this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);
 			}
-	
+
 			// add root to the center
-			toolbarPane.setCenter(this.root);
-	
-			stage.setScene(new Scene(baseLayoutPane, x, y));
-	
-		} else {
-			stage.setScene(new Scene(this.root, x, y));
+			toolbarPane.setCenter(root);
+
 		}
+		absoluteRoot.getChildren().add(baseLayoutPane);
+		stage.setScene(new Scene(absoluteRoot, x, y));
+
+		absoluteRoot.getChildren().add(dimmer);
 	}
+
+	// FIXME: @ PETE move to separate Component
+
+	// FIXME END
 
 	/**
 	 * set toolBars to correct position
@@ -337,6 +364,7 @@ public abstract class AFX2Workbench
 	 */
 	private void assignCorrectToolBarLayout(ToolbarPosition position,
 			ToolBar bar, BorderPane pane) {
+
 		switch (position) {
 		case NORTH:
 			pane.setTop(bar);
@@ -345,19 +373,14 @@ public abstract class AFX2Workbench
 			pane.setBottom(bar);
 			break;
 		case EAST:
-			pane.setRight(envelopToolBar(bar));
+			bar.setOrientation(Orientation.VERTICAL);
+			pane.setRight(bar);
 			break;
 		case WEST:
-			pane.setLeft(envelopToolBar(bar));
+			bar.setOrientation(Orientation.VERTICAL);
+			pane.setLeft(bar);
 			break;
 		}
-	}
-
-	private HBox envelopToolBar(ToolBar bar) {
-		HBox box = new HBox();
-		bar.setMaxHeight(Double.MAX_VALUE);
-		box.getChildren().add(bar);
-		return box;
 	}
 
 	private void log(final String message) {
