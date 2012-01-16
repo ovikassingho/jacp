@@ -57,7 +57,7 @@ public abstract class AStatelessCallbackComponent implements
 	private final AtomicInteger threadCount = new AtomicInteger(0);
 	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
-			500);
+			1000);
 	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
 
 	private final ExecutorService executor = Executors
@@ -66,7 +66,7 @@ public abstract class AStatelessCallbackComponent implements
 	static {
 		final Runtime runtime = Runtime.getRuntime();
 		final int nrOfProcessors = runtime.availableProcessors();
-		MAX_INCTANCE_COUNT = nrOfProcessors	+ (nrOfProcessors / 2)+5;
+		MAX_INCTANCE_COUNT = nrOfProcessors	+ (nrOfProcessors / 2)+10;
 	}
 
 	@Override
