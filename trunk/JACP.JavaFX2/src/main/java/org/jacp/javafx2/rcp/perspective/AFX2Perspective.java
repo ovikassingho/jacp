@@ -68,6 +68,7 @@ public abstract class AFX2Perspective implements
 	private FX2ComponentLayout layout;
 	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FX2PerspectiveLayout();
+	
 
 	@Override
 	public final void init(

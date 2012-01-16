@@ -28,6 +28,7 @@ import javafx.stage.StageStyle;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.util.Tupel;
+import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
 
 /**
  * defines basic layout of workbench; define if menus are enabled; declare tool
@@ -69,7 +70,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	}
 
 	private ToolBar initToolBar(ToolbarPosition position) {
-		final ToolBar bar = new ToolBar();
+		final JACPToolBar bar = new JACPToolBar();
 		bar.setId(position.getName() + "-bar");
 		return bar;
 	}
