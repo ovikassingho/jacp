@@ -150,6 +150,7 @@ public class FX2ComponentCoordinator extends AFX2Coordinator implements
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
 		return componentHandler;
