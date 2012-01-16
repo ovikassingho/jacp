@@ -3,6 +3,8 @@ package org.jacp.javafx2.rcp.workbench;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -10,6 +12,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -78,7 +81,6 @@ public class DemoFX2Workbench extends AFX2Workbench {
 
 			}
 		});
-		topBar.getItems().add(close);
 
 		// ////////////TOOLBAR END ////////////////////
 
@@ -100,5 +102,4 @@ public class DemoFX2Workbench extends AFX2Workbench {
 
 		// /////////////MENU END //////////////////
 	}
-
 }

@@ -71,9 +71,23 @@
     -fx-background-color: #333333;
     -fx-padding: 1px;
 }
-#ModalDimmer {
-    -fx-background-color: rgba(0,0,0,0.5);
+
+
+
+#error-dimmer{
+	-fx-background-color: rgba(0,0,0,0.5);
 }
+
+
+#popup-window{
+	-fx-background-color: white;
+}
+
+.proxy-pane{
+	-fx-background-color: white;
+}
+
+
 #ProxyDialog {
     -fx-background-color: black, white, 
         linear-gradient(rgb(250,250,250), rgb(230,230,230));

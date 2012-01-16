@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -20,6 +21,7 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
+
 /**
  * Demo ui component two
  * @author Andy Moncsek
@@ -40,7 +42,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		c = c+1;
+		c = c + 1;
 		System.out.println("message to component two >>"
 				+ action.getLastMessage() + "<< in thread"
 				+ Thread.currentThread() + " counter: " + c);
@@ -82,7 +84,7 @@ public class DemoFX2ComponentTwo extends AFX2Component {
 						"id01.id001", "id01");
 				listener.handle(null);
 			}
-			
+
 		}
 		return null;
 	}

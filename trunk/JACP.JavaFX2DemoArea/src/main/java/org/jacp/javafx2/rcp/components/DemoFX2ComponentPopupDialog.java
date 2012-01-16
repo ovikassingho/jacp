@@ -18,7 +18,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.javafx2.rcp.component.AFX2Component;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
-public class DemoFX2ComponentMainContent extends AFX2Component {
+public class DemoFX2ComponentPopupDialog extends AFX2Component {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
@@ -28,30 +28,13 @@ public class DemoFX2ComponentMainContent extends AFX2Component {
 
 	@Override
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
-		// Pane group = new Pane();
+		Pane group = new Pane();
 		// FlowPane mainContent = new FlowPane(Orientation.VERTICAL);
-		TilePane mainContent = new TilePane();
-		mainContent.setPrefRows(3);
-		// Pane mainContent = new Pane();
-		mainContent.setPadding(new Insets(30));
-
-		int x = 0;
-		while (x < 20) {
-			Rectangle r = new Rectangle(80, 80);
-			r.setFill(Color.LIGHTGRAY);
-			r.getStyleClass().add("main-container");
-			r.setEffect(new DropShadow());
-			TilePane.setMargin(r, new Insets(20));
-
-			mainContent.getChildren().add(r);
-			x++;
-		}
-
 		// mainContent.setStyle("-fx-background-color: blue;");
 		// GridPane.setVgrow(group, Priority.ALWAYS);
 		// GridPane.setHgrow(group, Priority.ALWAYS);
 		// group.getChildren().add(mainContent);
-		return mainContent;
+		return group;
 	}
 
 	@Override
