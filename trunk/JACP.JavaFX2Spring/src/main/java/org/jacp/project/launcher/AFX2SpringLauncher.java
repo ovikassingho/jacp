@@ -48,6 +48,7 @@ public abstract class AFX2SpringLauncher extends Application {
 								: "workbench");
 		workbench.init(this.launcher);
 		((AFX2Workbench) workbench).start(stage);
+		postInit(stage);
 
 	}
 
