@@ -43,6 +43,7 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	public JACPToolBar() {
 		super();
+		getStyleClass().add("jacp-toolbar");
 		orientationProperty().addListener(this);
 		getItems().addListener(this);
 		if (getOrientation() == Orientation.VERTICAL)
