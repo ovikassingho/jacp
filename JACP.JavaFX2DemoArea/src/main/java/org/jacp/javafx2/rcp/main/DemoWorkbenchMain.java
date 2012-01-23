@@ -1,6 +1,5 @@
 package org.jacp.javafx2.rcp.main;
 
-
 import org.jacp.project.launcher.AFX2SpringLauncher;
 
 import javafx.application.Application;
@@ -15,14 +14,13 @@ public class DemoWorkbenchMain extends AFX2SpringLauncher {
 	public DemoWorkbenchMain() {
 		super("main.xml");
 	}
-	
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-	
 
 	private Scene scene;
 
