@@ -1,8 +1,9 @@
-/*
- * 
- */
 package org.jacp.javafx2.rcp.components.optionPane;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,12 +19,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * The Class JACPOptionDialog.
- * 
- * @author Patrick Symmangk
+ * The Class JACPoptionDialogV2.
  *
+ * @author Patrick Symmangk
  */
-public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
+public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	/** Drag offsets for window dragging. */
 	private String message;
@@ -31,20 +31,8 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	/** The title. */
 	private String title;
 
-	/** The buttons. */
-	private JACPDialogButton[] buttons;
-
-	/** The on ok. */
-	private EventHandler<ActionEvent> onOK;
-
-	/** The on cancel. */
-	private EventHandler<ActionEvent> onCancel;
-
-	/** The on yes. */
-	private EventHandler<ActionEvent> onYes;
-
-	/** The on no. */
-	private EventHandler<ActionEvent> onNo;
+	/** The default button. */
+	private JACPDialogButton defaultButton;
 
 	/** The ok button. */
 	private Button okButton;
@@ -64,28 +52,35 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	/** The BUTTO n_ size. */
 	private final int BUTTON_SIZE = 74;
 
+	private List<Button> buttons;
+
+	private Text explanation;
+
+	private Label titleLabel;
+
+	private ObservableList<String> buttonStyles;
+
 	/**
-	 * Instantiates a new jACP option dialog.
+	 * Instantiates a new jAC poption dialog v2.
 	 *
 	 * @param title the title
 	 * @param message the message
 	 * @param defaultButton the default button
-	 * @param buttons the buttons
 	 */
-	public JACPOptionDialog(final String title, final String message,
-			JACPDialogButton defaultButton, JACPDialogButton... buttons) {
+	public JACPOptionPane(final String title, final String message,
+			JACPDialogButton defaultButton) {
 		this.message = message;
 		this.title = title;
-		this.buttons = buttons;
-		this.initDialog(defaultButton);
+		this.defaultButton = defaultButton;
+		this.initDialog();
 	}
 
 	/**
 	 * Inits the dialog.
-	 *
-	 * @param defaultButton the default button
 	 */
-	private void initDialog(JACPDialogButton defaultButton) {
+	private void initDialog() {
+		buttons = new ArrayList<Button>();
+
 		setId("ProxyDialog");
 		setSpacing(10);
 		setMaxSize(430, USE_PREF_SIZE);
@@ -96,8 +91,9 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 			}
 		});
 
-		Text explanation = new Text(message);
+		explanation = new Text(message);
 		explanation.setWrappingWidth(400);
+		explanation.getStyleClass().add("jacp-option-pane-explanation");
 
 		BorderPane explPane = new BorderPane();
 		VBox.setMargin(explPane, new Insets(5, 5, 5, 5));
@@ -105,7 +101,8 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 		BorderPane.setMargin(explanation, new Insets(5, 5, 5, 5));
 
 		// create title
-		Label titleLabel = new Label(title);
+		titleLabel = new Label(title);
+		titleLabel.getStyleClass().add("jacp-option-pane-title");
 		titleLabel.setId("title");
 		titleLabel.setMinHeight(22);
 		titleLabel.setPrefHeight(22);
@@ -115,34 +112,6 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 
 		bottomBar = new HBox(0);
 		bottomBar.setAlignment(Pos.BASELINE_RIGHT);
-
-		for (final JACPDialogButton button : buttons) {
-
-			if (JACPDialogButton.OK == button) {
-				okButton = createButton(button, defaultButton);
-				okButton.setOnMouseClicked(this);
-				HBox.setMargin(okButton, new Insets(0, 8, 0, 0));
-				bottomBar.getChildren().add(okButton);
-			}
-			if (JACPDialogButton.CANCEL == button) {
-				cancelButton = createButton(button, defaultButton);
-				cancelButton.setOnMouseClicked(this);
-				HBox.setMargin(cancelButton, new Insets(0, 8, 0, 0));
-				bottomBar.getChildren().add(cancelButton);
-			}
-			if (JACPDialogButton.YES == button) {
-				yesButton = createButton(button, defaultButton);
-				yesButton.setOnMouseClicked(this);
-				HBox.setMargin(yesButton, new Insets(0, 8, 0, 0));
-				bottomBar.getChildren().add(yesButton);
-			}
-			if (JACPDialogButton.NO == button) {
-				noButton = createButton(button, defaultButton);
-				noButton.setOnMouseClicked(this);
-				HBox.setMargin(noButton, new Insets(0, 8, 0, 0));
-				bottomBar.getChildren().add(noButton);
-			}
-		}
 
 		VBox.setMargin(bottomBar, new Insets(20, 5, 5, 5));
 		getStyleClass().add("proxy-pane");
@@ -156,6 +125,9 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	 * @param onOK the new on ok action
 	 */
 	public void setOnOkAction(EventHandler<ActionEvent> onOK) {
+		if (okButton == null) {
+			okButton = createButton(JACPDialogButton.OK);
+		}
 		this.setAction(okButton, onOK);
 	}
 
@@ -165,6 +137,9 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	 * @param onCancel the new on cancel action
 	 */
 	public void setOnCancelAction(EventHandler<ActionEvent> onCancel) {
+		if (cancelButton == null) {
+			cancelButton = createButton(JACPDialogButton.CANCEL);
+		}
 		this.setAction(cancelButton, onCancel);
 	}
 
@@ -174,6 +149,9 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	 * @param onYes the new on yes action
 	 */
 	public void setOnYesAction(EventHandler<ActionEvent> onYes) {
+		if (yesButton == null) {
+			yesButton = createButton(JACPDialogButton.YES);
+		}
 		this.setAction(yesButton, onYes);
 	}
 
@@ -183,6 +161,9 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	 * @param onNo the new on no action
 	 */
 	public void setOnNoAction(EventHandler<ActionEvent> onNo) {
+		if (noButton == null) {
+			noButton = createButton(JACPDialogButton.NO);
+		}
 		this.setAction(noButton, onNo);
 	}
 
@@ -201,11 +182,9 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	 * Creates the button.
 	 *
 	 * @param button the button
-	 * @param defaultButton the default button
 	 * @return the button
 	 */
-	private Button createButton(JACPDialogButton button,
-			JACPDialogButton defaultButton) {
+	private Button createButton(JACPDialogButton button) {
 		Button but = new Button(button.getLabel());
 		but.setId(button.getLabel().toLowerCase() + "Button");
 		if (defaultButton != null && button.getId() == defaultButton.getId()) {
@@ -214,6 +193,11 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 		}
 		but.setMinWidth(BUTTON_SIZE);
 		but.setPrefWidth(BUTTON_SIZE);
+		but.setOnMouseClicked(this);
+		HBox.setMargin(but, new Insets(0, 8, 0, 0));
+		bottomBar.getChildren().add(but);
+		buttons.add(but);
+		but.getStyleClass().add("jacp-option-pane-button");
 		return but;
 	}
 
@@ -240,4 +224,5 @@ public class JACPOptionDialog extends VBox implements EventHandler<MouseEvent> {
 	public void showDialog(Node node) {
 		JACPModalDialog.getInstance().showModalMessage(node);
 	}
+
 }
