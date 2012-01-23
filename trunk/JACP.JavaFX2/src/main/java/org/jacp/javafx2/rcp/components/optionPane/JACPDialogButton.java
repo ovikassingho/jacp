@@ -3,7 +3,7 @@ package org.jacp.javafx2.rcp.components.optionPane;
 /**
  * The Enum JACPDialogButton.
  *
- * @author psy
+ * @author Patrick Symmangk
  */
 public enum JACPDialogButton {
 
