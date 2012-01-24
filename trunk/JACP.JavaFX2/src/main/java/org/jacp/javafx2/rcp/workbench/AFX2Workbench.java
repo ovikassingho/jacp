@@ -34,6 +34,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -291,9 +292,10 @@ public abstract class AFX2Workbench
 	private void setBasicLayout(final Stage stage) {
 		int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
 		int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
-		// the main content Pane, will be "centered"
 
+		// the top most pane is a Stackpane
 		StackPane absoluteRoot = new StackPane();
+
 		final BorderPane baseLayoutPane = new BorderPane();
 		// top most pane
 		this.root = new GridPane();
@@ -301,6 +303,7 @@ public abstract class AFX2Workbench
 		JACPModalDialog.initDialog(baseLayoutPane);
 		dimmer = JACPModalDialog.getInstance();
 		dimmer.setVisible(false);
+
 		GaussianBlur blur = new GaussianBlur();
 		blur.setRadius(0);
 		baseLayoutPane.setEffect(blur);
@@ -337,13 +340,12 @@ public abstract class AFX2Workbench
 		}
 		absoluteRoot.getChildren().add(baseLayoutPane);
 		stage.setScene(new Scene(absoluteRoot, x, y));
-
+		// new Panelayer for Menu Effects
+		Pane menuLayer = new Pane();
+//		absoluteRoot.getChildren().add(menuLayer);
 		absoluteRoot.getChildren().add(dimmer);
+
 	}
-
-	// FIXME: @ PETE move to separate Component
-
-	// FIXME END
 
 	/**
 	 * set toolBars to correct position
