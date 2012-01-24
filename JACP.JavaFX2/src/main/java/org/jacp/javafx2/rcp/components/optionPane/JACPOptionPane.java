@@ -15,6 +15,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -99,6 +100,16 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		VBox.setMargin(explPane, new Insets(5, 5, 5, 5));
 		explPane.setCenter(explanation);
 		BorderPane.setMargin(explanation, new Insets(5, 5, 5, 5));
+
+		HBox topBox = new HBox();
+//		topBox.setAlignment(Pos.TOP_RIGHT);
+		topBox.setAlignment(Pos.TOP_LEFT);
+		Button defaultClose = new Button("x");
+		defaultClose.setOnMouseClicked(this);
+		defaultClose.setId("jacp-option-pane-close");
+		topBox.getChildren().add(defaultClose);
+		VBox.setVgrow(topBox, Priority.ALWAYS);
+		getChildren().add(topBox);
 
 		// create title
 		titleLabel = new Label(title);

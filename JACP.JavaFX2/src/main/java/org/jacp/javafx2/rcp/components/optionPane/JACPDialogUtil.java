@@ -15,12 +15,12 @@ public class JACPDialogUtil {
 	 * @param defaultButton the default button
 	 * @return the jAC poption dialog v2
 	 */
-	public static JACPOptionPane createV2Dialog(final String title,
+	public static JACPOptionPane createOptionPane(final String title,
 			final String message, JACPDialogButton defaultButton) {
 		return new JACPOptionPane(title, message, defaultButton);
 	}
 
-	public static JACPOptionPane createV2Dialog(final String title,
+	public static JACPOptionPane createOptionPane(final String title,
 			final String message) {
 		return new JACPOptionPane(title, message, null);
 	}
