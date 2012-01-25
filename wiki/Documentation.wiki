@@ -279,7 +279,7 @@ public class DemoFX2ComponentOne extends AFX2Component {
 	}
 }
 }}}
-* {{{AFX2Component}}} lifecycle * 
+===* {{{AFX2Component}}} lifecycle *===
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
@@ -305,7 +305,7 @@ public class StatefulComponent extends ACallbackComponent{
 }
 }}}
 
-* {{{ACallbackComponent}}} lifecycle *
+===* {{{ACallbackComponent}}} lifecycle *===
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
@@ -333,7 +333,7 @@ public class StatelessComponentOne extends AStatelessCallbackComponent{
 }
 }}}
 
-* {{{AStatelessCallbackComponents}}} lifecycle *
+===* {{{AStatelessCallbackComponents}}} lifecycle *===
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
 
 = JACP Messaging = 
@@ -360,7 +360,7 @@ button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 
 You can also trigger messages without involving a JavaFX2 Node by invoking the listeners {{{performAction(event)}}} method.
 
-= JACP OptionPane =
+= JACP {{{OptionPane}}} =
 
 
 
