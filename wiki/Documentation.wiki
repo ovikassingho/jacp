@@ -85,7 +85,7 @@ Below you find an example xml of a simple JACP project:
 </beans>
 }}}
 
-=The Workbench=
+=Workbench=
 The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. It consists of two methods you have to implement, the *{{{handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout,Stage stage)}}}* and *{{{postHandle(FX2ComponentLayout layout)}}}*. The {{{action}}}-object will always contain the default initialization message {{{“init”}}}, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  *{{{IWorkbenchLayout<Node> layout}}}* reference is your entry to configure following thinks on your application:
  * *{{{WorkbenchXYSize(x,y):}}}* defines the initial workbench size
  * *{{{MenuEnabled(boolean):}}}* enable main menu if needed, the entries are defined later; here you only declare if a menu is activated
@@ -132,7 +132,7 @@ public class Workbench extends AFX2Workbench {
 }}}
 
 
-=The Perspective=
+=Perspective=
 A perspective is a (UI-) container like all other components (it’s children) and behave quite similar to components. It has a handle (handlePerspective) method and can be triggered by messages  from other perspectives and components. Different to components is, that a perspective will *always run on {{{FX Application thread}}}*, so this is NOT the place where you put some complex code or long running tasks. The *real task* of a perspective is to define the *layout* of your current view. The ability to trigger perspectives by messages gives you the freedom to change the layout at runtime and to adopt the view for your current needs.<br/> 
 A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component tree are your user-nodes containing {{{Buttons}}}, {{{TextFields}}} and so on.
 The root node in JACP is provided by the workbench; a perspective represents your (complex) UI tree and defines place-holders for your components (see picture 1). So, for a typical business application you can create a {{{SplitPane}}} in your perspective, which is the root node (or the root of this subtree), place a {{{GridPane}}} on the left and on the right and register those {{{GridPanes}}} as “Targets” for your components. 
@@ -191,7 +191,7 @@ public class PerspectiveOne extends AFX2Perspective {
 
 }}}
 
-= The Components = 
+= Components = 
 Components are the place where you put all the complex UI code, service calls and long running tasks in. All components have an input and an output. The input is always an {{{Action}}}-object and the output is either a view (in case you use an UI component) or any type of object. Currently you can use three types of components: {{{AFX2Components}}} are UI components, {{{ACallback- and AStatelessCallbackComponents}}} are non-UI components. All components in common is, that they have a {{{“handle”}}} method that is *not running on FX application thread*, so the execution of this block of code will not stop the execution of the rest of your UI. Also all component types can be activated and disabled.
 
 == {{{AFX2Component}}} == 
@@ -342,7 +342,7 @@ The JACP Framework is all about messaging. While you are free to use the default
 
 The {{{Action}}} interface defines two methods; {{{setMessage(Object)}}} is used for *local messages* where the calling component is also the target component. The {{{addMessage(string, object)}}} providing an interface to send *global messages*, the method takes a string as message target-id and an object representing a message. The {{{addMessage}}} method is used to send message to other registered components.
 
-*Add JACP local listener to {{{JavaFX2}}} Node* 
+== *Add JACP local listener to {{{JavaFX2}}} Node* ==
 {{{
 IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
 listener.getAction().setMessage("hello");
@@ -350,7 +350,7 @@ Button button = new Button("click me");
 button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 }}}
 
-*Add JACP listener to {{{JavaFX2}}} Node* 
+== *Add JACP listener to {{{JavaFX2}}} Node* ==
 {{{
 IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
 listener.getAction().addMessage("id01.id001", "hello");
