@@ -39,6 +39,17 @@ import javafx.scene.Parent;
  * 
  */
 public class FX2Util {
+	
+	/**
+	 * contains constant values
+	 * @author Andy Moncsek
+	 *
+	 */
+	public static class MessageUtil{
+		public static String INIT ="init";
+	}
+	
+
 	/**
 	 * returns children of current node
 	 * 
