@@ -237,12 +237,11 @@ public abstract class AFX2Component implements
 	}
 	
 	
-
-	@Override
-	@SuppressWarnings("unchecked")
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	@SuppressWarnings("unchecked")
 	public final <C> C handle(final IAction<Event, Object> action) {
 		return (C) this.handleAction(action);
 	}
@@ -257,7 +256,7 @@ public abstract class AFX2Component implements
 	}
 
 	/**
-	 * @see org.jacp.api.component.IHandleable#handle(IAction)
+	 * @see org.jacp.api.component.IHandleable#handle(IAction) {@inheritDoc}
 	 * @param action
 	 * @return a node
 	 */
