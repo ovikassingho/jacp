@@ -157,7 +157,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 			@Override
 			public void handle(ActionEvent e) {
-				JACPOptionPane dialog = JACPDialogUtil.createV2Dialog(
+				JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
 						"JACP Option Pane", "This is a JACP OptionPane.",
 						JACPDialogButton.NO);
 				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
