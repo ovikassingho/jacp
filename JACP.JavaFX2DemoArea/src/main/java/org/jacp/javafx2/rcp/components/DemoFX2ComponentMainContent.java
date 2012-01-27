@@ -1,10 +1,15 @@
 package org.jacp.javafx2.rcp.components;
 
+import javafx.collections.ObservableList;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -30,20 +35,45 @@ public class DemoFX2ComponentMainContent extends AFX2Component {
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
 		// Pane group = new Pane();
 		// FlowPane mainContent = new FlowPane(Orientation.VERTICAL);
-		TilePane mainContent = new TilePane();
+		final TilePane mainContent = new TilePane();
 		mainContent.setPrefRows(3);
 		// Pane mainContent = new Pane();
 		mainContent.setPadding(new Insets(30));
+		mainContent.setOnScroll(new EventHandler<ScrollEvent>() {
+
+			 @Override public void handle(ScrollEvent event) {
+				ObservableList<Node> children = mainContent.getChildren();
+				for(Node view:children) {
+					if(view instanceof ImageView) {
+						ImageView tmp = (ImageView) view ;
+						// TODO add animation
+						tmp.setFitWidth(tmp.getFitWidth() + event.getDeltaY());
+						tmp.setFitHeight(tmp.getFitHeight() + event.getDeltaY());
+					}
+					
+				}
+		           
+		        }
+		});
 
 		int x = 0;
 		while (x < 20) {
-			Rectangle r = new Rectangle(80, 80);
-			r.setFill(Color.LIGHTGRAY);
-			r.getStyleClass().add("main-container");
-			r.setEffect(new DropShadow());
-			TilePane.setMargin(r, new Insets(20));
+			Image image =new Image(DemoFX2ComponentMainContent.class.getResource(
+					"/mad.jpg").getFile());
+			final ImageView view = new ImageView(image);
+			view.setFitHeight(80);
+			view.setFitWidth(80);
+			
+			
+			view.setEffect(new DropShadow());
+			
+//			Rectangle r = new Rectangle(80, 80);
+//			r.setFill(Color.LIGHTGRAY);
+//			r.getStyleClass().add("main-container");
+//			r.setEffect(new DropShadow());
+			TilePane.setMargin(view, new Insets(10));
 
-			mainContent.getChildren().add(r);
+			mainContent.getChildren().add(view);
 			x++;
 		}
 

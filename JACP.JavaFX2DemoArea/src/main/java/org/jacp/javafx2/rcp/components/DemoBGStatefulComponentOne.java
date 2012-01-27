@@ -13,7 +13,7 @@ public class DemoBGStatefulComponentOne extends ACallbackComponent{
 	int c = 0;
 	@Override
 	public Object handleAction(IAction<Event, Object> action) {
-		c = c+1;
+		c = c++;
 		System.out.println("message to BG compoent one: >>"+ action.getLastMessage() + "<< in thread"
 				+ Thread.currentThread() + " counter: " + c+" :: "+ this);
 		return "pong";
