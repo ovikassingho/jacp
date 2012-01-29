@@ -22,6 +22,7 @@ import java.util.Map;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
+import javafx.scene.layout.Pane;
 
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.util.ToolbarPosition;
@@ -37,11 +38,14 @@ import org.jacp.api.util.ToolbarPosition;
 public class FX2ComponentLayout implements IBaseLayout<Node> {
 	private final Map<ToolbarPosition, ToolBar> registeredToolBars;
 	private final MenuBar menu;
+	private final Pane glassPane;
 
 	public FX2ComponentLayout(final MenuBar menu,
-			final Map<ToolbarPosition, ToolBar> registeredToolBars) {
+			final Map<ToolbarPosition, ToolBar> registeredToolBars,
+			final Pane glassPane) {
 		this.menu = menu;
 		this.registeredToolBars = registeredToolBars;
+		this.glassPane = glassPane;
 	}
 
 	@Override
@@ -52,6 +56,10 @@ public class FX2ComponentLayout implements IBaseLayout<Node> {
 	@Override
 	public final MenuBar getMenu() {
 		return this.menu;
+	}
+
+	public final Pane getGlassPane() {
+		return glassPane;
 	}
 
 }

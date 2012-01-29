@@ -43,24 +43,32 @@ import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
 import org.jacp.javafx2.rcp.util.FX2Util;
+
 /**
  * Handles initialization and re assignment of perspectives in workbench
  * @author Andy Moncsek
  *
  */
-public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>{
+public class FX2WorkbenchHandler
+		implements
+		IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final IWorkbenchLayout<Node> workbenchLayout;
 	private final Launcher<?> launcher;
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 	private final GridPane root;
-	public FX2WorkbenchHandler(final Launcher<?> launcher,final IWorkbenchLayout<Node> workbenchLayout,final GridPane root,final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
+
+	public FX2WorkbenchHandler(
+			final Launcher<?> launcher,
+			final IWorkbenchLayout<Node> workbenchLayout,
+			final GridPane root,
+			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
 		this.workbenchLayout = workbenchLayout;
 		this.root = root;
 		this.perspectives = perspectives;
 		this.launcher = launcher;
 	}
-	
+
 	@Override
 	public final void handleAndReplaceComponent(
 			final IAction<Event, Object> action,
@@ -81,8 +89,6 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 		} // End else
 
 	}
-	
-	
 
 	@Override
 	public final void initComponent(final IAction<Event, Object> action,
@@ -97,7 +103,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 		this.initPerspectiveUI(perspective, perspectiveLayout);
 
 	}
-	
+
 	/**
 	 * reassignment can only be done in FX main thread;
 	 */
@@ -111,7 +117,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 		// set already active editors to new component
 		this.reassignSubcomponents(perspective, perspectiveLayout);
 	}
-	
+
 	/**
 	 * add all active subcomponents to replaced perspective
 	 * 
@@ -150,7 +156,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 			} // End outer if
 		} // End for
 	}
-	
+
 	/**
 	 * find valid target and add type specific new ui component
 	 * 
@@ -170,7 +176,6 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 		children.add(root);
 	}
 
-	
 	/**
 	 * handle reassignment of components in perspective ui
 	 * 
@@ -190,7 +195,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 			parent.setVisible(true);
 		}
 	}
-	
+
 	/**
 	 * add perspective UI to workbench root component
 	 * 
@@ -211,27 +216,30 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 		}
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	private void handlePerspectiveInitMethod(
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (perspective instanceof IExtendedComponent) {
-			final FX2ComponentLayout tmpLayout = new FX2ComponentLayout(this.getWorkbenchLayout()
-					.getMenu(), this.getWorkbenchLayout()
-					.getRegisteredToolbars());
+			final FX2ComponentLayout tmpLayout = new FX2ComponentLayout(this
+					.getWorkbenchLayout().getMenu(), this.getWorkbenchLayout()
+					.getRegisteredToolbars(), this.getWorkbenchLayout()
+					.getGlassPane());
 			((IExtendedComponent<Node>) perspective)
 					.onStart(new FX2ComponentLayout(this.getWorkbenchLayout()
 							.getMenu(), this.getWorkbenchLayout()
-							.getRegisteredToolbars()));
-			if(perspective instanceof ILayoutAbleComponent) {
-				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((ILayoutAbleComponent<Node>)perspective).getIPerspectiveLayout();
-				perspective.postInit(new FX2PerspectiveHandler(this.launcher, tmpLayout,
-						 perspectiveLayout, perspective.getComponentDelegateQueue()));
+							.getRegisteredToolbars(), this.getWorkbenchLayout()
+							.getGlassPane()));
+			if (perspective instanceof ILayoutAbleComponent) {
+				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((ILayoutAbleComponent<Node>) perspective)
+						.getIPerspectiveLayout();
+				perspective.postInit(new FX2PerspectiveHandler(this.launcher,
+						tmpLayout, perspectiveLayout, perspective
+								.getComponentDelegateQueue()));
 			} else {
-				
+
 			}
-			
+
 		}
 		if (FX2Util.getTargetPerspectiveId(action.getTargetId()).equals(
 				perspective.getId())) {
@@ -244,7 +252,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 					perspective.getId(), "init"));
 		} // End else
 	}
-	
+
 	/**
 	 * get perspectives ui root container
 	 * 
@@ -258,7 +266,7 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 		comp.setVisible(true);
 		return comp;
 	}
-	
+
 	/**
 	 * set all child components to invisible
 	 * 
@@ -269,16 +277,17 @@ public class FX2WorkbenchHandler implements IComponentHandler<IPerspective<Event
 			child.setVisible(false);
 		}
 	}
-	
+
 	private void log(final String message) {
 		if (this.logger.isLoggable(Level.FINE)) {
 			this.logger.fine(">> " + message);
 		}
 	}
-	
+
 	public final FX2WorkbenchLayout getWorkbenchLayout() {
 		return (FX2WorkbenchLayout) this.workbenchLayout;
 	}
+
 	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
 		return this.perspectives;
 	}

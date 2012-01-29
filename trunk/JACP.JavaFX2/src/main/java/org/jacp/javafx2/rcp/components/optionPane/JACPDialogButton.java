@@ -7,10 +7,13 @@ package org.jacp.javafx2.rcp.components.optionPane;
  */
 public enum JACPDialogButton {
 
-	/** The OK. */
-	OK(1, "OK"), /** The CANCEL. */
-	CANCEL(2, "Cancel"), /** The YES. */
-	YES(3, "Yes"), /** The NO. */
+	/** The OK-Button. */
+	OK(1, "OK"), 
+	/** The CANCEL-Button. */
+	CANCEL(2, "Cancel"), 
+	/** The YES-Button. */
+	YES(3, "Yes"), 
+	/** The NO-Button. */
 	NO(4, "No");
 
 	/** The id. */

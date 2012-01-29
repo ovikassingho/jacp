@@ -84,6 +84,7 @@ public abstract class AFX2Workbench
 	private Launcher<?> launcher;
 	private Stage stage;
 	private GridPane root;
+	private Pane glassPane;
 	private JACPModalDialog dimmer;
 	private final double MAX_BLUR = 4.0;
 
@@ -113,7 +114,7 @@ public abstract class AFX2Workbench
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
 		postHandle(new FX2ComponentLayout(this.getWorkbenchLayout().getMenu(),
-				this.getWorkbenchLayout().getRegisteredToolbars()));
+				this.getWorkbenchLayout().getRegisteredToolbars(), glassPane));
 		this.log("3: handle initialisation sequence");
 		componentHandler = new FX2WorkbenchHandler(this.launcher,
 				this.workbenchLayout, this.root, this.perspectives);
@@ -304,6 +305,12 @@ public abstract class AFX2Workbench
 		dimmer = JACPModalDialog.getInstance();
 		dimmer.setVisible(false);
 
+		glassPane = this.getWorkbenchLayout().getGlassPane();
+		glassPane.autosize();
+//		glassPane.setId("test-pane");
+		glassPane.setVisible(false);
+		glassPane.setPrefSize(0, 0);
+
 		GaussianBlur blur = new GaussianBlur();
 		blur.setRadius(0);
 		baseLayoutPane.setEffect(blur);
@@ -341,8 +348,7 @@ public abstract class AFX2Workbench
 		absoluteRoot.getChildren().add(baseLayoutPane);
 		stage.setScene(new Scene(absoluteRoot, x, y));
 		// new Panelayer for Menu Effects
-		Pane menuLayer = new Pane();
-//		absoluteRoot.getChildren().add(menuLayer);
+		absoluteRoot.getChildren().add(glassPane);
 		absoluteRoot.getChildren().add(dimmer);
 
 	}

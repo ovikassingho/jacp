@@ -20,6 +20,13 @@ public class JACPDialogUtil {
 		return new JACPOptionPane(title, message, defaultButton);
 	}
 
+	/**
+	 * Creates the option pane.
+	 *
+	 * @param title the title
+	 * @param message the message
+	 * @return the jACP option pane
+	 */
 	public static JACPOptionPane createOptionPane(final String title,
 			final String message) {
 		return new JACPOptionPane(title, message, null);

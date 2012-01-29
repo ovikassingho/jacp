@@ -7,9 +7,7 @@ package org.jacp.javafx2.rcp.components.optionPane;
  */
 public class DialogNotInitializedException extends RuntimeException {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -343178301862250777L;
 
 	/* (non-Javadoc)

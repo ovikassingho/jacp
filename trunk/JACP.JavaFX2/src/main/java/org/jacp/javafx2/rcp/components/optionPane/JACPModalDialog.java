@@ -23,7 +23,7 @@ import javafx.util.Duration;
  */
 public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
-	/** The MA x_ blur. */
+	/** The maximum blur radius. */
 	private final double MAX_BLUR = 4.0;
 
 	/** The root. */
@@ -75,6 +75,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 	 * @param message the message
 	 */
 	public void showModalMessage(Node message) {
+		this.getChildren().clear();
 		this.getChildren().add(message);
 		this.setOpacity(0);
 		this.setVisible(true);
