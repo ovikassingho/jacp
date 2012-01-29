@@ -36,51 +36,46 @@ public class DemoFX2ComponentMainContent extends AFX2Component {
 		// Pane group = new Pane();
 		// FlowPane mainContent = new FlowPane(Orientation.VERTICAL);
 		final TilePane mainContent = new TilePane();
-		mainContent.setPrefRows(3);
+		System.out.println(mainContent.getStyleClass());
+		mainContent.setPrefColumns(7);
 		// Pane mainContent = new Pane();
 		mainContent.setPadding(new Insets(30));
 		mainContent.setOnScroll(new EventHandler<ScrollEvent>() {
 
-			 @Override public void handle(ScrollEvent event) {
+			@Override
+			public void handle(ScrollEvent event) {
 				ObservableList<Node> children = mainContent.getChildren();
-				for(Node view:children) {
-					if(view instanceof ImageView) {
-						ImageView tmp = (ImageView) view ;
+				for (Node view : children) {
+					if (view instanceof ImageView) {
+						ImageView tmp = (ImageView) view;
 						// TODO add animation
 						tmp.setFitWidth(tmp.getFitWidth() + event.getDeltaY());
 						tmp.setFitHeight(tmp.getFitHeight() + event.getDeltaY());
 					}
-					
+
 				}
-		           
-		        }
+
+			}
 		});
 
 		int x = 0;
-		while (x < 20) {
-			Image image =new Image(DemoFX2ComponentMainContent.class.getResource(
-					"/mad.jpg").getFile());
+		while (x < 35) {
+			Image image = new Image(DemoFX2ComponentMainContent.class
+					.getResource("/mad.jpg").getFile());
 			final ImageView view = new ImageView(image);
 			view.setFitHeight(80);
 			view.setFitWidth(80);
-			
-			
+
 			view.setEffect(new DropShadow());
-			
-//			Rectangle r = new Rectangle(80, 80);
-//			r.setFill(Color.LIGHTGRAY);
-//			r.getStyleClass().add("main-container");
-//			r.setEffect(new DropShadow());
+
 			TilePane.setMargin(view, new Insets(10));
 
 			mainContent.getChildren().add(view);
 			x++;
 		}
 
-		// mainContent.setStyle("-fx-background-color: blue;");
-		// GridPane.setVgrow(group, Priority.ALWAYS);
-		// GridPane.setHgrow(group, Priority.ALWAYS);
-		// group.getChildren().add(mainContent);
+		mainContent.setStyle("-fx-background-color: #373837;");
+
 		return mainContent;
 	}
 
