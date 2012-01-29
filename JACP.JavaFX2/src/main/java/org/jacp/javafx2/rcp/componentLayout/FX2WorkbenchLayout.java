@@ -23,6 +23,7 @@ import java.util.TreeMap;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
+import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -42,6 +43,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
 	private final Map<ToolbarPosition, ToolBar> registeredToolbars = new TreeMap<ToolbarPosition, ToolBar>();
 	private MenuBar menu;
+	private Pane glassPane;
 	private StageStyle style = StageStyle.DECORATED;
 
 	@Override
@@ -110,6 +112,12 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	@Override
 	public ToolBar getRegisteredToolBar(ToolbarPosition position) {
 		return registeredToolbars.get(position);
+	}
+
+	public Pane getGlassPane() {
+		if (glassPane == null)
+			glassPane = new Pane();
+		return glassPane;
 	}
 
 }

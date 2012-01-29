@@ -53,12 +53,19 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	/** The BUTTO n_ size. */
 	private final int BUTTON_SIZE = 74;
 
+	/** The buttons. */
 	private List<Button> buttons;
 
+	/** The explanation. */
 	private Text explanation;
 
+	/** The title label. */
 	private Label titleLabel;
 
+	/** The top box. */
+	private HBox topBox;
+
+	/** The button styles. */
 	private ObservableList<String> buttonStyles;
 
 	/**
@@ -101,14 +108,15 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		explPane.setCenter(explanation);
 		BorderPane.setMargin(explanation, new Insets(5, 5, 5, 5));
 
-		HBox topBox = new HBox();
-//		topBox.setAlignment(Pos.TOP_RIGHT);
+		topBox = new HBox();
+		// topBox.setAlignment(Pos.TOP_RIGHT);
 		topBox.setAlignment(Pos.TOP_LEFT);
 		Button defaultClose = new Button("x");
 		defaultClose.setOnMouseClicked(this);
 		defaultClose.setId("jacp-option-pane-close");
 		topBox.getChildren().add(defaultClose);
 		VBox.setVgrow(topBox, Priority.ALWAYS);
+		
 		getChildren().add(topBox);
 
 		// create title
@@ -119,6 +127,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		titleLabel.setPrefHeight(22);
 		titleLabel.setMaxWidth(Double.MAX_VALUE);
 		titleLabel.setAlignment(Pos.CENTER);
+		
 		getChildren().add(titleLabel);
 
 		bottomBar = new HBox(0);
@@ -236,4 +245,12 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		JACPModalDialog.getInstance().showModalMessage(node);
 	}
 
+	/**
+	 * Sets the default close button orientation.
+	 *
+	 * @param pos the new default close button orientation
+	 */
+	public void setDefaultCloseButtonOrientation(Pos pos) {
+		topBox.setAlignment(pos);
+	}
 }
