@@ -35,7 +35,7 @@ public class DemoWorkbenchMain extends AFX2SpringLauncher {
 			scene.setCamera(new PerspectiveCamera());
 		}
 		scene.getStylesheets().addAll(
-				DemoWorkbenchMain.class.getResource("main.css")
+				DemoWorkbenchMain.class.getResource("/styles/main.css")
 						.toExternalForm(),
 				// Workaround for CSS issue with HTML Editor
 				com.sun.javafx.scene.web.skin.HTMLEditorSkin.class.getResource(

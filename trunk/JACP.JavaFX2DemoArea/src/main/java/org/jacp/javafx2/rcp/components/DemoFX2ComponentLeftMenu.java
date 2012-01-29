@@ -38,6 +38,7 @@ public class DemoFX2ComponentLeftMenu extends AFX2Component {
 			stop = (stop == 0) ? 5 : stop;
 			VBox box = new VBox();
 			box.setFillWidth(true);
+			box.getStyleClass().add("dark");
 			for (int j = 0; j < stop; j++) {
 				Button b = new Button("Test " + j);
 				b.setMaxWidth(Double.MAX_VALUE);
