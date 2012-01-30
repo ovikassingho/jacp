@@ -5,7 +5,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -73,12 +72,6 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		perspectiveLayout.registerTargetLayoutComponent("PleftMenu", leftMenu);
 
-		// register main content
-
-		Pane mainContent = new Pane();
-		perspectiveLayout.registerTargetLayoutComponent("PmainContent",
-				mainContent);
-
 		// Breadcrumb (top Component)
 		GridPane breadCrumbBar = new GridPane();
 
@@ -88,12 +81,18 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 
 		// Main Content Area to the right
 
+		// register main content
+		GridPane mainContent = new GridPane();
+		perspectiveLayout.registerTargetLayoutComponent("PmainContent",
+				mainContent);
+
 		SplitPane splitPane = new SplitPane();
 
-		GridPane main = new GridPane();
-		mainContent.getStyleClass().add("dark");
-		GridPane.setHgrow(mainContent, Priority.ALWAYS);
-		GridPane.setVgrow(mainContent, Priority.ALWAYS);
+		Pane main = new Pane();
+		// mainContent.getStyleClass().add("dark");
+		mainContent.setStyle("-fx-background-color:#00ff00;");
+		mainContent.minWidthProperty().bind(main.widthProperty());
+		mainContent.minHeightProperty().bind(main.heightProperty());
 		main.getChildren().add(mainContent);
 
 		splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -250,8 +249,8 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 			@Override
 			public void handle(ActionEvent e) {
 				JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
-						"JACP Option Pane", "This is a JACP OptionPane.",
-						JACPDialogButton.NO);
+						"JACP Option Pane", "This is a JACP OptionPane.");
+				dialog.setDefaultButton(JACPDialogButton.NO);
 				dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
 					@Override
