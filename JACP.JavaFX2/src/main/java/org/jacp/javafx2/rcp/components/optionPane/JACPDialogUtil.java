@@ -8,19 +8,6 @@ package org.jacp.javafx2.rcp.components.optionPane;
 public class JACPDialogUtil {
 
 	/**
-	 * Creates the v2 dialog.
-	 *
-	 * @param title the title
-	 * @param message the message
-	 * @param defaultButton the default button
-	 * @return the jAC poption dialog v2
-	 */
-	public static JACPOptionPane createOptionPane(final String title,
-			final String message, JACPDialogButton defaultButton) {
-		return new JACPOptionPane(title, message, defaultButton);
-	}
-
-	/**
 	 * Creates the option pane.
 	 *
 	 * @param title the title
@@ -29,7 +16,7 @@ public class JACPDialogUtil {
 	 */
 	public static JACPOptionPane createOptionPane(final String title,
 			final String message) {
-		return new JACPOptionPane(title, message, null);
+		return new JACPOptionPane(title, message);
 	}
 
 }

@@ -11,19 +11,19 @@ public class JACPOptionPaneBuilder {
 
 	/** The on ok action. */
 	private EventHandler<ActionEvent> onOkAction;
-	
+
 	/** The on cancel action. */
 	private EventHandler<ActionEvent> onCancelAction;
-	
+
 	/** The on yes action. */
 	private EventHandler<ActionEvent> onYesAction;
-	
+
 	/** The on no action. */
 	private EventHandler<ActionEvent> onNoAction;
 
 	/** The title. */
 	private String title;
-	
+
 	/** The content. */
 	private String content;
 
@@ -169,8 +169,7 @@ public class JACPOptionPaneBuilder {
 	 * @param defaultButton the default button
 	 * @return the jACP option pane builder
 	 */
-	public JACPOptionPaneBuilder setDefaultButton(
-			JACPDialogButton defaultButton) {
+	public JACPOptionPaneBuilder setDefaultButton(JACPDialogButton defaultButton) {
 		this.defaultButton = defaultButton;
 		return this;
 	}
@@ -183,7 +182,7 @@ public class JACPOptionPaneBuilder {
 	public JACPOptionPane build() {
 		// build OptionPane!
 		JACPOptionPane pane = JACPDialogUtil.createOptionPane(getTitle(),
-				getContent(), getDefaultButton());
+				getContent());
 		if (getOnCancelAction() != null)
 			pane.setOnCancelAction(getOnCancelAction());
 		if (getOnOkAction() != null)
@@ -192,6 +191,7 @@ public class JACPOptionPaneBuilder {
 			pane.setOnYesAction(getOnYesAction());
 		if (getOnNoAction() != null)
 			pane.setOnNoAction(getOnNoAction());
+		pane.setDefaultButton(getDefaultButton());
 		return pane;
 	}
 
