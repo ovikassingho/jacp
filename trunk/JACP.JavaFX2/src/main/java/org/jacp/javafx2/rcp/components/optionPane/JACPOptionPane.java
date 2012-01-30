@@ -113,6 +113,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		topBox.setAlignment(Pos.TOP_LEFT);
 		Button defaultClose = new Button("x");
 		defaultClose.setOnMouseClicked(this);
+		setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 		defaultClose.setId("jacp-option-pane-close");
 		topBox.getChildren().add(defaultClose);
 		VBox.setVgrow(topBox, Priority.ALWAYS);
