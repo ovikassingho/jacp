@@ -75,11 +75,9 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	 * @param message the message
 	 * @param defaultButton the default button
 	 */
-	public JACPOptionPane(final String title, final String message,
-			JACPDialogButton defaultButton) {
+	public JACPOptionPane(final String title, final String message) {
 		this.message = message;
 		this.title = title;
-		this.defaultButton = defaultButton;
 		this.initDialog();
 	}
 
@@ -210,14 +208,14 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	private Button createButton(JACPDialogButton button) {
 		Button but = new Button(button.getLabel());
 		but.setId(button.getLabel().toLowerCase() + "Button");
-		if (defaultButton != null && button.getId() == defaultButton.getId()) {
-			but.setDefaultButton(true);
-			but.requestFocus();
-		}
 		but.setMinWidth(BUTTON_SIZE);
 		but.setPrefWidth(BUTTON_SIZE);
 		but.setOnMouseClicked(this);
 		HBox.setMargin(but, new Insets(0, 8, 0, 0));
+		if (defaultButton != null && button.getId() == defaultButton.getId()) {
+			but.setDefaultButton(true);
+			but.requestFocus();
+		}
 		bottomBar.getChildren().add(but);
 		buttons.add(but);
 		but.getStyleClass().add("jacp-option-pane-button");
@@ -259,5 +257,19 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	public void setDefaultCloseButtonVisible(boolean visible) {
 		topBox.setVisible(visible);
+	}
+
+	public void setDefaultButton(JACPDialogButton defaultButton) {
+		this.defaultButton = defaultButton;
+		for (final Button but : buttons) {
+			if (defaultButton != null
+					&& defaultButton.getLabel().equals(but.getText())) {
+				but.setDefaultButton(true);
+				but.requestFocus();
+			} else {
+				but.setDefaultButton(false);
+			}
+		}
+
 	}
 }
