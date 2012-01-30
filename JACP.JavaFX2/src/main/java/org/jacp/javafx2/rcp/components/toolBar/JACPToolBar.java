@@ -38,6 +38,8 @@ public class JACPToolBar extends ToolBar implements
 	/** The vertical tool bar. */
 	private VBox verticalToolBar;
 
+	private final double TOOLBAR_PADDING = 20;
+
 	/**
 	 * Instantiates a new jACP tool bar.
 	 */
@@ -100,7 +102,6 @@ public class JACPToolBar extends ToolBar implements
 		// the buttons are separated by a spacer box, that fills the remaining
 		// width
 		horizontalToolBar = new HBox();
-
 		// the place for the buttons on the left hand side
 		leftButtons = new HBox();
 		leftButtons.setAlignment(Pos.CENTER_LEFT);
@@ -129,8 +130,6 @@ public class JACPToolBar extends ToolBar implements
 		// the buttons are separated by a spacer box, that fills the remaining
 		// width
 		verticalToolBar = new VBox();
-
-		verticalToolBar.setStyle("-fx-background-color: #00ff00;");
 
 		// the place for the buttons on the left hand side
 		topButtons = new VBox();
@@ -177,11 +176,19 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	private void bind() {
 		if (getOrientation() == Orientation.HORIZONTAL) {
-			if (horizontalToolBar != null)
-				horizontalToolBar.prefWidthProperty().bind(widthProperty());
+			if (horizontalToolBar != null) {
+				horizontalToolBar.maxWidthProperty().bind(
+						widthProperty().subtract(TOOLBAR_PADDING));
+				horizontalToolBar.minWidthProperty().bind(
+						widthProperty().subtract(TOOLBAR_PADDING));
+			}
 		} else {
-			if (verticalToolBar != null)
-				verticalToolBar.prefHeightProperty().bind(heightProperty());
+			if (verticalToolBar != null) {
+				verticalToolBar.maxHeightProperty().bind(
+						heightProperty().subtract(TOOLBAR_PADDING));
+				verticalToolBar.minHeightProperty().bind(
+						heightProperty().subtract(TOOLBAR_PADDING));
+			}
 		}
 	}
 
@@ -190,11 +197,15 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	private void unbind() {
 		if (getOrientation() == Orientation.HORIZONTAL) {
-			if (horizontalToolBar != null)
-				horizontalToolBar.prefWidthProperty().unbind();
+			if (horizontalToolBar != null) {
+				horizontalToolBar.maxWidthProperty().unbind();
+				horizontalToolBar.minWidthProperty().unbind();
+			}
 		} else {
-			if (verticalToolBar != null)
-				verticalToolBar.prefHeightProperty().unbind();
+			if (verticalToolBar != null) {
+				verticalToolBar.maxHeightProperty().unbind();
+				verticalToolBar.minHeightProperty().unbind();
+			}
 		}
 	}
 
@@ -205,7 +216,7 @@ public class JACPToolBar extends ToolBar implements
 		if (!getItems().isEmpty()) {
 			Node node = getItems().get(0);
 			if (node instanceof HBox || node instanceof VBox) {
-				getItems().remove(0);
+				getItems().remove(node);
 			}
 		}
 	}
