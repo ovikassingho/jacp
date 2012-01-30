@@ -22,8 +22,8 @@
    * on windows you need to copy the JavaFX2 {{{*.dll's}}} to maven repository
    * copy (the bin folder) *C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\bin* to  *C:\Users\YOURUSER\.m2\repository\com\oracle\javafx-runtime*
 
-* go to your JavaFX2-Ant install location (C:\Program Files\Oracle\JavaFX 2.0 SDK\tools
-* *type* {{{mvn install:install-file -Dfile=ant-javafx.jar -DgroupId=com.oracle -DartifactId=ant-javafx -Dpackaging=jar -Dversion=2.0}}}
+   * go to your JavaFX2-Ant install location (C:\Program Files\Oracle\JavaFX 2.0 SDK\tools
+   * *type* {{{mvn install:install-file -Dfile=ant-javafx.jar -DgroupId=com.oracle -DartifactId=ant-javafx -Dpackaging=jar -Dversion=2.0}}}
 
 
 == checkout the projects ==
