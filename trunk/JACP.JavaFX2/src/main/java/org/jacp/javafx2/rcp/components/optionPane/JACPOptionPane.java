@@ -115,9 +115,11 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		defaultClose.setOnMouseClicked(this);
 		setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 		defaultClose.setId("jacp-option-pane-close");
+		setDefaultCloseButtonVisible(false);
+
 		topBox.getChildren().add(defaultClose);
 		VBox.setVgrow(topBox, Priority.ALWAYS);
-		
+
 		getChildren().add(topBox);
 
 		// create title
@@ -128,7 +130,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		titleLabel.setPrefHeight(22);
 		titleLabel.setMaxWidth(Double.MAX_VALUE);
 		titleLabel.setAlignment(Pos.CENTER);
-		
+
 		getChildren().add(titleLabel);
 
 		bottomBar = new HBox(0);
@@ -253,5 +255,9 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	 */
 	public void setDefaultCloseButtonOrientation(Pos pos) {
 		topBox.setAlignment(pos);
+	}
+
+	public void setDefaultCloseButtonVisible(boolean visible) {
+		topBox.setVisible(visible);
 	}
 }
