@@ -65,4 +65,7 @@ public interface IWorkbench<C, L, A, M> extends IBase<L, A, M> {
 	 * @return the action listener instance
 	 */
 	IActionListener<L, A, M> getActionListener();
+	
+	
+	
 }

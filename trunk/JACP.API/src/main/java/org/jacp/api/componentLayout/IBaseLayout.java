@@ -25,4 +25,12 @@ public interface IBaseLayout<C> {
 	 * @return the menu instance
 	 */
 	C getMenu();
+	
+	
+	/**
+	 * Gets the glass pane.
+	 *
+	 * @return the glass pane
+	 */
+	C getGlassPane();
 }
