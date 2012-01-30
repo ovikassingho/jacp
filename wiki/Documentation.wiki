@@ -1,11 +1,11 @@
-#labels Documentation, JACP, JavaFX2, Spring
+#labels Documentation, JACP, JacpFX JavaFX2, Spring
 #sidebar JACPDocumentation 
 
 
 
-= JACP JavaFX 2 documentation =
+= JacpFX  documentation =
 
-The JACP JavaFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; their handle() methods is always executed in a *separate thread*, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
+The JacpFX2 Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; their handle() methods is always executed in a *separate thread*, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
 
 <wiki:toc max_depth="3" />
 
@@ -96,7 +96,7 @@ The *{{{postHandle(FX2ComponentLayout layout)}}}* method is executed when finish
  * {{{layout.getMenu()}}} will give you the reference to the main menu instance
  * {{{layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}} returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
 
-A workbench can handle many perspectives, but only one can be displayed simultaneously. The current perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided in the background, so a perspective provides the typical layout of your application, not the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic layout settings like declaring toolbars and a menu.
+A workbench can handle many perspectives, but only one can be displayed simultaneously. The current active perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided in the background, so a perspective provides the typical layout of your application, not the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic layout settings like declaring toolbars and a menu.
 
 *Example workbench*:
 {{{
