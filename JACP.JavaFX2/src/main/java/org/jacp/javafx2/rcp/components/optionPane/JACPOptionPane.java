@@ -3,7 +3,6 @@ package org.jacp.javafx2.rcp.components.optionPane;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -51,7 +50,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	private HBox bottomBar;
 
 	/** The BUTTO n_ size. */
-	private final int BUTTON_SIZE = 74;
+	private final static int BUTTON_SIZE = 74;
 
 	/** The buttons. */
 	private List<Button> buttons;
@@ -64,9 +63,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	/** The top box. */
 	private HBox topBox;
-
-	/** The button styles. */
-	private ObservableList<String> buttonStyles;
 
 	/**
 	 * Instantiates a new jAC poption dialog v2.

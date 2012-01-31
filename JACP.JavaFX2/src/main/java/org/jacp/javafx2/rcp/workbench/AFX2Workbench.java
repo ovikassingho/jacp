@@ -86,7 +86,6 @@ public abstract class AFX2Workbench
 	private GridPane root;
 	private Pane glassPane;
 	private JACPModalDialog dimmer;
-	private final double MAX_BLUR = 4.0;
 
 	/**
 	 * JavaFX2 specific start sequence
@@ -307,7 +306,6 @@ public abstract class AFX2Workbench
 
 		glassPane = this.getWorkbenchLayout().getGlassPane();
 		glassPane.autosize();
-//		glassPane.setId("test-pane");
 		glassPane.setVisible(false);
 		glassPane.setPrefSize(0, 0);
 
