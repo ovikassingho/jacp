@@ -82,12 +82,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	 */
 	private void initDialog() {
 		buttons = new ArrayList<Button>();
-//		FIXME: move style to css!
-//		this.setStyle("-fx-background-color:#CCCCCC;" +
-//		"-fx-background-insets: 0, 1, 2;"+
-//	    "-fx-background-radius: 15, 14, 13;"+
-//	    "-fx-padding: 15;"+
-//	    "-fx-effect: dropshadow( three-pass-box , black , 20, 0 , 0 , 0 );");
 		setId("ProxyDialog");
 		setSpacing(10);
 		setMaxSize(430, USE_PREF_SIZE);
