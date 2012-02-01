@@ -345,9 +345,21 @@ public abstract class AFX2Workbench
 		}
 		absoluteRoot.getChildren().add(baseLayoutPane);
 		stage.setScene(new Scene(absoluteRoot, x, y));
-		// new Panelayer for Menu Effects
+		initCSS(stage.getScene());
+
+		// new Layer for Menu Effects
 		absoluteRoot.getChildren().add(glassPane);
 		absoluteRoot.getChildren().add(dimmer);
+
+	}
+
+	private void initCSS(Scene scene) {
+		scene.getStylesheets().addAll(
+				AFX2Workbench.class.getResource("/styles/jacp-styles.css")
+						.toExternalForm(),
+				// Workaround for CSS issue with HTML Editor
+				com.sun.javafx.scene.web.skin.HTMLEditorSkin.class.getResource(
+						"html-editor.css").toExternalForm());
 
 	}
 
