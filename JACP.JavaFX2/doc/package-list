@@ -1,9 +1,0 @@
-org.jacp.javafx2.rcp.action
-org.jacp.javafx2.rcp.component
-org.jacp.javafx2.rcp.componentLayout
-org.jacp.javafx2.rcp.coordinator
-org.jacp.javafx2.rcp.handler
-org.jacp.javafx2.rcp.perspective
-org.jacp.javafx2.rcp.scheduler
-org.jacp.javafx2.rcp.util
-org.jacp.javafx2.rcp.workbench
