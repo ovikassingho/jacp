@@ -1,3 +1,4 @@
+02. Feb. 2012 - amo -  moved StateLessComponentRunWorker from inner class to class, cleanup
 14. Dez. 2011 - amo -  implement getActionListener() to AFX2Workbench to allow workbench to send messages
 08. Dez. 2011 - amo -  changed dependencies between statelesscallback component and scheduler to remove circular dependency
 08. Dez. 2011 - amo -  finished refractoring to replace componentHandler methods with methods in workbench and perspective, goal was to remove circular dependency; restructured workbench and perspective initialization 

@@ -38,7 +38,7 @@ public class JACPToolBar extends ToolBar implements
 	/** The vertical tool bar. */
 	private VBox verticalToolBar;
 
-	private final double TOOLBAR_PADDING = 20;
+	private final double toolbarPadding = 20;
 
 	/**
 	 * Instantiates a new jACP tool bar.
@@ -178,16 +178,16 @@ public class JACPToolBar extends ToolBar implements
 		if (getOrientation() == Orientation.HORIZONTAL) {
 			if (horizontalToolBar != null) {
 				horizontalToolBar.maxWidthProperty().bind(
-						widthProperty().subtract(TOOLBAR_PADDING));
+						widthProperty().subtract(toolbarPadding));
 				horizontalToolBar.minWidthProperty().bind(
-						widthProperty().subtract(TOOLBAR_PADDING));
+						widthProperty().subtract(toolbarPadding));
 			}
 		} else {
 			if (verticalToolBar != null) {
 				verticalToolBar.maxHeightProperty().bind(
-						heightProperty().subtract(TOOLBAR_PADDING));
+						heightProperty().subtract(toolbarPadding));
 				verticalToolBar.minHeightProperty().bind(
-						heightProperty().subtract(TOOLBAR_PADDING));
+						heightProperty().subtract(toolbarPadding));
 			}
 		}
 	}
