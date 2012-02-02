@@ -1,0 +1,14 @@
+14. Dez. 2011 - amo - add getActionListener() to IWorkbench to allow workbench to send messages
+09. Dez. 2011 - amo - split the delegator interface in message and component delegator
+08. Dez. 2011 - amo - renamed statelesscomponentcoordinator in *Scheduler; removed dependency between statelesscomponent and scheduler, introduced new package
+08. Dez. 2011 - amo - extract componentHandler interface to move methods from workbench and perspective; this handler coordinates creation and replacement of components, introduced new package
+06. Dez. 2011 - amo - remove delegateMessage and delegateTarget change from IPerspective, add dependency to delegate queue
+05. Dez. 2011 - amo - introduced IComponentDelegator and IDelegator to extract delegate methods from coordinator, removed circular dependency between components and coordinator
+29. Nov. 2011 - amo - changed dependencies between observer, component and perspective; renamed BG components to "callback".
+23. Nov. 2011 - amo - renamed method isActivated to isStarted in ISubcomponent; method name sounds like isActive, to avoid mistakes method renamed
+22. Nov. 2011 - amo - Menu handling removed from IWorkbench
+21. Nov. 2011 - amo - IBaseLayout introduced to hold reference to menu and toolbars; API changes caused by IBaseLayout
+17. Nov. 2011 - amo - removed dependency to workbench style, changed to Enum
+17. Nov. 2011 - amo - removed dependency to layoutManager definition in WorkbenchLayout
+17. Nov. 2011 - amo - postHandle method introduced in IVComponent, this method should ensure that UI components are handled in main application thread 
+07. Nov. 2011 - amo - clean up, update JavaDoc, generate JavaDoc ... see doc Folder
