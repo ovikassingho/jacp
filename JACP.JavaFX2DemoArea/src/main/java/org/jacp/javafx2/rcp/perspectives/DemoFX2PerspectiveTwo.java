@@ -22,8 +22,7 @@ public class DemoFX2PerspectiveTwo extends AFX2Perspective {
 	public void handlePerspective(IAction<Event, Object> action,
 			FX2PerspectiveLayout perspectiveLayout) {
 		BorderPane layout = new BorderPane();
-		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().addMessage("id01", "oneButtonBottomTwo");
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener("id01", "oneButtonBottomTwo");
 		Button bc = new Button("Button Perspective 2");
 		bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
 		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);

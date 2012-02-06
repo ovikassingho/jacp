@@ -68,16 +68,15 @@ public class DemoFX2ComponentOneMig extends AFX2Component {
 
 	private EventHandler<? super MouseEvent> getListener(final String id,
 			final String message) {
-		final IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
+		IActionListener<EventHandler<Event>, Event, Object> listener = null;
 		if (id != null) {
-			listener.getAction().addMessage(id, message);
+			listener = getActionListener(id, message);
 		} else {
-			listener.getAction().setMessage(message);
+			listener = getActionListener(message);
 		}
 
 		return (EventHandler<? super MouseEvent>) listener;
 	}
-
 	@Override
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
 		if (vbox == null) {
