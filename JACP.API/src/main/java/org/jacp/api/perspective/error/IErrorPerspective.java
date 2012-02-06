@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IPerspective.java]
+ * [IErrorPerspective.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -20,25 +20,24 @@
  *
  *
  ************************************************************************/
-package org.jacp.api.perspective;
+package org.jacp.api.perspective.error;
 
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
+
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.launcher.Launcher;
 
 /**
  * Defines a perspective, a perspective is a root component handled by an
  * workbench and contains subcomponents such as visibla UI components or
- * background components. A workbench can handle one or more perspectives (1-n)
- * and every perspective can handle one ore more components (1-n).
+ * background components. A workbench can handle one or more perspectives (1 ... n)
+ * and every perspective can handle one ore more components (1 ... n).
  * 
- * @author Andy Moncsek
+ * @author Patrick Symmangk
  * 
  * @param <L>
  *            defines the action listener type
@@ -47,23 +46,17 @@ import org.jacp.api.handler.IComponentHandler;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
+public interface IErrorPerspective<L, A, M> extends IComponent<L, A, M>,
 		IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>,
 		IHandleable<A, M> {
 
 	/**
-	 * The initialization method. 
+	 * The initialization method. The launcher is the access to the DI container
+	 * instance.
 	 * 
-	 * @param componentDelegateQueue
-	 * @param messageDelegateQueue
+	 * @param launcher
 	 */
-	void init(final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue);
-	
-	/**
-	 * post init method to set correct component handler and to initialize components depending on objects created in startUp sequence 
-	 * @param componentHandler
-	 */
-	void postInit(IComponentHandler<ISubComponent<L, A, M>, IAction<A,M>> componentHandler);
+	void init(final Launcher<?> launcher);
 
 	/**
 	 * Returns all subcomponents in perspective.
@@ -80,31 +73,46 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	void setSubcomponents(final List<ISubComponent<L, A, M>> subComponents);
 
 	/**
-	 * Handle a message call on perspective instance. This method should be
-	 * override to handle the layout of an perspective.
+	 * Handle a message call on perspective instance. This method should be override to handle the layout of an perspective.
 	 * 
 	 * @param action
 	 */
 	void handlePerspective(final IAction<A, M> action);
 
+	/**
+	 * Add an active component after component.handle was executed.
+	 * 
+	 * @param component
+	 */
+	void addActiveComponent(final ISubComponent<L, A, M> component);
 
 	/**
-	 * Returns delegate queue to delegate components to correct target
+	 * Delegate target change to an other perspective.
 	 * 
-	 * @return the delegate queue
+	 * @param target
+	 * @param component
 	 */
-	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
-	
+	void delegateTargetChange(final String target,
+			final ISubComponent<L, A, M> component);
+
 	/**
-	 * Returns delegate queue to delegate actions to correct target
+	 * Delegates massage to responsible componentObserver to notify target
+	 * component.
 	 * 
-	 * @return the delegate queue
+	 * @param target
+	 * @param action
 	 */
-	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
+	void delegateComponentMassege(final String target,
+			final IAction<A, M> action);
+
 	/**
-	 * returns the components coordinator message queue;
-	 * @return messgage queue
+	 * Delegates message to responsible perspectiveObserver to notify target
+	 * perspective, check if message is local (message to component it self) or
+	 * if message has to be delegate to an other component.
+	 * 
+	 * @param target
+	 * @param action
 	 */
-	BlockingQueue<IAction<A, M>> getComponentsMessageQueue();
+	void delegateMassege(final String target, final IAction<A, M> action);
 
 }

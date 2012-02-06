@@ -1,6 +1,9 @@
-/*
- * Copyright (C) 2010,2011.
- * AHCP Project (http://code.google.com/p/jacp/)
+/************************************************************************
+ * 
+ * Copyright (C) 2010 - 2012
+ *
+ * [IDelegateDTO.java]
+ * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +17,10 @@
  * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- */
+ *
+ *
+ ************************************************************************/
 package org.jacp.api.action;
-
-
 
 /**
  * DTO interface to transfer messages to desired target in different perspective
@@ -37,6 +40,7 @@ public interface IDelegateDTO<A, M> {
 	 * @return targetId
 	 */
 	String getTarget();
+
 	/**
 	 * returns the action
 	 * @return the action
