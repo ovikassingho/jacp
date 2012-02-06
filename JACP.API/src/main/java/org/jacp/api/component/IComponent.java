@@ -43,11 +43,18 @@ import org.jacp.api.action.IActionListener;
 public interface IComponent<L, A, M> {
 
 	/**
-	 * Returns an action listener (for local, target and global use).
+	 * Returns an action listener (for local use). Message will be send to caller component.
 	 * 
 	 * @return the action listener instance
 	 */
-	IActionListener<L, A, M> getActionListener();
+	IActionListener<L, A, M> getActionListener(M message);
+	
+	/**
+	 * Returns an action listener (for  global use). targetId defines the id or your receiver component
+	 * 
+	 * @return the action listener instance
+	 */
+	IActionListener<L, A, M> getActionListener(String targetId, M message);
 
 	/**
 	 * Returns the id of the component.
