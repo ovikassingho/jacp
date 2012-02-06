@@ -111,8 +111,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		mainLayout.setBottom(bottomBar);
 		bottomBar.setStyle("-fx-border-color: black;");
 
-		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().addMessage("id02", "oneButtonBottomOne");
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener("id02", "oneButtonBottomOne");
 		Button bc = new Button("Button Perspective 1");
 		bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
 		bc.setOnMouseEntered((EventHandler<? super MouseEvent>) listenerBottomOne);
@@ -164,8 +163,7 @@ public class DemoFX2PerspectiveImageOne extends AFX2Perspective {
 		System.out.println("run on start perspective one bar:"
 				+ layout.getMenu() + " bars:"
 				+ layout.getRegisteredToolBar(ToolbarPosition.NORTH));
-		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().addMessage("id02", "oneButtonBottomOne");
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener("id02", "oneButtonBottomOne");
 		Button bc = new Button("Button Perspective 1");
 		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
 		ToolBar south = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);

@@ -29,8 +29,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 		BorderPane layout = new BorderPane();
 		layout.setStyle("-fx-background-color: green;");
 
-		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().addMessage("id02", "oneButtonBottomOne");
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener("id02", "oneButtonBottomOne");
 		Button bc = new Button("Button Perspective 1");
 		bc.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
 		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
@@ -64,9 +63,7 @@ public class DemoFX2PerspectiveOne extends AFX2Perspective {
 				+ layout.getRegisteredToolBar(ToolbarPosition.NORTH));
 		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
 
-		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener();
-		listenerBottomOne.getAction().addMessage("id99",
-				"oneButtonBottomImageDemo");
+		final IActionListener<EventHandler<Event>, Event, Object> listenerBottomOne = getActionListener("id99",	"oneButtonBottomImageDemo");
 		Button bc = new Button("Image Demo");
 		bc.setOnMouseClicked((EventHandler<? super MouseEvent>) listenerBottomOne);
 
