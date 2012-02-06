@@ -123,7 +123,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final String targetId, final Object value,final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
-					.getActionListener();
+					.getActionListener(null);
 			listener.setAction(new FX2Action(comp.getId(), targetId, value));
 			listener.notifyComponents(listener.getAction());
 		}

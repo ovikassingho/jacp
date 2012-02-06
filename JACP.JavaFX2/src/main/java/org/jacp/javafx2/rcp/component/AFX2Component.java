@@ -86,7 +86,6 @@ public abstract class AFX2Component implements
 		this.target = target;
 	}
 
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -138,15 +137,27 @@ public abstract class AFX2Component implements
 		this.blocked.set(blocked);
 	}
 
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(this.id),
-				this.globalMessageQueue);
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+			Object message) {
+		final FX2Action action = new FX2Action(this.id);
+		action.setMessage(message);
+		return new FX2ActionListener(action, this.globalMessageQueue);
 	}
-	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+			String targetId, Object message) {
+		final FX2Action action = new FX2Action(this.id);
+		action.addMessage(targetId, message);
+		return new FX2ActionListener(action, this.globalMessageQueue);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -232,11 +243,11 @@ public abstract class AFX2Component implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setMessageQueue(BlockingQueue<IAction<Event, Object>> messageQueue){
+	public final void setMessageQueue(
+			BlockingQueue<IAction<Event, Object>> messageQueue) {
 		this.globalMessageQueue = messageQueue;
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
