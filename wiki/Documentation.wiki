@@ -345,16 +345,14 @@ The {{{Action}}} interface defines two methods; {{{setMessage(Object)}}} is used
 
 == *Add JACP local listener to {{{JavaFX2}}} Node* ==
 {{{
-IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
-listener.getAction().setMessage("hello");
+IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener("hello");
 Button button = new Button("click me");
 button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 }}}
 
 == *Add JACP listener to {{{JavaFX2}}} Node* ==
 {{{
-IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener();
-listener.getAction().addMessage("id01.id001", "hello");
+IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener("id01.id001", "hello");
 Button button = new Button("click me");
 button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 }}}
