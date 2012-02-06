@@ -269,10 +269,25 @@ public abstract class AFX2Perspective implements
 		return this.perspectiveLayout;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action(this.id),
-				this.globalMessageQueue);
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+			Object message) {
+		final FX2Action action = new FX2Action(this.id);
+		action.setMessage(message);
+		return new FX2ActionListener(action, this.globalMessageQueue);
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+			String targetId, Object message) {
+		final FX2Action action = new FX2Action(this.id);
+		action.addMessage(targetId, message);
+		return new FX2ActionListener(action, this.globalMessageQueue);
 	}
 
 	@Override
