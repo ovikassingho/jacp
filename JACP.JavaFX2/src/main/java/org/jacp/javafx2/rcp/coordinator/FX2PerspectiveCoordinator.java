@@ -28,6 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;

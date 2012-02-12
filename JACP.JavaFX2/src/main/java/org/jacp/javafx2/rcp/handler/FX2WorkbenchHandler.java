@@ -25,6 +25,7 @@ package org.jacp.javafx2.rcp.handler;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;

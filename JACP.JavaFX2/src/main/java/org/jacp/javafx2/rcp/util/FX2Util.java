@@ -28,14 +28,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jacp.api.action.IAction;
-import org.jacp.api.component.IComponent;
-
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponent;
 
 /**
  * Util class with helper methods
