@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [FX2ComponentLayout.java]
+ * [FX2PerspectiveLayout.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -20,6 +20,7 @@
  *
  *
  ************************************************************************/
+
 package org.jacp.javafx2.rcp.componentLayout;
 
 import java.util.Map;
