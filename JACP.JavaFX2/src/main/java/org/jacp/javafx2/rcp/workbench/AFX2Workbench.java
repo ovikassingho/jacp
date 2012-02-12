@@ -37,6 +37,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ToolBar;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -61,6 +62,7 @@ import org.jacp.javafx2.rcp.action.FX2Action;
 import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
+import org.jacp.javafx2.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx2.rcp.components.optionPane.JACPModalDialog;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2MessageDelegator;
@@ -91,6 +93,7 @@ public abstract class AFX2Workbench
 	private GridPane root;
 	private Pane glassPane;
 	private JACPModalDialog dimmer;
+
 
 	/**
 	 * JavaFX2 specific start sequence
@@ -327,8 +330,9 @@ public abstract class AFX2Workbench
 			// TODO: handle the custom decorator
 
 			// add the menu if needed
-			if (this.getWorkbenchLayout().isMenuEnabled())
+			if (this.getWorkbenchLayout().isMenuEnabled()) {
 				baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
+			}
 
 			final BorderPane toolbarPane = new BorderPane();
 			baseLayoutPane.setCenter(toolbarPane);
@@ -349,6 +353,7 @@ public abstract class AFX2Workbench
 
 		}
 		absoluteRoot.getChildren().add(baseLayoutPane);
+		absoluteRoot.setId("root");
 		stage.setScene(new Scene(absoluteRoot, x, y));
 		initCSS(stage.getScene());
 
@@ -357,6 +362,8 @@ public abstract class AFX2Workbench
 		absoluteRoot.getChildren().add(dimmer);
 
 	}
+
+	
 
 	private void initCSS(Scene scene) {
 		scene.getStylesheets().addAll(

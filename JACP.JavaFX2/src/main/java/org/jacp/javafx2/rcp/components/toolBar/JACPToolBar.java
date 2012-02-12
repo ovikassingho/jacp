@@ -67,7 +67,8 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	public JACPToolBar() {
 		super();
-		getStyleClass().add("jacp-toolbar");
+		getStyleClass().add("jacp-tool-bar");
+
 		orientationProperty().addListener(this);
 		getItems().addListener(this);
 		if (getOrientation() == Orientation.VERTICAL)
@@ -126,11 +127,13 @@ public class JACPToolBar extends ToolBar implements
 		horizontalToolBar = new HBox();
 		// the place for the buttons on the left hand side
 		leftButtons = new HBox();
+		leftButtons.getStyleClass().add("jacp-button-bars");
 		leftButtons.setAlignment(Pos.CENTER_LEFT);
 		// the spacer that fills the remaining width between the buttons
 		HBox spacer = new HBox();
 		rightButtons = new HBox();
 		rightButtons.setAlignment(Pos.CENTER_RIGHT);
+		rightButtons.getStyleClass().add("jacp-button-bars");
 		HBox.setHgrow(spacer, Priority.ALWAYS);
 		horizontalToolBar.getChildren().addAll(leftButtons, spacer,
 				rightButtons);
