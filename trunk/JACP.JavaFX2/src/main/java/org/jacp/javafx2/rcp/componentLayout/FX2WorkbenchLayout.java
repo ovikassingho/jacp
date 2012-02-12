@@ -28,14 +28,12 @@ import java.util.TreeMap;
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.util.Tupel;
-import org.jacp.javafx2.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
 
 /**
