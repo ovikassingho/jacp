@@ -31,7 +31,6 @@ import javafx.scene.layout.Pane;
 
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.javafx2.rcp.components.menuBar.JACPMenuBar;
 
 /**
  * A FX2ComponentLayout acts as an wrapper to the references of the main menu
