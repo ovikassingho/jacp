@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jacp.project</groupId>
 	<artifactId>JACP</artifactId>
-	<version>0.0.9</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	<name>JACP Project</name>
 	<url>http://code.google.com/p/jacp/</url>
@@ -22,7 +22,6 @@
 				<module>../JACP.API</module>
 				<module>../JACP.JavaFX2</module>	
 				<module>../JACP.JavaFX2Spring</module>		
-				<module>../JACP.JavaFX2DemoArea</module>
 			</modules>
 		</profile>
 		<profile>
@@ -31,7 +30,6 @@
 				<module>../JACP.API</module>
 				<module>../JACP.JavaFX2</module>	
 				<module>../JACP.JavaFX2Spring</module>					
-				<module>../JACP.JavaFX2DemoArea</module>
 			</modules>
 		</profile>
 		<profile>

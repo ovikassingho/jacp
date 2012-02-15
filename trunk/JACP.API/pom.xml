@@ -4,15 +4,36 @@
 	<parent>
 		<groupId>org.jacp.project</groupId>
 		<artifactId>JACP</artifactId>
-		<version>0.0.9</version>
+		<version>1.0</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
 	<artifactId>JACP.API</artifactId>
 	<packaging>jar</packaging>
 	<name>JACP.API</name>
-	<url>http://code.google.com/p/jacp/</url>
+	<url>http://jacp.googlecode.com</url>
+	<developers>
+		<developer>
+			<id>amo</id>
+			<name>Andy Moncsek</name>
+			<email>amo.ahcp@gmail.com</email>
+		</developer>
+		<developer>
+			<id>pete</id>
+			<name>Patrick Symmangk</name>
+			<email>pete.ahcp@gmail.com</email>
+		</developer>
+	</developers>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<!-- create source jar -->
 				<groupId>org.apache.maven.plugins</groupId>
