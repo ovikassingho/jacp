@@ -357,6 +357,6 @@ Button button = new Button("click me");
 button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 }}}
 
-You can also trigger messages without involving a JavaFX2 Node by invoking the listeners {{{performAction(event)}}} method.
+You can also trigger messages without involving a JavaFX2 Event by invoking the listeners {{{listener.performAction(event)}}} method. The address scheme is pretty simple, it is based on Java packaging. Components are always located in a perspective so "id01" in the current example is the id of a perspective and "id001" the id of the target component. So by typing "id01.id001" you address the component "id001" in perspective "id01". You can also use simple naming like "id001" (without dots), this would mean that the target is either a perspective or a component inside the current perspective. The framework will try to resolve the correct target for you.
 
 = JACP {{{OptionPane}}} =
