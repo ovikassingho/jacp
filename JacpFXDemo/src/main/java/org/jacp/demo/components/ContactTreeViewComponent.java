@@ -140,7 +140,7 @@ public class ContactTreeViewComponent extends AFX2Component {
 				JACPModalDialog.getInstance().hideModalMessage();
 			}
 		});
-		cancel.setDefaultButton(true);
+		ok.setDefaultButton(true);
 
 		ok.setOnAction(new EventHandler<ActionEvent>() {
 
