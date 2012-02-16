@@ -58,7 +58,6 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
  */
 public class ContactWorkbench extends AFX2Workbench {
 
-
 	private final String projectURL = "http://code.google.com/p/jacp/wiki/Documentation";
 	private final String message = "JacpFX is a Framework to create Rich Clients in MVC style with JavaFX 2, Spring and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. More Info see: ";
 
@@ -75,15 +74,12 @@ public class ContactWorkbench extends AFX2Workbench {
 	public void postHandle(final FX2ComponentLayout layout) {
 		final MenuBar menu = layout.getMenu();
 		final Menu menuFile = new Menu("File");
-		final MenuItem itemExit = new MenuItem("Exit");
-		itemExit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				System.exit(0);
+		menuFile.getItems().addAll(createExitEntry(), createInfoEntry());
+		menu.getMenus().addAll(menuFile);
 
-			}
-		});
+	}
 
+	private MenuItem createInfoEntry() {
 		final MenuItem info = new MenuItem("Info");
 		info.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -91,24 +87,7 @@ public class ContactWorkbench extends AFX2Workbench {
 				final VBox box = new VBox();
 				box.setId("HelpDialog");
 				box.setMaxSize(500, Region.USE_PREF_SIZE);
-				// the title
-				final Label title = new Label("JacpFX project demo");
-				Hyperlink link = new Hyperlink();
-				link.setText(projectURL);
-				link.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						WebView wv = new WebView();
-						wv.getEngine().load(projectURL);
-						Scene scene = new Scene(wv, 1024, 768);
-						Stage stage = new Stage();
-						stage.setTitle("JacpFX documentation");
-						stage.setScene(scene);
-						stage.show();
-					}
-				});
-				title.setId("jacp-custom-title");
-				VBox.setMargin(title, new Insets(2, 2, 10, 2));
+
 				final Button ok = new Button("OK");
 				HBox.setMargin(ok, new Insets(6, 5, 4, 2));
 				final HBox hboxButtons = new HBox();
@@ -121,22 +100,58 @@ public class ContactWorkbench extends AFX2Workbench {
 					}
 				});
 
-				Text textRef = TextBuilder.create().layoutY(100)
-						.textOrigin(VPos.TOP)
-						.textAlignment(TextAlignment.JUSTIFY)
-						.wrappingWidth(400).text(message).fill(Color.WHITE)
-						.build();
 				hboxButtons.getChildren().addAll(ok);
-
-				box.getChildren().addAll(title, textRef, link, hboxButtons);
+				box.getChildren().addAll(createTitle(), createInfoText(),
+						createProjectLink(), hboxButtons);
 				JACPModalDialog.getInstance().showModalMessage(box);
 
 			}
 		});
+		return info;
+	}
 
-		menuFile.getItems().addAll(itemExit, info);
-		menu.getMenus().addAll(menuFile);
+	private MenuItem createExitEntry() {
+		final MenuItem itemExit = new MenuItem("Exit");
+		itemExit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent arg0) {
+				System.exit(0);
 
+			}
+		});
+		return itemExit;
+	}
+
+	private Label createTitle() {
+		final Label title = new Label("JacpFX project demo");
+		title.setId("jacp-custom-title");
+		VBox.setMargin(title, new Insets(2, 2, 10, 2));
+		return title;
+	}
+
+	private Text createInfoText() {
+		return TextBuilder.create().layoutY(100).textOrigin(VPos.TOP)
+				.textAlignment(TextAlignment.JUSTIFY).wrappingWidth(400)
+				.text(message).fill(Color.WHITE).build();
+	}
+
+	private Hyperlink createProjectLink() {
+		final Hyperlink link = new Hyperlink();
+		link.setText(projectURL);
+		link.setStyle("-fx-text-fill: white;");
+		link.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				WebView wv = new WebView();
+				wv.getEngine().load(projectURL);
+				Scene scene = new Scene(wv, 1024, 768);
+				Stage stage = new Stage();
+				stage.setTitle("JacpFX documentation");
+				stage.setScene(scene);
+				stage.show();
+			}
+		});
+		return link;
 	}
 
 }
