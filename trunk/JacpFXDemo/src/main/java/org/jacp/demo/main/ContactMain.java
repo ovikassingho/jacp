@@ -47,7 +47,6 @@ public class ContactMain extends AFX2SpringLauncher {
 
 	@Override
 	public void postInit(final Stage stage) {
-		// stage.initStyle(StageStyle.UNDECORATED);
 		this.scene = stage.getScene();
 		// add style sheet
 		this.scene.getStylesheets().addAll(

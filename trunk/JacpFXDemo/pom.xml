@@ -29,7 +29,92 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<configuration>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+
+								<taskdef name="jfxdeploy" classname="com.sun.javafx.tools.ant.DeployFXTask"
+									classpathref="maven.plugin.classpath" />
+
+								<taskdef name="jfxsignjar" classname="com.sun.javafx.tools.ant.FXSignJarTask"
+									classpathref="maven.plugin.classpath" />
+
+								<!-- <taskdef name="jfxpatform" classname="com.sun.javafx.tools.ant.Platform" 
+									classpathref="maven.plugin.classpath" />http://docs.oracle.com/javafx/2.0/deployment/javafx_ant_task_reference002.htm#CIAHJIJG -->
+
+								<jfxdeploy width="1024" height="768"
+									outdir="${project.build.directory}/deploy" outfile="${build.finalName}">
+									<info title="${project.name}" />
+									<application name="${project.name}" mainClass="org.jacp.demo.main.ContactMain" />
+									<resources>
+										<fileset dir="${project.build.directory}" includes="*.jar" />
+										<fileset dir="${project.build.directory}/dependency"
+											includes="*.jar" />
+									</resources>
+									<platform javafx="2.0">
+										<jvmarg value="-Xms512m" />
+										<jvmarg value="-Xmx1024m" />
+									</platform>
+								</jfxdeploy>
+
+
+
+								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html -->
+								<jfxsignjar destdir="${project.build.directory}/deploy"
+									keyStore="/Users/amo/Documents/development/development/AHCPMavenWorkbench/JacpFXDemo/src/jnlp/fxstore"
+									storePass="jacp11" alias="jacpfx" keyPass="jacp11">
+									<fileset dir="${project.build.directory}/deploy"
+										includes="*.jar" />
+								</jfxsignjar>
+
+								<!-- add to create jnlp: <security> <all-permissions/> </security> -->
+
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<!-- this gives the ant plugin access to the ant-javafx.jar so it can 
+					run the custom ant tasks defined in there -->
+				<dependencies>
+					<dependency>
+						<groupId>com.oracle</groupId>
+						<artifactId>ant-javafx</artifactId>
+						<version>2.0</version>
+						<scope>compile</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
+		<finalName>JacpFXDemo</finalName>
 	</build>
 	<dependencies>
 		<dependency>
