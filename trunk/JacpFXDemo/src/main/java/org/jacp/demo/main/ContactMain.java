@@ -51,10 +51,7 @@ public class ContactMain extends AFX2SpringLauncher {
 		// add style sheet
 		this.scene.getStylesheets().addAll(
 				ContactMain.class.getResource("/styles/main.css")
-						.toExternalForm(),
-				// Workaround for CSS issue with HTML Editor
-				com.sun.javafx.scene.web.skin.HTMLEditorSkin.class.getResource(
-						"html-editor.css").toExternalForm());
+						.toExternalForm());
 
 	}
 }
