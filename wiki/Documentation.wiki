@@ -359,4 +359,54 @@ button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 
 You can trigger messages without involving a JavaFX2 Event by invoking the listeners {{{listener.performAction(event)}}} method. The address scheme is pretty simple, it is based on the Java package naming convention. Components are always located in a perspective so "id01" in the current example is the id of a perspective and "id001" the id of the target component. So by typing "id01.id001" you address the component "id001" in perspective "id01". You can also use simple naming like "id001" (without dots), this would mean that the target is either a perspective or a component inside the current perspective. The framework will try to resolve the correct target for you.
 
-= JACP {{{OptionPane}}} =
+= Modal Messages =
+
+== JACP {{{OptionPane}}} ==
+
+The JACP Framework provides a default optionpane. 
+The JACPOptionPane holds a title, a message and four types of buttons - OK, Cancel, Yes and No. 
+
+You can use the JACPDialogUtil to create a JACPOptionPane.
+To show up the optionpane, simply call showDialog(). 
+
+The Dialog will hide after an action was called. 
+
+{{{
+JACPOptionPane pane = JACPDialogUtil.createOptionPane("JACP OptionPane", "This is the default JACP OptionPane!");
+pane.setOnOkAction(new EventHandler<ActionEvent>() {
+	public void handle(ActionEvent arg0) {
+		// OK action
+		}
+	});
+pane.setOnCancelAction(new EventHandler<ActionEvent>() {
+	public void handle(ActionEvent arg0) {
+		// Cancel action
+		}
+	});
+pane.setDefaultButton(JACPDialogButton.CANCEL);´
+pane.setDefaultCloseButtonVisible(true);
+pane.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
+pane.showDialog();
+	}}}	
+
+<img src="http://jacp.googlecode.com/svn/wiki/JACP_Std_OptionPane.PNG"/>
+
+== JACP Custom {{{Dialog}}} ==
+
+You can use the JACPModalDialog to show and hide your custom dialogs. 
+
+{{{
+JACPModalDialog.getInstance().showModalMessage(new CustomOptionPane());
+}}}
+
+
+{{{
+JACPModalDialog.getInstance().hideModalMessage();
+}}}
+
+
+
+
+
+<img src="http://jacp.googlecode.com/svn/wiki/JACP_Custom_OptionPane.PNG"/>
+
