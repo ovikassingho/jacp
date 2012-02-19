@@ -6,4 +6,4 @@
 If you simply want to run the demo, run it on this site  [http://developer.ahcp.de/demo/JACPFX2Demo.html]. Here you can see an embedded Version and also start the jnlp.
 
 == Build the project from source ==
-Follow following steps to compile and run the demo. All Jacp(FX)Project are maven projects, some include a system dependency but I like more to register the JavaFX libs in local repository. So similar to JacpFX2InstallTutorial (you should check the Prerequisites), register the jfxrt.jar and ant-javafx.jar to your local maven repository.
+Follow the following steps to compile and run the demo. All Jacp(FX)Project are maven projects, some include a system dependency but I like more to register the JavaFX libs in local repository. So similar to [JacpFX2InstallTutorial] (you should check the Prerequisites), register the jfxrt.jar and ant-javafx.jar to your local maven repository.
