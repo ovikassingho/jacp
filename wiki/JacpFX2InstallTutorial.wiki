@@ -2,7 +2,7 @@
 #JACP JavaFX2-Project install tutorial
 
 = Create a running JACP JavaFX2 project =
-
+<wiki:toc max_depth="3" />
 == 1.)  Prerequisites: ==
    * make shure you have a working maven install (type in terminal mvn -version), otherwise download [http://maven.apache.org/download.html here]
    * if you are working on windows, make shure you have svn installed, otherwise download [http://www.sliksvn.com/en/download here]
