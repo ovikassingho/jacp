@@ -6,4 +6,8 @@
 If you simply want to run the demo, run it on this site  [http://developer.ahcp.de/demo/JACPFX2Demo.html]. Here you can see an embedded Version and also start the jnlp.
 
 == Build the project from source ==
-Follow the following steps to compile and run the demo. All Jacp(FX)Project are maven projects, some include a system dependency but I like more to register the JavaFX libs in local repository. So similar to [JacpFX2InstallTutorial] (you should check the Prerequisites), register the jfxrt.jar and ant-javafx.jar to your local maven repository.
+Follow the following steps to compile and run the demo. All Jacp(FX)Project are maven projects and require JavaFX 2 libs as dependencies. Some include JavaFX 2 as system dependencs but I like more to register the JavaFX libs in the local repository. So, similar to [JacpFX2InstallTutorial] (you should check the Prerequisites), register the jfxrt.jar and ant-javafx.jar to your local maven repository.
+
+* When you installed jfxrt.jar and ant-javafx.jar sucessfully download and unpack the JacpFXDemo.zip
+* go to JacpFXDemo directory and run {{{mvn install}}, this will generate a target/deploy folder where you can find the html and the jnlp file to run the demo
+* if you want to create an Eclipse project simply type:{{{ mvn eclipse:eclipse}}}, after imported the project to your workbench run the ContactMain.java class.
