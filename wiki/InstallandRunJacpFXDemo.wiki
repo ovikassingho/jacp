@@ -1,5 +1,5 @@
-#summary One-sentence summary of this page.
 #labels Demo,Install,Documentation
+#Build and compile instructions for JacpFXDemo - client
 
 = Install JacpFX Demo project from source =
 
