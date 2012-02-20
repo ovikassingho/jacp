@@ -4,8 +4,8 @@
 = Release/Feature plan =
 
 == Version 1.0 (Feb. 2012) ==
- * implement {{{JacpFX OptionPane}}} components
- * refractor project and extract DI (Spring) bundle
+ * implement {{{JacpFX OptionPane}}} components DONE
+ * refractor project and extract DI (Spring) bundle DONE
  * maven support DONE 
  * messaging between components in different perspectives DONE 
  * background component messaging implemented DONE
