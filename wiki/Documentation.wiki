@@ -369,7 +369,7 @@ The JACPOptionPane holds a title, a message and four types of buttons - OK, Canc
 You can use the JACPDialogUtil to create a JACPOptionPane.
 To show up the optionpane, simply call showDialog(). 
 
-The Dialog will hide after an action was called. 
+The dialog will hide after an action was called. 
 
 {{{
 JACPOptionPane pane = JACPDialogUtil.createOptionPane("JACP OptionPane", "This is the default JACP OptionPane!");
@@ -409,4 +409,3 @@ JACPModalDialog.getInstance().hideModalMessage();
 
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Custom_OptionPane.PNG"/>
-
