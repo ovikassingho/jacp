@@ -1,5 +1,5 @@
 #labels Documentation,JACP,JacpFXJavaFX2,Spring
-#sidebar JACPDocumentation
+#sidebar TableOfContents
 
 
 
