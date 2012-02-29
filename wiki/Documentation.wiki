@@ -1,10 +1,9 @@
 #labels Documentation,JACP,JacpFXJavaFX2,Spring
 
 
-
 = JacpFX  documentation =
 
-The JacpFX2 Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; their handle() methods is always executed in a *separate thread*, so the developer do not to have to manage own threading mechanism or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
+The JacpFX2 Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; their handle() methods is always executed in a *separate thread*, so developers should have less effort on threading topics or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
 
 <wiki:toc max_depth="3" />
 
