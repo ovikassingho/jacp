@@ -4,12 +4,12 @@
 = Create a running JACP JavaFX2 project =
 <wiki:toc max_depth="3" />
 == 1.)  Prerequisites: ==
-   * make shure you have a working maven install (type in terminal mvn -version), otherwise download [http://maven.apache.org/download.html here]
+   * make shure you have a working Maven installation (type in terminal mvn -version), otherwise download [http://maven.apache.org/download.html here]
    * if you are working on windows, make shure you have svn installed, otherwise download [http://www.sliksvn.com/en/download here]
    * currently the projects are tested with Java 1.6
    * download and install JavaFX2 SDK from [http://javafx.com/downloads/all.jsp here]
    * all steps are tested with Eclipse 3.6/3.7, optionally you can install m2eclipse plugin from market
-   * due to the lack of Linux support by JavaFX2 you must use windows or mac ;-)
+
 
 
 
@@ -17,12 +17,12 @@
 
 == 2.) install jfxrt.jar and ant-javafx.jar to your local maven repository ==
 
-   * go to your JavaFX2 install location (C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib)
+   * go to your JavaFX2 install location (${JavaFX-SDK-HOME}\rt\lib)
    * *type:* {{{ mvn install:install-file -Dfile=jfxrt.jar -DgroupId=com.oracle -DartifactId=javafx-runtime -Dpackaging=jar -Dversion=2.0}}}
    * on windows you need to copy the JavaFX2 {{{*.dll's}}} to maven repository
-   * copy (the bin folder) *C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\bin* to  *C:\Users\YOURUSER\.m2\repository\com\oracle\javafx-runtime*
+   * copy (the bin folder) *${JavaFX-SDK-HOME}\rt\bin* to  *${USER}\.m2\repository\com\oracle\javafx-runtime*
 
-   * go to your JavaFX2-Ant install location (C:\Program Files\Oracle\JavaFX 2.0 SDK\tools
+   * go to your JavaFX2-Ant install location (${JavaFX-SDK-HOME}\tools
    * *type* {{{mvn install:install-file -Dfile=ant-javafx.jar -DgroupId=com.oracle -DartifactId=ant-javafx -Dpackaging=jar -Dversion=2.0}}}
 
 
