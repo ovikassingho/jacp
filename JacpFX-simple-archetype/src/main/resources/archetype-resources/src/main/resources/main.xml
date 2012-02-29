@@ -49,7 +49,7 @@
 		<property name="active" value="true" />
 		<property name="id" value="id003" />
 	</bean>
-	<bean id="statelessCallback" class=" ${package}.callbacks.StatelessCallback">
+	<bean id="statelessCallback" class=" ${package}.callbacks.StatelessCallback" scope="prototype">
 		<property name="name" value="statelessCallback" />
 		<property name="active" value="true" />
 		<property name="id" value="id004" />
