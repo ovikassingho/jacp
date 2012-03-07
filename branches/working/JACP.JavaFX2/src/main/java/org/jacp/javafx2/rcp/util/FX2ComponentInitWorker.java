@@ -146,6 +146,7 @@ public class FX2ComponentInitWorker
 				// messages in
 				// queue
 			}
+			this.component.setStarted(true);
 			this.component.setBlocked(false);
 		}
 	}
