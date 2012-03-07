@@ -105,7 +105,7 @@ public class FX2PerspectiveHandler
 	@Override
 	public final void handleAndReplaceComponent(IAction<Event, Object> action,
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (component.isBlocked()) {
+		if (component.isBlocked() && component.isStarted()) {
 			this.putMessageToQueue(component, action);
 			this.log("ADD TO QUEUE:::" + component.getName());
 		} else {
@@ -202,7 +202,6 @@ public class FX2PerspectiveHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (component instanceof AFX2Component) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getName());
-			component.setStarted(true);
 			this.runComponentOnStartupSequence(((AFX2Component) component));
 			final FX2ComponentInitWorker tmp = new FX2ComponentInitWorker(
 					this.perspectiveLayout.getTargetLayoutComponents(),
