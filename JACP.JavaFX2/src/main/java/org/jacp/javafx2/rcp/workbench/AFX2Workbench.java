@@ -92,7 +92,6 @@ public abstract class AFX2Workbench
 	private Pane glassPane;
 	private JACPModalDialog dimmer;
 
-
 	/**
 	 * JavaFX2 specific start sequence
 	 * 
@@ -349,6 +348,8 @@ public abstract class AFX2Workbench
 			// add root to the center
 			toolbarPane.setCenter(root);
 
+		} else {
+			baseLayoutPane.setCenter(root);
 		}
 		absoluteRoot.getChildren().add(baseLayoutPane);
 		absoluteRoot.setId("root");
@@ -360,8 +361,6 @@ public abstract class AFX2Workbench
 		absoluteRoot.getChildren().add(dimmer);
 
 	}
-
-	
 
 	private void initCSS(Scene scene) {
 		scene.getStylesheets().addAll(
