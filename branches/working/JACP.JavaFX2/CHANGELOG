@@ -1,3 +1,4 @@
+10. Mar. 2012 - psy -  fixed missing content if no toolbars were defined 
 07. Mar. 2012 - amo -  fixed bug where a message to a component right after / while initialization can be dropped because it is added to queue and the initWorker won't receive messages from queue 
 07. Mar. 2012 - amo -  version 1.1 started
 06. Feb. 2012 - amo -  update copyright
