@@ -25,12 +25,12 @@ package org.jacp.javafx2.rcp.componentLayout;
 import java.util.Map;
 
 import javafx.scene.Node;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
 
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.util.ToolbarPosition;
+import org.jacp.javafx2.rcp.components.menuBar.JACPMenuBar;
+import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
 
 /**
  * A FX2ComponentLayout acts as an wrapper to the references of the main menu
@@ -41,12 +41,12 @@ import org.jacp.api.util.ToolbarPosition;
  * 
  */
 public class FX2ComponentLayout implements IBaseLayout<Node> {
-	private final Map<ToolbarPosition, ToolBar> registeredToolBars;
-	private final MenuBar menu;
+	private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
+	private final JACPMenuBar menu;
 	private final Pane glassPane;
 
-	public FX2ComponentLayout(final MenuBar menu,
-			final Map<ToolbarPosition, ToolBar> registeredToolBars,
+	public FX2ComponentLayout(final JACPMenuBar menu,
+			final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
 			final Pane glassPane) {
 		this.menu = menu;
 		this.registeredToolBars = registeredToolBars;
@@ -54,12 +54,12 @@ public class FX2ComponentLayout implements IBaseLayout<Node> {
 	}
 
 	@Override
-	public ToolBar getRegisteredToolBar(ToolbarPosition position) {
+	public JACPToolBar getRegisteredToolBar(ToolbarPosition position) {
 		return this.registeredToolBars.get(position);
 	}
 
 	@Override
-	public final MenuBar getMenu() {
+	public final JACPMenuBar getMenu() {
 		return this.menu;
 	}
 

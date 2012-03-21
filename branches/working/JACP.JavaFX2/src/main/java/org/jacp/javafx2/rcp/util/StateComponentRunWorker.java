@@ -38,12 +38,14 @@ import org.jacp.api.component.ISubComponent;
  * @author Andy Moncsek
  * 
  */
-public class StateComponentRunWorker extends
+public class StateComponentRunWorker
+		extends
 		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
 
-	public StateComponentRunWorker(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+	public StateComponentRunWorker(
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 		this.delegateQueue = delegateQueue;
@@ -62,7 +64,7 @@ public class StateComponentRunWorker extends
 				final String targetCurrent = comp.getExecutionTarget();
 				final Object value = comp.handle(myAction);
 				final String targetId = comp.getHandleTargetAndClear();
-				this.delegateReturnValue(comp, targetId, value,myAction);
+				this.delegateReturnValue(comp, targetId, value, myAction);
 				this.checkAndHandleTargetChange(comp, targetCurrent);
 			}
 			comp.setBlocked(false);
@@ -81,22 +83,20 @@ public class StateComponentRunWorker extends
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
-			this.changeComponentTarget(this.delegateQueue,comp);
+			this.changeComponentTarget(this.delegateQueue, comp);
 		}
 	}
-
-	
 
 	@Override
 	protected final void done() {
 		try {
 			this.get();
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
-			// TODO add to error queue and restart thread if messages in queue
+			// FIXME: Handle Exceptions the right way
+			// e.printStackTrace();
 		} catch (final ExecutionException e) {
-			e.printStackTrace();
-			// TODO add to error queue and restart thread if messages in queue
+			// FIXME: Handle Exceptions the right way
+			// e.printStackTrace();
 		} finally {
 			// release lock
 			this.component.setBlocked(false);

@@ -27,13 +27,13 @@ import java.util.TreeMap;
 
 import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.util.Tupel;
+import org.jacp.javafx2.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
 
 /**
@@ -46,8 +46,8 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
 	private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
-	private final Map<ToolbarPosition, ToolBar> registeredToolbars = new TreeMap<ToolbarPosition, ToolBar>();
-	private MenuBar menu;
+	private final Map<ToolbarPosition, JACPToolBar> registeredToolbars = new TreeMap<ToolbarPosition, JACPToolBar>();
+	private JACPMenuBar menu;
 	private Pane glassPane;
 	private StageStyle style = StageStyle.DECORATED;
 
@@ -60,7 +60,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	public void setMenuEnabled(boolean enabled) {
 		this.menueEnabled = enabled;
 		if (enabled && this.menu == null) {
-			this.menu = new MenuBar();
+			this.menu = new JACPMenuBar();
 			this.menu.setId("main-menu");
 		}
 	}
@@ -76,7 +76,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 		return this.size;
 	}
 
-	private ToolBar initToolBar(ToolbarPosition position) {
+	private JACPToolBar initToolBar(ToolbarPosition position) {
 		final JACPToolBar bar = new JACPToolBar();
 		bar.setId(position.getName() + "-bar");
 		return bar;
@@ -101,7 +101,7 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	}
 
 	@Override
-	public MenuBar getMenu() {
+	public JACPMenuBar getMenu() {
 		return this.menu;
 	}
 
@@ -110,12 +110,12 @@ public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
 	 * 
 	 * @return the registered toolbars
 	 */
-	public Map<ToolbarPosition, ToolBar> getRegisteredToolbars() {
+	public Map<ToolbarPosition, JACPToolBar> getRegisteredToolbars() {
 		return registeredToolbars;
 	}
 
 	@Override
-	public ToolBar getRegisteredToolBar(ToolbarPosition position) {
+	public JACPToolBar getRegisteredToolBar(ToolbarPosition position) {
 		return registeredToolbars.get(position);
 	}
 
