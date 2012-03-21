@@ -25,7 +25,6 @@ package org.jacp.javafx2.rcp.components.menuBar;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -33,8 +32,10 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class JACPMenuBar.
  * 
@@ -51,6 +52,18 @@ public class JACPMenuBar extends HBox {
 
 	/** The main bar. */
 	private MenuBar mainBar;
+
+	/** The last x. */
+	private double lastW;
+	private double lastX;
+
+	/** The last y. */
+	private double lastH;
+	private double lastY;
+
+	private Stage stage;
+
+	private boolean maximized = false;
 
 	/**
 	 * Instantiates a new jACP menu bar.
@@ -83,6 +96,11 @@ public class JACPMenuBar extends HBox {
 		this.getChildren().addAll(leftBar, mainBar, rightBar);
 	}
 
+	/**
+	 * Clear background.
+	 *
+	 * @param node the node
+	 */
 	private void clearBackground(Node... node) {
 		if (node != null) {
 			for (final Node n : node) {
@@ -91,6 +109,11 @@ public class JACPMenuBar extends HBox {
 		}
 	}
 
+	/**
+	 * Bind.
+	 *
+	 * @param bar the bar
+	 */
 	private void bind(ToolBar bar) {
 		bar.maxHeightProperty().bind(mainBar.heightProperty());
 		bar.prefHeightProperty().bind(mainBar.heightProperty());
@@ -108,8 +131,8 @@ public class JACPMenuBar extends HBox {
 	/**
 	 * Adds the node.
 	 *
-	 * @param node the node
 	 * @param orientation the orientation
+	 * @param node the node
 	 */
 	public void addNode(JACPMenuBarButtonOrientatioin orientation, Node... node) {
 		if (JACPMenuBarButtonOrientatioin.LEFT.equals(orientation)) {
@@ -125,8 +148,13 @@ public class JACPMenuBar extends HBox {
 	/** The mouse drag offset y. */
 	private double mouseDragOffsetY = 0;
 
+	/**
+	 * Sets the menu drag enabled.
+	 *
+	 * @param stage the new menu drag enabled
+	 */
 	public void setMenuDragEnabled(final Stage stage) {
-
+		this.stage = stage;
 		mainBar.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -144,6 +172,34 @@ public class JACPMenuBar extends HBox {
 				// }
 			}
 		});
+	}
+
+	/**
+	 * Maximize.
+	 */
+	public void maximize() {
+		if (stage != null) {
+			if (!maximized) {
+				Screen screen = Screen.getPrimary();
+				lastW = stage.getWidth();
+				lastH = stage.getHeight();
+				lastX = stage.getX();
+				lastY = stage.getY();
+
+				stage.setWidth(screen.getBounds().getWidth());
+				stage.setHeight(screen.getBounds().getHeight());
+				stage.setX(0);
+				stage.setY(0);
+
+			} else {
+				stage.setWidth(lastW);
+				stage.setHeight(lastH);
+				stage.setX(lastX);
+				stage.setY(lastY);
+			}
+			maximized = !maximized;
+		}
+
 	}
 
 }
