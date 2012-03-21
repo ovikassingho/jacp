@@ -300,6 +300,8 @@ public abstract class AFX2Workbench
 		int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 
 		// the top most pane is a Stackpane
+		
+		BorderPane top = new BorderPane();
 		StackPane absoluteRoot = new StackPane();
 
 		final BorderPane baseLayoutPane = new BorderPane();
@@ -326,7 +328,7 @@ public abstract class AFX2Workbench
 
 		// add the menu if needed
 		if (this.getWorkbenchLayout().isMenuEnabled()) {
-			baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
+			top.setTop(this.getWorkbenchLayout().getMenu());
 			this.getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
 		}
 		// add the toolbars in a specific order
@@ -354,12 +356,13 @@ public abstract class AFX2Workbench
 		}
 		absoluteRoot.getChildren().add(baseLayoutPane);
 		absoluteRoot.setId("root");
-		stage.setScene(new Scene(absoluteRoot, x, y));
+		stage.setScene(new Scene(top, x, y));
 		initCSS(stage.getScene());
 
 		// new Layer for Menu Effects
 		absoluteRoot.getChildren().add(glassPane);
 		absoluteRoot.getChildren().add(dimmer);
+		top.setCenter(absoluteRoot);
 	}
 
 	private void initCSS(Scene scene) {
