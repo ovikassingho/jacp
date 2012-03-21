@@ -25,6 +25,7 @@ package org.jacp.javafx2.rcp.components.menuBar;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -67,6 +68,7 @@ public class JACPMenuBar extends HBox {
 		rightBar = new ToolBar();
 		rightBar.setMinWidth(0);
 		mainBar = new MenuBar();
+		mainBar.setPrefHeight(22);
 
 		setAlignment(Pos.CENTER_LEFT);
 		HBox.setHgrow(mainBar, Priority.ALWAYS);
@@ -116,17 +118,16 @@ public class JACPMenuBar extends HBox {
 			rightBar.getItems().addAll(node);
 		}
 	}
-	
-	
+
 	/** The mouse drag offset x. */
 	private double mouseDragOffsetX = 0;
 
 	/** The mouse drag offset y. */
 	private double mouseDragOffsetY = 0;
 
-	private void setMenuDragEnabled(JACPMenuBar bar, final Stage stage) {
+	public void setMenuDragEnabled(final Stage stage) {
 
-		bar.setOnMousePressed(new EventHandler<MouseEvent>() {
+		mainBar.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				mouseDragOffsetX = event.getSceneX();
@@ -134,7 +135,7 @@ public class JACPMenuBar extends HBox {
 			}
 		});
 
-		bar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+		mainBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				// if (!windowButtons.isMaximized()) {
@@ -144,7 +145,5 @@ public class JACPMenuBar extends HBox {
 			}
 		});
 	}
-	
-	
-	
+
 }

@@ -327,6 +327,7 @@ public abstract class AFX2Workbench
 		// add the menu if needed
 		if (this.getWorkbenchLayout().isMenuEnabled()) {
 			baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
+			this.getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
 		}
 		// add the toolbars in a specific order
 		if (!this.getWorkbenchLayout().getRegisteredToolbars().isEmpty()) {
@@ -359,7 +360,6 @@ public abstract class AFX2Workbench
 		// new Layer for Menu Effects
 		absoluteRoot.getChildren().add(glassPane);
 		absoluteRoot.getChildren().add(dimmer);
-
 	}
 
 	private void initCSS(Scene scene) {
