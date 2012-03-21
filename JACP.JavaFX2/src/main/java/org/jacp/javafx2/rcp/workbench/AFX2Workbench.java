@@ -62,6 +62,7 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.components.optionPane.JACPModalDialog;
+import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx2.rcp.coordinator.FX2ComponentDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2MessageDelegator;
 import org.jacp.javafx2.rcp.coordinator.FX2PerspectiveCoordinator;
@@ -319,29 +320,28 @@ public abstract class AFX2Workbench
 		baseLayoutPane.setEffect(blur);
 
 		stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
+		// holds only the decorator (if set) and the menu bar.
 
+		// TODO: handle the custom decorator
+
+		// add the menu if needed
+		if (this.getWorkbenchLayout().isMenuEnabled()) {
+			baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
+		}
 		// add the toolbars in a specific order
 		if (!this.getWorkbenchLayout().getRegisteredToolbars().isEmpty()) {
-			// holds only the decorator (if set) and the menu bar.
-
-			// TODO: handle the custom decorator
-
-			// add the menu if needed
-			if (this.getWorkbenchLayout().isMenuEnabled()) {
-				baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
-			}
 
 			final BorderPane toolbarPane = new BorderPane();
 			baseLayoutPane.setCenter(toolbarPane);
 
-			final Map<ToolbarPosition, ToolBar> registeredToolbars = this
+			final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
 					.getWorkbenchLayout().getRegisteredToolbars();
-			final Iterator<Entry<ToolbarPosition, ToolBar>> it = registeredToolbars
+			final Iterator<Entry<ToolbarPosition, JACPToolBar>> it = registeredToolbars
 					.entrySet().iterator();
 			while (it.hasNext()) {
-				final Entry<ToolbarPosition, ToolBar> entry = it.next();
+				final Entry<ToolbarPosition, JACPToolBar> entry = it.next();
 				final ToolbarPosition position = entry.getKey();
-				final ToolBar toolBar = entry.getValue();
+				final JACPToolBar toolBar = entry.getValue();
 				this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);
 			}
 
