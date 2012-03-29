@@ -18,6 +18,7 @@
  * create initial {{{JavaFX 2}}}  implementation to define workbench, perspectives, components DONE 
 
 == Version 1.1 (Jun. 2012) == 
+ * avoid manual declaration of scope=prototype when use spring and stateless components -- DONE
  * annotation support: make meta tags like id, name, execution target as annotations available
  * annotation support: provide access to "onStartup, onTeardown" by annotations and remove abstract methods from API
  * official {{{FXML support / FXMLComponents}}} 
