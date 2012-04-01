@@ -28,7 +28,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IStatefulCallbackComponent;
 import org.jacp.javafx2.rcp.util.AFX2ComponentWorker;
 
 /**
@@ -40,18 +40,18 @@ import org.jacp.javafx2.rcp.util.AFX2ComponentWorker;
  */
 public class StateLessComponentRunWorker
 		extends
-		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
+		AFX2ComponentWorker<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> {
+	private final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> component;
 
 	public StateLessComponentRunWorker(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
 
 	@Override
-	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
+	protected IStatefulCallbackComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
+		final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {

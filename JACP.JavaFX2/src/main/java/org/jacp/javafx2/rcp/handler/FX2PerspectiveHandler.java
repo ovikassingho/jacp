@@ -34,14 +34,14 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IStateLessCallabackComponent;
+import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
-import org.jacp.javafx2.rcp.component.ACallbackComponent;
-import org.jacp.javafx2.rcp.component.AFX2Component;
+import org.jacp.javafx2.rcp.component.AStatefulCallbackComponent;
+import org.jacp.javafx2.rcp.component.AFXComponent;
 import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.scheduler.StatelessCallbackScheduler;
@@ -127,15 +127,15 @@ public class FX2PerspectiveHandler
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action, final FX2ComponentLayout layout) {
-		if (component instanceof AFX2Component) {
+		if (component instanceof AFXComponent) {
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.putMessageToQueue(component, action);
 			this.runFXComponent(perspectiveLayout, component, layout);
 
-		} else if (component instanceof ACallbackComponent) {
+		} else if (component instanceof AStatefulCallbackComponent) {
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.putMessageToQueue(component, action);
-			this.runStateComponent(action, ((ACallbackComponent) component));
+			this.runStateComponent(action, ((AStatefulCallbackComponent) component));
 		} else if (component instanceof AStatelessCallbackComponent) {
 			this.log("RUN STATELESS COMPONENTS:::" + component.getName());
 			runStatelessCallbackComponent(
@@ -148,7 +148,7 @@ public class FX2PerspectiveHandler
 	 * 
 	 * @param component
 	 */
-	private void runComponentOnStartupSequence(final AFX2Component component) {
+	private void runComponentOnStartupSequence(final AFXComponent component) {
 		component.onStartComponent(this.layout);
 	}
 
@@ -158,7 +158,7 @@ public class FX2PerspectiveHandler
 	 * @param action
 	 */
 	private final void runStatelessCallbackComponent(
-			IStateLessCallabackComponent<EventHandler<Event>, Event, Object> component,
+			IStatelessCallabackComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		
 		scheduler.incomingMessage(action,component);
@@ -176,7 +176,7 @@ public class FX2PerspectiveHandler
 			final FX2ComponentLayout layout) {
 		this.executor.execute(new FX2ComponentReplaceWorker(perspectiveLayout
 				.getTargetLayoutComponents(), this.componentDelegateQueue,
-				((AFX2Component) component), layout));
+				((AFXComponent) component), layout));
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class FX2PerspectiveHandler
 	 */
 	private final void runStateComponent(
 			final IAction<Event, Object> action,
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.executor.execute(new StateComponentRunWorker(this.componentDelegateQueue,
 				component));
 	}
@@ -200,19 +200,19 @@ public class FX2PerspectiveHandler
 	 */
 	private void handleInit(final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (component instanceof AFX2Component) {
+		if (component instanceof AFXComponent) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getName());
-			this.runComponentOnStartupSequence(((AFX2Component) component));
+			this.runComponentOnStartupSequence(((AFXComponent) component));
 			final FX2ComponentInitWorker tmp = new FX2ComponentInitWorker(
 					this.perspectiveLayout.getTargetLayoutComponents(),
-					((AFX2Component) component), this.layout, action);
+					((AFXComponent) component), this.layout, action);
 			this.executor.execute(tmp);
 		}// if END
-		else if (component instanceof ACallbackComponent) {
+		else if (component instanceof AStatefulCallbackComponent) {
 			this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
 			this.putMessageToQueue(component, action);
-			this.runStateComponent(action, ((ACallbackComponent) component));
+			this.runStateComponent(action, ((AStatefulCallbackComponent) component));
 		}// else if END
 		else if (component instanceof AStatelessCallbackComponent) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"

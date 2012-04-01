@@ -35,11 +35,11 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IStatefulCallbackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.javafx2.rcp.action.FX2Action;
-import org.jacp.javafx2.rcp.component.AFX2Component;
+import org.jacp.javafx2.rcp.component.AFXComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
@@ -124,7 +124,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param value
 	 */
 	protected void delegateReturnValue(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final String targetId, final Object value,final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
@@ -214,8 +214,8 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	protected void handlePerspectiveChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FX2ComponentLayout layout) {
-		if (component instanceof AFX2Component) {
-			((AFX2Component) component).onTearDownComponent(layout);
+		if (component instanceof AFXComponent) {
+			((AFXComponent) component).onTearDownComponent(layout);
 		}
 		// handle target outside current perspective
 		this.changeComponentTarget(delegateQueue,component);

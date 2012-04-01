@@ -23,8 +23,6 @@
 package org.jacp.javafx2.rcp.component;
 
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,11 +33,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IStateLessCallabackComponent;
-import org.jacp.javafx2.rcp.action.FX2Action;
-import org.jacp.javafx2.rcp.action.FX2ActionListener;
+import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.IStatelessCallabackComponent;
 
 /**
  * represents a abstract stateless background component
@@ -48,30 +43,26 @@ import org.jacp.javafx2.rcp.action.FX2ActionListener;
  * 
  */
 
-public abstract class AStatelessCallbackComponent implements
-		IStateLessCallabackComponent<EventHandler<Event>, Event, Object> {
+public abstract class AStatelessCallbackComponent extends AFXSubComponent
+		implements
+		IStatelessCallabackComponent<EventHandler<Event>, Event, Object> {
 	public static int MAX_INCTANCE_COUNT;
-	private String id;
-	private String target = "";
-	private String name;
-	private String parentId;
+
 	private volatile String handleComponentTarget;
-	private volatile boolean active = true;
-	private boolean isActivated = false;
+
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
+	
 	private final AtomicInteger threadCount = new AtomicInteger(0);
-	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
-	private final BlockingQueue<IAction<Event, Object>> incomingActions = new ArrayBlockingQueue<IAction<Event, Object>>(
-			1000);
-	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
+
+	private final List<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>>();
 
 	private final ExecutorService executor = Executors
-			.newFixedThreadPool(MAX_INCTANCE_COUNT);
+			.newFixedThreadPool(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
 
 	static {
 		final Runtime runtime = Runtime.getRuntime();
 		final int nrOfProcessors = runtime.availableProcessors();
-		MAX_INCTANCE_COUNT = nrOfProcessors	+ (nrOfProcessors / 2)+10;
+		AStatelessCallbackComponent.MAX_INCTANCE_COUNT = nrOfProcessors + 1;
 	}
 
 	@Override
@@ -85,43 +76,6 @@ public abstract class AStatelessCallbackComponent implements
 	}
 
 	@Override
-	public final String getExecutionTarget() {
-		return this.target;
-	}
-
-	@Override
-	public final void setExecutionTarget(final String target) {
-		this.target = target;
-	}
-
-	@Override
-	public boolean hasIncomingMessage() {
-		return !this.incomingActions.isEmpty();
-	}
-
-
-	@Override
-	public void putIncomingMessage(IAction<Event, Object> action) {
-		try {
-			this.incomingActions.put(action);
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public IAction<Event, Object> getNextIncomingMessage() {
-		if (this.hasIncomingMessage()) {
-			try {
-				return this.incomingActions.take();
-			} catch (final InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
-	@Override
 	public final boolean isBlocked() {
 		return this.blocked.get();
 	}
@@ -129,88 +83,6 @@ public abstract class AStatelessCallbackComponent implements
 	@Override
 	public final void setBlocked(final boolean blocked) {
 		this.blocked.set(blocked);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			Object message) {
-		final FX2Action action = new FX2Action(this.id);
-		action.setMessage(message);
-		return new FX2ActionListener(action, this.globalMessageQueue);
-	}
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			String targetId, Object message) {
-		final FX2Action action = new FX2Action(this.id);
-		action.addMessage(targetId, message);
-		return new FX2ActionListener(action, this.globalMessageQueue);
-	}
-
-	@Override
-	public String getId() {
-		return this.id;
-	}
-
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	@Override
-	public boolean isActive() {
-		return this.active;
-	}
-
-	@Override
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	@Override
-	public void setStarted(boolean isActive) {
-		this.isActivated = isActive;
-
-	}
-
-	@Override
-	public boolean isStarted() {
-		return this.isActivated;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-
-	}
-
-	@Override
-	public String getParentId() {
-		return parentId;
-	}
-
-	@Override
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final void setMessageQueue(
-			BlockingQueue<IAction<Event, Object>> messageQueue) {
-		this.globalMessageQueue = messageQueue;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -221,16 +93,15 @@ public abstract class AStatelessCallbackComponent implements
 
 	public abstract Object handleAction(IAction<Event, Object> action);
 
-
 	@Override
 	protected final Object clone() {
 		try {
 			final AStatelessCallbackComponent comp = (AStatelessCallbackComponent) super
 					.clone();
-			comp.setId(this.id);
-			comp.setActive(this.active);
-			comp.setName(this.name);
-			comp.setExecutionTarget(this.target);
+			comp.setId(this.getId());
+			comp.setActive(this.isActive());
+			comp.setName(this.getName());
+			comp.setExecutionTarget(this.getExecutionTarget());
 			comp.setHandleTarget(this.handleComponentTarget);
 			comp.setMessageQueue(this.globalMessageQueue);
 			return comp;
@@ -246,19 +117,19 @@ public abstract class AStatelessCallbackComponent implements
 	 * @param comp
 	 * @return
 	 */
-	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
-		comp.setId(this.id);
-		comp.setActive(this.active);
-		comp.setName(this.name);
-		comp.setExecutionTarget(this.target);
+	public final synchronized IStatefulCallbackComponent<EventHandler<Event>, Event, Object> init(
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp) {
+		comp.setId(this.getId());
+		comp.setActive(this.isActive());
+		comp.setName(this.getName());
+		comp.setExecutionTarget(this.getExecutionTarget());
 		comp.setHandleTarget(this.handleComponentTarget);
 		comp.setMessageQueue(this.globalMessageQueue);
 		return comp;
 	}
 
 	@Override
-	public final List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
+	public final List<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
 		return this.componentInstances;
 	}
 
@@ -266,9 +137,9 @@ public abstract class AStatelessCallbackComponent implements
 	public AtomicInteger getThreadCounter() {
 		return this.threadCount;
 	}
-	
+
 	@Override
-	public ExecutorService getExecutorService(){
+	public ExecutorService getExecutorService() {
 		return this.executor;
 	}
 
