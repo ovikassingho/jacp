@@ -75,15 +75,7 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 		this.handleComponentTarget = componentTargetId;
 	}
 
-	@Override
-	public final boolean isBlocked() {
-		return this.blocked.get();
-	}
-
-	@Override
-	public final void setBlocked(final boolean blocked) {
-		this.blocked.set(blocked);
-	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
