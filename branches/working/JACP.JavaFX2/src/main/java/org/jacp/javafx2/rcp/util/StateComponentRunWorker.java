@@ -29,7 +29,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IStatefulCallbackComponent;
 import org.jacp.api.component.ISubComponent;
 
 /**
@@ -40,21 +40,21 @@ import org.jacp.api.component.ISubComponent;
  */
 public class StateComponentRunWorker
 		extends
-		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
+		AFX2ComponentWorker<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> {
+	private final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> component;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
 
 	public StateComponentRunWorker(
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 		this.delegateQueue = delegateQueue;
 	}
 
 	@Override
-	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
+	protected IStatefulCallbackComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
+		final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
 			comp.setBlocked(true);
 			while (comp.hasIncomingMessage()) {
@@ -79,7 +79,7 @@ public class StateComponentRunWorker
 	 * @param currentTaget
 	 */
 	private void checkAndHandleTargetChange(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {

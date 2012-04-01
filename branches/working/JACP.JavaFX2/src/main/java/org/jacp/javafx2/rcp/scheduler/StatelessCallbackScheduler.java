@@ -29,8 +29,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IStateLessCallabackComponent;
+import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.scheduler.IStatelessComponentScheduler;
 import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
@@ -47,12 +47,12 @@ public class StatelessCallbackScheduler implements
 	@Override
 	public void incomingMessage(
 			IAction<Event, Object> message,
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		synchronized (baseComponent) {
 			// get active instance
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp = this
 					.getActiveComponent(baseComponent);
-			List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
+			List<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
 					.getInstances();
 			if (comp != null) {
 				if (componentInstances.size() < AStatelessCallbackComponent.MAX_INCTANCE_COUNT) {
@@ -84,8 +84,8 @@ public class StatelessCallbackScheduler implements
 	 * @param message
 	 */
 	private final void instanceRun(
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final IAction<Event, Object> message) {
 		comp.setBlocked(true);
 		comp.putIncomingMessage(message);
@@ -101,9 +101,9 @@ public class StatelessCallbackScheduler implements
 	 * @param message
 	 */
 	private void createInstanceAndRun(
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final IAction<Event, Object> message) {
-		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this
+		final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp = this
 				.getCloneBean(baseComponent,
 						((AStatelessCallbackComponent) baseComponent)
 								.getClass());
@@ -112,8 +112,8 @@ public class StatelessCallbackScheduler implements
 	}
 
 	@Override
-	public <T extends ICallbackComponent<EventHandler<Event>, Event, Object>> ICallbackComponent<EventHandler<Event>, Event, Object> getCloneBean(
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
+	public <T extends IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> IStatefulCallbackComponent<EventHandler<Event>, Event, Object> getCloneBean(
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			Class<T> clazz) {
 		return ((AStatelessCallbackComponent) baseComponent).init(this.launcher
 				.getBean(clazz));
@@ -124,12 +124,12 @@ public class StatelessCallbackScheduler implements
 	 * 
 	 * @return
 	 */
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> getActiveComponent(
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
-		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
+	private final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> getActiveComponent(
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
+		final List<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
 				.getInstances();
 		for (int i = 0; i < componentInstances.size(); i++) {
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp = componentInstances
+			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp = componentInstances
 					.get(i);
 			if (!comp.isBlocked()) {
 				return comp;
@@ -146,18 +146,18 @@ public class StatelessCallbackScheduler implements
 	 * @param message
 	 */
 	private void seekAndPutMessage(
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final IAction<Event, Object> message) {
 		// if max count reached, seek through components and add
 		// message to queue of oldest component
-		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = baseComponent
+		final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp = baseComponent
 				.getInstances().get(this.getSeekValue(baseComponent));
 		// put message to queue
 		comp.putIncomingMessage(message);
 	}
 
 	private int getSeekValue(
-			final IStateLessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		final AtomicInteger threadCount = baseComponent.getThreadCounter();
 		final int seek = threadCount.incrementAndGet()
 				% baseComponent.getInstances().size();

@@ -35,7 +35,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
-import org.jacp.javafx2.rcp.component.AFX2Component;
+import org.jacp.javafx2.rcp.component.AFXComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 
 /**
@@ -131,8 +131,8 @@ public class FX2ComponentReplaceWorker
 					FX2ComponentReplaceWorker.this.removeComponentValue(
 							component, previousContainer, layout);
 					// run teardown
-					if (component instanceof AFX2Component) {
-						((AFX2Component) component).onTearDownComponent(layout);
+					if (component instanceof AFXComponent) {
+						((AFXComponent) component).onTearDownComponent(layout);
 					}
 				}
 				// release lock

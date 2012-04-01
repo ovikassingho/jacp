@@ -44,7 +44,7 @@ import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx2.rcp.action.FX2Action;
-import org.jacp.javafx2.rcp.component.AFX2Component;
+import org.jacp.javafx2.rcp.component.AFXComponent;
 import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx2.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
@@ -151,13 +151,13 @@ public class FX2WorkbenchHandler
 		for (int i = 0; i < subcomponents.size(); i++) {
 			final ISubComponent<EventHandler<Event>, Event, Object> subComp = subcomponents
 					.get(i);
-			if (subComp instanceof AFX2Component && subComp.isActive()) {
-				final Node editorComponent = ((AFX2Component) subComp)
+			if (subComp instanceof AFXComponent && subComp.isActive()) {
+				final Node editorComponent = ((AFXComponent) subComp)
 						.getRoot();
 				if (editorComponent != null) {
 					editorComponent.setVisible(true);
 					editorComponent.setDisable(false);
-					this.addComponentByType(((AFX2Component) subComp), layout);
+					this.addComponentByType(((AFXComponent) subComp), layout);
 				} // End if
 			} // End outer if
 		} // End for

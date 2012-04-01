@@ -1,3 +1,9 @@
+01. Apr. 2012 - amo -  AFXComponent, AStatefulCallbackComponent and AStatelessCompnent extending AFXSubComponent
+01. Apr. 2012 - amo -  AFXSubComponent added, the basic abstract component
+01. Apr. 2012 - amo -  AStateLessCallbackComponent renamed to AStatelessCallbackComponent
+01. Apr. 2012 - amo -  AFX2Component renamed to AFXComponent
+01. Apr. 2012 - amo -  AFXSubcomponent added, ACallbackComponent renamed to AStatefulCallbackComponent
+13. Mar. 2012 - amo -  reduce insance count in stateless components to avoid system overload
 10. Mar. 2012 - psy -  fixed missing content if no toolbars were defined 
 07. Mar. 2012 - amo -  fixed bug where a message to a component right after / while initialization can be dropped because it is added to queue and the initWorker won't receive messages from queue 
 07. Mar. 2012 - amo -  version 1.1 started
