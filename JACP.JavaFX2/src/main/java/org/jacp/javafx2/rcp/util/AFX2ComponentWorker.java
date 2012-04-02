@@ -35,7 +35,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.javafx2.rcp.action.FX2Action;
@@ -124,7 +124,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 * @param value
 	 */
 	protected void delegateReturnValue(
-			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp,
+			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final String targetId, final Object value,final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp

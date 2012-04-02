@@ -34,7 +34,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -187,7 +187,7 @@ public class FX2PerspectiveHandler
 	 */
 	private final void runStateComponent(
 			final IAction<Event, Object> action,
-			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> component) {
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.executor.execute(new StateComponentRunWorker(this.componentDelegateQueue,
 				component));
 	}
