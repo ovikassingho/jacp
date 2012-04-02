@@ -26,14 +26,13 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
 
 /**
@@ -50,11 +49,9 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 
 	private volatile String handleComponentTarget;
 
-	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-	
 	private final AtomicInteger threadCount = new AtomicInteger(0);
 
-	private final List<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>>();
+	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
 
 	private final ExecutorService executor = Executors
 			.newFixedThreadPool(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
@@ -109,8 +106,8 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 	 * @param comp
 	 * @return
 	 */
-	public final synchronized IStatefulCallbackComponent<EventHandler<Event>, Event, Object> init(
-			final IStatefulCallbackComponent<EventHandler<Event>, Event, Object> comp) {
+	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
+			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
 		comp.setId(this.getId());
 		comp.setActive(this.isActive());
 		comp.setName(this.getName());
@@ -121,10 +118,9 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 	}
 
 	@Override
-	public final List<IStatefulCallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
+	public List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
 		return this.componentInstances;
 	}
-
 	@Override
 	public AtomicInteger getThreadCounter() {
 		return this.threadCount;

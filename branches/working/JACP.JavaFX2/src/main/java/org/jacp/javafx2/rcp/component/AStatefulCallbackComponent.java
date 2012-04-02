@@ -26,7 +26,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IStatefulCallbackComponent;
+import org.jacp.api.component.ICallbackComponent;
+
 
 /**
  * represents a basic, stateful background component
@@ -35,7 +36,7 @@ import org.jacp.api.component.IStatefulCallbackComponent;
  *  
  */
 public abstract class AStatefulCallbackComponent extends AFXSubComponent implements
-		IStatefulCallbackComponent<EventHandler<Event>, Event, Object> {
+ICallbackComponent<EventHandler<Event>, Event, Object> {
 
 	private volatile String handleComponentTarget;
 
