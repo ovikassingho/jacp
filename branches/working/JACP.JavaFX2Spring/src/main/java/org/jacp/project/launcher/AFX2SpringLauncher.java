@@ -2,7 +2,7 @@ package org.jacp.project.launcher;
 
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
-import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
+import org.jacp.javafx.rcp.workbench.AFX2Workbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javafx.application.Application;
