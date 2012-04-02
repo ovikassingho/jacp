@@ -1,3 +1,5 @@
+02. Apr. 2012 - amo -  updated to version number 1.05
+02. Apr. 2012 - amo -  renamed all *.javafx2.* packages to *.javafx.*
 01. Apr. 2012 - amo -  AFXComponent, AStatefulCallbackComponent and AStatelessCompnent extending AFXSubComponent
 01. Apr. 2012 - amo -  AFXSubComponent added, the basic abstract component
 01. Apr. 2012 - amo -  AStateLessCallbackComponent renamed to AStatelessCallbackComponent

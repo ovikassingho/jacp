@@ -1,3 +1,4 @@
+02. Apr. 2012 - amo -  updated to version number 1.05
 01. Apr. 2012 - amo - renamed ICallbackComponent to IStatefulComponent
 01. Apr. 2012 - amo - renamed IStateLess* to IStateless* 
 06. Feb. 2012 - amo - changed IComponent-API to getListener("id", message) getListener now takes parameters; to avoid something like getListener().getAction().setMessage()....
