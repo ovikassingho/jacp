@@ -74,7 +74,7 @@ import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
  * 
  * @author Andy Moncsek
  */
-public abstract class AFX2Workbench
+public abstract class AFXWorkbench
 		implements
 		IWorkbench<Node, EventHandler<Event>, Event, Object>,
 		IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
@@ -158,7 +158,7 @@ public abstract class AFX2Workbench
 				Platform.runLater(new Runnable() {
 					@Override
 					public final void run() {
-						AFX2Workbench.this.componentHandler.initComponent(
+						AFXWorkbench.this.componentHandler.initComponent(
 								new FXAction(perspective.getId(), perspective
 										.getId(), "init"), perspective);
 					}
@@ -177,23 +177,23 @@ public abstract class AFX2Workbench
 
 			@Override
 			public void run() {
-				AFX2Workbench.this.stage.show();
+				AFXWorkbench.this.stage.show();
 				// start perspective Observer worker thread
 				// TODO create status daemon which observes
 				// thread component on
 				// failure and restarts if needed!!
-				((FXPerspectiveCoordinator) AFX2Workbench.this.perspectiveCoordinator)
+				((FXPerspectiveCoordinator) AFXWorkbench.this.perspectiveCoordinator)
 						.start();
-				((FXComponentDelegator) AFX2Workbench.this.componentDelegator)
+				((FXComponentDelegator) AFXWorkbench.this.componentDelegator)
 						.start();
-				((FXMessageDelegator) AFX2Workbench.this.messageDelegator)
+				((FXMessageDelegator) AFXWorkbench.this.messageDelegator)
 						.start();
 				// init toolbar instance
-				AFX2Workbench.this.log("3.2: workbench tool bars");
+				AFXWorkbench.this.log("3.2: workbench tool bars");
 				// initToolBars();
 				// handle perspectives
-				AFX2Workbench.this.log("3.3: workbench init perspectives");
-				AFX2Workbench.this.initComponents(null);
+				AFXWorkbench.this.log("3.3: workbench init perspectives");
+				AFXWorkbench.this.initComponents(null);
 
 			}
 
@@ -222,7 +222,7 @@ public abstract class AFX2Workbench
 
 	/**
 	 * Handle menu and bar entries created in @see
-	 * {@link org.jacp.javafx.rcp.workbench.AFX2Workbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
+	 * {@link org.jacp.javafx.rcp.workbench.AFXWorkbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
 	 * 
 	 * @param layout
 	 */
@@ -367,7 +367,7 @@ public abstract class AFX2Workbench
 
 	private void initCSS(Scene scene) {
 		scene.getStylesheets().addAll(
-				AFX2Workbench.class.getResource("/styles/jacp-styles.css")
+				AFXWorkbench.class.getResource("/styles/jacp-styles.css")
 						.toExternalForm(),
 				// Workaround for CSS issue with HTML Editor
 				com.sun.javafx.scene.web.skin.HTMLEditorSkin.class.getResource(
