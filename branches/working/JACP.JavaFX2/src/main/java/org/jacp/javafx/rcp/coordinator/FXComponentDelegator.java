@@ -44,7 +44,7 @@ import org.jacp.javafx.rcp.util.FX2Util;
  * @author Andy Moncsek
  *
  */
-public class FX2ComponentDelegator extends Thread implements
+public class FXComponentDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
 	private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<ISubComponent<EventHandler<Event>,Event,Object>>(100);
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
@@ -120,7 +120,7 @@ public class FX2ComponentDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				FX2ComponentDelegator.this.componentHandler
+				FXComponentDelegator.this.componentHandler
 						.initComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);

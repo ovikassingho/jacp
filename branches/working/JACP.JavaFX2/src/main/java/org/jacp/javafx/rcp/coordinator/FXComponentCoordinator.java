@@ -42,7 +42,7 @@ import org.jacp.javafx.rcp.util.FX2Util;
  * 
  * @author Andy Moncsek
  */
-public class FX2ComponentCoordinator extends AFX2Coordinator implements
+public class FXComponentCoordinator extends AFXCoordinator implements
 		IComponentCoordinator<EventHandler<Event>, Event, Object> {
 
 	private List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();

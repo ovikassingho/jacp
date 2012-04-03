@@ -63,9 +63,9 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
-import org.jacp.javafx.rcp.coordinator.FX2ComponentDelegator;
-import org.jacp.javafx.rcp.coordinator.FX2MessageDelegator;
-import org.jacp.javafx.rcp.coordinator.FX2PerspectiveCoordinator;
+import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
+import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
+import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
 import org.jacp.javafx.rcp.handler.FX2WorkbenchHandler;
 
 /**
@@ -82,9 +82,9 @@ public abstract class AFX2Workbench
 	private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FX2PerspectiveCoordinator();
-	private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FX2ComponentDelegator();
-	private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new FX2MessageDelegator();
+	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FXPerspectiveCoordinator();
+	private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FXComponentDelegator();
+	private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new FXMessageDelegator();
 	private final IWorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
@@ -182,11 +182,11 @@ public abstract class AFX2Workbench
 				// TODO create status daemon which observes
 				// thread component on
 				// failure and restarts if needed!!
-				((FX2PerspectiveCoordinator) AFX2Workbench.this.perspectiveCoordinator)
+				((FXPerspectiveCoordinator) AFX2Workbench.this.perspectiveCoordinator)
 						.start();
-				((FX2ComponentDelegator) AFX2Workbench.this.componentDelegator)
+				((FXComponentDelegator) AFX2Workbench.this.componentDelegator)
 						.start();
-				((FX2MessageDelegator) AFX2Workbench.this.messageDelegator)
+				((FXMessageDelegator) AFX2Workbench.this.messageDelegator)
 						.start();
 				// init toolbar instance
 				AFX2Workbench.this.log("3.2: workbench tool bars");

@@ -41,12 +41,12 @@ import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.util.FX2Util;
 
 /**
- * The message delegator handles messages from one perspective to an other.
+ * The message delegate handles messages from one perspective to an other.
  * 
  * @author Andy Moncsek
  * 
  */
-public class FX2MessageDelegator extends Thread implements
+public class FXMessageDelegator extends Thread implements
 		IMessageDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
@@ -151,7 +151,7 @@ public class FX2MessageDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				FX2MessageDelegator.this.componentHandler
+				FXMessageDelegator.this.componentHandler
 						.initComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
@@ -168,7 +168,7 @@ public class FX2MessageDelegator extends Thread implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public final void run() {
-				FX2MessageDelegator.this.componentHandler
+				FXMessageDelegator.this.componentHandler
 						.handleAndReplaceComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
