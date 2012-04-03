@@ -41,7 +41,7 @@ import org.jacp.javafx.rcp.util.FX2Util;
  * 
  * @author Andy Moncsek
  */
-public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
+public class FXPerspectiveCoordinator extends AFXCoordinator implements
 		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
@@ -118,7 +118,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public final void run() {
-				FX2PerspectiveCoordinator.this.componentHandler.handleAndReplaceComponent(
+				FXPerspectiveCoordinator.this.componentHandler.handleAndReplaceComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
 			} // End run
@@ -133,7 +133,7 @@ public class FX2PerspectiveCoordinator extends AFX2Coordinator implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				FX2PerspectiveCoordinator.this.componentHandler
+				FXPerspectiveCoordinator.this.componentHandler
 						.initComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);

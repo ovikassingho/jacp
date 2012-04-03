@@ -41,7 +41,7 @@ import org.jacp.api.coordinator.ICoordinator;
  * 
  * @author Andy Moncsek
  */
-public abstract class AFX2Coordinator extends Thread implements
+public abstract class AFXCoordinator extends Thread implements
 		ICoordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());

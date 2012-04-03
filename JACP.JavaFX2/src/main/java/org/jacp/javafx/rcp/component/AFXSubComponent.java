@@ -36,7 +36,7 @@ import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
 
 /**
- * the AFXSubComponent is the basic component for all component
+ * the AFXSubComponent is the basic component for all components
  * 
  * @author Andy Moncsek
  * 
