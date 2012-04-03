@@ -38,7 +38,7 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  * 
  * @author Andy Moncsek
  */
-public class FX2PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
+public class FXPerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 
 	private Node rootComponent;
 	private final Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();

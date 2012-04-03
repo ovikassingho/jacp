@@ -45,8 +45,8 @@ import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx.rcp.componentLayout.FX2PerspectiveLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FX2ComponentCoordinator;
 import org.jacp.javafx.rcp.util.FX2Util;
 
@@ -70,9 +70,9 @@ public abstract class AFX2Perspective implements
 	private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
 	private IComponentCoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
-	private FX2ComponentLayout layout;
+	private FXComponentLayout layout;
 	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
-	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FX2PerspectiveLayout();
+	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FXPerspectiveLayout();
 	
 
 	@Override
@@ -93,7 +93,7 @@ public abstract class AFX2Perspective implements
 	 */
 	@Override
 	public final void onStart(final IBaseLayout<Node> layout) {
-		this.layout = (FX2ComponentLayout) layout;
+		this.layout = (FXComponentLayout) layout;
 		onStartPerspective(this.layout);
 	}
 
@@ -128,7 +128,7 @@ public abstract class AFX2Perspective implements
 	 * @param menuBar
 	 * @param bars
 	 */
-	public abstract void onStartPerspective(final FX2ComponentLayout layout);
+	public abstract void onStartPerspective(final FXComponentLayout layout);
 
 	/**
 	 * Clean up menu, bars and other components on component teardown.
@@ -136,19 +136,19 @@ public abstract class AFX2Perspective implements
 	 * @param menuBar
 	 * @param bars
 	 */
-	public abstract void onTearDownPerspective(final FX2ComponentLayout layout);
+	public abstract void onTearDownPerspective(final FXComponentLayout layout);
 	/**
 	 * handle perspective method to initialize the perspective and the layout
 	 * @param action
 	 * @param perspectiveLayout
 	 */
 	public abstract void handlePerspective(IAction<Event, Object> action,
-			final FX2PerspectiveLayout perspectiveLayout);
+			final FXPerspectiveLayout perspectiveLayout);
 
 	@Override
 	public void handlePerspective(IAction<Event, Object> action) {
 		this.handlePerspective(action,
-				(FX2PerspectiveLayout) this.perspectiveLayout);
+				(FXPerspectiveLayout) this.perspectiveLayout);
 
 	}
 

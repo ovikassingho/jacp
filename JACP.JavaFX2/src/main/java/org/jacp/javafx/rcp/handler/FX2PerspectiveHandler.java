@@ -43,7 +43,7 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
 import org.jacp.javafx.rcp.util.FX2ComponentInitWorker;
 import org.jacp.javafx.rcp.util.FX2ComponentReplaceWorker;
@@ -60,7 +60,7 @@ public class FX2PerspectiveHandler
 		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	public static int MAX_INCTANCE_COUNT;
-	private final FX2ComponentLayout layout;
+	private final FXComponentLayout layout;
 	private final Launcher<?> launcher;
 	private StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
@@ -76,7 +76,7 @@ public class FX2PerspectiveHandler
 
 	public FX2PerspectiveHandler(
 			final Launcher<?> launcher,
-			final FX2ComponentLayout layout,
+			final FXComponentLayout layout,
 			final IPerspectiveLayout<Node, Node> perspectiveLayout,
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
 		this.layout = layout;
@@ -126,7 +126,7 @@ public class FX2PerspectiveHandler
 	private final void executeComponentReplaceThread(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action, final FX2ComponentLayout layout) {
+			final IAction<Event, Object> action, final FXComponentLayout layout) {
 		if (component instanceof AFXComponent) {
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.putMessageToQueue(component, action);
@@ -173,7 +173,7 @@ public class FX2PerspectiveHandler
 	private final void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final FX2ComponentLayout layout) {
+			final FXComponentLayout layout) {
 		this.executor.execute(new FX2ComponentReplaceWorker(perspectiveLayout
 				.getTargetLayoutComponents(), this.componentDelegateQueue,
 				((AFXComponent) component), layout));

@@ -59,8 +59,8 @@ import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx.rcp.componentLayout.FX2WorkbenchLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.coordinator.FX2ComponentDelegator;
@@ -85,7 +85,7 @@ public abstract class AFX2Workbench
 	private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FX2PerspectiveCoordinator();
 	private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FX2ComponentDelegator();
 	private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new FX2MessageDelegator();
-	private final IWorkbenchLayout<Node> workbenchLayout = new FX2WorkbenchLayout();
+	private final IWorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private Launcher<?> launcher;
 	private Stage stage;
@@ -118,7 +118,7 @@ public abstract class AFX2Workbench
 		this.handleInitialLayout(new FXAction("TODO", "init"),
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
-		postHandle(new FX2ComponentLayout(this.getWorkbenchLayout().getMenu(),
+		postHandle(new FXComponentLayout(this.getWorkbenchLayout().getMenu(),
 				this.getWorkbenchLayout().getRegisteredToolbars(), glassPane));
 		this.log("3: handle initialisation sequence");
 		componentHandler = new FX2WorkbenchHandler(this.launcher,
@@ -226,7 +226,7 @@ public abstract class AFX2Workbench
 	 * 
 	 * @param layout
 	 */
-	public abstract void postHandle(final FX2ComponentLayout layout);
+	public abstract void postHandle(final FXComponentLayout layout);
 
 	@Override
 	/**
@@ -256,8 +256,8 @@ public abstract class AFX2Workbench
 	/**
 	 * {@inheritDoc}
 	 */
-	public final FX2WorkbenchLayout getWorkbenchLayout() {
-		return (FX2WorkbenchLayout) this.workbenchLayout;
+	public final FXWorkbenchLayout getWorkbenchLayout() {
+		return (FXWorkbenchLayout) this.workbenchLayout;
 	}
 
 	@Override

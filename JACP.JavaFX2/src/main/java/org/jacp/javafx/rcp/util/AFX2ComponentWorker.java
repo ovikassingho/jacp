@@ -40,7 +40,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
 /**
  * handles component methods in own thread;
@@ -213,7 +213,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected void handlePerspectiveChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final FX2ComponentLayout layout) {
+			final FXComponentLayout layout) {
 		if (component instanceof AFXComponent) {
 			((AFXComponent) component).onTearDownComponent(layout);
 		}

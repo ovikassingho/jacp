@@ -40,12 +40,12 @@ import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentLayout implements IBaseLayout<Node> {
+public class FXComponentLayout implements IBaseLayout<Node> {
 	private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
 	private final JACPMenuBar menu;
 	private final Pane glassPane;
 
-	public FX2ComponentLayout(final JACPMenuBar menu,
+	public FXComponentLayout(final JACPMenuBar menu,
 			final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
 			final Pane glassPane) {
 		this.menu = menu;
