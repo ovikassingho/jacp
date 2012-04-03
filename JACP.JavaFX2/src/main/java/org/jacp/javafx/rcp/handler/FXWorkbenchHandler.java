@@ -55,7 +55,7 @@ import org.jacp.javafx.rcp.util.FX2Util;
  * @author Andy Moncsek
  *
  */
-public class FX2WorkbenchHandler
+public class FXWorkbenchHandler
 		implements
 		IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -64,7 +64,7 @@ public class FX2WorkbenchHandler
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 	private final GridPane root;
 
-	public FX2WorkbenchHandler(
+	public FXWorkbenchHandler(
 			final Launcher<?> launcher,
 			final IWorkbenchLayout<Node> workbenchLayout,
 			final GridPane root,
@@ -239,7 +239,7 @@ public class FX2WorkbenchHandler
 			if (perspective instanceof ILayoutAbleComponent) {
 				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((ILayoutAbleComponent<Node>) perspective)
 						.getIPerspectiveLayout();
-				perspective.postInit(new FX2PerspectiveHandler(this.launcher,
+				perspective.postInit(new FXPerspectiveHandler(this.launcher,
 						tmpLayout, perspectiveLayout, perspective
 								.getComponentDelegateQueue()));
 			} else {
