@@ -41,7 +41,7 @@ import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
  * 
  * @author Andy Moncsek
  */
-public class FX2WorkbenchLayout implements IWorkbenchLayout<Node> {
+public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
 	private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();

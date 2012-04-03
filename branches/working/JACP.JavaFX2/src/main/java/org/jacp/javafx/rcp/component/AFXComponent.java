@@ -29,7 +29,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IBaseLayout;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
 /**
  * represents a basic FX2 component to extend from, uses this abstract class to
@@ -98,7 +98,7 @@ public abstract class AFXComponent extends AFXSubComponent implements
 	 */
 	@Override
 	public final void onStart(final IBaseLayout<Node> layout) {
-		this.onStartComponent((FX2ComponentLayout) layout);
+		this.onStartComponent((FXComponentLayout) layout);
 
 	}
 
@@ -107,7 +107,7 @@ public abstract class AFXComponent extends AFXSubComponent implements
 	 */
 	@Override
 	public void onTearDown(final IBaseLayout<Node> layout) {
-		this.onTearDownComponent((FX2ComponentLayout) layout);
+		this.onTearDownComponent((FXComponentLayout) layout);
 
 	}
 
@@ -117,7 +117,7 @@ public abstract class AFXComponent extends AFXSubComponent implements
 	 * @param menuBar
 	 * @param bars
 	 */
-	public abstract void onStartComponent(final FX2ComponentLayout layout);
+	public abstract void onStartComponent(final FXComponentLayout layout);
 
 	/**
 	 * Clean up menu, bars and other components on component teardown.
@@ -125,6 +125,6 @@ public abstract class AFXComponent extends AFXSubComponent implements
 	 * @param menuBar
 	 * @param bars
 	 */
-	public abstract void onTearDownComponent(final FX2ComponentLayout layout);
+	public abstract void onTearDownComponent(final FXComponentLayout layout);
 
 }

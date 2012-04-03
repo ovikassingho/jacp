@@ -45,8 +45,8 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx.rcp.componentLayout.FX2WorkbenchLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.perspective.AFX2Perspective;
 import org.jacp.javafx.rcp.util.FX2Util;
 
@@ -227,12 +227,12 @@ public class FX2WorkbenchHandler
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (perspective instanceof IExtendedComponent) {
-			final FX2ComponentLayout tmpLayout = new FX2ComponentLayout(this
+			final FXComponentLayout tmpLayout = new FXComponentLayout(this
 					.getWorkbenchLayout().getMenu(), this.getWorkbenchLayout()
 					.getRegisteredToolbars(), this.getWorkbenchLayout()
 					.getGlassPane());
 			((IExtendedComponent<Node>) perspective)
-					.onStart(new FX2ComponentLayout(this.getWorkbenchLayout()
+					.onStart(new FXComponentLayout(this.getWorkbenchLayout()
 							.getMenu(), this.getWorkbenchLayout()
 							.getRegisteredToolbars(), this.getWorkbenchLayout()
 							.getGlassPane()));
@@ -290,8 +290,8 @@ public class FX2WorkbenchHandler
 		}
 	}
 
-	public final FX2WorkbenchLayout getWorkbenchLayout() {
-		return (FX2WorkbenchLayout) this.workbenchLayout;
+	public final FXWorkbenchLayout getWorkbenchLayout() {
+		return (FXWorkbenchLayout) this.workbenchLayout;
 	}
 
 	public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {

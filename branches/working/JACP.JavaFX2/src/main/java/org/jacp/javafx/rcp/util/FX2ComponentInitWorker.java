@@ -35,7 +35,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IVComponent;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
 /**
  * Background Worker to execute components; handle method to init component.
@@ -49,14 +49,14 @@ public class FX2ComponentInitWorker
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
 	private final IAction<Event, Object> action;
-	private final FX2ComponentLayout layout;
+	private final FXComponentLayout layout;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
 	public FX2ComponentInitWorker(
 			final Map<String, Node> targetComponents,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final FX2ComponentLayout layout, final IAction<Event, Object> action) {
+			final FXComponentLayout layout, final IAction<Event, Object> action) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
@@ -105,7 +105,7 @@ public class FX2ComponentInitWorker
 	private void addComonent(
 			final Node validContainer,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action, final FX2ComponentLayout layout)
+			final IAction<Event, Object> action, final FXComponentLayout layout)
 			throws InterruptedException {
 
 		Platform.runLater(new Runnable() {

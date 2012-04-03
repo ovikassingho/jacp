@@ -36,7 +36,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
 /**
  * Background Worker to execute components handle method in separate thread and
@@ -53,7 +53,7 @@ public class FX2ComponentReplaceWorker
 
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
-	private final FX2ComponentLayout layout;
+	private final FXComponentLayout layout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
@@ -61,7 +61,7 @@ public class FX2ComponentReplaceWorker
 	public FX2ComponentReplaceWorker(
 			final Map<String, Node> targetComponents,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final FX2ComponentLayout layout) {
+			final FXComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.layout = layout;
@@ -117,7 +117,7 @@ public class FX2ComponentReplaceWorker
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> myAction,
 			final Map<String, Node> targetComponents,
-			final FX2ComponentLayout layout, final Node previousContainer,
+			final FXComponentLayout layout, final Node previousContainer,
 			final String currentTaget) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -143,7 +143,7 @@ public class FX2ComponentReplaceWorker
 
 	private void removeComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Node previousContainer, final FX2ComponentLayout layout) {
+			final Node previousContainer, final FXComponentLayout layout) {
 		if (previousContainer != null) {
 			final Node parent = previousContainer.getParent();
 			if (parent != null) {
@@ -163,7 +163,7 @@ public class FX2ComponentReplaceWorker
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action,
 			final Map<String, Node> targetComponents,
-			final FX2ComponentLayout layout, final Node previousContainer,
+			final FXComponentLayout layout, final Node previousContainer,
 			final String currentTaget) {
 		if (previousContainer != null) {
 			this.executePostHandle(component, action);
@@ -196,7 +196,7 @@ public class FX2ComponentReplaceWorker
 	private void addNewComponentValue(
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer, final String currentTaget,
-			final FX2ComponentLayout layout) {
+			final FXComponentLayout layout) {
 		final Node root = component.getRoot();
 		final Node parentNode = previousContainer.getParent();
 		if (!currentTaget.equals(component.getExecutionTarget())) {
