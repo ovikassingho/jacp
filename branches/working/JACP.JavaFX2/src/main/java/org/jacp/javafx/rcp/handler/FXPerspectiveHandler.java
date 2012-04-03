@@ -55,7 +55,7 @@ import org.jacp.javafx.rcp.util.StateComponentRunWorker;
  * @author Andy moncsek
  * 
  */
-public class FX2PerspectiveHandler
+public class FXPerspectiveHandler
 		implements
 		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -74,7 +74,7 @@ public class FX2PerspectiveHandler
 		MAX_INCTANCE_COUNT = nrOfProcessors + (nrOfProcessors / 2);
 	}
 
-	public FX2PerspectiveHandler(
+	public FXPerspectiveHandler(
 			final Launcher<?> launcher,
 			final FXComponentLayout layout,
 			final IPerspectiveLayout<Node, Node> perspectiveLayout,
