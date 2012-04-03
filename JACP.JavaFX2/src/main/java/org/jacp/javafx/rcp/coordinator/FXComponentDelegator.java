@@ -38,7 +38,7 @@ import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.util.FX2Util;
+import org.jacp.javafx.rcp.util.FXUtil;
 /**
  * The component delegator handles a component target change, find the correct perspective an add component to correct perspective
  * @author Andy Moncsek
@@ -70,17 +70,17 @@ public class FXComponentDelegator extends Thread implements
 	private void delegateTargetChange(final String target,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		// find responsible perspective
-		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = FX2Util
-				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
+		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = FXUtil
+				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
 			final String parentId = component.getParentId();
 			// unregister component from previous parent
 			if (!parentId.equals(responsiblePerspective.getId())) {
-				final IPerspective<EventHandler<Event>, Event, Object> currentParent = FX2Util
+				final IPerspective<EventHandler<Event>, Event, Object> currentParent = FXUtil
 						.getObserveableById(
-								FX2Util.getTargetPerspectiveId(parentId),
+								FXUtil.getTargetPerspectiveId(parentId),
 								this.perspectives);
 				currentParent.unregisterComponent(component);
 			}

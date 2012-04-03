@@ -66,7 +66,7 @@ import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
 import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
-import org.jacp.javafx.rcp.handler.FX2WorkbenchHandler;
+import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -121,7 +121,7 @@ public abstract class AFX2Workbench
 		postHandle(new FXComponentLayout(this.getWorkbenchLayout().getMenu(),
 				this.getWorkbenchLayout().getRegisteredToolbars(), glassPane));
 		this.log("3: handle initialisation sequence");
-		componentHandler = new FX2WorkbenchHandler(this.launcher,
+		componentHandler = new FXWorkbenchHandler(this.launcher,
 				this.workbenchLayout, this.root, this.perspectives);
 		this.perspectiveCoordinator.setComponentHandler(componentHandler);
 		this.componentDelegator.setComponentHandler(componentHandler);

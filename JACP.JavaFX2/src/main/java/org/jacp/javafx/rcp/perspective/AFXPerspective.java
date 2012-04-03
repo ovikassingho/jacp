@@ -48,7 +48,7 @@ import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
-import org.jacp.javafx.rcp.util.FX2Util;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * represents a basic javafx2 perspective that handles subcomponents,
@@ -175,7 +175,7 @@ public abstract class AFXPerspective implements
 
 	@Override
 	public final void initComponents(IAction<Event, Object> action) {
-		final String targetId = FX2Util.getTargetComponentId(action
+		final String targetId = FXUtil.getTargetComponentId(action
 				.getTargetId());
 		this.log("3.4.4.1: subcomponent targetId: " + targetId);
 		final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this

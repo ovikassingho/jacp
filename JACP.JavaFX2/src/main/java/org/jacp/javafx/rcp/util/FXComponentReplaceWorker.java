@@ -47,9 +47,9 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
  * @author Andy Moncsek
  * 
  */
-public class FX2ComponentReplaceWorker
+public class FXComponentReplaceWorker
 		extends
-		AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
+		AFXComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
@@ -58,7 +58,7 @@ public class FX2ComponentReplaceWorker
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
-	public FX2ComponentReplaceWorker(
+	public FXComponentReplaceWorker(
 			final Map<String, Node> targetComponents,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
@@ -123,12 +123,12 @@ public class FX2ComponentReplaceWorker
 			@Override
 			public void run() {
 				if (component.isActive()) {
-					FX2ComponentReplaceWorker.this.publishComponentValue(
+					FXComponentReplaceWorker.this.publishComponentValue(
 							component, myAction, targetComponents, layout,
 							previousContainer, currentTaget);
 				} else {
 					// unregister component
-					FX2ComponentReplaceWorker.this.removeComponentValue(
+					FXComponentReplaceWorker.this.removeComponentValue(
 							component, previousContainer, layout);
 					// run teardown
 					if (component instanceof AFXComponent) {
@@ -136,7 +136,7 @@ public class FX2ComponentReplaceWorker
 					}
 				}
 				// release lock
-				FX2ComponentReplaceWorker.this.appThreadlock.add(true);
+				FXComponentReplaceWorker.this.appThreadlock.add(true);
 			}
 		});
 	}

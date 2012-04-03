@@ -48,7 +48,7 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
-import org.jacp.javafx.rcp.util.FX2Util;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * Handles initialization and re assignment of perspectives in workbench
@@ -174,7 +174,7 @@ public class FXWorkbenchHandler
 			final IPerspectiveLayout<? extends Node, Node> layout) {
 		final Node validContainer = layout.getTargetLayoutComponents().get(
 				component.getExecutionTarget());
-		final ObservableList<Node> children = FX2Util
+		final ObservableList<Node> children = FXUtil
 				.getChildren(validContainer);
 		final Node root = component.getRoot();
 		GridPane.setHgrow(root, Priority.ALWAYS);
@@ -191,7 +191,7 @@ public class FXWorkbenchHandler
 	 */
 	private void reassignChild(final Node parent, final Node oldComp,
 			final Node newComp) {
-		final ObservableList<Node> children = FX2Util.getChildren(parent);
+		final ObservableList<Node> children = FXUtil.getChildren(parent);
 		// set all other components in in workbench to invisible
 		hideChildren(children);
 		oldComp.setVisible(false);
@@ -247,7 +247,7 @@ public class FXWorkbenchHandler
 			}
 
 		}
-		if (FX2Util.getTargetPerspectiveId(action.getTargetId()).equals(
+		if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(
 				perspective.getId())) {
 			this.log("3.4.3.1: perspective handle with custom action");
 			perspective.handlePerspective(action);

@@ -45,8 +45,8 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
-import org.jacp.javafx.rcp.util.FX2ComponentInitWorker;
-import org.jacp.javafx.rcp.util.FX2ComponentReplaceWorker;
+import org.jacp.javafx.rcp.util.FXComponentInitWorker;
+import org.jacp.javafx.rcp.util.FXComponentReplaceWorker;
 import org.jacp.javafx.rcp.util.StateComponentRunWorker;
 
 /**
@@ -174,7 +174,7 @@ public class FXPerspectiveHandler
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
-		this.executor.execute(new FX2ComponentReplaceWorker(perspectiveLayout
+		this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
 				.getTargetLayoutComponents(), this.componentDelegateQueue,
 				((AFXComponent) component), layout));
 	}
@@ -203,7 +203,7 @@ public class FXPerspectiveHandler
 		if (component instanceof AFXComponent) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getName());
 			this.runComponentOnStartupSequence(((AFXComponent) component));
-			final FX2ComponentInitWorker tmp = new FX2ComponentInitWorker(
+			final FXComponentInitWorker tmp = new FXComponentInitWorker(
 					this.perspectiveLayout.getTargetLayoutComponents(),
 					((AFXComponent) component), this.layout, action);
 			this.executor.execute(tmp);

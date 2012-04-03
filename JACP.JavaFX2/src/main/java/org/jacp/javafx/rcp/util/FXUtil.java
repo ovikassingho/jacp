@@ -43,7 +43,7 @@ import org.jacp.api.component.IComponent;
  * @author Andy Moncsek
  * 
  */
-public class FX2Util {
+public class FXUtil {
 	
 	/**
 	 * contains constant values
@@ -76,19 +76,19 @@ public class FX2Util {
 						.invoke(tmp, null);
 
 			} catch (final NoSuchMethodException ex) {
-				Logger.getLogger(FX2Util.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
 						null, ex);
 			} catch (final SecurityException ex) {
-				Logger.getLogger(FX2Util.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
 						null, ex);
 			} catch (final IllegalAccessException ex) {
-				Logger.getLogger(FX2Util.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
 						null, ex);
 			} catch (final IllegalArgumentException ex) {
-				Logger.getLogger(FX2Util.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
 						null, ex);
 			} catch (final InvocationTargetException ex) {
-				Logger.getLogger(FX2Util.class.getName()).log(Level.SEVERE,
+				Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
 						null, ex);
 			}
 

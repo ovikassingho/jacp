@@ -35,7 +35,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.javafx.rcp.util.FX2Util;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * observe component actions and delegates to correct component
@@ -68,8 +68,8 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	@Override
 	public void handleMessage(String targetId, IAction<Event, Object> action) {
 		synchronized (action) {
-			final ISubComponent<EventHandler<Event>, Event, Object> component = FX2Util
-					.getObserveableById(FX2Util.getTargetComponentId(targetId),
+			final ISubComponent<EventHandler<Event>, Event, Object> component = FXUtil
+					.getObserveableById(FXUtil.getTargetComponentId(targetId),
 							this.components);
 			this.log(" //1.1// component message to: " + action.getTargetId());
 			if (component != null) {
@@ -94,7 +94,7 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	private void handleComponentHit(final String targetId,
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final IAction<Event, Object> actionClone = FX2Util.getValidAction(action,
+		final IAction<Event, Object> actionClone = FXUtil.getValidAction(action,
 				targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
 			this.log(" //1.1.1.1// component HIT handle ACTIVE: "
@@ -117,9 +117,9 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	 */
 	private void handleComponentMiss(final String targetId,
 			final IAction<Event, Object> action) {
-		final boolean local = FX2Util.isLocalMessage(targetId);
+		final boolean local = FXUtil.isLocalMessage(targetId);
 		if (!local) {
-			final String targetPerspectiveId = FX2Util
+			final String targetPerspectiveId = FXUtil
 					.getTargetPerspectiveId(targetId);
 			if (parentId.equals(targetPerspectiveId)) {
 				// TODO target is in same perspective but component was not
