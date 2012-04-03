@@ -37,7 +37,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.javafx.rcp.action.FX2Action;
+import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.util.FX2Util;
 /**
  * The component delegator handles a component target change, find the correct perspective an add component to correct perspective
@@ -105,12 +105,12 @@ public class FX2ComponentDelegator extends Thread implements
 			// 1. init perspective (do not register component before perspective
 			// is active, otherwise component will be handled once again)
 			this.handleInActivePerspective(responsiblePerspective,
-					new FX2Action(responsiblePerspective.getId(),
+					new FXAction(responsiblePerspective.getId(),
 							responsiblePerspective.getId(), "init"));
 		} // End if
 		responsiblePerspective.registerComponent(component);
 		responsiblePerspective.getComponentHandler().initComponent(
-				new FX2Action(component.getId(), component.getId(), "init"),
+				new FXAction(component.getId(), component.getId(), "init"),
 				component);
 	}
 

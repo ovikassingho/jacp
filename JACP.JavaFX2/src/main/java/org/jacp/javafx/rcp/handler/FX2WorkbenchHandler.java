@@ -43,7 +43,7 @@ import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.javafx.rcp.action.FX2Action;
+import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FX2WorkbenchLayout;
@@ -254,7 +254,7 @@ public class FX2WorkbenchHandler
 		} // End if
 		else {
 			this.log("3.4.3.1: perspective handle with default >>init<< action");
-			perspective.handlePerspective(new FX2Action(perspective.getId(),
+			perspective.handlePerspective(new FXAction(perspective.getId(),
 					perspective.getId(), "init"));
 		} // End else
 	}

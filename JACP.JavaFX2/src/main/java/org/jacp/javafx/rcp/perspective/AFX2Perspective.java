@@ -43,8 +43,8 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.javafx.rcp.action.FX2Action;
-import org.jacp.javafx.rcp.action.FX2ActionListener;
+import org.jacp.javafx.rcp.action.FXAction;
+import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FX2PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FX2ComponentCoordinator;
@@ -189,7 +189,7 @@ public abstract class AFX2Perspective implements
 			} // else END
 			else if (component.isActive() && !component.isStarted()) {
 				this.log("3.4.4.2: subcomponent init with default action");
-				componentHandler.initComponent(new FX2Action(component.getId(),
+				componentHandler.initComponent(new FXAction(component.getId(),
 						component.getId(), "init"), component);
 			} // if END
 
@@ -280,9 +280,9 @@ public abstract class AFX2Perspective implements
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
 			Object message) {
-		final FX2Action action = new FX2Action(this.id);
+		final FXAction action = new FXAction(this.id);
 		action.setMessage(message);
-		return new FX2ActionListener(action, this.globalMessageQueue);
+		return new FXActionListener(action, this.globalMessageQueue);
 	}
 	/**
 	 * {@inheritDoc}
@@ -290,9 +290,9 @@ public abstract class AFX2Perspective implements
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
 			String targetId, Object message) {
-		final FX2Action action = new FX2Action(this.id);
+		final FXAction action = new FXAction(this.id);
 		action.addMessage(targetId, message);
-		return new FX2ActionListener(action, this.globalMessageQueue);
+		return new FXActionListener(action, this.globalMessageQueue);
 	}
 
 	@Override
