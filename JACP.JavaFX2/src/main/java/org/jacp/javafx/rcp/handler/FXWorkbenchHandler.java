@@ -47,7 +47,7 @@ import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
-import org.jacp.javafx.rcp.perspective.AFX2Perspective;
+import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FX2Util;
 
 /**
@@ -79,7 +79,7 @@ public class FXWorkbenchHandler
 	public final void handleAndReplaceComponent(
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFX2Perspective) perspective)
+		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
 				.getIPerspectiveLayout();
 		// backup old component
 		final Node componentOld = this
@@ -99,7 +99,7 @@ public class FXWorkbenchHandler
 	@Override
 	public final void initComponent(final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFX2Perspective) perspective)
+		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
 				.getIPerspectiveLayout();
 		this.log("3.4.3: perspective handle init");
 		this.handlePerspectiveInitMethod(action, perspective);
