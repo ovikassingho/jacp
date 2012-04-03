@@ -22,7 +22,8 @@
  ************************************************************************/
 package org.jacp.project.processor;
 
-import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
+
+import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
