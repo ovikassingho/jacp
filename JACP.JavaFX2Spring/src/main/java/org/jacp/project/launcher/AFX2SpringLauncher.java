@@ -2,7 +2,7 @@ package org.jacp.project.launcher;
 
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
-import org.jacp.javafx.rcp.workbench.AFX2Workbench;
+import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javafx.application.Application;
@@ -47,7 +47,7 @@ public abstract class AFX2SpringLauncher extends Application {
 						this.workbenchName != null ? this.workbenchName
 								: "workbench");
 		workbench.init(this.launcher);
-		((AFX2Workbench) workbench).start(stage);
+		((AFXWorkbench) workbench).start(stage);
 		postInit(stage);
 
 	}
