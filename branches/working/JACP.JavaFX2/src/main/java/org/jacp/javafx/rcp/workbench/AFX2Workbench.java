@@ -57,8 +57,8 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.workbench.IWorkbench;
-import org.jacp.javafx.rcp.action.FX2Action;
-import org.jacp.javafx.rcp.action.FX2ActionListener;
+import org.jacp.javafx.rcp.action.FXAction;
+import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FX2WorkbenchLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
@@ -115,7 +115,7 @@ public abstract class AFX2Workbench
 		});
 		this.log("1: init workbench");
 		// init user defined workspace
-		this.handleInitialLayout(new FX2Action("TODO", "init"),
+		this.handleInitialLayout(new FXAction("TODO", "init"),
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
 		postHandle(new FX2ComponentLayout(this.getWorkbenchLayout().getMenu(),
@@ -159,7 +159,7 @@ public abstract class AFX2Workbench
 					@Override
 					public final void run() {
 						AFX2Workbench.this.componentHandler.initComponent(
-								new FX2Action(perspective.getId(), perspective
+								new FXAction(perspective.getId(), perspective
 										.getId(), "init"), perspective);
 					}
 				}); // FX2 UTILS END
@@ -285,7 +285,7 @@ public abstract class AFX2Workbench
 
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FX2ActionListener(new FX2Action("workbench"),
+		return new FXActionListener(new FXAction("workbench"),
 				perspectiveCoordinator.getMessageQueue());
 	}
 

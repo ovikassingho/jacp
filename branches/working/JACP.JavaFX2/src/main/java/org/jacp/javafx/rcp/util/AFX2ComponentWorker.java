@@ -38,7 +38,7 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IVComponent;
-import org.jacp.javafx.rcp.action.FX2Action;
+import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FX2ComponentLayout;
 
@@ -129,7 +129,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
 					.getActionListener(null);
-			listener.setAction(new FX2Action(comp.getId(), targetId, value));
+			listener.setAction(new FXAction(comp.getId(), targetId, value));
 			listener.notifyComponents(listener.getAction());
 		}
 	}

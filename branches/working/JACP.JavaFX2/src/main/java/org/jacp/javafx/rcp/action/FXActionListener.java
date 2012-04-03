@@ -37,12 +37,12 @@ import org.jacp.api.action.IActionListener;
  * 
  * @author Andy Moncsek
  */
-public class FX2ActionListener implements EventHandler<Event>,
+public class FXActionListener implements EventHandler<Event>,
 		IActionListener<EventHandler<Event>, Event, Object> {
 	private IAction<Event, Object> action;
 	private final BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
-	public FX2ActionListener(final IAction<Event, Object> action,
+	public FXActionListener(final IAction<Event, Object> action,
 			final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
 		this.action = action;
 		this.globalMessageQueue = globalMessageQueue;

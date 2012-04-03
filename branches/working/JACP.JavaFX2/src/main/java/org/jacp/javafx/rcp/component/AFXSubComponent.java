@@ -32,8 +32,8 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.javafx.rcp.action.FX2Action;
-import org.jacp.javafx.rcp.action.FX2ActionListener;
+import org.jacp.javafx.rcp.action.FXAction;
+import org.jacp.javafx.rcp.action.FXActionListener;
 
 /**
  * the AFXSubComponent is the basic component for all component
@@ -58,14 +58,14 @@ public abstract class AFXSubComponent implements
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
 			Object message) {
-		return new FX2ActionListener(new FX2Action(this.id, message),
+		return new FXActionListener(new FXAction(this.id, message),
 				this.globalMessageQueue);
 	}
 
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
 			String targetId, Object message) {
-		return new FX2ActionListener(new FX2Action(this.id, targetId, message),
+		return new FXActionListener(new FXAction(this.id, targetId, message),
 				this.globalMessageQueue);
 	}
 	/**
