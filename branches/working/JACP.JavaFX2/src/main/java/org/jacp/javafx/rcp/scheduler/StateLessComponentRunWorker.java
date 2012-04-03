@@ -29,7 +29,7 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.javafx.rcp.util.AFX2ComponentWorker;
+import org.jacp.javafx.rcp.util.AFXComponentWorker;
 
 /**
  * Component worker to run instances of a stateless component in a worker
@@ -40,7 +40,7 @@ import org.jacp.javafx.rcp.util.AFX2ComponentWorker;
  */
 public class StateLessComponentRunWorker
 		extends
-		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
+		AFXComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
 
 	public StateLessComponentRunWorker(

@@ -42,9 +42,9 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
  * 
  * @author Andy Moncsek
  */
-public class FX2ComponentInitWorker
+public class FXComponentInitWorker
 		extends
-		AFX2ComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
+		AFXComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
 
 	private final Map<String, Node> targetComponents;
 	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
@@ -53,7 +53,7 @@ public class FX2ComponentInitWorker
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
 			1);
 
-	public FX2ComponentInitWorker(
+	public FXComponentInitWorker(
 			final Map<String, Node> targetComponents,
 			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout, final IAction<Event, Object> action) {
@@ -74,7 +74,7 @@ public class FX2ComponentInitWorker
 			this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 					+ this.component.getName());
 			// expect always local target id
-			component.setExecutionTarget(FX2Util.getTargetComponentId(component.getExecutionTarget()));
+			component.setExecutionTarget(FXUtil.getTargetComponentId(component.getExecutionTarget()));
 			final Node validContainer = this.getValidContainerById(
 					this.targetComponents, component.getExecutionTarget());
 			this.log("3.4.4.2.3: subcomponent handle init add component by type: "
@@ -112,11 +112,11 @@ public class FX2ComponentInitWorker
 
 			@Override
 			public void run() {
-				FX2ComponentInitWorker.this
+				FXComponentInitWorker.this
 						.executePostHandle(component, action);
-				FX2ComponentInitWorker.this.addComponentByType(validContainer,
+				FXComponentInitWorker.this.addComponentByType(validContainer,
 						component);
-				FX2ComponentInitWorker.this.appThreadlock.add(true);
+				FXComponentInitWorker.this.appThreadlock.add(true);
 			}
 		});
 

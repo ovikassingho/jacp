@@ -40,7 +40,7 @@ import org.jacp.api.component.ISubComponent;
  */
 public class StateComponentRunWorker
 		extends
-		AFX2ComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
+		AFXComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
 	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
 

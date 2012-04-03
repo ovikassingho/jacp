@@ -34,7 +34,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.javafx.rcp.util.FX2Util;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * Observe perspectives and delegates message to correct component
@@ -50,11 +50,11 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	@Override
 	public void handleMessage(final String target,
 			final IAction<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = FX2Util
-				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
+				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
-			final IAction<Event, Object> actionClone = FX2Util.getValidAction(
+			final IAction<Event, Object> actionClone = FXUtil.getValidAction(
 					action, target, action.getMessageList().get(target));
 			this.handleComponentHit(target, actionClone, perspective);
 		} // End if
@@ -100,7 +100,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 		// with newly created layout component in workbench
 		this.log(" //1.1.1.1// perspective HIT handle ACTIVE: "
 				+ action.getTargetId());
-		if (FX2Util.isLocalMessage(targetId)) {
+		if (FXUtil.isLocalMessage(targetId)) {
 			// message is addressing perspective
 			this.handleActive(perspective, action);
 		} // End if

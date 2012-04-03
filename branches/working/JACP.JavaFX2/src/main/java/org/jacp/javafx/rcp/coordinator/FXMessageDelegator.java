@@ -38,7 +38,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.perspective.IPerspective;
-import org.jacp.javafx.rcp.util.FX2Util;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * The message delegate handles messages from one perspective to an other.
@@ -74,7 +74,7 @@ public class FXMessageDelegator extends Thread implements
 		// Find local Target; if target is perspective handle target or
 		// delegate
 		// message to responsible component observer
-		if (FX2Util.isLocalMessage(target)) {
+		if (FXUtil.isLocalMessage(target)) {
 			this.handleMessage(target, action);
 		} // End if
 		else {
@@ -84,11 +84,11 @@ public class FXMessageDelegator extends Thread implements
 
 	public void handleMessage(final String target,
 			final IAction<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = FX2Util
-				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
+				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
-			final IAction<Event, Object> actionClone = FX2Util.getValidAction(
+			final IAction<Event, Object> actionClone = FXUtil.getValidAction(
 					action, target, action.getMessageList().get(target));
 			this.handleComponentHit(target, actionClone, perspective);
 		} // End if
@@ -135,7 +135,7 @@ public class FXMessageDelegator extends Thread implements
 		// with newly created layout component in workbench
 		this.log(" //1.1.1.1// perspective HIT handle ACTIVE: "
 				+ action.getTargetId());
-		if (FX2Util.isLocalMessage(target)) {
+		if (FXUtil.isLocalMessage(target)) {
 			// message is addressing perspective
 			this.handleActive(perspective, action);
 		} // End if
@@ -185,8 +185,8 @@ public class FXMessageDelegator extends Thread implements
 	 */
 	private void callComponentDelegate(final String target,
 			final IAction<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = FX2Util
-				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
+				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
 			if (!perspective.isActive()) {

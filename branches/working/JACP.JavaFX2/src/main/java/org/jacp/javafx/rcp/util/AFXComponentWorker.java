@@ -47,7 +47,7 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
  * 
  * @author Andy Moncsek
  */
-public abstract class AFX2ComponentWorker<T> extends Task<T> {
+public abstract class AFXComponentWorker<T> extends Task<T> {
 	/**
 	 * find valid target component in perspective
 	 * 
@@ -86,7 +86,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final String name) {
 		if (validContainer != null && uiComponent != null) {
 			handleViewState(uiComponent, true);
-			final ObservableList<Node> children = FX2Util
+			final ObservableList<Node> children = FXUtil
 					.getChildren(validContainer);
 			children.add(uiComponent);
 		}
@@ -102,7 +102,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	protected final void handleOldComponentRemove(final Node parent,
 			final Node currentContainer) {
 		handleViewState(currentContainer, false);
-		final ObservableList<Node> children = FX2Util.getChildren(parent);
+		final ObservableList<Node> children = FXUtil.getChildren(parent);
 		children.remove(currentContainer);
 	}
 	
@@ -169,7 +169,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	 */
 	protected String getValidTargetId(final String currentTaget,
 			final String futureTarget) {
-		return currentTaget.length() < 2 ? FX2Util
+		return currentTaget.length() < 2 ? FXUtil
 				.getTargetComponentId(futureTarget) : futureTarget;
 	}
 
@@ -230,7 +230,7 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final String targetId = component.getExecutionTarget();
 		final String parentIdOld = component.getParentId();
-		final String parentId = FX2Util.getTargetParentId(targetId);
+		final String parentId = FXUtil.getTargetParentId(targetId);
 		if (!parentIdOld.equals(parentId)) {
 			// delegate to perspective observer
 			delegateQueue.add(component);
@@ -276,9 +276,9 @@ public abstract class AFX2ComponentWorker<T> extends Task<T> {
 	
 
 	protected void log(final String message) {
-		if (Logger.getLogger(AFX2ComponentWorker.class.getName()).isLoggable(
+		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
 				Level.FINE)) {
-			Logger.getLogger(AFX2ComponentWorker.class.getName()).fine(
+			Logger.getLogger(AFXComponentWorker.class.getName()).fine(
 					">> " + message);
 		}
 	}
