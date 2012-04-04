@@ -52,8 +52,9 @@ import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * Handles initialization and re assignment of perspectives in workbench
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 public class FXWorkbenchHandler
 		implements
@@ -152,12 +153,13 @@ public class FXWorkbenchHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> subComp = subcomponents
 					.get(i);
 			if (subComp instanceof AFXComponent && subComp.isActive()) {
-				final Node editorComponent = ((AFXComponent) subComp)
-						.getRoot();
+				final AFXComponent subComponent = (AFXComponent) subComp;
+				final Node editorComponent = subComponent.getRoot();
+				// TODO set cache hint to perform faster reassignment
 				if (editorComponent != null) {
 					editorComponent.setVisible(true);
 					editorComponent.setDisable(false);
-					this.addComponentByType(((AFXComponent) subComp), layout);
+					this.addComponentByType(subComponent, layout);
 				} // End if
 			} // End outer if
 		} // End for
@@ -177,9 +179,12 @@ public class FXWorkbenchHandler
 		final ObservableList<Node> children = FXUtil
 				.getChildren(validContainer);
 		final Node root = component.getRoot();
-		GridPane.setHgrow(root, Priority.ALWAYS);
-		GridPane.setVgrow(root, Priority.ALWAYS);
-		children.add(root);
+		if (!children.contains(root)) {
+			GridPane.setHgrow(root, Priority.ALWAYS);
+			GridPane.setVgrow(root, Priority.ALWAYS);
+			children.add(root);
+		}
+
 	}
 
 	/**
