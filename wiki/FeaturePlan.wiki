@@ -30,6 +30,7 @@
 === Fixed Bugs ===
  *  fixed bug where a message to a component right after / while initialization can be dropped because it is added to message queue and the initWorker won't receive messages from this queue
  *   fixed missing content if no toolbars were defined 
+ *   fixed bug with reassignment of components in perspective when switching between perspectives
 
 == Version 1.2 (Okt. 2012) ==
  * re-implement component scheduler to achieve  a mostly fair scheduling and system load awareness
