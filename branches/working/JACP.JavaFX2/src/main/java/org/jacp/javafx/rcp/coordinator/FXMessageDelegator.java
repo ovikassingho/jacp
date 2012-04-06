@@ -50,9 +50,10 @@ public class FXMessageDelegator extends Thread implements
 		IMessageDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<IDelegateDTO<Event,Object>>(10000);
+	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<IDelegateDTO<Event, Object>>(
+			10000);
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
-	
+
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
@@ -93,10 +94,21 @@ public class FXMessageDelegator extends Thread implements
 			this.handleComponentHit(target, actionClone, perspective);
 		} // End if
 		else {
-			// TODO implement missing perspective handling!!
-			throw new UnsupportedOperationException(
-					"No responsible perspective found. Handling not implemented yet. target: "
-							+ target + " perspectives: " + perspectives);
+			// try to find correct perspective by searching in all perspectives;
+			// this can only be a subcomponent
+			final IPerspective<EventHandler<Event>, Event, Object> perspectiveTemp = FXUtil
+					.findRootByObserveableId(
+							FXUtil.getTargetComponentId(target),
+							this.perspectives);
+			if (perspectiveTemp != null) {
+				final String tempTargetId = perspectiveTemp.getId().concat(".")
+						.concat(FXUtil.getTargetComponentId(target));
+				this.callComponentDelegate(tempTargetId, action);
+			} else {
+				throw new UnsupportedOperationException(
+						"No responsible perspective found. Handling not implemented yet. target: "
+								+ target + " perspectives: " + perspectives);
+			}
 		} // End else
 	}
 
@@ -158,8 +170,10 @@ public class FXMessageDelegator extends Thread implements
 			}
 		});
 	}
+
 	/**
 	 * Handle an active perspective
+	 * 
 	 * @param component
 	 * @param action
 	 */
@@ -245,7 +259,5 @@ public class FXMessageDelegator extends Thread implements
 	public BlockingQueue<IDelegateDTO<Event, Object>> getMessageDelegateQueue() {
 		return this.messageDelegateQueue;
 	}
-
-
 
 }

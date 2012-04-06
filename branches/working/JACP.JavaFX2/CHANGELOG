@@ -1,3 +1,4 @@
+06. Apr. 2012 - amo -  fixed todo; find responsible component when no correct target found, try to scan all perspectives for correct rootPerspective,; this can be nessesary when subcomponent moves to an other perspective and a second component sends messages to this component
 04. Apr. 2012 - amo -  fixed bug with reassignment of components in perspective when switching between perspectives
 02. Apr. 2012 - amo -  updated to version number 1.05
 02. Apr. 2012 - amo -  renamed all *.javafx2.* packages to *.javafx.*

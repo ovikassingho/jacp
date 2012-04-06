@@ -36,6 +36,8 @@ import javafx.scene.Parent;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.ISubComponent;
+import org.jacp.api.perspective.IPerspective;
 
 /**
  * Util class with helper methods
@@ -44,16 +46,16 @@ import org.jacp.api.component.IComponent;
  * 
  */
 public class FXUtil {
-	
+
 	/**
 	 * contains constant values
+	 * 
 	 * @author Andy Moncsek
-	 *
+	 * 
 	 */
-	public static class MessageUtil{
-		public static String INIT ="init";
+	public static class MessageUtil {
+		public static String INIT = "init";
 	}
-	
 
 	/**
 	 * returns children of current node
@@ -98,7 +100,7 @@ public class FXUtil {
 		return null;
 
 	}
-	
+
 	/**
 	 * returns the message (parent) target id
 	 * 
@@ -112,7 +114,7 @@ public class FXUtil {
 		}
 		return messageId;
 	}
-	
+
 	/**
 	 * a target id is valid, when it does contain a perspective and a component
 	 * id (perspectiveId.componentId)
@@ -127,7 +129,7 @@ public class FXUtil {
 
 		return false;
 	}
-	
+
 	/**
 	 * returns the message target perspective id
 	 * 
@@ -141,7 +143,7 @@ public class FXUtil {
 		}
 		return messageId;
 	}
-	
+
 	/**
 	 * returns the message target component id
 	 * 
@@ -155,7 +157,7 @@ public class FXUtil {
 		}
 		return messageId;
 	}
-	
+
 	/**
 	 * when id has no separator it is a local message
 	 * 
@@ -175,18 +177,50 @@ public class FXUtil {
 	protected static final String[] getTargetId(final String messageId) {
 		return messageId.split("\\.");
 	}
-	
-	public static <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
+
+	public static final <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
 			final String id, final List<P> components) {
-		for (int i = 0; i < components.size(); i++) {
-			final P p = components.get(i);
-			if (p.getId().equals(id)) {
-				return p;
+		synchronized (components) {
+			for (int i = 0; i < components.size(); i++) {
+				final P p = components.get(i);
+				if (p.getId().equals(id)) {
+					return p;
+				}
 			}
 		}
 		return null;
 	}
-	
+
+	/**
+	 * find the parent perspective to id; should be only used when no
+	 * responsible component was found
+	 * 
+	 * @param id
+	 * @param perspectives
+	 * @return
+	 */
+	public static final IPerspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
+			final String id,
+			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
+		synchronized (perspectives) {
+			for (int i = 0; i < perspectives.size(); i++) {
+				final IPerspective<EventHandler<Event>, Event, Object> p = perspectives
+						.get(i);
+				final List<ISubComponent<EventHandler<Event>, Event, Object>> subComponents = p
+						.getSubcomponents();
+				for (int j = 0; j < subComponents.size(); j++) {
+					final ISubComponent<EventHandler<Event>, Event, Object> component = subComponents
+							.get(j);
+					if (component.getId().equals(id)) {
+						return p;
+					}
+				}
+
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * returns cloned action with valid message TODO add to interface
 	 * 
