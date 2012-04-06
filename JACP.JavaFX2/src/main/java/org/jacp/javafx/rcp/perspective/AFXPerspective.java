@@ -23,6 +23,7 @@
 
 package org.jacp.javafx.rcp.perspective;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.action.IDelegateDTO;
+import org.jacp.api.annotations.VComponent;
 import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.ILayoutAbleComponent;
 import org.jacp.api.component.ISubComponent;
@@ -156,6 +158,13 @@ public abstract class AFXPerspective implements
 	public final void registerComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.log("register component: " + component.getId());
+		VComponent componentAnnotation = (VComponent) component.getClass().getAnnotation(VComponent.class);
+		if(componentAnnotation!=null) {
+			System.out.println("active: "+componentAnnotation.active());
+			System.out.println("name: "+componentAnnotation.name());
+			System.out.println("id: "+componentAnnotation.id());
+			System.out.println("defaultExecutionTarget: "+componentAnnotation.defaultExecutionTarget());
+		}
 		component.setParentId(this.getId());
 		this.componentCoordinator.addComponent(component);
 		if (!this.subcomponents.contains(component))
