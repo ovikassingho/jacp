@@ -53,14 +53,12 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	@Override
 	public void addComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		component.setMessageQueue(this.getMessageQueue());
 		this.components.add(component);
 	}
 
 	@Override
 	public void removeComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		component.setMessageQueue(null);
 		this.components.remove(component);
 
 	}

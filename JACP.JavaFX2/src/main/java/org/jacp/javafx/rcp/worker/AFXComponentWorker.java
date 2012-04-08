@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.worker;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -36,11 +36,12 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.component.IVComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * handles component methods in own thread;
@@ -69,7 +70,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 */
 	protected final void addComponentByType(
 			final Node validContainer,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component) {
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component) {
 		this.handleAdd(validContainer, component.getRoot(), component.getName());
 		handleViewState(validContainer, true);
 
@@ -143,7 +144,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param currentTaget
 	 */
 	protected void handleNewComponentValue(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node parent,
 			final String currentTaget) {
 		if (parent == null) {
@@ -180,7 +181,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param targetComponents
 	 */
 	protected void handleTargetChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
 				targetComponents, target);
@@ -199,7 +200,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param validContainer
 	 */
 	protected void handleLocalTargetChange(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node validContainer) {
 		this.addComponentByType(validContainer, component);
 	}
@@ -212,7 +213,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param layout
 	 */
 	protected void handlePerspectiveChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
 		if (component instanceof AFXComponent) {
 			((AFXComponent) component).onTearDownComponent(layout);
@@ -247,7 +248,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @return
 	 */
 	protected final void prepareAndHandleComponent(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		final Node editorComponent = component.handle(action);
 		if (editorComponent != null)
@@ -261,7 +262,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param action
 	 */
 	protected void executePostHandle(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		final Node root = component.getRoot();
 		final Node tmp = component.postHandle(root, action);

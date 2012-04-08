@@ -23,6 +23,7 @@
 package org.jacp.javafx.rcp.scheduler;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.event.Event;
@@ -34,6 +35,8 @@ import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.scheduler.IStatelessComponentScheduler;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 public class StatelessCallbackScheduler implements
 		IStatelessComponentScheduler<EventHandler<Event>, Event, Object> {
@@ -87,7 +90,7 @@ public class StatelessCallbackScheduler implements
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final IAction<Event, Object> message) {
-		comp.setBlocked(true);
+		FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked", new AtomicBoolean(true));
 		comp.putIncomingMessage(message);
 		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 				comp);

@@ -20,12 +20,13 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.worker;
 
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -33,10 +34,12 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.component.IVComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * Background Worker to execute components handle method in separate thread and
@@ -49,10 +52,10 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
  */
 public class FXComponentReplaceWorker
 		extends
-		AFXComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
+		AFXComponentWorker<IComponentView<Node, EventHandler<Event>, Event, Object>> {
 
 	private final Map<String, Node> targetComponents;
-	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
+	private final IComponentView<Node, EventHandler<Event>, Event, Object> component;
 	private final FXComponentLayout layout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
@@ -60,7 +63,7 @@ public class FXComponentReplaceWorker
 
 	public FXComponentReplaceWorker(
 			final Map<String, Node> targetComponents,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
@@ -69,11 +72,11 @@ public class FXComponentReplaceWorker
 	}
 
 	@Override
-	protected IVComponent<Node, EventHandler<Event>, Event, Object> call()
+	protected IComponentView<Node, EventHandler<Event>, Event, Object> call()
 			throws Exception {
 		synchronized (this.component) {
 			try {
-				this.component.setBlocked(true);
+				FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(true));
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
@@ -103,7 +106,7 @@ public class FXComponentReplaceWorker
 							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread");
 				}
 			} finally {
-				this.component.setBlocked(false);
+				FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
 			}
 
 		}
@@ -114,7 +117,7 @@ public class FXComponentReplaceWorker
 	 * publish handle result in application main thread
 	 */
 	private void publish(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> myAction,
 			final Map<String, Node> targetComponents,
 			final FXComponentLayout layout, final Node previousContainer,
@@ -142,7 +145,7 @@ public class FXComponentReplaceWorker
 	}
 
 	private void removeComponentValue(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer, final FXComponentLayout layout) {
 		if (previousContainer != null) {
 			final Node parent = previousContainer.getParent();
@@ -160,7 +163,7 @@ public class FXComponentReplaceWorker
 	 * @param currentTaget
 	 */
 	private void publishComponentValue(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action,
 			final Map<String, Node> targetComponents,
 			final FXComponentLayout layout, final Node previousContainer,
@@ -179,7 +182,7 @@ public class FXComponentReplaceWorker
 	 * remove old component value from root node
 	 */
 	private void removeOldComponentValue(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer, final String currentTaget) {
 		final Node root = component.getRoot();
 		// avoid remove/add when root component did not changed!
@@ -194,7 +197,7 @@ public class FXComponentReplaceWorker
 	 * add new component value to root node
 	 */
 	private void addNewComponentValue(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer, final String currentTaget,
 			final FXComponentLayout layout) {
 		final Node root = component.getRoot();
@@ -232,9 +235,9 @@ public class FXComponentReplaceWorker
 	@Override
 	protected final void done() {
 		try {
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component = this
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component = this
 					.get();
-			component.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if
@@ -251,7 +254,7 @@ public class FXComponentReplaceWorker
 			// messages in
 			// queue
 		} finally {
-			this.component.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, "blocked", new AtomicBoolean(false));
 		}
 
 	}

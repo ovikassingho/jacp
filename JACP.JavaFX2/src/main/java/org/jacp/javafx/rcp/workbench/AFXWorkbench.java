@@ -47,6 +47,7 @@ import javafx.stage.WindowEvent;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.coordinator.IComponentDelegator;
@@ -54,11 +55,11 @@ import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
@@ -67,6 +68,8 @@ import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
 import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
 import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
+import org.jacp.javafx.rcp.perspective.AFXPerspective;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -235,7 +238,7 @@ public abstract class AFXWorkbench
 	public final void registerComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		perspective.init(this.componentDelegator.getComponentDelegateQueue(),
-				this.messageDelegator.getMessageDelegateQueue());
+				this.messageDelegator.getMessageDelegateQueue(),this.perspectiveCoordinator.getMessageQueue());
 		this.perspectiveCoordinator.addPerspective(perspective);
 		this.componentDelegator.addPerspective(perspective);
 		this.messageDelegator.addPerspective(perspective);
@@ -247,6 +250,8 @@ public abstract class AFXWorkbench
 	 */
 	public final void unregisterComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
+				"messageQueue", null);
 		this.perspectiveCoordinator.removePerspective(perspective);
 		this.componentDelegator.removePerspective(perspective);
 		this.messageDelegator.removePerspective(perspective);

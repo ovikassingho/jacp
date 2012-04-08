@@ -20,13 +20,14 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.worker;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -34,8 +35,11 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IVComponent;
+import org.jacp.api.component.IComponentView;
+import org.jacp.javafx.rcp.component.AComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * Background Worker to execute components; handle method to init component.
@@ -44,10 +48,10 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
  */
 public class FXComponentInitWorker
 		extends
-		AFXComponentWorker<IVComponent<Node, EventHandler<Event>, Event, Object>> {
+		AFXComponentWorker<IComponentView<Node, EventHandler<Event>, Event, Object>> {
 
 	private final Map<String, Node> targetComponents;
-	private final IVComponent<Node, EventHandler<Event>, Event, Object> component;
+	private final IComponentView<Node, EventHandler<Event>, Event, Object> component;
 	private final IAction<Event, Object> action;
 	private final FXComponentLayout layout;
 	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
@@ -55,7 +59,7 @@ public class FXComponentInitWorker
 
 	public FXComponentInitWorker(
 			final Map<String, Node> targetComponents,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout, final IAction<Event, Object> action) {
 		this.targetComponents = targetComponents;
 		this.component = component;
@@ -64,10 +68,10 @@ public class FXComponentInitWorker
 	}
 
 	@Override
-	protected IVComponent<Node, EventHandler<Event>, Event, Object> call()
+	protected IComponentView<Node, EventHandler<Event>, Event, Object> call()
 			throws Exception {
 		synchronized (this.component) {
-			this.component.setBlocked(true);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(true));
 			this.log("3.4.4.2.1: subcomponent handle init START: "
 					+ this.component.getName());
 			prepareAndHandleComponent(this.component, this.action);
@@ -87,7 +91,7 @@ public class FXComponentInitWorker
 
 			this.log("3.4.4.2.4: subcomponent handle init END: "
 					+ this.component.getName());
-			this.component.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
 			return this.component;
 		}
 	}
@@ -104,7 +108,7 @@ public class FXComponentInitWorker
 	 */
 	private void addComonent(
 			final Node validContainer,
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action, final FXComponentLayout layout)
 			throws InterruptedException {
 
@@ -146,8 +150,8 @@ public class FXComponentInitWorker
 				// messages in
 				// queue
 			}
-			this.component.setStarted(true);
-			this.component.setBlocked(false);
+			FXUtil.setPrivateMemberValue(AComponent.class, component, "started", true);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
 		}
 	}
 

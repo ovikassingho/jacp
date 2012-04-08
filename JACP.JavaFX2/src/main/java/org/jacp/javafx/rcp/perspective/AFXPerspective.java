@@ -23,7 +23,6 @@
 
 package org.jacp.javafx.rcp.perspective;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
@@ -34,19 +33,18 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.action.IDelegateDTO;
-import org.jacp.api.annotations.VComponent;
-import org.jacp.api.component.IExtendedComponent;
-import org.jacp.api.component.ILayoutAbleComponent;
+import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.api.annotations.Component;
+import org.jacp.api.component.IPerspectiveView;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.component.AComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
@@ -59,13 +57,8 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * 
  * @author Andy Moncsek
  */
-public abstract class AFXPerspective implements
-		IPerspective<EventHandler<Event>, Event, Object>,
-		IExtendedComponent<Node>, ILayoutAbleComponent<Node> {
-	private String id;
-	private String name;
-	private boolean active;
-	private boolean isActivated = false;
+public abstract class AFXPerspective extends AComponent implements
+		IPerspectiveView<Node, EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents;
 	private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
@@ -73,15 +66,17 @@ public abstract class AFXPerspective implements
 	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
 	private IComponentCoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
 	private FXComponentLayout layout;
-	private BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FXPerspectiveLayout();
-	
 
 	@Override
 	public final void init(
-			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue, final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue) {
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
+			final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue,
+			final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
 		this.componentDelegateQueue = componentDelegateQueue;
 		this.messageDelegateQueue = messageDelegateQueue;
+		this.globalMessageQueue = globalMessageQueue;
 
 	}
 
@@ -139,8 +134,10 @@ public abstract class AFXPerspective implements
 	 * @param bars
 	 */
 	public abstract void onTearDownPerspective(final FXComponentLayout layout);
+
 	/**
 	 * handle perspective method to initialize the perspective and the layout
+	 * 
 	 * @param action
 	 * @param perspectiveLayout
 	 */
@@ -157,26 +154,60 @@ public abstract class AFXPerspective implements
 	@Override
 	public final void registerComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
+
+		handleMetaAnnotation(component);
 		this.log("register component: " + component.getId());
-		VComponent componentAnnotation = (VComponent) component.getClass().getAnnotation(VComponent.class);
-		if(componentAnnotation!=null) {
-			System.out.println("active: "+componentAnnotation.active());
-			System.out.println("name: "+componentAnnotation.name());
-			System.out.println("id: "+componentAnnotation.id());
-			System.out.println("defaultExecutionTarget: "+componentAnnotation.defaultExecutionTarget());
-		}
-		component.setParentId(this.getId());
+		
+		component.initEnv(this.getId(), this.componentCoordinator.getMessageQueue());
 		this.componentCoordinator.addComponent(component);
 		if (!this.subcomponents.contains(component))
 			this.subcomponents.add(component);
 
 	}
 
+	/**
+	 * set meta attributes defined in annotations
+	 * 
+	 * @param component
+	 */
+	private void handleMetaAnnotation(
+			ISubComponent<EventHandler<Event>, Event, Object> component) {
+		final Component componentAnnotation = component.getClass()
+				.getAnnotation(Component.class);
+		if (componentAnnotation != null) {
+			FXUtil.setPrivateMemberValue(AComponent.class, component, "id",
+					componentAnnotation.id());
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
+					"active", componentAnnotation.active());
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
+					"name", componentAnnotation.name());
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
+					"executionTarget",
+					componentAnnotation.defaultExecutionTarget());
+			this.log("register component with annotations : "
+					+ componentAnnotation.id());
+		} else {
+
+			final CallbackComponent callbackAnnotation = component.getClass()
+					.getAnnotation(CallbackComponent.class);
+			if (callbackAnnotation != null) {
+				FXUtil.setPrivateMemberValue(AComponent.class, component,
+						"id", callbackAnnotation.id());
+				FXUtil.setPrivateMemberValue(AComponent.class, component,
+						"active", callbackAnnotation.active());
+				FXUtil.setPrivateMemberValue(AComponent.class, component,
+						"name", callbackAnnotation.name());
+				this.log("register CallbackComponent with annotations : "
+						+ callbackAnnotation.id());
+			}
+		}
+	}
+
 	@Override
 	public final void unregisterComponent(
 			ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.log("unregister component: " + component.getId());
-		component.setParentId(null);
+		component.initEnv(null, null);
 		this.componentCoordinator.removeComponent(component);
 		if (this.subcomponents.contains(component))
 			this.subcomponents.remove(component);
@@ -206,35 +237,6 @@ public abstract class AFXPerspective implements
 	}
 
 
-	@Override
-	public boolean isActive() {
-		return this.active;
-	}
-
-	@Override
-	public boolean isStarted() {
-		return this.isActivated;
-	}
-
-	@Override
-	public final void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public final void setId(String id) {
-		this.id = id;
-	}
-
-	@Override
-	public final void setActive(boolean active) {
-		this.active = active;
-	}
-
-	@Override
-	public final void setStarted(boolean isActive) {
-		this.isActivated = isActive;
-	}
 
 	@Override
 	public final void setSubcomponents(
@@ -243,16 +245,6 @@ public abstract class AFXPerspective implements
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final void setMessageQueue(
-			BlockingQueue<IAction<Event, Object>> messageQueue) {
-		this.globalMessageQueue = messageQueue;
-	}
-
-	
 	private void log(final String message) {
 		if (this.logger.isLoggable(Level.FINE)) {
 			this.logger.fine(">> " + message);
@@ -283,42 +275,11 @@ public abstract class AFXPerspective implements
 		return this.perspectiveLayout;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			Object message) {
-		final FXAction action = new FXAction(this.id);
-		action.setMessage(message);
-		return new FXActionListener(action, this.globalMessageQueue);
-	}
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			String targetId, Object message) {
-		final FXAction action = new FXAction(this.id);
-		action.addMessage(targetId, message);
-		return new FXActionListener(action, this.globalMessageQueue);
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public String getId() {
-		return this.id;
-	}
-
 	@Override
 	public final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
 		return this.componentDelegateQueue;
 	}
-	
+
 	@Override
 	public final BlockingQueue<IDelegateDTO<Event, Object>> getMessageDelegateQueue() {
 		return this.messageDelegateQueue;
@@ -329,8 +290,6 @@ public abstract class AFXPerspective implements
 		return this.componentCoordinator.getMessageQueue();
 
 	}
-	
-	
 
 	@Override
 	public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {

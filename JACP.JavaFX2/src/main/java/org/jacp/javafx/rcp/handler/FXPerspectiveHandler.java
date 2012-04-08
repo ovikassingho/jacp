@@ -45,9 +45,9 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
-import org.jacp.javafx.rcp.util.FXComponentInitWorker;
-import org.jacp.javafx.rcp.util.FXComponentReplaceWorker;
-import org.jacp.javafx.rcp.util.StateComponentRunWorker;
+import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
+import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
+import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
 
 /**
  * Handles initialization an reassignment of components in perspective

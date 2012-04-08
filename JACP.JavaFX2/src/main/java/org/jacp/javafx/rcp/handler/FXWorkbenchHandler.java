@@ -34,15 +34,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.IExtendedComponent;
-import org.jacp.api.component.ILayoutAbleComponent;
+import org.jacp.api.component.IPerspective;
+import org.jacp.api.component.IPerspectiveView;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.component.IVComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -172,7 +172,7 @@ public class FXWorkbenchHandler
 	 * @param editor
 	 */
 	private void addComponentByType(
-			final IVComponent<Node, EventHandler<Event>, Event, Object> component,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IPerspectiveLayout<? extends Node, Node> layout) {
 		final Node validContainer = layout.getTargetLayoutComponents().get(
 				component.getExecutionTarget());
@@ -241,8 +241,8 @@ public class FXWorkbenchHandler
 							.getMenu(), this.getWorkbenchLayout()
 							.getRegisteredToolbars(), this.getWorkbenchLayout()
 							.getGlassPane()));
-			if (perspective instanceof ILayoutAbleComponent) {
-				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((ILayoutAbleComponent<Node>) perspective)
+			if (perspective instanceof IPerspectiveView) {
+				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((IPerspectiveView<Node,EventHandler<Event>, Event, Object>) perspective)
 						.getIPerspectiveLayout();
 				perspective.postInit(new FXPerspectiveHandler(this.launcher,
 						tmpLayout, perspectiveLayout, perspective

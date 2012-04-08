@@ -33,10 +33,10 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.util.FXUtil;
 /**

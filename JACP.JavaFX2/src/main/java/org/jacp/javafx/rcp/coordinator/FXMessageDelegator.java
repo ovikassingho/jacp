@@ -35,9 +35,9 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**

@@ -27,7 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.IVComponent;
+import org.jacp.api.component.IComponentView;
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
@@ -37,8 +37,8 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
  * 
  * @author Andy Moncsek
  */
-public abstract class AFXComponent extends AFXSubComponent implements
-		IVComponent<Node, EventHandler<Event>, Event, Object> {
+public abstract class AFXComponent extends ASubComponent implements
+		IComponentView<Node, EventHandler<Event>, Event, Object> {
 
 	private Node root;
 
