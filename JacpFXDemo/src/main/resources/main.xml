@@ -29,38 +29,11 @@
 	</bean>
 
 
-	<bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent">
-		<property name="name" value="contactDemoTreeView" />
-		<property name="active" value="true" />
-		<property name="id" value="id001" />
-		<property name="executionTarget" value="PleftMenu" />
-	</bean>
-	<bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent">
-		<property name="name" value="contactDemoTableView" />
-		<property name="active" value="true" />
-		<property name="id" value="id002" />
-		<property name="executionTarget" value="PmainContentTop" />
-	</bean>
-	<bean id="contactChartView" class="org.jacp.demo.components.ContactChartViewComponent">
-		<property name="name" value="contactDemoChartView" />
-		<property name="active" value="true" />
-		<property name="id" value="id003" />
-		<property name="executionTarget" value="PmainContentBottom" />
-	</bean>
-	<bean id="coordinatorCallback" class="org.jacp.demo.callbacks.CoordinatorCallback" scope="prototype">
-		<property name="name" value="coordinatorCallback" />
-		<property name="active" value="true" />
-		<property name="id" value="id004" />
-	</bean>
-	<bean id="creatorCallback" class="org.jacp.demo.callbacks.CreatorCallback"
-		scope="prototype">
-		<property name="name" value="creatorCallback" />
-		<property name="active" value="true" />
-		<property name="id" value="id005" />
-	</bean>
-	<bean id="analyticsCallback" class="org.jacp.demo.callbacks.AnalyticsCallback">
-		<property name="name" value="analyticsCallback" />
-		<property name="active" value="true" />
-		<property name="id" value="id006" />
-	</bean>
+	<bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent"/>
+	<bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent"/>
+	<bean id="contactChartView" class="org.jacp.demo.components.ContactChartViewComponent"/>
+	
+	<bean id="coordinatorCallback" class="org.jacp.demo.callbacks.CoordinatorCallback" />
+	<bean id="creatorCallback" class="org.jacp.demo.callbacks.CreatorCallback"/>
+	<bean id="analyticsCallback" class="org.jacp.demo.callbacks.AnalyticsCallback"/>
 </beans>

@@ -22,10 +22,11 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
-import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 
 /**
  * The coordinatorCallback splits the amount of contacts in to chunks and sends
@@ -34,6 +35,7 @@ import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
+@CallbackComponent(id = "id004", name = "coordinatorCallback", active = false)
 public class CoordinatorCallback extends AStatelessCallbackComponent {
 
 	@Override

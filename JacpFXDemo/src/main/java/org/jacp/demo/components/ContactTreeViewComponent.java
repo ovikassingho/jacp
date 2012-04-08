@@ -42,14 +42,15 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.Component;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.enums.BarChartAction;
-import org.jacp.javafx2.rcp.component.AFX2Component;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.components.optionPane.JACPModalDialog;
-import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
-import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
+import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
+import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.springframework.util.StringUtils;
 
 /**
@@ -59,7 +60,8 @@ import org.springframework.util.StringUtils;
  * @author Andy Moncsek
  * 			Patrick Symmangk
  */
-public class ContactTreeViewComponent extends AFX2Component {
+@Component(defaultExecutionTarget = "PleftMenu", id = "id001", name = "contactDemoTreeView", active = true)
+public class ContactTreeViewComponent extends AFXComponent {
 	private ScrollPane pane;
 	private ObservableList<Contact> contactList;
 
@@ -95,7 +97,7 @@ public class ContactTreeViewComponent extends AFX2Component {
 	/**
 	 * handle menu an toolbar entries on component start up
 	 */
-	public void onStartComponent(final FX2ComponentLayout layout) {
+	public void onStartComponent(final FXComponentLayout layout) {
 		final JACPToolBar north = (JACPToolBar) layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
 		final Button add = new Button("add category");
@@ -167,7 +169,7 @@ public class ContactTreeViewComponent extends AFX2Component {
 	}
 
 	@Override
-	public void onTearDownComponent(final FX2ComponentLayout layout) {
+	public void onTearDownComponent(final FXComponentLayout layout) {
 
 	}
 

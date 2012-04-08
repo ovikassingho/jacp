@@ -29,15 +29,16 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.Component;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
-import org.jacp.javafx2.rcp.component.AFX2Component;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.components.optionPane.JACPDialogButton;
-import org.jacp.javafx2.rcp.components.optionPane.JACPDialogUtil;
-import org.jacp.javafx2.rcp.components.optionPane.JACPOptionPane;
-import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
+import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.components.optionPane.JACPDialogButton;
+import org.jacp.javafx.rcp.components.optionPane.JACPDialogUtil;
+import org.jacp.javafx.rcp.components.optionPane.JACPOptionPane;
+import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
  * The ContactTableViewComponent create the table view for an category
@@ -45,7 +46,8 @@ import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-public class ContactTableViewComponent extends AFX2Component {
+@Component(defaultExecutionTarget = "PmainContentTop", id = "id002", name = "contactDemoTableView", active = true)
+public class ContactTableViewComponent extends AFXComponent {
 
 	private final Map<String, ContactView> all = new HashMap<String, ContactView>();
 	private ContactView current;
@@ -187,12 +189,12 @@ public class ContactTableViewComponent extends AFX2Component {
 	}
 
 	@Override
-	public void onStartComponent(final FX2ComponentLayout layout) {
+	public void onStartComponent(final FXComponentLayout layout) {
 
 	}
 
 	@Override
-	public void onTearDownComponent(final FX2ComponentLayout layout) {
+	public void onTearDownComponent(final FXComponentLayout layout) {
 
 	}
 

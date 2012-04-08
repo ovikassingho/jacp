@@ -34,13 +34,14 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.Component;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.enums.BarChartAction;
 import org.jacp.demo.main.Util;
-import org.jacp.javafx2.rcp.component.AFX2Component;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
+import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
  * The chart view displays a faked consumer chart for each contact; The chart
@@ -49,7 +50,8 @@ import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
  * @author Andy Moncsek
  * 			Patrick Symmangk
  */
-public class ContactChartViewComponent extends AFX2Component {
+@Component(defaultExecutionTarget = "PmainContentBottom", id = "id003", name = "contactDemoChartView", active = true)
+public class ContactChartViewComponent extends AFXComponent {
 	private GridPane root;
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
@@ -162,12 +164,12 @@ public class ContactChartViewComponent extends AFX2Component {
 	}
 
 	@Override
-	public void onStartComponent(final FX2ComponentLayout layout) {
+	public void onStartComponent(final FXComponentLayout layout) {
 
 	}
 
 	@Override
-	public void onTearDownComponent(final FX2ComponentLayout layout) {
+	public void onTearDownComponent(final FXComponentLayout layout) {
 
 	}
 

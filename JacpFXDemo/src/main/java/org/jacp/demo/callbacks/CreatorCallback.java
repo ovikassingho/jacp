@@ -22,14 +22,16 @@ import java.util.Random;
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
-import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 /**
  * The CreatorCallback creates contact data with random numbers 
  * @author Andy Moncsek
  *
  */
+@CallbackComponent(id = "id005", name = "creatorCallback", active = false)
 public class CreatorCallback extends AStatelessCallbackComponent {
 	private final Random rnd = new Random();
 

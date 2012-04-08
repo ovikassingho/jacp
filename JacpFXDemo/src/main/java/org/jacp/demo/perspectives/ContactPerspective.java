@@ -31,11 +31,11 @@ import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
-import org.jacp.javafx2.rcp.components.toolBar.JACPToolBar;
-import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
-import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
+import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.perspective.AFXPerspective;
+import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
  * Contact perspective; here you define the basic layout for your application
@@ -44,7 +44,7 @@ import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-public class ContactPerspective extends AFX2Perspective {
+public class ContactPerspective extends AFXPerspective {
 
 	private String topId = "PmainContentTop";
 	private String bottomId = "PmainContentBottom";
@@ -53,7 +53,7 @@ public class ContactPerspective extends AFX2Perspective {
 	/**
 	 * create buttons in tool bars; menu entries  
 	 */
-	public void onStartPerspective(final FX2ComponentLayout layout) {
+	public void onStartPerspective(final FXComponentLayout layout) {
 		// create button in toolbar; button should switch top and bottom id's
 		final JACPToolBar north = (JACPToolBar) layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
@@ -75,13 +75,13 @@ public class ContactPerspective extends AFX2Perspective {
 	}
 
 	@Override
-	public void onTearDownPerspective(final FX2ComponentLayout layout) {
+	public void onTearDownPerspective(final FXComponentLayout layout) {
 
 	}
 
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action,
-			final FX2PerspectiveLayout perspectiveLayout) {
+			final FXPerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			this.createPerspectiveLayout(perspectiveLayout);
 		} else if (action.getLastMessage().equals("switch")) {
@@ -93,7 +93,7 @@ public class ContactPerspective extends AFX2Perspective {
 	}
 
 	private void createPerspectiveLayout(
-			final FX2PerspectiveLayout perspectiveLayout) {
+			final FXPerspectiveLayout perspectiveLayout) {
 
 		final BorderPane mainLayout = new BorderPane();
 		// create left button menu
