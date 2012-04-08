@@ -22,9 +22,6 @@
  ************************************************************************/
 package org.jacp.api.component;
 
-import java.util.concurrent.BlockingQueue;
-
-import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 
 /**
@@ -68,6 +65,7 @@ public interface IComponent<L, A, M> {
 	 * 
 	 * @param id
 	 */
+	@Deprecated
 	void setId(final String id);
 
 	/**
@@ -84,13 +82,6 @@ public interface IComponent<L, A, M> {
 	 */
 	void setActive(boolean active);
 
-	/**
-	 * Set if component was activated, can occur if message was send before
-	 * "init" message arrived
-	 * 
-	 * @param isActive
-	 */
-	void setStarted(boolean isActive);
 
 	/**
 	 * Get if component was activated, can occur if message was send before
@@ -112,14 +103,10 @@ public interface IComponent<L, A, M> {
 	 * 
 	 * @param name
 	 */
+	@Deprecated
 	void setName(String name);
 
-	/**
-	 * Set message queue to component
-	 * 
-	 * @param messageQueue
-	 */
-	void setMessageQueue(final BlockingQueue<IAction<A, M>> messageQueue);
+
 	
 
 }

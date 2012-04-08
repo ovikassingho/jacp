@@ -38,7 +38,7 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IVComponent<C, L, A, M> extends IExtendedComponent<C>,
+public interface IComponentView<C, L, A, M> extends IExtendedComponent<C>,
 		ISubComponent<L, A, M> {
 
 	/**
