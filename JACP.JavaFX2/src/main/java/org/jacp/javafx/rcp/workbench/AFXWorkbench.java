@@ -59,7 +59,6 @@ import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
-import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
