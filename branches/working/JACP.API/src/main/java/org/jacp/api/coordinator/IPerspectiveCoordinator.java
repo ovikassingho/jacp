@@ -23,7 +23,7 @@
 package org.jacp.api.coordinator;
 
 
-import org.jacp.api.perspective.IPerspective;
+import org.jacp.api.component.IPerspective;
 
 /**
  * Notifies perspectives and components included in workbench.

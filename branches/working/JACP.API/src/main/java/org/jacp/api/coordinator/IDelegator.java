@@ -24,8 +24,8 @@ package org.jacp.api.coordinator;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.api.perspective.IPerspective;
 
 /**
  * Basic delegate interface

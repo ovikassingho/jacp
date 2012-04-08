@@ -1,3 +1,9 @@
+08. Apr. 2012 - amo - removed some setter from IComponent  
+08. Apr. 2012 - amo - IComponentView and IPerspectiveView extracted
+08. Apr. 2012 - amo - Component and CallBackComponent annotiation added
+06. Apr. 2012 - amo - renamed IVComponent to IVisibleComponent
+06. Apr. 2012 - amo - renamed iLayoutAble to IVisibleComponent
+06. Apr. 2012 - amo - removed iMapReduceComponente... out of scope currently 
 02. Apr. 2012 - amo -  updated to version number 1.05
 01. Apr. 2012 - amo - renamed ICallbackComponent to IStatefulComponent
 01. Apr. 2012 - amo - renamed IStateLess* to IStateless* 

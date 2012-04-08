@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IMapReudce.java]
+ * [ILayoutAbleComponent.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -22,13 +22,15 @@
  ************************************************************************/
 package org.jacp.api.component;
 
-import org.jacp.api.action.IAction;
+import org.jacp.api.componentLayout.IPerspectiveLayout;
 
 /**
- * Defines the interface for a map/reduce instance.
+ * This interface defines perspective components with visible ui.
  * 
  * @author Andy Moncsek
  * 
+ * @param <C>
+ *            defines the base component where others extend from
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -36,19 +38,13 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IMapReudce<L, A, M> extends IComponent<L, A, M> {
+public interface IPerspectiveView<C, L, A, M> extends IPerspective<L, A, M>,
+		IExtendedComponent<C> {
 	/**
-	 * The reduce method.
-	 * @return the value of reduce state
-	 */
-	<C> C reduce(final IAction<A, M> action);
-
-	/**
-	 * The handle method.
+	 * Returns layout dto.
 	 * 
-	 * @param <C>
-	 * @param action
-	 * @return the value of map state (a map)
+	 * @return an IPerspectiveLayout instance to define basic layout stuff for
+	 *         perspective
 	 */
-	<C> C map(final IAction<A, M> action);
+	IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
 }

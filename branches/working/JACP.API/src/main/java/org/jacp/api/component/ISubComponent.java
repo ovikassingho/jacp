@@ -22,6 +22,8 @@
  ************************************************************************/
 package org.jacp.api.component;
 
+import java.util.concurrent.BlockingQueue;
+
 import org.jacp.api.action.IAction;
 
 /**
@@ -82,19 +84,15 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 	boolean isBlocked();
 
 	/**
-	 * Block component when run in thread.
-	 * 
-	 * @param blocked
-	 */
-	void setBlocked(final boolean blocked);
-	/**
-	 * set the id of parent component
-	 * @param parentId
-	 */
-	void setParentId(final String parentId);
-	/**
 	 * returns the id of parent component
 	 * @return the parent id
 	 */
 	String getParentId();
+	
+	/**
+	 * Set parentId and global message queue to component
+	 * 
+	 * @param messageQueue
+	 */
+	void initEnv(final String parentId, final BlockingQueue<IAction<A, M>> messageQueue);
 }
