@@ -34,6 +34,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * represents a abstract stateless background component
@@ -42,7 +43,7 @@ import org.jacp.api.component.IStatelessCallabackComponent;
  * 
  */
 
-public abstract class AStatelessCallbackComponent extends AFXSubComponent
+public abstract class AStatelessCallbackComponent extends ASubComponent
 		implements
 		IStatelessCallabackComponent<EventHandler<Event>, Event, Object> {
 	public static int MAX_INCTANCE_COUNT;
@@ -72,8 +73,6 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 		this.handleComponentTarget = componentTargetId;
 	}
 
-	
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public final <C> C handle(final IAction<Event, Object> action) {
@@ -87,12 +86,13 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 		try {
 			final AStatelessCallbackComponent comp = (AStatelessCallbackComponent) super
 					.clone();
-			comp.setId(this.getId());
-			comp.setActive(this.isActive());
-			comp.setName(this.getName());
-			comp.setExecutionTarget(this.getExecutionTarget());
+			FXUtil.setPrivateMemberValue(AComponent.class,comp, "id", this.getId());
+			FXUtil.setPrivateMemberValue(AComponent.class,comp, "active", this.isActive());
+			FXUtil.setPrivateMemberValue(AComponent.class,comp, "name", this.getName());
+			FXUtil.setPrivateMemberValue(ASubComponent.class,comp, "executionTarget",
+					this.getExecutionTarget());
 			comp.setHandleTarget(this.handleComponentTarget);
-			comp.setMessageQueue(this.globalMessageQueue);
+			comp.initEnv(this.getParentId(), this.globalMessageQueue);
 			return comp;
 		} catch (final CloneNotSupportedException e) {
 			e.printStackTrace();
@@ -108,12 +108,13 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 	 */
 	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
-		comp.setId(this.getId());
-		comp.setActive(this.isActive());
-		comp.setName(this.getName());
-		comp.setExecutionTarget(this.getExecutionTarget());
+		FXUtil.setPrivateMemberValue(AComponent.class,comp, "id", this.getId());
+		FXUtil.setPrivateMemberValue(AComponent.class,comp, "active", this.isActive());
+		FXUtil.setPrivateMemberValue(AComponent.class,comp, "name", this.getName());
+		FXUtil.setPrivateMemberValue(ASubComponent.class,comp, "executionTarget",
+				this.getExecutionTarget());
 		comp.setHandleTarget(this.handleComponentTarget);
-		comp.setMessageQueue(this.globalMessageQueue);
+		comp.initEnv(this.getParentId(), this.globalMessageQueue);
 		return comp;
 	}
 
@@ -121,6 +122,7 @@ public abstract class AStatelessCallbackComponent extends AFXSubComponent
 	public List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
 		return this.componentInstances;
 	}
+
 	@Override
 	public AtomicInteger getThreadCounter() {
 		return this.threadCount;

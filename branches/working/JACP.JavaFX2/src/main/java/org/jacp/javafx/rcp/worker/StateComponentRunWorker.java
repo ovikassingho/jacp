@@ -20,10 +20,11 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.worker;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -31,6 +32,8 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * this class handles running stateful background components
@@ -56,7 +59,7 @@ public class StateComponentRunWorker
 			throws Exception {
 		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
-			comp.setBlocked(true);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked", new AtomicBoolean(true));
 			while (comp.hasIncomingMessage()) {
 				final IAction<Event, Object> myAction = comp
 						.getNextIncomingMessage();
@@ -67,7 +70,7 @@ public class StateComponentRunWorker
 				this.delegateReturnValue(comp, targetId, value, myAction);
 				this.checkAndHandleTargetChange(comp, targetCurrent);
 			}
-			comp.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked", new AtomicBoolean(false));
 		}
 		return comp;
 	}
@@ -99,7 +102,7 @@ public class StateComponentRunWorker
 			// e.printStackTrace();
 		} finally {
 			// release lock
-			this.component.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, "blocked", new AtomicBoolean(false));
 		}
 	}
 }

@@ -1,3 +1,7 @@
+08. Apr. 2012 - amo -  AFXPerspective extends from AComponent
+08. Apr. 2012 - amo -  AFXComponent extends from ASubComponent
+08. Apr. 2012 - amo -  AComponent and ASubComponent extracted
+08. Apr. 2012 - amo -  Worker classes moved to worker package
 06. Apr. 2012 - amo -  fixed todo; find responsible component when no correct target found, try to scan all perspectives for correct rootPerspective,; this can be nessesary when subcomponent moves to an other perspective and a second component sends messages to this component
 04. Apr. 2012 - amo -  fixed bug with reassignment of components in perspective when switching between perspectives
 02. Apr. 2012 - amo -  updated to version number 1.05

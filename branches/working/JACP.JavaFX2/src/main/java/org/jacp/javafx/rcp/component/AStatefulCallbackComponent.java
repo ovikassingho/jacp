@@ -35,7 +35,7 @@ import org.jacp.api.component.ICallbackComponent;
  * @author Andy Moncsek
  *  
  */
-public abstract class AStatefulCallbackComponent extends AFXSubComponent implements
+public abstract class AStatefulCallbackComponent extends ASubComponent implements
 ICallbackComponent<EventHandler<Event>, Event, Object> {
 
 	private volatile String handleComponentTarget;

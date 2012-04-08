@@ -31,9 +31,9 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.api.perspective.IPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
@@ -146,14 +146,13 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	@Override
 	public void addPerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.setMessageQueue(this.getMessageQueue());
+
 		this.perspectives.add(perspective);
 	}
 
 	@Override
 	public void removePerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		perspective.setMessageQueue(null);
 		this.perspectives.remove(perspective);
 	}
 

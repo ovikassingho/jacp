@@ -23,13 +23,16 @@
 package org.jacp.javafx.rcp.scheduler;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.javafx.rcp.util.AFXComponentWorker;
+import org.jacp.javafx.rcp.component.ASubComponent;
+import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.worker.AFXComponentWorker;
 
 /**
  * Component worker to run instances of a stateless component in a worker
@@ -53,7 +56,7 @@ public class StateLessComponentRunWorker
 			throws Exception {
 		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
-			comp.setBlocked(true);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked", new AtomicBoolean(true));
 			while (comp.hasIncomingMessage()) {
 				final IAction<Event, Object> myAction = comp
 						.getNextIncomingMessage();
@@ -62,7 +65,7 @@ public class StateLessComponentRunWorker
 				final String targetId = comp.getHandleTargetAndClear();
 				this.delegateReturnValue(comp, targetId, value, myAction);
 			}
-			comp.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked", new AtomicBoolean(false));
 		}
 		return comp;
 	}
@@ -81,7 +84,7 @@ public class StateLessComponentRunWorker
 			// queue
 		} finally {
 			// release lock
-			this.component.setBlocked(false);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
 		}
 
 	}

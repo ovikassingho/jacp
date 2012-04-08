@@ -30,10 +30,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.action.FXActionListener;
+
 
 /**
  * the AFXSubComponent is the basic component for all components
@@ -41,97 +39,28 @@ import org.jacp.javafx.rcp.action.FXActionListener;
  * @author Andy Moncsek
  * 
  */
-public abstract class AFXSubComponent implements
+public abstract class ASubComponent extends AComponent implements
 		ISubComponent<EventHandler<Event>, Event, Object> {
 
-	private volatile String id;
+
 	private volatile String executionTarget;
-	private volatile String name;
+
 	private volatile String parentId;
-	private volatile boolean active;
-	private volatile boolean started = false;
+
 	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
-	protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+
 	protected volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
 
 	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			Object message) {
-		return new FXActionListener(new FXAction(this.id, message),
-				this.globalMessageQueue);
-	}
-
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			String targetId, Object message) {
-		return new FXActionListener(new FXAction(this.id, targetId, message),
-				this.globalMessageQueue);
-	}
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final String getId() {
-		if (this.id == null) {
-			throw new UnsupportedOperationException("No id set");
-		}
-		return this.id;
-
-	}
-
-	@Override
-	// TODO remove
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	@Override
-	public final boolean isActive() {
-		return this.active;
-	}
-
-	@Override
-	public void setActive(boolean active) {
-		this.active = active;
-
-	}
-
-	@Override
-	// TODO remove
-	public void setStarted(boolean isActive) {
-		this.started = isActive;
-
-	}
-
-	@Override
-	public final boolean isStarted() {
-		return this.started;
-	}
-
-	@Override
-	public final String getName() {
-		if (this.name == null) {
-			throw new UnsupportedOperationException("No name set");
-		}
-		return this.name;
-	}
-
-	@Override
-	// TODO remove
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	// TODO remove
-	public void setMessageQueue(
+	public final void initEnv(final String parentId,
 			BlockingQueue<IAction<Event, Object>> messageQueue) {
+		this.parentId = parentId;
 		this.globalMessageQueue = messageQueue;
 
 	}
 
-		@Override
+	@Override
 	public final String getExecutionTarget() {
 		return this.executionTarget;
 	}
@@ -174,19 +103,7 @@ public abstract class AFXSubComponent implements
 		return this.blocked.get();
 	}
 
-	@Override
-	// TODO remove
-	public void setBlocked(boolean blocked) {
-		this.blocked.set(blocked);
-	}
-
-	@Override
-	// TODO remove
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-
-	}
-
+	
 	@Override
 	public final String getParentId() {
 		return this.parentId;

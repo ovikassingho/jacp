@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -36,8 +37,8 @@ import javafx.scene.Parent;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.perspective.IPerspective;
 
 /**
  * Util class with helper methods
@@ -99,6 +100,30 @@ public class FXUtil {
 
 		return null;
 
+	}
+
+	public static void setPrivateMemberValue(Class superClass, Object object,
+			String member, Object value) {
+		try {
+
+			final Field privateStringField = superClass
+					.getDeclaredField(member);
+			privateStringField.setAccessible(true);
+			privateStringField.set(object, value);
+
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
