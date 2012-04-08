@@ -102,7 +102,7 @@ public class FXUtil {
 
 	}
 
-	public static void setPrivateMemberValue(Class superClass, Object object,
+	public static void setPrivateMemberValue(Class<?> superClass, Object object,
 			String member, Object value) {
 		try {
 
