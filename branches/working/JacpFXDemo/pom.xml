@@ -108,7 +108,7 @@
 					<dependency>
 						<groupId>com.oracle</groupId>
 						<artifactId>ant-javafx</artifactId>
-						<version>2.0</version>
+						<version>2.1</version>
 						<scope>compile</scope>
 					</dependency>
 				</dependencies>
@@ -120,29 +120,29 @@
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>javafx-runtime</artifactId>
-			<version>2.0</version>
+			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/JACP.API-1.0.jar</systemPath>
+			<version>1.05</version>
+<!-- 			<scope>system</scope>
+			<systemPath>${basedir}/lib/JACP.API-1.0.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX2</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/JACP.JavaFX2-1.0.jar</systemPath>
+			<version>1.05</version>
+<!-- 			<scope>system</scope>
+			<systemPath>${basedir}/lib/JACP.JavaFX2-1.0.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX2Spring</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/JACP.JavaFX2Spring-1.0.jar</systemPath>
+			<version>1.05</version>
+<!-- 			<scope>system</scope>
+			<systemPath>${basedir}/lib/JACP.JavaFX2Spring-1.0.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>

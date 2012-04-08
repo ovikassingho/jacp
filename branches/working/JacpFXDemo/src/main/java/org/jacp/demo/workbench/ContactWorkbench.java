@@ -29,7 +29,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -45,9 +44,10 @@ import javafx.stage.StageStyle;
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.components.optionPane.JACPModalDialog;
-import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
+import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
+import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 
 /**
  * Workbench for contact demo with JacpFX (JavaFX2 and Spring). The workbench is
@@ -56,7 +56,7 @@ import org.jacp.javafx2.rcp.workbench.AFX2Workbench;
  * @author Andy Moncsek
  * 
  */
-public class ContactWorkbench extends AFX2Workbench {
+public class ContactWorkbench extends AFXWorkbench {
 
 	private final String projectURL = "http://code.google.com/p/jacp/wiki/Documentation";
 	private final String message = "JacpFX is a Framework to create Rich Clients in MVC style with JavaFX 2, Spring and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. More Info see: ";
@@ -71,8 +71,8 @@ public class ContactWorkbench extends AFX2Workbench {
 	}
 
 	@Override
-	public void postHandle(final FX2ComponentLayout layout) {
-		final MenuBar menu = layout.getMenu();
+	public void postHandle(final FXComponentLayout layout) {
+		final JACPMenuBar menu = layout.getMenu();
 		final Menu menuFile = new Menu("File");
 		menuFile.getItems().addAll(createExitEntry(), createInfoEntry());
 		menu.getMenus().addAll(menuFile);

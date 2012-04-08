@@ -27,10 +27,12 @@ import javafx.scene.chart.XYChart;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
-import org.jacp.javafx2.rcp.component.ACallbackComponent;
+import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
+
 
 /**
  * The AnalyticsCallbac components creates chart data (random data)
@@ -38,7 +40,8 @@ import org.jacp.javafx2.rcp.component.ACallbackComponent;
  * @author Andy Moncsek
  * 
  */
-public class AnalyticsCallback extends ACallbackComponent {
+@CallbackComponent(id = "id006", name = "analyticsCallback", active = false)
+public class AnalyticsCallback extends AStatefulCallbackComponent {
 	private final Random rnd = new Random();
 
 	@Override
