@@ -30,6 +30,7 @@ import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
@@ -44,6 +45,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
+@Perspective(id = "id01", name = "contactPerspective")
 public class ContactPerspective extends AFXPerspective {
 
 	private String topId = "PmainContentTop";
