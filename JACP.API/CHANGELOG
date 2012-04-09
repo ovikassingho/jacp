@@ -1,3 +1,4 @@
+09. Apr. 2012 - amo - add perspective annotation
 08. Apr. 2012 - amo - removed some setter from IComponent  
 08. Apr. 2012 - amo - IComponentView and IPerspectiveView extracted
 08. Apr. 2012 - amo - Component and CallBackComponent annotiation added
