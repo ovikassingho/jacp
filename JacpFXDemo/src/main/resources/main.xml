@@ -13,9 +13,6 @@
 	</bean>
 
 	<bean id="contactPerspective" class="org.jacp.demo.perspectives.ContactPerspective">
-		<property name="name" value="contactPerspective" />
-		<property name="id" value="id01" />
-		<property name="active" value="true" />
 		<property name="subcomponents">
 			<list>
 				<ref bean="contactTreeView" />
