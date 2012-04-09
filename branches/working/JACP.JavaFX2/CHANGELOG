@@ -1,3 +1,4 @@
+09. Apr. 2012 - amo -  add annotation handling in workbench for perspectives
 08. Apr. 2012 - amo -  AFXPerspective extends from AComponent
 08. Apr. 2012 - amo -  AFXComponent extends from ASubComponent
 08. Apr. 2012 - amo -  AComponent and ASubComponent extracted

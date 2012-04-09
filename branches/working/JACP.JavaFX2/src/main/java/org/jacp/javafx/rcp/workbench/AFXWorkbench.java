@@ -47,6 +47,7 @@ import javafx.stage.WindowEvent;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.Perspective;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -59,6 +60,7 @@ import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
@@ -151,8 +153,8 @@ public abstract class AFXWorkbench
 		for (int i = 0; i < perspectivesTmp.size(); i++) {
 			final IPerspective<EventHandler<Event>, Event, Object> perspective = perspectivesTmp
 					.get(i);
-			this.log("3.4.1: register component: " + perspective.getName());
 			this.registerComponent(perspective);
+			this.log("3.4.1: register component: " + perspective.getName());
 			// TODO what if component removed an initialized later
 			// again?
 			this.log("3.4.2: create perspective menu");
@@ -236,11 +238,35 @@ public abstract class AFXWorkbench
 	 */
 	public final void registerComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+
+		handleMetaAnnotation(perspective);
 		perspective.init(this.componentDelegator.getComponentDelegateQueue(),
-				this.messageDelegator.getMessageDelegateQueue(),this.perspectiveCoordinator.getMessageQueue());
+				this.messageDelegator.getMessageDelegateQueue(),
+				this.perspectiveCoordinator.getMessageQueue());
 		this.perspectiveCoordinator.addPerspective(perspective);
 		this.componentDelegator.addPerspective(perspective);
 		this.messageDelegator.addPerspective(perspective);
+	}
+
+	/**
+	 * set meta attributes defined in annotations
+	 * 
+	 * @param component
+	 */
+	private void handleMetaAnnotation(
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		final Perspective perspectiveAnnotation = perspective.getClass()
+				.getAnnotation(Perspective.class);
+		if (perspectiveAnnotation != null) {
+			FXUtil.setPrivateMemberValue(AComponent.class, perspective, "id",
+					perspectiveAnnotation.id());
+			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
+					"active", perspectiveAnnotation.active());
+			FXUtil.setPrivateMemberValue(AComponent.class, perspective, "name",
+					perspectiveAnnotation.name());
+			this.log("register perspective with annotations : "
+					+ perspectiveAnnotation.id());
+		}
 	}
 
 	@Override
@@ -304,7 +330,7 @@ public abstract class AFXWorkbench
 		int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 
 		// the top most pane is a Stackpane
-		
+
 		BorderPane top = new BorderPane();
 		StackPane absoluteRoot = new StackPane();
 
