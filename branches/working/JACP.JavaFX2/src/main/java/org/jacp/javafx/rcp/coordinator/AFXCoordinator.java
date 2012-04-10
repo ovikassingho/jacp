@@ -22,7 +22,6 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -52,7 +51,7 @@ public abstract class AFXCoordinator extends Thread implements
 	public final void run() {
 		while (!Thread.interrupted()) {
 			this.log(" observer thread size" + this.messages.size());
-			
+
 			IAction<Event, Object> action = null;
 			try {
 				action = this.messages.take();
@@ -67,28 +66,25 @@ public abstract class AFXCoordinator extends Thread implements
 			this.log(" observer thread DONE");
 		}
 	}
-	
+
 	/**
 	 * add message to delegate queue
+	 * 
 	 * @param target
 	 * @param action
 	 * @param queue
 	 */
 	protected final void delegateMessageToCorrectPerspective(
-			String target,
-			IAction<Event, Object> action,
-			BlockingQueue<IDelegateDTO<Event, Object>> queue) {
+			final String target, final IAction<Event, Object> action,
+			final BlockingQueue<IDelegateDTO<Event, Object>> queue) {
 		queue.add(new DelegateDTO(target, action));
 	}
 
-
 	@Override
 	public BlockingQueue<IAction<Event, Object>> getMessageQueue() {
-		return messages;
+		return this.messages;
 	}
-	
-	
-	
+
 	protected void log(final String message) {
 		this.logger.fine(message);
 	}

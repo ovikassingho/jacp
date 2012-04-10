@@ -32,38 +32,42 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+
 /**
- * The most abstract component, used to define components as well as perspectives
+ * The most abstract component, used to define components as well as
+ * perspectives
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 
-public class AComponent implements IComponent<EventHandler<Event>, Event, Object>{
+public class AComponent implements
+		IComponent<EventHandler<Event>, Event, Object> {
 	protected volatile String id;
 	private volatile String name;
 	private volatile boolean active;
 	private volatile boolean started = false;
 	protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			Object message) {
+			final Object message) {
 		return new FXActionListener(new FXAction(this.id, message),
 				this.globalMessageQueue);
 	}
 
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			String targetId, Object message) {
+			final String targetId, final Object message) {
 		return new FXActionListener(new FXAction(this.id, targetId, message),
 				this.globalMessageQueue);
 	}
-	
-	private final void checkPolicy(String member, String name) {
-		if(member !=null || started) {
+
+	private final void checkPolicy(final String member, final String name) {
+		if (member != null || this.started) {
 			throw new UnsupportedOperationException(name);
 		}
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -72,14 +76,14 @@ public class AComponent implements IComponent<EventHandler<Event>, Event, Object
 	public final String getId() {
 		if (this.id == null) {
 			throw new UnsupportedOperationException("No id set");
-		} 
+		}
 		return this.id;
 
 	}
 
 	@Override
-	public final void setId(String id) {
-		checkPolicy(this.id,"Do Not Set ID manually");
+	public final void setId(final String id) {
+		this.checkPolicy(this.id, "Do Not Set ID manually");
 		this.id = id;
 	}
 
@@ -89,11 +93,10 @@ public class AComponent implements IComponent<EventHandler<Event>, Event, Object
 	}
 
 	@Override
-	public final void setActive(boolean active) {
+	public final void setActive(final boolean active) {
 		this.active = active;
 
 	}
-	
 
 	@Override
 	public final boolean isStarted() {
@@ -109,8 +112,8 @@ public class AComponent implements IComponent<EventHandler<Event>, Event, Object
 	}
 
 	@Override
-	public final void setName(String name) {		
-		checkPolicy(this.name, "Do Not Set NAME manually");
+	public final void setName(final String name) {
+		this.checkPolicy(this.name, "Do Not Set NAME manually");
 		this.name = name;
 	}
 

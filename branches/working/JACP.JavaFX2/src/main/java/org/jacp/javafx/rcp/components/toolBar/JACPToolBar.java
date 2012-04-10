@@ -36,8 +36,9 @@ import javafx.scene.layout.VBox;
 
 /**
  * The Class JACPToolBar.
+ * 
  * @author Patrick Symmangk
- *
+ * 
  */
 public class JACPToolBar extends ToolBar implements
 		ChangeListener<Orientation>, ListChangeListener<Node> {
@@ -67,47 +68,50 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	public JACPToolBar() {
 		super();
-		getStyleClass().add("jacp-tool-bar");
+		this.getStyleClass().add("jacp-tool-bar");
 
-		orientationProperty().addListener(this);
-		getItems().addListener(this);
-		if (getOrientation() == Orientation.VERTICAL)
-			initVerticalToolBar();
-		else
-			initHorizontalToolBar();
+		this.orientationProperty().addListener(this);
+		this.getItems().addListener(this);
+		if (this.getOrientation() == Orientation.VERTICAL) {
+			this.initVerticalToolBar();
+		} else {
+			this.initHorizontalToolBar();
+		}
 	}
 
 	/**
 	 * Adds the.
-	 *
-	 * @param node the node
+	 * 
+	 * @param node
+	 *            the node
 	 */
-	public void add(Node node) {
+	public void add(final Node node) {
 
-		if (getOrientation() == Orientation.HORIZONTAL) {
+		if (this.getOrientation() == Orientation.HORIZONTAL) {
 			HBox.setMargin(node, new Insets(0, 2, 0, 2));
-			leftButtons.getChildren().add(node);
+			this.leftButtons.getChildren().add(node);
 		} else {
 			VBox.setMargin(node, new Insets(2, 0, 2, 0));
-			topButtons.getChildren().add(node);
+			this.topButtons.getChildren().add(node);
 		}
 
 	}
 
 	/**
 	 * Adds the on end.
-	 *
-	 * @param node the node
+	 * 
+	 * @param node
+	 *            the node
 	 */
-	public void addOnEnd(Node node) {
-		if (getOrientation() == Orientation.HORIZONTAL) {
+	public void addOnEnd(final Node node) {
+		if (this.getOrientation() == Orientation.HORIZONTAL) {
 			HBox.setMargin(node, new Insets(0, 2, 0, 2));
-			rightButtons.getChildren().add(node);
+			this.rightButtons.getChildren().add(node);
 		} else {
 			VBox.setMargin(node, new Insets(2, 0, 2, 0));
-			bottomButtons.getChildren().add(node);
+			this.bottomButtons.getChildren().add(node);
 		}
-		bind();
+		this.bind();
 	}
 
 	/**
@@ -115,29 +119,29 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	private void initHorizontalToolBar() {
 		/*
-		* ---------------------------------------------------------------
-		* | |left hand side buttons| |spacer| |right hand side buttons| |
-		* ---------------------------------------------------------------
-		*/
-		clear();
+		 * --------------------------------------------------------------- |
+		 * |left hand side buttons| |spacer| |right hand side buttons| |
+		 * ---------------------------------------------------------------
+		 */
+		this.clear();
 		// the main box for the toolbar
 		// holds the lefthand side and the right hand side buttons!
 		// the buttons are separated by a spacer box, that fills the remaining
 		// width
-		horizontalToolBar = new HBox();
+		this.horizontalToolBar = new HBox();
 		// the place for the buttons on the left hand side
-		leftButtons = new HBox();
-		leftButtons.getStyleClass().add("jacp-button-bars");
-		leftButtons.setAlignment(Pos.CENTER_LEFT);
+		this.leftButtons = new HBox();
+		this.leftButtons.getStyleClass().add("jacp-button-bars");
+		this.leftButtons.setAlignment(Pos.CENTER_LEFT);
 		// the spacer that fills the remaining width between the buttons
-		HBox spacer = new HBox();
-		rightButtons = new HBox();
-		rightButtons.setAlignment(Pos.CENTER_RIGHT);
-		rightButtons.getStyleClass().add("jacp-button-bars");
+		final HBox spacer = new HBox();
+		this.rightButtons = new HBox();
+		this.rightButtons.setAlignment(Pos.CENTER_RIGHT);
+		this.rightButtons.getStyleClass().add("jacp-button-bars");
 		HBox.setHgrow(spacer, Priority.ALWAYS);
-		horizontalToolBar.getChildren().addAll(leftButtons, spacer,
-				rightButtons);
-		getItems().add(0, horizontalToolBar);
+		this.horizontalToolBar.getChildren().addAll(this.leftButtons, spacer,
+				this.rightButtons);
+		this.getItems().add(0, this.horizontalToolBar);
 	}
 
 	/**
@@ -145,53 +149,61 @@ public class JACPToolBar extends ToolBar implements
 	 */
 	private void initVerticalToolBar() {
 		/*
-		* ---------------------------------------------------------------
-		* | |left hand side buttons| |spacer| |right hand side buttons| |
-		* ---------------------------------------------------------------
-		*/
-		clear();
+		 * --------------------------------------------------------------- |
+		 * |left hand side buttons| |spacer| |right hand side buttons| |
+		 * ---------------------------------------------------------------
+		 */
+		this.clear();
 		// the main box for the toolbar
 		// holds the lefthand side and the right hand side buttons!
 		// the buttons are separated by a spacer box, that fills the remaining
 		// width
-		verticalToolBar = new VBox();
+		this.verticalToolBar = new VBox();
 
 		// the place for the buttons on the left hand side
-		topButtons = new VBox();
-		topButtons.setAlignment(Pos.CENTER_LEFT);
+		this.topButtons = new VBox();
+		this.topButtons.setAlignment(Pos.CENTER_LEFT);
 		// the spacer that fills the remaining width between the buttons
-		VBox spacer = new VBox();
-		bottomButtons = new VBox();
-		bottomButtons.setAlignment(Pos.CENTER_RIGHT);
+		final VBox spacer = new VBox();
+		this.bottomButtons = new VBox();
+		this.bottomButtons.setAlignment(Pos.CENTER_RIGHT);
 		VBox.setVgrow(spacer, Priority.ALWAYS);
-		verticalToolBar.getChildren().addAll(topButtons, spacer, bottomButtons);
-		getItems().add(0, verticalToolBar);
+		this.verticalToolBar.getChildren().addAll(this.topButtons, spacer,
+				this.bottomButtons);
+		this.getItems().add(0, this.verticalToolBar);
 	}
 
-	/* (non-Javadoc)
-	 * @see javafx.beans.value.ChangeListener#changed(javafx.beans.value.ObservableValue, java.lang.Object, java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javafx.beans.value.ChangeListener#changed(javafx.beans.value.ObservableValue
+	 * , java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public void changed(ObservableValue<? extends Orientation> arg0,
-			Orientation oldOrientation, Orientation newOrientation) {
+	public void changed(final ObservableValue<? extends Orientation> arg0,
+			final Orientation oldOrientation, final Orientation newOrientation) {
 
 		if (newOrientation == Orientation.VERTICAL) {
-			initVerticalToolBar();
+			this.initVerticalToolBar();
 		} else {
-			initHorizontalToolBar();
+			this.initHorizontalToolBar();
 		}
-		unbind();
+		this.unbind();
 
 	}
 
-	/* (non-Javadoc)
-	 * @see javafx.collections.ListChangeListener#onChanged(javafx.collections.ListChangeListener.Change)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.collections.ListChangeListener#onChanged(javafx.collections.
+	 * ListChangeListener.Change)
 	 */
 	@Override
 	public void onChanged(
-			javafx.collections.ListChangeListener.Change<? extends Node> arg0) {
-		if (getItems().size() > 1) {
-			unbind();
+			final javafx.collections.ListChangeListener.Change<? extends Node> arg0) {
+		if (this.getItems().size() > 1) {
+			this.unbind();
 		}
 
 	}
@@ -200,19 +212,19 @@ public class JACPToolBar extends ToolBar implements
 	 * Bind.
 	 */
 	private void bind() {
-		if (getOrientation() == Orientation.HORIZONTAL) {
-			if (horizontalToolBar != null) {
-				horizontalToolBar.maxWidthProperty().bind(
-						widthProperty().subtract(toolbarPadding));
-				horizontalToolBar.minWidthProperty().bind(
-						widthProperty().subtract(toolbarPadding));
+		if (this.getOrientation() == Orientation.HORIZONTAL) {
+			if (this.horizontalToolBar != null) {
+				this.horizontalToolBar.maxWidthProperty().bind(
+						this.widthProperty().subtract(this.toolbarPadding));
+				this.horizontalToolBar.minWidthProperty().bind(
+						this.widthProperty().subtract(this.toolbarPadding));
 			}
 		} else {
-			if (verticalToolBar != null) {
-				verticalToolBar.maxHeightProperty().bind(
-						heightProperty().subtract(toolbarPadding));
-				verticalToolBar.minHeightProperty().bind(
-						heightProperty().subtract(toolbarPadding));
+			if (this.verticalToolBar != null) {
+				this.verticalToolBar.maxHeightProperty().bind(
+						this.heightProperty().subtract(this.toolbarPadding));
+				this.verticalToolBar.minHeightProperty().bind(
+						this.heightProperty().subtract(this.toolbarPadding));
 			}
 		}
 	}
@@ -221,15 +233,15 @@ public class JACPToolBar extends ToolBar implements
 	 * Unbind.
 	 */
 	private void unbind() {
-		if (getOrientation() == Orientation.HORIZONTAL) {
-			if (horizontalToolBar != null) {
-				horizontalToolBar.maxWidthProperty().unbind();
-				horizontalToolBar.minWidthProperty().unbind();
+		if (this.getOrientation() == Orientation.HORIZONTAL) {
+			if (this.horizontalToolBar != null) {
+				this.horizontalToolBar.maxWidthProperty().unbind();
+				this.horizontalToolBar.minWidthProperty().unbind();
 			}
 		} else {
-			if (verticalToolBar != null) {
-				verticalToolBar.maxHeightProperty().unbind();
-				verticalToolBar.minHeightProperty().unbind();
+			if (this.verticalToolBar != null) {
+				this.verticalToolBar.maxHeightProperty().unbind();
+				this.verticalToolBar.minHeightProperty().unbind();
 			}
 		}
 	}
@@ -238,10 +250,10 @@ public class JACPToolBar extends ToolBar implements
 	 * Clear.
 	 */
 	private void clear() {
-		if (!getItems().isEmpty()) {
-			Node node = getItems().get(0);
+		if (!this.getItems().isEmpty()) {
+			final Node node = this.getItems().get(0);
 			if (node instanceof HBox || node instanceof VBox) {
-				getItems().remove(node);
+				this.getItems().remove(node);
 			}
 		}
 	}

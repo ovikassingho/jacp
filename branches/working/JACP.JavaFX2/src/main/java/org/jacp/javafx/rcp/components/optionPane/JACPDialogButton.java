@@ -24,17 +24,17 @@ package org.jacp.javafx.rcp.components.optionPane;
 
 /**
  * The Enum JACPDialogButton.
- *
+ * 
  * @author Patrick Symmangk
  */
 public enum JACPDialogButton {
 
 	/** The OK-Button. */
-	OK(1, "OK"), 
+	OK(1, "OK"),
 	/** The CANCEL-Button. */
-	CANCEL(2, "Cancel"), 
+	CANCEL(2, "Cancel"),
 	/** The YES-Button. */
-	YES(3, "Yes"), 
+	YES(3, "Yes"),
 	/** The NO-Button. */
 	NO(4, "No");
 
@@ -46,19 +46,22 @@ public enum JACPDialogButton {
 
 	/**
 	 * Instantiates a new jACP dialog button.
-	 *
-	 * @param id the id
-	 * @param label the label
+	 * 
+	 * @param id
+	 *            the id
+	 * @param label
+	 *            the label
 	 */
-	JACPDialogButton(int id, String label) {
+	JACPDialogButton(final int id, final String label) {
 		this.id = id;
 		this.label = label;
 	}
 
 	/**
 	 * From id.
-	 *
-	 * @param id the id
+	 * 
+	 * @param id
+	 *            the id
 	 * @return the jACP dialog button
 	 */
 	public static JACPDialogButton fromId(final int id) {
@@ -85,37 +88,39 @@ public enum JACPDialogButton {
 
 	/**
 	 * Gets the id.
-	 *
+	 * 
 	 * @return the id
 	 */
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
 	 * Sets the id.
-	 *
-	 * @param id the new id
+	 * 
+	 * @param id
+	 *            the new id
 	 */
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
 	/**
 	 * Gets the label.
-	 *
+	 * 
 	 * @return the label
 	 */
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 
 	/**
 	 * Sets the label.
-	 *
-	 * @param label the new label
+	 * 
+	 * @param label
+	 *            the new label
 	 */
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 

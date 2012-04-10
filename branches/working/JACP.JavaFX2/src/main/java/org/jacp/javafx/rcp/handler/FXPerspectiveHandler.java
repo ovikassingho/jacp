@@ -34,6 +34,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.OnStart;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
@@ -45,6 +46,7 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
+import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
 import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
 import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
@@ -62,16 +64,17 @@ public class FXPerspectiveHandler
 	public static int MAX_INCTANCE_COUNT;
 	private final FXComponentLayout layout;
 	private final Launcher<?> launcher;
-	private StatelessCallbackScheduler scheduler;
+	private final StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private final ExecutorService executor = Executors
-			.newFixedThreadPool(MAX_INCTANCE_COUNT);
+			.newFixedThreadPool(FXPerspectiveHandler.MAX_INCTANCE_COUNT);
 
 	static {
 		final Runtime runtime = Runtime.getRuntime();
 		final int nrOfProcessors = runtime.availableProcessors();
-		MAX_INCTANCE_COUNT = nrOfProcessors + (nrOfProcessors / 2);
+		FXPerspectiveHandler.MAX_INCTANCE_COUNT = nrOfProcessors
+				+ (nrOfProcessors / 2);
 	}
 
 	public FXPerspectiveHandler(
@@ -83,19 +86,19 @@ public class FXPerspectiveHandler
 		this.launcher = launcher;
 		this.perspectiveLayout = perspectiveLayout;
 		this.componentDelegateQueue = componentDelegateQueue;
-		scheduler = new StatelessCallbackScheduler(this.launcher);
+		this.scheduler = new StatelessCallbackScheduler(this.launcher);
 	}
 
 	@Override
 	public final void initComponent(final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (Platform.isFxApplicationThread()) {
-			handleInit(action, component);
+			this.handleInit(action, component);
 		} else {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					handleInit(action, component);
+					FXPerspectiveHandler.this.handleInit(action, component);
 				}
 			});
 		}
@@ -103,8 +106,9 @@ public class FXPerspectiveHandler
 	}
 
 	@Override
-	public final void handleAndReplaceComponent(IAction<Event, Object> action,
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+	public final void handleAndReplaceComponent(
+			final IAction<Event, Object> action,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (component.isBlocked() && component.isStarted()) {
 			this.putMessageToQueue(component, action);
 			this.log("ADD TO QUEUE:::" + component.getName());
@@ -135,33 +139,36 @@ public class FXPerspectiveHandler
 		} else if (component instanceof AStatefulCallbackComponent) {
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.putMessageToQueue(component, action);
-			this.runStateComponent(action, ((AStatefulCallbackComponent) component));
+			this.runStateComponent(action,
+					((AStatefulCallbackComponent) component));
 		} else if (component instanceof AStatelessCallbackComponent) {
 			this.log("RUN STATELESS COMPONENTS:::" + component.getName());
-			runStatelessCallbackComponent(
+			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
 		}
 
 	}
+
 	/**
 	 * run at startup method in perspective
 	 * 
 	 * @param component
 	 */
 	private void runComponentOnStartupSequence(final AFXComponent component) {
-		component.onStartComponent(this.layout);
+		FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component,
+				this.layout);
 	}
 
 	/**
 	 * handle state less callback component
+	 * 
 	 * @param component
 	 * @param action
 	 */
 	private final void runStatelessCallbackComponent(
-			IStatelessCallabackComponent<EventHandler<Event>, Event, Object> component,
+			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
-		
-		scheduler.incomingMessage(action,component);
+		this.scheduler.incomingMessage(action, component);
 	}
 
 	/**
@@ -188,8 +195,8 @@ public class FXPerspectiveHandler
 	private final void runStateComponent(
 			final IAction<Event, Object> action,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-		this.executor.execute(new StateComponentRunWorker(this.componentDelegateQueue,
-				component));
+		this.executor.execute(new StateComponentRunWorker(
+				this.componentDelegateQueue, component));
 	}
 
 	/**
@@ -212,12 +219,13 @@ public class FXPerspectiveHandler
 			this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
 			this.putMessageToQueue(component, action);
-			this.runStateComponent(action, ((AStatefulCallbackComponent) component));
+			this.runStateComponent(action,
+					((AStatefulCallbackComponent) component));
 		}// else if END
 		else if (component instanceof AStatelessCallbackComponent) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
-			runStatelessCallbackComponent(
+			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
 		}// else if END
 

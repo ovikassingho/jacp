@@ -61,7 +61,8 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 		else {
 			// TODO implement missing perspective handling!!
 			throw new UnsupportedOperationException(
-					"No responsible perspective found. Handling not implemented yet. target: "+target+" perspectives: "+perspectives);
+					"No responsible perspective found. Handling not implemented yet. target: "
+							+ target + " perspectives: " + this.perspectives);
 		} // End else
 	}
 
@@ -106,11 +107,11 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 		} // End if
 		else {
 			// delegate to addressed component
-			delegateMessageToCorrectPerspective(targetId, action,perspective.getMessageDelegateQueue());
-			
+			this.delegateMessageToCorrectPerspective(targetId, action,
+					perspective.getMessageDelegateQueue());
+
 		} // End else
 	}
-	
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
@@ -118,7 +119,8 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 		Platform.runLater(new Runnable() {
 			@Override
 			public final void run() {
-				FXPerspectiveCoordinator.this.componentHandler.handleAndReplaceComponent(
+				FXPerspectiveCoordinator.this.componentHandler
+						.handleAndReplaceComponent(
 								action,
 								(IPerspective<EventHandler<Event>, Event, Object>) component);
 			} // End run
@@ -141,8 +143,6 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 		});
 	}
 
-	
-
 	@Override
 	public void addPerspective(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
@@ -159,16 +159,15 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
-		return componentHandler;
+		return this.componentHandler;
 	}
-
-	
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(IComponentHandler<P, IAction<Event, Object>> handler) {
-		componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
-		
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
+			final IComponentHandler<P, IAction<Event, Object>> handler) {
+		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+
 	}
 
 }

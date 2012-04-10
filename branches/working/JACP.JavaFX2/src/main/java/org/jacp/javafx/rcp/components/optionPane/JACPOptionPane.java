@@ -37,21 +37,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
  * The Class JACPoptionDialogV2.
- *
+ * 
  * @author Patrick Symmangk
  */
 public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	/** Drag offsets for window dragging. */
-	private String message;
+	private final String message;
 
 	/** The title. */
-	private String title;
+	private final String title;
 
 	/** The default button. */
 	private JACPDialogButton defaultButton;
@@ -88,10 +89,13 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	/**
 	 * Instantiates a new jAC poption dialog v2.
-	 *
-	 * @param title the title
-	 * @param message the message
-	 * @param defaultButton the default button
+	 * 
+	 * @param title
+	 *            the title
+	 * @param message
+	 *            the message
+	 * @param defaultButton
+	 *            the default button
 	 */
 	public JACPOptionPane(final String title, final String message) {
 		this.message = message;
@@ -103,147 +107,160 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	 * Inits the dialog.
 	 */
 	private void initDialog() {
-		buttons = new ArrayList<Button>();
-		setId("ProxyDialog");
-		setSpacing(10);
-		setMaxSize(430, USE_PREF_SIZE);
+		this.buttons = new ArrayList<Button>();
+		this.setId("ProxyDialog");
+		this.setSpacing(10);
+		this.setMaxSize(430, Region.USE_PREF_SIZE);
 		// block mouse clicks
-		setOnMouseClicked(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent t) {
+		this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(final MouseEvent t) {
 				t.consume();
 			}
 		});
 
-		explanation = new Text(message);
-		explanation.setWrappingWidth(400);
-		explanation.getStyleClass().add("jacp-option-pane-explanation");
+		this.explanation = new Text(this.message);
+		this.explanation.setWrappingWidth(400);
+		this.explanation.getStyleClass().add("jacp-option-pane-explanation");
 
-		BorderPane explPane = new BorderPane();
+		final BorderPane explPane = new BorderPane();
 		VBox.setMargin(explPane, new Insets(5, 5, 5, 5));
-		explPane.setCenter(explanation);
-		BorderPane.setMargin(explanation, new Insets(5, 5, 5, 5));
+		explPane.setCenter(this.explanation);
+		BorderPane.setMargin(this.explanation, new Insets(5, 5, 5, 5));
 
-		topBox = new HBox();
+		this.topBox = new HBox();
 		// topBox.setAlignment(Pos.TOP_RIGHT);
-		topBox.setAlignment(Pos.TOP_LEFT);
-		Button defaultClose = new Button("x");
+		this.topBox.setAlignment(Pos.TOP_LEFT);
+		final Button defaultClose = new Button("x");
 		defaultClose.setOnMouseClicked(this);
-		setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
+		this.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 		defaultClose.setId("jacp-option-pane-close");
-		setDefaultCloseButtonVisible(false);
+		this.setDefaultCloseButtonVisible(false);
 
-		topBox.getChildren().add(defaultClose);
-		VBox.setVgrow(topBox, Priority.ALWAYS);
+		this.topBox.getChildren().add(defaultClose);
+		VBox.setVgrow(this.topBox, Priority.ALWAYS);
 
-		getChildren().add(topBox);
+		this.getChildren().add(this.topBox);
 
 		// create title
-		titleLabel = new Label(title);
-		titleLabel.getStyleClass().add("jacp-option-pane-title");
-		titleLabel.setId("title");
-		titleLabel.setMinHeight(22);
-		titleLabel.setPrefHeight(22);
-		titleLabel.setMaxWidth(Double.MAX_VALUE);
-		titleLabel.setAlignment(Pos.CENTER);
+		this.titleLabel = new Label(this.title);
+		this.titleLabel.getStyleClass().add("jacp-option-pane-title");
+		this.titleLabel.setId("title");
+		this.titleLabel.setMinHeight(22);
+		this.titleLabel.setPrefHeight(22);
+		this.titleLabel.setMaxWidth(Double.MAX_VALUE);
+		this.titleLabel.setAlignment(Pos.CENTER);
 
-		getChildren().add(titleLabel);
+		this.getChildren().add(this.titleLabel);
 
-		bottomBar = new HBox(0);
-		bottomBar.setAlignment(Pos.BASELINE_RIGHT);
+		this.bottomBar = new HBox(0);
+		this.bottomBar.setAlignment(Pos.BASELINE_RIGHT);
 
-		VBox.setMargin(bottomBar, new Insets(20, 5, 5, 5));
-		getStyleClass().add("proxy-pane");
-		setEffect(new DropShadow());
-		getChildren().addAll(explPane, bottomBar);
+		VBox.setMargin(this.bottomBar, new Insets(20, 5, 5, 5));
+		this.getStyleClass().add("proxy-pane");
+		this.setEffect(new DropShadow());
+		this.getChildren().addAll(explPane, this.bottomBar);
 	}
 
 	/**
 	 * Sets the on ok action.
-	 *
-	 * @param onOK the new on ok action
+	 * 
+	 * @param onOK
+	 *            the new on ok action
 	 */
-	public void setOnOkAction(EventHandler<ActionEvent> onOK) {
-		if (okButton == null) {
-			okButton = createButton(JACPDialogButton.OK);
+	public void setOnOkAction(final EventHandler<ActionEvent> onOK) {
+		if (this.okButton == null) {
+			this.okButton = this.createButton(JACPDialogButton.OK);
 		}
-		this.setAction(okButton, onOK);
+		this.setAction(this.okButton, onOK);
 	}
 
 	/**
 	 * Sets the on cancel action.
-	 *
-	 * @param onCancel the new on cancel action
+	 * 
+	 * @param onCancel
+	 *            the new on cancel action
 	 */
-	public void setOnCancelAction(EventHandler<ActionEvent> onCancel) {
-		if (cancelButton == null) {
-			cancelButton = createButton(JACPDialogButton.CANCEL);
+	public void setOnCancelAction(final EventHandler<ActionEvent> onCancel) {
+		if (this.cancelButton == null) {
+			this.cancelButton = this.createButton(JACPDialogButton.CANCEL);
 		}
-		this.setAction(cancelButton, onCancel);
+		this.setAction(this.cancelButton, onCancel);
 	}
 
 	/**
 	 * Sets the on yes action.
-	 *
-	 * @param onYes the new on yes action
+	 * 
+	 * @param onYes
+	 *            the new on yes action
 	 */
-	public void setOnYesAction(EventHandler<ActionEvent> onYes) {
-		if (yesButton == null) {
-			yesButton = createButton(JACPDialogButton.YES);
+	public void setOnYesAction(final EventHandler<ActionEvent> onYes) {
+		if (this.yesButton == null) {
+			this.yesButton = this.createButton(JACPDialogButton.YES);
 		}
-		this.setAction(yesButton, onYes);
+		this.setAction(this.yesButton, onYes);
 	}
 
 	/**
 	 * Sets the on no action.
-	 *
-	 * @param onNo the new on no action
+	 * 
+	 * @param onNo
+	 *            the new on no action
 	 */
-	public void setOnNoAction(EventHandler<ActionEvent> onNo) {
-		if (noButton == null) {
-			noButton = createButton(JACPDialogButton.NO);
+	public void setOnNoAction(final EventHandler<ActionEvent> onNo) {
+		if (this.noButton == null) {
+			this.noButton = this.createButton(JACPDialogButton.NO);
 		}
-		this.setAction(noButton, onNo);
+		this.setAction(this.noButton, onNo);
 	}
 
 	/**
 	 * Sets the action.
-	 *
-	 * @param button the button
-	 * @param handler the handler
+	 * 
+	 * @param button
+	 *            the button
+	 * @param handler
+	 *            the handler
 	 */
-	private void setAction(Button button, EventHandler<ActionEvent> handler) {
-		if (button != null)
+	private void setAction(final Button button,
+			final EventHandler<ActionEvent> handler) {
+		if (button != null) {
 			button.setOnAction(handler);
+		}
 	}
 
 	/**
 	 * Creates the button.
-	 *
-	 * @param button the button
+	 * 
+	 * @param button
+	 *            the button
 	 * @return the button
 	 */
-	private Button createButton(JACPDialogButton button) {
-		Button but = new Button(button.getLabel());
+	private Button createButton(final JACPDialogButton button) {
+		final Button but = new Button(button.getLabel());
 		but.setId(button.getLabel().toLowerCase() + "Button");
-		but.setMinWidth(BUTTON_SIZE);
-		but.setPrefWidth(BUTTON_SIZE);
+		but.setMinWidth(JACPOptionPane.BUTTON_SIZE);
+		but.setPrefWidth(JACPOptionPane.BUTTON_SIZE);
 		but.setOnMouseClicked(this);
 		HBox.setMargin(but, new Insets(0, 8, 0, 0));
-		if (defaultButton != null && button.getId() == defaultButton.getId()) {
+		if (this.defaultButton != null
+				&& button.getId() == this.defaultButton.getId()) {
 			but.setDefaultButton(true);
 			but.requestFocus();
 		}
-		bottomBar.getChildren().add(but);
-		buttons.add(but);
+		this.bottomBar.getChildren().add(but);
+		this.buttons.add(but);
 		but.getStyleClass().add("jacp-option-pane-button");
 		return but;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
 	 */
 	@Override
-	public void handle(MouseEvent arg0) {
+	public void handle(final MouseEvent arg0) {
 		JACPModalDialog.getInstance().hideModalMessage();
 	}
 
@@ -256,29 +273,31 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	/**
 	 * Show dialog.
-	 *
-	 * @param node the node
+	 * 
+	 * @param node
+	 *            the node
 	 */
-	public void showDialog(Node node) {
+	public void showDialog(final Node node) {
 		JACPModalDialog.getInstance().showModalMessage(node);
 	}
 
 	/**
 	 * Sets the default close button orientation.
-	 *
-	 * @param pos the new default close button orientation
+	 * 
+	 * @param pos
+	 *            the new default close button orientation
 	 */
-	public void setDefaultCloseButtonOrientation(Pos pos) {
-		topBox.setAlignment(pos);
+	public void setDefaultCloseButtonOrientation(final Pos pos) {
+		this.topBox.setAlignment(pos);
 	}
 
-	public void setDefaultCloseButtonVisible(boolean visible) {
-		topBox.setVisible(visible);
+	public void setDefaultCloseButtonVisible(final boolean visible) {
+		this.topBox.setVisible(visible);
 	}
 
-	public void setDefaultButton(JACPDialogButton defaultButton) {
+	public void setDefaultButton(final JACPDialogButton defaultButton) {
 		this.defaultButton = defaultButton;
-		for (final Button but : buttons) {
+		for (final Button but : this.buttons) {
 			if (defaultButton != null
 					&& defaultButton.getLabel().equals(but.getText())) {
 				but.setDefaultButton(true);

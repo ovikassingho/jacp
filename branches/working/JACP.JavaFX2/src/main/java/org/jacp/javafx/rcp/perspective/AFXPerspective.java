@@ -38,14 +38,12 @@ import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.component.IPerspectiveView;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.FXUtil;
@@ -65,8 +63,6 @@ public abstract class AFXPerspective extends AComponent implements
 	private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
 	private IComponentCoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
-	private FXComponentLayout layout;
-
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FXPerspectiveLayout();
 
 	@Override
@@ -81,7 +77,7 @@ public abstract class AFXPerspective extends AComponent implements
 	}
 
 	@Override
-	public final <C> C handle(IAction<Event, Object> action) {
+	public final <C> C handle(final IAction<Event, Object> action) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
@@ -89,51 +85,18 @@ public abstract class AFXPerspective extends AComponent implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void onStart(final IBaseLayout<Node> layout) {
-		this.layout = (FXComponentLayout) layout;
-		onStartPerspective(this.layout);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void postInit(
-			IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler) {
+			final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler) {
 		// init component handler
 		this.componentHandler = componentHandler;
-		componentCoordinator = new FXComponentCoordinator();
+		this.componentCoordinator = new FXComponentCoordinator();
 		((FXComponentCoordinator) this.componentCoordinator).start();
-		componentCoordinator.setComponentHandler(this.componentHandler);
-		componentCoordinator.setMessageDelegateQueue(this.messageDelegateQueue);
-		componentCoordinator.setParentId(this.getId());
-		registerSubcomponents(subcomponents);
+		this.componentCoordinator.setComponentHandler(this.componentHandler);
+		this.componentCoordinator
+				.setMessageDelegateQueue(this.messageDelegateQueue);
+		this.componentCoordinator.setParentId(this.getId());
+		this.registerSubcomponents(this.subcomponents);
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onTearDown(final IBaseLayout<Node> layout) {
-		onTearDownPerspective(this.layout);
-		this.layout = null;
-	}
-
-	/**
-	 * Handle menu, bars and other UI components on component start.
-	 * 
-	 * @param menuBar
-	 * @param bars
-	 */
-	public abstract void onStartPerspective(final FXComponentLayout layout);
-
-	/**
-	 * Clean up menu, bars and other components on component teardown.
-	 * 
-	 * @param menuBar
-	 * @param bars
-	 */
-	public abstract void onTearDownPerspective(final FXComponentLayout layout);
 
 	/**
 	 * handle perspective method to initialize the perspective and the layout
@@ -145,7 +108,7 @@ public abstract class AFXPerspective extends AComponent implements
 			final FXPerspectiveLayout perspectiveLayout);
 
 	@Override
-	public void handlePerspective(IAction<Event, Object> action) {
+	public void handlePerspective(final IAction<Event, Object> action) {
 		this.handlePerspective(action,
 				(FXPerspectiveLayout) this.perspectiveLayout);
 
@@ -153,15 +116,17 @@ public abstract class AFXPerspective extends AComponent implements
 
 	@Override
 	public final void registerComponent(
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 
-		handleMetaAnnotation(component);
+		this.handleMetaAnnotation(component);
 		this.log("register component: " + component.getId());
-		
-		component.initEnv(this.getId(), this.componentCoordinator.getMessageQueue());
+
+		component.initEnv(this.getId(),
+				this.componentCoordinator.getMessageQueue());
 		this.componentCoordinator.addComponent(component);
-		if (!this.subcomponents.contains(component))
+		if (!this.subcomponents.contains(component)) {
 			this.subcomponents.add(component);
+		}
 
 	}
 
@@ -171,16 +136,16 @@ public abstract class AFXPerspective extends AComponent implements
 	 * @param component
 	 */
 	private void handleMetaAnnotation(
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final Component componentAnnotation = component.getClass()
 				.getAnnotation(Component.class);
 		if (componentAnnotation != null) {
-			FXUtil.setPrivateMemberValue(AComponent.class, component, "id",
+			FXUtil.setPrivateMemberValue(AComponent.class, component, FXUtil.ACOMPONENT_ID,
 					componentAnnotation.id());
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					"active", componentAnnotation.active());
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					"name", componentAnnotation.name());
+			FXUtil.setPrivateMemberValue(AComponent.class, component, "active",
+					componentAnnotation.active());
+			FXUtil.setPrivateMemberValue(AComponent.class, component, "name",
+					componentAnnotation.name());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
 					"executionTarget",
 					componentAnnotation.defaultExecutionTarget());
@@ -191,8 +156,8 @@ public abstract class AFXPerspective extends AComponent implements
 			final CallbackComponent callbackAnnotation = component.getClass()
 					.getAnnotation(CallbackComponent.class);
 			if (callbackAnnotation != null) {
-				FXUtil.setPrivateMemberValue(AComponent.class, component,
-						"id", callbackAnnotation.id());
+				FXUtil.setPrivateMemberValue(AComponent.class, component, FXUtil.ACOMPONENT_ID,
+						callbackAnnotation.id());
 				FXUtil.setPrivateMemberValue(AComponent.class, component,
 						"active", callbackAnnotation.active());
 				FXUtil.setPrivateMemberValue(AComponent.class, component,
@@ -205,16 +170,17 @@ public abstract class AFXPerspective extends AComponent implements
 
 	@Override
 	public final void unregisterComponent(
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.log("unregister component: " + component.getId());
 		component.initEnv(null, null);
 		this.componentCoordinator.removeComponent(component);
-		if (this.subcomponents.contains(component))
+		if (this.subcomponents.contains(component)) {
 			this.subcomponents.remove(component);
+		}
 	}
 
 	@Override
-	public final void initComponents(IAction<Event, Object> action) {
+	public final void initComponents(final IAction<Event, Object> action) {
 		final String targetId = FXUtil.getTargetComponentId(action
 				.getTargetId());
 		this.log("3.4.4.1: subcomponent targetId: " + targetId);
@@ -225,22 +191,21 @@ public abstract class AFXPerspective extends AComponent implements
 					.get(i);
 			if (component.getId().equals(targetId)) {
 				this.log("3.4.4.2: subcomponent init with custom action");
-				componentHandler.initComponent(action, component);
+				this.componentHandler.initComponent(action, component);
 			} // else END
 			else if (component.isActive() && !component.isStarted()) {
 				this.log("3.4.4.2: subcomponent init with default action");
-				componentHandler.initComponent(new FXAction(component.getId(),
-						component.getId(), "init"), component);
+				this.componentHandler.initComponent(
+						new FXAction(component.getId(), component.getId(),
+								"init"), component);
 			} // if END
 
 		} // for END
 	}
 
-
-
 	@Override
 	public final void setSubcomponents(
-			List<ISubComponent<EventHandler<Event>, Event, Object>> subComponents) {
+			final List<ISubComponent<EventHandler<Event>, Event, Object>> subComponents) {
 		this.subcomponents = subComponents;
 
 	}
@@ -293,6 +258,6 @@ public abstract class AFXPerspective extends AComponent implements
 
 	@Override
 	public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
-		return componentHandler;
+		return this.componentHandler;
 	}
 }

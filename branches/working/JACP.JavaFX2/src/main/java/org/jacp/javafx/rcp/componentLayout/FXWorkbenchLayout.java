@@ -56,7 +56,7 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 	}
 
 	@Override
-	public void setMenuEnabled(boolean enabled) {
+	public void setMenuEnabled(final boolean enabled) {
 		this.menueEnabled = enabled;
 		if (enabled && this.menu == null) {
 			this.menu = new JACPMenuBar();
@@ -65,7 +65,7 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 	}
 
 	@Override
-	public void setWorkbenchXYSize(int x, int y) {
+	public void setWorkbenchXYSize(final int x, final int y) {
 		this.size.setX(x);
 		this.size.setY(y);
 	}
@@ -75,20 +75,20 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 		return this.size;
 	}
 
-	private JACPToolBar initToolBar(ToolbarPosition position) {
+	private JACPToolBar initToolBar(final ToolbarPosition position) {
 		final JACPToolBar bar = new JACPToolBar();
 		bar.setId(position.getName() + "-bar");
 		return bar;
 	}
 
 	@Override
-	public void registerToolBar(ToolbarPosition position) {
-		registeredToolbars.put(position, initToolBar(position));
+	public void registerToolBar(final ToolbarPosition position) {
+		this.registeredToolbars.put(position, this.initToolBar(position));
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public <S extends Enum> void setStyle(S style) {
+	public <S extends Enum> void setStyle(final S style) {
 		this.style = (StageStyle) style;
 
 	}
@@ -110,18 +110,20 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 	 * @return the registered toolbars
 	 */
 	public Map<ToolbarPosition, JACPToolBar> getRegisteredToolbars() {
-		return registeredToolbars;
+		return this.registeredToolbars;
 	}
 
 	@Override
-	public JACPToolBar getRegisteredToolBar(ToolbarPosition position) {
-		return registeredToolbars.get(position);
+	public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
+		return this.registeredToolbars.get(position);
 	}
 
+	@Override
 	public Pane getGlassPane() {
-		if (glassPane == null)
-			glassPane = new Pane();
-		return glassPane;
+		if (this.glassPane == null) {
+			this.glassPane = new Pane();
+		}
+		return this.glassPane;
 	}
 
 }

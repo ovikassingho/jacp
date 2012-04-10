@@ -49,13 +49,13 @@ public class StatelessCallbackScheduler implements
 
 	@Override
 	public void incomingMessage(
-			IAction<Event, Object> message,
+			final IAction<Event, Object> message,
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		synchronized (baseComponent) {
 			// get active instance
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this
 					.getActiveComponent(baseComponent);
-			List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
+			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
 					.getInstances();
 			if (comp != null) {
 				if (componentInstances.size() < AStatelessCallbackComponent.MAX_INCTANCE_COUNT) {
@@ -90,7 +90,8 @@ public class StatelessCallbackScheduler implements
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final IAction<Event, Object> message) {
-		FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked", new AtomicBoolean(true));
+		FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked",
+				new AtomicBoolean(true));
 		comp.putIncomingMessage(message);
 		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 				comp);
@@ -117,7 +118,7 @@ public class StatelessCallbackScheduler implements
 	@Override
 	public <T extends ICallbackComponent<EventHandler<Event>, Event, Object>> ICallbackComponent<EventHandler<Event>, Event, Object> getCloneBean(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
-			Class<T> clazz) {
+			final Class<T> clazz) {
 		return ((AStatelessCallbackComponent) baseComponent).init(this.launcher
 				.getBean(clazz));
 	}
@@ -168,5 +169,4 @@ public class StatelessCallbackScheduler implements
 		return seek;
 	}
 
-	
 }

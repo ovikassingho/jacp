@@ -34,6 +34,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -62,7 +63,8 @@ public class FXComponentReplaceWorker
 			1);
 
 	public FXComponentReplaceWorker(
-			final Map<String, Node> targetComponents,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
+			final Map<String, Node> targetComponents,
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
 		this.targetComponents = targetComponents;
@@ -76,7 +78,8 @@ public class FXComponentReplaceWorker
 			throws Exception {
 		synchronized (this.component) {
 			try {
-				FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(true));
+				FXUtil.setPrivateMemberValue(ASubComponent.class,
+						this.component, "blocked", new AtomicBoolean(true));
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
@@ -106,7 +109,8 @@ public class FXComponentReplaceWorker
 							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread");
 				}
 			} finally {
-				FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
+				FXUtil.setPrivateMemberValue(ASubComponent.class,
+						this.component, "blocked", new AtomicBoolean(false));
 			}
 
 		}
@@ -135,7 +139,8 @@ public class FXComponentReplaceWorker
 							component, previousContainer, layout);
 					// run teardown
 					if (component instanceof AFXComponent) {
-						((AFXComponent) component).onTearDownComponent(layout);
+						FXUtil.invokeHandleMethodsByAnnotation(
+								OnTearDown.class, component, layout);
 					}
 				}
 				// release lock
@@ -150,7 +155,7 @@ public class FXComponentReplaceWorker
 		if (previousContainer != null) {
 			final Node parent = previousContainer.getParent();
 			if (parent != null) {
-				handleOldComponentRemove(parent, previousContainer);
+				this.handleOldComponentRemove(parent, previousContainer);
 			}
 		}
 
@@ -189,7 +194,7 @@ public class FXComponentReplaceWorker
 		if (!currentTaget.equals(component.getExecutionTarget())
 				|| root == null || root != previousContainer) {
 			// remove old view
-			removeComponentValue(component, previousContainer, layout);
+			this.removeComponentValue(component, previousContainer, this.layout);
 		}
 	}
 
@@ -206,20 +211,21 @@ public class FXComponentReplaceWorker
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
 			final Node validContainer = this.getValidContainerById(
-					targetComponents, validId);
+					this.targetComponents, validId);
 			if (validContainer != null) {
-				handleLocalTargetChange(component, targetComponents,
+				this.handleLocalTargetChange(component, this.targetComponents,
 						validContainer);
 			} else {
-				handlePerspectiveChange(this.componentDelegateQueue, component, layout);
+				this.handlePerspectiveChange(this.componentDelegateQueue,
+						component, layout);
 			}
 		} else if (root != null && root != previousContainer) {
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
-			handleViewState(root,true);
-			this.handleNewComponentValue(this.componentDelegateQueue, component,
-					this.targetComponents, parentNode, currentTaget);
+			this.handleViewState(root, true);
+			this.handleNewComponentValue(this.componentDelegateQueue,
+					component, this.targetComponents, parentNode, currentTaget);
 		}
 
 	}
@@ -237,7 +243,8 @@ public class FXComponentReplaceWorker
 		try {
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component = this
 					.get();
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
+					"blocked", new AtomicBoolean(false));
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if
@@ -254,7 +261,8 @@ public class FXComponentReplaceWorker
 			// messages in
 			// queue
 		} finally {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, "blocked", new AtomicBoolean(false));
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
+					"blocked", new AtomicBoolean(false));
 		}
 
 	}

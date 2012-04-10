@@ -71,16 +71,18 @@ public class FXComponentInitWorker
 	protected IComponentView<Node, EventHandler<Event>, Event, Object> call()
 			throws Exception {
 		synchronized (this.component) {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(true));
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
+					"blocked", new AtomicBoolean(true));
 			this.log("3.4.4.2.1: subcomponent handle init START: "
 					+ this.component.getName());
-			prepareAndHandleComponent(this.component, this.action);
+			this.prepareAndHandleComponent(this.component, this.action);
 			this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 					+ this.component.getName());
 			// expect always local target id
-			component.setExecutionTarget(FXUtil.getTargetComponentId(component.getExecutionTarget()));
+			this.component.setExecutionTarget(FXUtil
+					.getTargetComponentId(this.component.getExecutionTarget()));
 			final Node validContainer = this.getValidContainerById(
-					this.targetComponents, component.getExecutionTarget());
+					this.targetComponents, this.component.getExecutionTarget());
 			this.log("3.4.4.2.3: subcomponent handle init add component by type: "
 					+ this.component.getName());
 
@@ -91,7 +93,8 @@ public class FXComponentInitWorker
 
 			this.log("3.4.4.2.4: subcomponent handle init END: "
 					+ this.component.getName());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
+					"blocked", new AtomicBoolean(false));
 			return this.component;
 		}
 	}
@@ -116,8 +119,7 @@ public class FXComponentInitWorker
 
 			@Override
 			public void run() {
-				FXComponentInitWorker.this
-						.executePostHandle(component, action);
+				FXComponentInitWorker.this.executePostHandle(component, action);
 				FXComponentInitWorker.this.addComponentByType(validContainer,
 						component);
 				FXComponentInitWorker.this.appThreadlock.add(true);
@@ -150,8 +152,10 @@ public class FXComponentInitWorker
 				// messages in
 				// queue
 			}
-			FXUtil.setPrivateMemberValue(AComponent.class, component, "started", true);
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component, "blocked", new AtomicBoolean(false));
+			FXUtil.setPrivateMemberValue(AComponent.class, this.component,
+					"started", true);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
+					"blocked", new AtomicBoolean(false));
 		}
 	}
 
