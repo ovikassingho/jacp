@@ -1,3 +1,5 @@
+09. Apr. 2012 - amo - IExtendedComponent deleted
+09. Apr. 2012 - amo - removed setRoot from IComponentView
 09. Apr. 2012 - amo - add perspective annotation
 08. Apr. 2012 - amo - removed some setter from IComponent  
 08. Apr. 2012 - amo - IComponentView and IPerspectiveView extracted
