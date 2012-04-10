@@ -38,15 +38,7 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponentView<C, L, A, M> extends IExtendedComponent<C>,
-		ISubComponent<L, A, M> {
-
-	/**
-	 * Set the root ui component created by the handle method.
-	 * 
-	 * @param root
-	 */
-	void setRoot(final C root);
+public interface IComponentView<C, L, A, M> extends ISubComponent<L, A, M> {
 
 	/**
 	 * Returns the 'root' ui component created by the handle method.
