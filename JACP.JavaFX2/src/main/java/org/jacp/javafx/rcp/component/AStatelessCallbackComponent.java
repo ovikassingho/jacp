@@ -86,11 +86,14 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 		try {
 			final AStatelessCallbackComponent comp = (AStatelessCallbackComponent) super
 					.clone();
-			FXUtil.setPrivateMemberValue(AComponent.class,comp, "id", this.getId());
-			FXUtil.setPrivateMemberValue(AComponent.class,comp, "active", this.isActive());
-			FXUtil.setPrivateMemberValue(AComponent.class,comp, "name", this.getName());
-			FXUtil.setPrivateMemberValue(ASubComponent.class,comp, "executionTarget",
-					this.getExecutionTarget());
+			FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ID,
+					this.getId());
+			FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ACTIVE,
+					this.isActive());
+			FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_NAME,
+					this.getName());
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
+					FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
 			comp.setHandleTarget(this.handleComponentTarget);
 			comp.initEnv(this.getParentId(), this.globalMessageQueue);
 			return comp;
@@ -108,11 +111,13 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	 */
 	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
-		FXUtil.setPrivateMemberValue(AComponent.class,comp, "id", this.getId());
-		FXUtil.setPrivateMemberValue(AComponent.class,comp, "active", this.isActive());
-		FXUtil.setPrivateMemberValue(AComponent.class,comp, "name", this.getName());
-		FXUtil.setPrivateMemberValue(ASubComponent.class,comp, "executionTarget",
-				this.getExecutionTarget());
+		FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ID, this.getId());
+		FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ACTIVE,
+				this.isActive());
+		FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_NAME,
+				this.getName());
+		FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
+				FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
 		comp.setHandleTarget(this.handleComponentTarget);
 		comp.initEnv(this.getParentId(), this.globalMessageQueue);
 		return comp;

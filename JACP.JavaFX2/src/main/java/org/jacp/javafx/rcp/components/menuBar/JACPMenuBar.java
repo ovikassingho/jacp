@@ -40,7 +40,7 @@ import javafx.stage.Stage;
  * The Class JACPMenuBar.
  * 
  * @author psy
- *
+ * 
  */
 public class JACPMenuBar extends HBox {
 
@@ -69,39 +69,40 @@ public class JACPMenuBar extends HBox {
 	 * Instantiates a new jACP menu bar.
 	 */
 	public JACPMenuBar() {
-		initMenuBar();
+		this.initMenuBar();
 	}
 
 	/**
 	 * Inits the menu bar.
 	 */
 	private void initMenuBar() {
-		leftBar = new ToolBar();
-		leftBar.setMinWidth(0);
-		rightBar = new ToolBar();
-		rightBar.setMinWidth(0);
-		mainBar = new MenuBar();
-		mainBar.setPrefHeight(22);
+		this.leftBar = new ToolBar();
+		this.leftBar.setMinWidth(0);
+		this.rightBar = new ToolBar();
+		this.rightBar.setMinWidth(0);
+		this.mainBar = new MenuBar();
+		this.mainBar.setPrefHeight(22);
 
-		setAlignment(Pos.CENTER_LEFT);
-		HBox.setHgrow(mainBar, Priority.ALWAYS);
-		HBox.setHgrow(leftBar, Priority.NEVER);
-		HBox.setHgrow(rightBar, Priority.NEVER);
+		this.setAlignment(Pos.CENTER_LEFT);
+		HBox.setHgrow(this.mainBar, Priority.ALWAYS);
+		HBox.setHgrow(this.leftBar, Priority.NEVER);
+		HBox.setHgrow(this.rightBar, Priority.NEVER);
 
-		getStyleClass().addAll(mainBar.getStyleClass());
-		clearBackground(leftBar, mainBar, rightBar);
+		this.getStyleClass().addAll(this.mainBar.getStyleClass());
+		this.clearBackground(this.leftBar, this.mainBar, this.rightBar);
 
 		// rightBar.getItems().addAll(b, b1, b2);
-		bind(rightBar);
-		this.getChildren().addAll(leftBar, mainBar, rightBar);
+		this.bind(this.rightBar);
+		this.getChildren().addAll(this.leftBar, this.mainBar, this.rightBar);
 	}
 
 	/**
 	 * Clear background.
-	 *
-	 * @param node the node
+	 * 
+	 * @param node
+	 *            the node
 	 */
-	private void clearBackground(Node... node) {
+	private void clearBackground(final Node... node) {
 		if (node != null) {
 			for (final Node n : node) {
 				n.setStyle("-fx-background-color: transparent;");
@@ -111,34 +112,38 @@ public class JACPMenuBar extends HBox {
 
 	/**
 	 * Bind.
-	 *
-	 * @param bar the bar
+	 * 
+	 * @param bar
+	 *            the bar
 	 */
-	private void bind(ToolBar bar) {
-		bar.maxHeightProperty().bind(mainBar.heightProperty());
-		bar.prefHeightProperty().bind(mainBar.heightProperty());
+	private void bind(final ToolBar bar) {
+		bar.maxHeightProperty().bind(this.mainBar.heightProperty());
+		bar.prefHeightProperty().bind(this.mainBar.heightProperty());
 	}
 
 	/**
 	 * Gets the menus.
-	 *
+	 * 
 	 * @return the menus
 	 */
 	public ObservableList<Menu> getMenus() {
-		return mainBar.getMenus();
+		return this.mainBar.getMenus();
 	}
 
 	/**
 	 * Adds the node.
-	 *
-	 * @param orientation the orientation
-	 * @param node the node
+	 * 
+	 * @param orientation
+	 *            the orientation
+	 * @param node
+	 *            the node
 	 */
-	public void addNode(JACPMenuBarButtonOrientatioin orientation, Node... node) {
+	public void addNode(final JACPMenuBarButtonOrientatioin orientation,
+			final Node... node) {
 		if (JACPMenuBarButtonOrientatioin.LEFT.equals(orientation)) {
-			leftBar.getItems().addAll(node);
+			this.leftBar.getItems().addAll(node);
 		} else {
-			rightBar.getItems().addAll(node);
+			this.rightBar.getItems().addAll(node);
 		}
 	}
 
@@ -150,25 +155,28 @@ public class JACPMenuBar extends HBox {
 
 	/**
 	 * Sets the menu drag enabled.
-	 *
-	 * @param stage the new menu drag enabled
+	 * 
+	 * @param stage
+	 *            the new menu drag enabled
 	 */
 	public void setMenuDragEnabled(final Stage stage) {
 		this.stage = stage;
-		mainBar.setOnMousePressed(new EventHandler<MouseEvent>() {
+		this.mainBar.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent event) {
-				mouseDragOffsetX = event.getSceneX();
-				mouseDragOffsetY = event.getSceneY();
+			public void handle(final MouseEvent event) {
+				JACPMenuBar.this.mouseDragOffsetX = event.getSceneX();
+				JACPMenuBar.this.mouseDragOffsetY = event.getSceneY();
 			}
 		});
 
-		mainBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
+		this.mainBar.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
-			public void handle(MouseEvent event) {
+			public void handle(final MouseEvent event) {
 				// if (!windowButtons.isMaximized()) {
-				stage.setX(event.getScreenX() - mouseDragOffsetX);
-				stage.setY(event.getScreenY() - mouseDragOffsetY);
+				stage.setX(event.getScreenX()
+						- JACPMenuBar.this.mouseDragOffsetX);
+				stage.setY(event.getScreenY()
+						- JACPMenuBar.this.mouseDragOffsetY);
 				// }
 			}
 		});
@@ -178,26 +186,26 @@ public class JACPMenuBar extends HBox {
 	 * Maximize.
 	 */
 	public void maximize() {
-		if (stage != null) {
-			if (!maximized) {
-				Screen screen = Screen.getPrimary();
-				lastW = stage.getWidth();
-				lastH = stage.getHeight();
-				lastX = stage.getX();
-				lastY = stage.getY();
+		if (this.stage != null) {
+			if (!this.maximized) {
+				final Screen screen = Screen.getPrimary();
+				this.lastW = this.stage.getWidth();
+				this.lastH = this.stage.getHeight();
+				this.lastX = this.stage.getX();
+				this.lastY = this.stage.getY();
 
-				stage.setWidth(screen.getBounds().getWidth());
-				stage.setHeight(screen.getBounds().getHeight());
-				stage.setX(0);
-				stage.setY(0);
+				this.stage.setWidth(screen.getBounds().getWidth());
+				this.stage.setHeight(screen.getBounds().getHeight());
+				this.stage.setX(0);
+				this.stage.setY(0);
 
 			} else {
-				stage.setWidth(lastW);
-				stage.setHeight(lastH);
-				stage.setX(lastX);
-				stage.setY(lastY);
+				this.stage.setWidth(this.lastW);
+				this.stage.setHeight(this.lastH);
+				this.stage.setX(this.lastX);
+				this.stage.setY(this.lastY);
 			}
-			maximized = !maximized;
+			this.maximized = !this.maximized;
 		}
 
 	}

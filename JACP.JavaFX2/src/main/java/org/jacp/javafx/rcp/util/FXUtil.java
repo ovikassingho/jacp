@@ -48,6 +48,11 @@ import org.jacp.api.component.ISubComponent;
  */
 public class FXUtil {
 
+	public static final String AFXCOMPONENT_ROOT="root";
+	public static final String ACOMPONENT_ACTIVE="active";
+	public static final String ACOMPONENT_ID="id";
+	public static final String ACOMPONENT_NAME="name";
+	public static final String ACOMPONENT_EXTARGET="executionTarget";
 	/**
 	 * contains constant values
 	 * 
@@ -65,18 +70,18 @@ public class FXUtil {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static ObservableList<Node> getChildren(final Node node) {
+	public final static ObservableList<Node> getChildren(final Node node) {
 		if (node instanceof Parent) {
 			final Parent tmp = (Parent) node;
 			Method protectedChildrenMethod;
 			ObservableList<Node> returnValue = null;
 			try {
-				protectedChildrenMethod = Parent.class.getDeclaredMethod(
-						"getChildren", null);
+				protectedChildrenMethod = Parent.class
+						.getDeclaredMethod("getChildren");
 				protectedChildrenMethod.setAccessible(true);
 
 				returnValue = (ObservableList<Node>) protectedChildrenMethod
-						.invoke(tmp, null);
+						.invoke(tmp);
 
 			} catch (final NoSuchMethodException ex) {
 				Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
@@ -102,27 +107,66 @@ public class FXUtil {
 
 	}
 
-	public static void setPrivateMemberValue(Class<?> superClass, Object object,
-			String member, Object value) {
+	public final static void setPrivateMemberValue(final Class<?> superClass,
+			final Object object, final String member, final Object value) {
 		try {
-
 			final Field privateStringField = superClass
 					.getDeclaredField(member);
 			privateStringField.setAccessible(true);
 			privateStringField.set(object, value);
 
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (final SecurityException e) {
+			Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
+		} catch (final NoSuchFieldException e) {
+			Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
+		} catch (final IllegalArgumentException e) {
+			Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
+		} catch (final IllegalAccessException e) {
+			Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/**
+	 * find annotated method in component and pass value 
+	 * @param annotation
+	 * @param component
+	 * @param value
+	 */
+	public final static void invokeHandleMethodsByAnnotation(
+			final Class annotation, final Object component, final Object value) {
+		final Class<?> componentClass = component.getClass();
+		final Method[] methods = componentClass.getMethods();
+		for (final Method m : methods) {
+			if (m.isAnnotationPresent(annotation)) {
+				try {
+					boolean match = false;
+					final Class<?>[] types = m.getParameterTypes();
+					for (final Class<?> t : types) {
+						if (t.equals(value.getClass())) {
+							m.invoke(component, value);
+							match = true;
+							break;
+						}
+
+					}
+					// call without parameter
+					if (!match) {
+						m.invoke(component);
+					}
+					break;
+				} catch (final IllegalArgumentException e) {
+					throw new UnsupportedOperationException(
+							"use @OnStart and @OnTeardown either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
+							e.getCause());
+				} catch (final IllegalAccessException e) {
+					Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
+							null, e);
+				} catch (final InvocationTargetException e) {
+					Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
+							null, e);
+				}
+			}
 		}
 	}
 
@@ -132,9 +176,9 @@ public class FXUtil {
 	 * @param messageId
 	 * @return
 	 */
-	public static String getTargetParentId(final String messageId) {
-		final String[] parentId = getTargetId(messageId);
-		if (isFullValidId(parentId)) {
+	public final static String getTargetParentId(final String messageId) {
+		final String[] parentId = FXUtil.getTargetId(messageId);
+		if (FXUtil.isFullValidId(parentId)) {
 			return parentId[0];
 		}
 		return messageId;
@@ -147,7 +191,7 @@ public class FXUtil {
 	 * @param targetId
 	 * @return
 	 */
-	private static boolean isFullValidId(final String[] targetId) {
+	private final static boolean isFullValidId(final String[] targetId) {
 		if (targetId != null && targetId.length == 2) {
 			return true;
 		}
@@ -161,9 +205,9 @@ public class FXUtil {
 	 * @param messageId
 	 * @return
 	 */
-	public static final String getTargetPerspectiveId(final String messageId) {
-		final String[] targetId = getTargetId(messageId);
-		if (!isLocalMessage(messageId)) {
+	public final static String getTargetPerspectiveId(final String messageId) {
+		final String[] targetId = FXUtil.getTargetId(messageId);
+		if (!FXUtil.isLocalMessage(messageId)) {
 			return targetId[0];
 		}
 		return messageId;
@@ -175,9 +219,9 @@ public class FXUtil {
 	 * @param messageId
 	 * @return
 	 */
-	public static final String getTargetComponentId(final String messageId) {
-		final String[] targetId = getTargetId(messageId);
-		if (!isLocalMessage(messageId)) {
+	public final static String getTargetComponentId(final String messageId) {
+		final String[] targetId = FXUtil.getTargetId(messageId);
+		if (!FXUtil.isLocalMessage(messageId)) {
 			return targetId[1];
 		}
 		return messageId;

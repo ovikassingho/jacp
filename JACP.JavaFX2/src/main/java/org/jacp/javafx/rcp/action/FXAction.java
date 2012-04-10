@@ -60,14 +60,14 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
 	@Override
-	public void setMessage(Object message) {
+	public void setMessage(final Object message) {
 		this.message = message;
 		this.target = this.target != null ? this.target : this.getSourceId();
 		this.getMessageList().put(this.target, message);
 	}
 
 	@Override
-	public void addMessage(String targetId, Object message) {
+	public void addMessage(final String targetId, final Object message) {
 		this.target = targetId;
 		this.message = message;
 		this.getMessageList().put(this.target, message);
@@ -89,7 +89,7 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
 	@Override
-	public void setActionEvent(Event event) {
+	public void setActionEvent(final Event event) {
 		this.event = event;
 	}
 

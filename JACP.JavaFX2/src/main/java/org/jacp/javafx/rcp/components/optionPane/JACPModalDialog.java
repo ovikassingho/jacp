@@ -38,7 +38,7 @@ import javafx.util.Duration;
  * The Class JACPModalDialog.
  * 
  * @author Patrick Symmangk
- *
+ * 
  */
 public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
@@ -53,34 +53,37 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
 	/**
 	 * Gets the single instance of JACPModalDialog.
-	 *
+	 * 
 	 * @return single instance of JACPModalDialog
 	 */
 	public static JACPModalDialog getInstance() {
 
-		if (instance == null)
+		if (JACPModalDialog.instance == null) {
 			throw new DialogNotInitializedException();
-		return instance;
+		}
+		return JACPModalDialog.instance;
 	}
 
 	/**
 	 * Inits the dialog.
-	 *
-	 * @param rootNode the root node
+	 * 
+	 * @param rootNode
+	 *            the root node
 	 */
 	public static void initDialog(final Node rootNode) {
-		if (instance == null) {
-			root = rootNode;
-			instance = new JACPModalDialog();
-			instance.setId("error-dimmer");
-			Button test = new Button("close");
+		if (JACPModalDialog.instance == null) {
+			JACPModalDialog.root = rootNode;
+			JACPModalDialog.instance = new JACPModalDialog();
+			JACPModalDialog.instance.setId("error-dimmer");
+			final Button test = new Button("close");
 			test.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
-				public void handle(ActionEvent arg0) {
-					GaussianBlur blur = (GaussianBlur) rootNode.getEffect();
+				public void handle(final ActionEvent arg0) {
+					final GaussianBlur blur = (GaussianBlur) rootNode
+							.getEffect();
 					blur.setRadius(0.0);
-					instance.setVisible(false);
+					JACPModalDialog.instance.setVisible(false);
 				}
 
 			});
@@ -90,23 +93,26 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
 	/**
 	 * Show modal message.
-	 *
-	 * @param message the message
+	 * 
+	 * @param message
+	 *            the message
 	 */
-	public void showModalMessage(Node message) {
+	public void showModalMessage(final Node message) {
 		this.getChildren().clear();
 		this.getChildren().add(message);
 		this.setOpacity(0);
 		this.setVisible(true);
 		this.setCache(true);
-		((GaussianBlur) root.getEffect()).setRadius(MAX_BLUR);
+		((GaussianBlur) JACPModalDialog.root.getEffect())
+				.setRadius(this.MAX_BLUR);
 		TimelineBuilder
 				.create()
 				.keyFrames(
 						new KeyFrame(Duration.millis(250),
 								new EventHandler<ActionEvent>() {
-									public void handle(ActionEvent t) {
-										setCache(false);
+									@Override
+									public void handle(final ActionEvent t) {
+										JACPModalDialog.this.setCache(false);
 									}
 								}, new KeyValue(this.opacityProperty(), 1,
 										Interpolator.EASE_BOTH))).build()
@@ -116,6 +122,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 	/**
 	 * Hide any modal message that is shown.
 	 */
+	@Override
 	public void hideModalMessage() {
 		this.setCache(true);
 		TimelineBuilder
@@ -123,15 +130,17 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 				.keyFrames(
 						new KeyFrame(Duration.millis(250),
 								new EventHandler<ActionEvent>() {
-									public void handle(ActionEvent t) {
-										setCache(false);
-										setVisible(false);
-										getChildren().clear();
+									@Override
+									public void handle(final ActionEvent t) {
+										JACPModalDialog.this.setCache(false);
+										JACPModalDialog.this.setVisible(false);
+										JACPModalDialog.this.getChildren()
+												.clear();
 									}
 								}, new KeyValue(this.opacityProperty(), 0,
 										Interpolator.EASE_BOTH))).build()
 				.play();
-		((GaussianBlur) root.getEffect()).setRadius(0.0);
+		((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(0.0);
 	}
 
 }

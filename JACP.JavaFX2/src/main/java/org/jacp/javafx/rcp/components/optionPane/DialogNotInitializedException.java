@@ -24,7 +24,7 @@ package org.jacp.javafx.rcp.components.optionPane;
 
 /**
  * The Class DialogNotInitializedException.
- *
+ * 
  * @author Patrick Symmangk
  */
 public class DialogNotInitializedException extends RuntimeException {
@@ -32,7 +32,9 @@ public class DialogNotInitializedException extends RuntimeException {
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -343178301862250777L;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Throwable#getMessage()
 	 */
 	@Override

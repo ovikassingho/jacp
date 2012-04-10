@@ -49,12 +49,12 @@ public class FXActionListener implements EventHandler<Event>,
 	}
 
 	@Override
-	public void notifyComponents(IAction<Event, Object> action) {
+	public void notifyComponents(final IAction<Event, Object> action) {
 		this.globalMessageQueue.add(action);
 	}
 
 	@Override
-	public void setAction(IAction<Event, Object> action) {
+	public void setAction(final IAction<Event, Object> action) {
 		this.action = action;
 	}
 
@@ -70,13 +70,13 @@ public class FXActionListener implements EventHandler<Event>,
 	}
 
 	@Override
-	public void handle(Event t) {
+	public void handle(final Event t) {
 		this.action.setActionEvent(t);
 		this.notifyComponents(this.action);
 	}
 
 	@Override
-	public void performAction(Event arg0) {
+	public void performAction(final Event arg0) {
 		this.handle(arg0);
 	}
 

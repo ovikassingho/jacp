@@ -22,10 +22,9 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.components.optionPane;
 
-
 /**
  * The Interface IModalMessageNode.
- *
+ * 
  * @author Patrick Symmangk
  */
 public interface IModalMessageNode {

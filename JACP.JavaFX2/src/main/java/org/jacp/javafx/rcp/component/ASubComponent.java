@@ -32,7 +32,6 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 
-
 /**
  * the AFXSubComponent is the basic component for all components
  * 
@@ -41,7 +40,6 @@ import org.jacp.api.component.ISubComponent;
  */
 public abstract class ASubComponent extends AComponent implements
 		ISubComponent<EventHandler<Event>, Event, Object> {
-
 
 	private volatile String executionTarget;
 
@@ -54,7 +52,7 @@ public abstract class ASubComponent extends AComponent implements
 
 	@Override
 	public final void initEnv(final String parentId,
-			BlockingQueue<IAction<Event, Object>> messageQueue) {
+			final BlockingQueue<IAction<Event, Object>> messageQueue) {
 		this.parentId = parentId;
 		this.globalMessageQueue = messageQueue;
 
@@ -66,7 +64,7 @@ public abstract class ASubComponent extends AComponent implements
 	}
 
 	@Override
-	public final void setExecutionTarget(String target) {
+	public final void setExecutionTarget(final String target) {
 		this.executionTarget = target;
 
 	}
@@ -77,7 +75,7 @@ public abstract class ASubComponent extends AComponent implements
 	}
 
 	@Override
-	public final void putIncomingMessage(IAction<Event, Object> action) {
+	public final void putIncomingMessage(final IAction<Event, Object> action) {
 		try {
 			this.incomingMessage.put(action);
 		} catch (final InterruptedException e) {
@@ -103,7 +101,6 @@ public abstract class ASubComponent extends AComponent implements
 		return this.blocked.get();
 	}
 
-	
 	@Override
 	public final String getParentId() {
 		return this.parentId;

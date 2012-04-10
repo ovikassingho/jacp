@@ -29,27 +29,26 @@ import org.jacp.api.action.IDelegateDTO;
 
 /**
  * DTO interface to transfer components to desired target
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
-public class DelegateDTO implements IDelegateDTO<Event, Object>{
+public class DelegateDTO implements IDelegateDTO<Event, Object> {
 	private final String target;
 	private final IAction<Event, Object> action;
-	
-	
-	public DelegateDTO(final String target,
-			IAction<Event, Object> action) {
+
+	public DelegateDTO(final String target, final IAction<Event, Object> action) {
 		this.target = target;
 		this.action = action;
 	}
 
 	@Override
 	public String getTarget() {
-		return target;
+		return this.target;
 	}
 
 	@Override
 	public IAction<Event, Object> getAction() {
-		return action;
+		return this.action;
 	}
 }

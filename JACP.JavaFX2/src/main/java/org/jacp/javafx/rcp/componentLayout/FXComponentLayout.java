@@ -54,7 +54,7 @@ public class FXComponentLayout implements IBaseLayout<Node> {
 	}
 
 	@Override
-	public JACPToolBar getRegisteredToolBar(ToolbarPosition position) {
+	public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
 		return this.registeredToolBars.get(position);
 	}
 
@@ -63,8 +63,9 @@ public class FXComponentLayout implements IBaseLayout<Node> {
 		return this.menu;
 	}
 
+	@Override
 	public final Pane getGlassPane() {
-		return glassPane;
+		return this.glassPane;
 	}
 
 }

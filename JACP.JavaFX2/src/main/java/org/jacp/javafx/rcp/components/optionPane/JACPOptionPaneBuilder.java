@@ -53,166 +53,178 @@ public class JACPOptionPaneBuilder {
 
 	/**
 	 * Gets the on ok action.
-	 *
+	 * 
 	 * @return the on ok action
 	 */
 	private EventHandler<ActionEvent> getOnOkAction() {
-		return onOkAction;
+		return this.onOkAction;
 	}
 
 	/**
 	 * Sets the on ok action.
-	 *
-	 * @param onOkAction the on ok action
+	 * 
+	 * @param onOkAction
+	 *            the on ok action
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnOkAction(
-			EventHandler<ActionEvent> onOkAction) {
+			final EventHandler<ActionEvent> onOkAction) {
 		this.onOkAction = onOkAction;
 		return this;
 	}
 
 	/**
 	 * Gets the on cancel action.
-	 *
+	 * 
 	 * @return the on cancel action
 	 */
 	private EventHandler<ActionEvent> getOnCancelAction() {
-		return onCancelAction;
+		return this.onCancelAction;
 	}
 
 	/**
 	 * Sets the on cancel action.
-	 *
-	 * @param onCancelAction the on cancel action
+	 * 
+	 * @param onCancelAction
+	 *            the on cancel action
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnCancelAction(
-			EventHandler<ActionEvent> onCancelAction) {
+			final EventHandler<ActionEvent> onCancelAction) {
 		this.onCancelAction = onCancelAction;
 		return this;
 	}
 
 	/**
 	 * Gets the on yes action.
-	 *
+	 * 
 	 * @return the on yes action
 	 */
 	private EventHandler<ActionEvent> getOnYesAction() {
-		return onYesAction;
+		return this.onYesAction;
 	}
 
 	/**
 	 * Sets the on yes action.
-	 *
-	 * @param onYesAction the on yes action
+	 * 
+	 * @param onYesAction
+	 *            the on yes action
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnYesAction(
-			EventHandler<ActionEvent> onYesAction) {
+			final EventHandler<ActionEvent> onYesAction) {
 		this.onYesAction = onYesAction;
 		return this;
 	}
 
 	/**
 	 * Gets the on no action.
-	 *
+	 * 
 	 * @return the on no action
 	 */
 	private EventHandler<ActionEvent> getOnNoAction() {
-		return onNoAction;
+		return this.onNoAction;
 	}
 
 	/**
 	 * Sets the on no action.
-	 *
-	 * @param onNoAction the on no action
+	 * 
+	 * @param onNoAction
+	 *            the on no action
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnNoAction(
-			EventHandler<ActionEvent> onNoAction) {
+			final EventHandler<ActionEvent> onNoAction) {
 		this.onNoAction = onNoAction;
 		return this;
 	}
 
 	/**
 	 * Gets the title.
-	 *
+	 * 
 	 * @return the title
 	 */
 	private String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	/**
 	 * Sets the title.
-	 *
-	 * @param title the title
+	 * 
+	 * @param title
+	 *            the title
 	 * @return the jACP option pane builder
 	 */
-	public JACPOptionPaneBuilder setTitle(String title) {
+	public JACPOptionPaneBuilder setTitle(final String title) {
 		this.title = title;
 		return this;
 	}
 
 	/**
 	 * Gets the content.
-	 *
+	 * 
 	 * @return the content
 	 */
 	private String getContent() {
-		return content;
+		return this.content;
 	}
 
 	/**
 	 * Sets the content.
-	 *
-	 * @param content the content
+	 * 
+	 * @param content
+	 *            the content
 	 * @return the jACP option pane builder
 	 */
-	public JACPOptionPaneBuilder setContent(String content) {
+	public JACPOptionPaneBuilder setContent(final String content) {
 		this.content = content;
 		return this;
 	}
 
 	/**
 	 * Gets the default button.
-	 *
+	 * 
 	 * @return the default button
 	 */
 	private JACPDialogButton getDefaultButton() {
-		return defaultButton;
+		return this.defaultButton;
 	}
 
 	/**
 	 * Sets the default button.
-	 *
-	 * @param defaultButton the default button
+	 * 
+	 * @param defaultButton
+	 *            the default button
 	 * @return the jACP option pane builder
 	 */
-	public JACPOptionPaneBuilder setDefaultButton(JACPDialogButton defaultButton) {
+	public JACPOptionPaneBuilder setDefaultButton(
+			final JACPDialogButton defaultButton) {
 		this.defaultButton = defaultButton;
 		return this;
 	}
 
 	/**
 	 * Builds the.
-	 *
+	 * 
 	 * @return the jACP option pane
 	 */
 	public JACPOptionPane build() {
 		// build OptionPane!
-		JACPOptionPane pane = JACPDialogUtil.createOptionPane(getTitle(),
-				getContent());
-		if (getOnCancelAction() != null)
-			pane.setOnCancelAction(getOnCancelAction());
-		if (getOnOkAction() != null)
-			pane.setOnOkAction(getOnOkAction());
-		if (getOnYesAction() != null)
-			pane.setOnYesAction(getOnYesAction());
-		if (getOnNoAction() != null)
-			pane.setOnNoAction(getOnNoAction());
-		pane.setDefaultButton(getDefaultButton());
+		final JACPOptionPane pane = JACPDialogUtil.createOptionPane(
+				this.getTitle(), this.getContent());
+		if (this.getOnCancelAction() != null) {
+			pane.setOnCancelAction(this.getOnCancelAction());
+		}
+		if (this.getOnOkAction() != null) {
+			pane.setOnOkAction(this.getOnOkAction());
+		}
+		if (this.getOnYesAction() != null) {
+			pane.setOnYesAction(this.getOnYesAction());
+		}
+		if (this.getOnNoAction() != null) {
+			pane.setOnNoAction(this.getOnNoAction());
+		}
+		pane.setDefaultButton(this.getDefaultButton());
 		return pane;
 	}
 

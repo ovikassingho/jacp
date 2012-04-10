@@ -62,7 +62,7 @@ public class FXMessageDelegator extends Thread implements
 				dto = this.messageDelegateQueue.take();
 				final String targetId = dto.getTarget();
 				final IAction<Event, Object> action = dto.getAction();
-				delegateMessage(targetId, action);
+				this.delegateMessage(targetId, action);
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -107,7 +107,8 @@ public class FXMessageDelegator extends Thread implements
 			} else {
 				throw new UnsupportedOperationException(
 						"No responsible perspective found. Handling not implemented yet. target: "
-								+ target + " perspectives: " + perspectives);
+								+ target + " perspectives: "
+								+ this.perspectives);
 			}
 		} // End else
 	}
@@ -215,30 +216,30 @@ public class FXMessageDelegator extends Thread implements
 	}
 
 	public BlockingQueue<IDelegateDTO<Event, Object>> getComponentDelegateQueue() {
-		return messageDelegateQueue;
+		return this.messageDelegateQueue;
 	}
 
 	public void setComponentDelegateQueue(
-			BlockingQueue<IDelegateDTO<Event, Object>> componentDelegateQueue) {
+			final BlockingQueue<IDelegateDTO<Event, Object>> componentDelegateQueue) {
 		this.messageDelegateQueue = componentDelegateQueue;
 	}
 
 	@Override
-	public void delegateMessage(IDelegateDTO<Event, Object> messageDTO) {
-		getComponentDelegateQueue().add(messageDTO);
+	public void delegateMessage(final IDelegateDTO<Event, Object> messageDTO) {
+		this.getComponentDelegateQueue().add(messageDTO);
 
 	}
 
 	@Override
 	public void addPerspective(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.perspectives.add(perspective);
 
 	}
 
 	@Override
 	public void removePerspective(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.perspectives.remove(perspective);
 
 	}
@@ -250,7 +251,7 @@ public class FXMessageDelegator extends Thread implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			IComponentHandler<P, IAction<Event, Object>> handler) {
+			final IComponentHandler<P, IAction<Event, Object>> handler) {
 		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
 
 	}

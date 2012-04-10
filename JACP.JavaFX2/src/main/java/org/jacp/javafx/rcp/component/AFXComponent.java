@@ -28,8 +28,6 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponentView;
-import org.jacp.api.componentLayout.IBaseLayout;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
 /**
  * represents a basic FX2 component to extend from, uses this abstract class to
@@ -41,14 +39,6 @@ public abstract class AFXComponent extends ASubComponent implements
 		IComponentView<Node, EventHandler<Event>, Event, Object> {
 
 	private Node root;
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final void setRoot(final Node root) {
-		this.root = root;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -92,39 +82,5 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	public abstract Node postHandleAction(final Node node,
 			final IAction<Event, Object> action);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final void onStart(final IBaseLayout<Node> layout) {
-		this.onStartComponent((FXComponentLayout) layout);
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onTearDown(final IBaseLayout<Node> layout) {
-		this.onTearDownComponent((FXComponentLayout) layout);
-
-	}
-
-	/**
-	 * Handle menu, bars and other UI components on component start.
-	 * 
-	 * @param menuBar
-	 * @param bars
-	 */
-	public abstract void onStartComponent(final FXComponentLayout layout);
-
-	/**
-	 * Clean up menu, bars and other components on component teardown.
-	 * 
-	 * @param menuBar
-	 * @param bars
-	 */
-	public abstract void onTearDownComponent(final FXComponentLayout layout);
 
 }

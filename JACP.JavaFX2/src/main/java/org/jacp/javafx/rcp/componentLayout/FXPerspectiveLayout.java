@@ -44,7 +44,7 @@ public class FXPerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 	private final Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();
 
 	@Override
-	public void registerRootComponent(Node comp) {
+	public void registerRootComponent(final Node comp) {
 		this.rootComponent = comp;
 	}
 
@@ -59,7 +59,7 @@ public class FXPerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 	}
 
 	@Override
-	public void registerTargetLayoutComponent(String id, Node target) {
+	public void registerTargetLayoutComponent(final String id, final Node target) {
 		this.targetComponents.put(id, target);
 	}
 

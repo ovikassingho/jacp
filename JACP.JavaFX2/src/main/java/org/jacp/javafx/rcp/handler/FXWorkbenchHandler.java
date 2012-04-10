@@ -34,8 +34,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.OnStart;
 import org.jacp.api.component.IComponentView;
-import org.jacp.api.component.IExtendedComponent;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IPerspectiveView;
 import org.jacp.api.component.ISubComponent;
@@ -198,7 +198,7 @@ public class FXWorkbenchHandler
 			final Node newComp) {
 		final ObservableList<Node> children = FXUtil.getChildren(parent);
 		// set all other components in in workbench to invisible
-		hideChildren(children);
+		this.hideChildren(children);
 		oldComp.setVisible(false);
 		newComp.setVisible(true);
 		if (children.remove(oldComp)) {
@@ -221,7 +221,7 @@ public class FXWorkbenchHandler
 		comp.setVisible(true);
 		synchronized (this.root) {
 			final ObservableList<Node> children = this.root.getChildren();
-			hideChildren(children);
+			this.hideChildren(children);
 			GridPane.setConstraints(comp, 0, 0);
 			children.add(comp);
 		}
@@ -231,27 +231,22 @@ public class FXWorkbenchHandler
 	private void handlePerspectiveInitMethod(
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		if (perspective instanceof IExtendedComponent) {
-			final FXComponentLayout tmpLayout = new FXComponentLayout(this
+		if (perspective instanceof IPerspectiveView) {
+			final FXComponentLayout layout = new FXComponentLayout(this
 					.getWorkbenchLayout().getMenu(), this.getWorkbenchLayout()
 					.getRegisteredToolbars(), this.getWorkbenchLayout()
 					.getGlassPane());
-			((IExtendedComponent<Node>) perspective)
-					.onStart(new FXComponentLayout(this.getWorkbenchLayout()
-							.getMenu(), this.getWorkbenchLayout()
-							.getRegisteredToolbars(), this.getWorkbenchLayout()
-							.getGlassPane()));
-			if (perspective instanceof IPerspectiveView) {
-				final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((IPerspectiveView<Node,EventHandler<Event>, Event, Object>) perspective)
-						.getIPerspectiveLayout();
-				perspective.postInit(new FXPerspectiveHandler(this.launcher,
-						tmpLayout, perspectiveLayout, perspective
-								.getComponentDelegateQueue()));
-			} else {
-
-			}
-
+			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,
+					layout);
+			final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) perspective)
+					.getIPerspectiveLayout();
+			perspective.postInit(new FXPerspectiveHandler(this.launcher,
+					layout, perspectiveLayout, perspective
+							.getComponentDelegateQueue()));
+		} else {
+			// TODO handle non UI Perspectives (not present 10.04.2012)
 		}
+
 		if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(
 				perspective.getId())) {
 			this.log("3.4.3.1: perspective handle with custom action");

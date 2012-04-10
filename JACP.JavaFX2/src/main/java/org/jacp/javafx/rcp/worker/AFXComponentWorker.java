@@ -35,6 +35,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.ISubComponent;
@@ -72,7 +73,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 			final Node validContainer,
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component) {
 		this.handleAdd(validContainer, component.getRoot(), component.getName());
-		handleViewState(validContainer, true);
+		this.handleViewState(validContainer, true);
 
 	}
 
@@ -86,7 +87,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	private void handleAdd(final Node validContainer, final Node uiComponent,
 			final String name) {
 		if (validContainer != null && uiComponent != null) {
-			handleViewState(uiComponent, true);
+			this.handleViewState(uiComponent, true);
 			final ObservableList<Node> children = FXUtil
 					.getChildren(validContainer);
 			children.add(uiComponent);
@@ -102,21 +103,23 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 */
 	protected final void handleOldComponentRemove(final Node parent,
 			final Node currentContainer) {
-		handleViewState(currentContainer, false);
+		this.handleViewState(currentContainer, false);
 		final ObservableList<Node> children = FXUtil.getChildren(parent);
 		children.remove(currentContainer);
 	}
-	
+
 	/**
 	 * set visibility and enable/disable
+	 * 
 	 * @param uiComponent
 	 * @param state
 	 */
-	protected final void handleViewState(final Node uiComponent, boolean state) {
+	protected final void handleViewState(final Node uiComponent,
+			final boolean state) {
 		uiComponent.setVisible(state);
 		uiComponent.setDisable(!state);
 	}
-	
+
 	/**
 	 * delegate components handle return value to specified target
 	 * 
@@ -126,8 +129,10 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 */
 	protected void delegateReturnValue(
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
-			final String targetId, final Object value,final IAction<Event, Object> myAction) {
-		if (value != null && targetId != null && !myAction.getLastMessage().equals("init")) {
+			final String targetId, final Object value,
+			final IAction<Event, Object> myAction) {
+		if (value != null && targetId != null
+				&& !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
 					.getActionListener(null);
 			listener.setAction(new FXAction(comp.getId(), targetId, value));
@@ -143,20 +148,23 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentTaget
 	 */
-	protected void handleNewComponentValue(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected void handleNewComponentValue(
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node parent,
 			final String currentTaget) {
 		if (parent == null) {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
-			this.handleTargetChange(delegateQueue,component, targetComponents, validId);
+			this.handleTargetChange(delegateQueue, component, targetComponents,
+					validId);
 		} else if (currentTaget.equals(component.getExecutionTarget())) {
 			this.addComponentByType(parent, component);
 		} else {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
-			this.handleTargetChange(delegateQueue,component, targetComponents, validId);
+			this.handleTargetChange(delegateQueue, component, targetComponents,
+					validId);
 		}
 	}
 
@@ -180,21 +188,24 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param targetComponents
 	 */
-	protected void handleTargetChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected void handleTargetChange(
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
 				targetComponents, target);
 		if (validContainer != null) {
-			handleLocalTargetChange(component, targetComponents, validContainer);
+			this.handleLocalTargetChange(component, targetComponents,
+					validContainer);
 		} else {
 			// handle target outside current perspective
-			this.changeComponentTarget(delegateQueue,component);
+			this.changeComponentTarget(delegateQueue, component);
 		}
 	}
 
 	/**
 	 * Handle target change inside perspective.
+	 * 
 	 * @param component
 	 * @param targetComponents
 	 * @param validContainer
@@ -206,20 +217,25 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	}
 
 	/**
-	 * Handle target change to an other perspective. If target component not found in current perspective, move to an other  perspective and run teardown.
+	 * Handle target change to an other perspective. If target component not
+	 * found in current perspective, move to an other perspective and run
+	 * teardown.
+	 * 
 	 * @param component
 	 * @param targetComponents
 	 * @param target
 	 * @param layout
 	 */
-	protected void handlePerspectiveChange(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected void handlePerspectiveChange(
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
 		if (component instanceof AFXComponent) {
-			((AFXComponent) component).onTearDownComponent(layout);
+			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component,
+					layout);
 		}
 		// handle target outside current perspective
-		this.changeComponentTarget(delegateQueue,component);
+		this.changeComponentTarget(delegateQueue, component);
 	}
 
 	/**
@@ -227,7 +243,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected final void changeComponentTarget(final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+	protected final void changeComponentTarget(
+			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final String targetId = component.getExecutionTarget();
 		final String parentIdOld = component.getParentId();
@@ -238,7 +255,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 
 		}
 	}
-	
 
 	/**
 	 * runs subcomponents handle method
@@ -251,8 +267,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		final Node editorComponent = component.handle(action);
-		if (editorComponent != null)
-			component.setRoot(editorComponent);
+		if (editorComponent != null) {
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.AFXCOMPONENT_ROOT, editorComponent);
+		}
 	}
 
 	/**
@@ -268,13 +285,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		final Node tmp = component.postHandle(root, action);
 		if (tmp != null) {
 			tmp.setVisible(true);
-			component.setRoot(tmp);
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.AFXCOMPONENT_ROOT, tmp);
 		}
 	}
-
-	
-
-	
 
 	protected void log(final String message) {
 		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(

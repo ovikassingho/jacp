@@ -39,14 +39,18 @@ import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.util.FXUtil;
+
 /**
- * The component delegator handles a component target change, find the correct perspective an add component to correct perspective
+ * The component delegator handles a component target change, find the correct
+ * perspective an add component to correct perspective
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 public class FXComponentDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
-	private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<ISubComponent<EventHandler<Event>,Event,Object>>(100);
+	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>>(
+			100);
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 
@@ -54,11 +58,11 @@ public class FXComponentDelegator extends Thread implements
 	public final void run() {
 		while (!Thread.interrupted()) {
 			try {
-				final ISubComponent<EventHandler<Event>, Event, Object> component = componentDelegateQueue
+				final ISubComponent<EventHandler<Event>, Event, Object> component = this.componentDelegateQueue
 						.take();
 				final String targetId = component.getExecutionTarget();
 
-				delegateTargetChange(targetId, component);
+				this.delegateTargetChange(targetId, component);
 
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
@@ -139,34 +143,33 @@ public class FXComponentDelegator extends Thread implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			IComponentHandler<P, IAction<Event, Object>> handler) {
+			final IComponentHandler<P, IAction<Event, Object>> handler) {
 		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
 
 	}
 
 	@Override
 	public BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
-		return componentDelegateQueue;
+		return this.componentDelegateQueue;
 	}
-
 
 	@Override
 	public void delegateComponent(
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
-		getComponentDelegateQueue().add(component);
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		this.getComponentDelegateQueue().add(component);
 
 	}
 
 	@Override
 	public void addPerspective(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.perspectives.add(perspective);
 
 	}
 
 	@Override
 	public void removePerspective(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		this.perspectives.remove(perspective);
 
 	}

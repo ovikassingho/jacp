@@ -45,26 +45,27 @@ import org.jacp.javafx.rcp.util.FXUtil;
 public class FXComponentCoordinator extends AFXCoordinator implements
 		IComponentCoordinator<EventHandler<Event>, Event, Object> {
 
-	private List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
+	private final List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
 	private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
 	private String parentId;
 
 	@Override
 	public void addComponent(
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.components.add(component);
 	}
 
 	@Override
 	public void removeComponent(
-			ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.components.remove(component);
 
 	}
 
 	@Override
-	public void handleMessage(String targetId, IAction<Event, Object> action) {
+	public void handleMessage(final String targetId,
+			final IAction<Event, Object> action) {
 		synchronized (action) {
 			final ISubComponent<EventHandler<Event>, Event, Object> component = FXUtil
 					.getObserveableById(FXUtil.getTargetComponentId(targetId),
@@ -92,8 +93,8 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	private void handleComponentHit(final String targetId,
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final IAction<Event, Object> actionClone = FXUtil.getValidAction(action,
-				targetId, action.getMessageList().get(targetId));
+		final IAction<Event, Object> actionClone = FXUtil.getValidAction(
+				action, targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
 			this.log(" //1.1.1.1// component HIT handle ACTIVE: "
 					+ action.getTargetId());
@@ -119,7 +120,7 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 		if (!local) {
 			final String targetPerspectiveId = FXUtil
 					.getTargetPerspectiveId(targetId);
-			if (parentId.equals(targetPerspectiveId)) {
+			if (this.parentId.equals(targetPerspectiveId)) {
 				// TODO target is in same perspective but component was not
 				// found previously
 				throw new UnsupportedOperationException(
@@ -127,18 +128,16 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 			}
 		}
 		// possible message to perspective
-		delegateMessageToCorrectPerspective(targetId, action,
+		this.delegateMessageToCorrectPerspective(targetId, action,
 				this.delegateQueue);
 
 	}
-
-	
 
 	@Override
 	public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
 			final P component, final IAction<Event, Object> action) {
 		this.log(" //1.1.1.1.1// component " + action.getTargetId()
-				+ " delegate to perspective: " + parentId);
+				+ " delegate to perspective: " + this.parentId);
 		this.componentHandler.handleAndReplaceComponent(action,
 				(ISubComponent<EventHandler<Event>, Event, Object>) component);
 
@@ -156,27 +155,27 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
-		return componentHandler;
+		return this.componentHandler;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			IComponentHandler<P, IAction<Event, Object>> handler) {
+			final IComponentHandler<P, IAction<Event, Object>> handler) {
 		this.componentHandler = (IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
 
 	}
 
 	@Override
 	public void setMessageDelegateQueue(
-			BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue) {
+			final BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue) {
 		this.delegateQueue = delegateQueue;
-		
+
 	}
 
 	@Override
-	public void setParentId(String parentId) {
+	public void setParentId(final String parentId) {
 		this.parentId = parentId;
-		
+
 	}
 }

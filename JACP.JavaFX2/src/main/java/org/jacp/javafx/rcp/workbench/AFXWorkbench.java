@@ -108,7 +108,7 @@ public abstract class AFXWorkbench
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
-			public void handle(WindowEvent arg0) {
+			public void handle(final WindowEvent arg0) {
 				// TODO close all threads, use thread group to interrupt
 				// ((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
 				// ((FX2ComponentDelegator)componentDelegator).interrupt();
@@ -122,14 +122,15 @@ public abstract class AFXWorkbench
 		this.handleInitialLayout(new FXAction("TODO", "init"),
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
-		postHandle(new FXComponentLayout(this.getWorkbenchLayout().getMenu(),
-				this.getWorkbenchLayout().getRegisteredToolbars(), glassPane));
+		this.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
+				.getMenu(), this.getWorkbenchLayout().getRegisteredToolbars(),
+				this.glassPane));
 		this.log("3: handle initialisation sequence");
-		componentHandler = new FXWorkbenchHandler(this.launcher,
+		this.componentHandler = new FXWorkbenchHandler(this.launcher,
 				this.workbenchLayout, this.root, this.perspectives);
-		this.perspectiveCoordinator.setComponentHandler(componentHandler);
-		this.componentDelegator.setComponentHandler(componentHandler);
-		this.messageDelegator.setComponentHandler(componentHandler);
+		this.perspectiveCoordinator.setComponentHandler(this.componentHandler);
+		this.componentDelegator.setComponentHandler(this.componentHandler);
+		this.messageDelegator.setComponentHandler(this.componentHandler);
 		this.handleInitialisationSequence();
 	}
 
@@ -138,7 +139,7 @@ public abstract class AFXWorkbench
 	 * {@inheritDoc}
 	 */
 	// TODO init method also defined in perspective!!!!
-	public void init(Launcher<?> launcher) {
+	public void init(final Launcher<?> launcher) {
 		this.launcher = launcher;
 
 	}
@@ -239,7 +240,7 @@ public abstract class AFXWorkbench
 	public final void registerComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 
-		handleMetaAnnotation(perspective);
+		this.handleMetaAnnotation(perspective);
 		perspective.init(this.componentDelegator.getComponentDelegateQueue(),
 				this.messageDelegator.getMessageDelegateQueue(),
 				this.perspectiveCoordinator.getMessageQueue());
@@ -254,7 +255,7 @@ public abstract class AFXWorkbench
 	 * @param component
 	 */
 	private void handleMetaAnnotation(
-			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		final Perspective perspectiveAnnotation = perspective.getClass()
 				.getAnnotation(Perspective.class);
 		if (perspectiveAnnotation != null) {
@@ -292,7 +293,7 @@ public abstract class AFXWorkbench
 
 	@Override
 	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
-		return componentHandler;
+		return this.componentHandler;
 	}
 
 	@Override
@@ -316,7 +317,7 @@ public abstract class AFXWorkbench
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
 		return new FXActionListener(new FXAction("workbench"),
-				perspectiveCoordinator.getMessageQueue());
+				this.perspectiveCoordinator.getMessageQueue());
 	}
 
 	/**
@@ -326,28 +327,28 @@ public abstract class AFXWorkbench
 	 *            javafx.stage.Stage
 	 */
 	private void setBasicLayout(final Stage stage) {
-		int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
-		int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
+		final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
+		final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 
 		// the top most pane is a Stackpane
 
-		BorderPane top = new BorderPane();
-		StackPane absoluteRoot = new StackPane();
+		final BorderPane top = new BorderPane();
+		final StackPane absoluteRoot = new StackPane();
 
 		final BorderPane baseLayoutPane = new BorderPane();
 		// top most pane
 		this.root = new GridPane();
-		root.setId("root-pane");
+		this.root.setId("root-pane");
 		JACPModalDialog.initDialog(baseLayoutPane);
-		dimmer = JACPModalDialog.getInstance();
-		dimmer.setVisible(false);
+		this.dimmer = JACPModalDialog.getInstance();
+		this.dimmer.setVisible(false);
 
-		glassPane = this.getWorkbenchLayout().getGlassPane();
-		glassPane.autosize();
-		glassPane.setVisible(false);
-		glassPane.setPrefSize(0, 0);
+		this.glassPane = this.getWorkbenchLayout().getGlassPane();
+		this.glassPane.autosize();
+		this.glassPane.setVisible(false);
+		this.glassPane.setPrefSize(0, 0);
 
-		GaussianBlur blur = new GaussianBlur();
+		final GaussianBlur blur = new GaussianBlur();
 		blur.setRadius(0);
 		baseLayoutPane.setEffect(blur);
 
@@ -379,23 +380,23 @@ public abstract class AFXWorkbench
 			}
 
 			// add root to the center
-			toolbarPane.setCenter(root);
+			toolbarPane.setCenter(this.root);
 
 		} else {
-			baseLayoutPane.setCenter(root);
+			baseLayoutPane.setCenter(this.root);
 		}
 		absoluteRoot.getChildren().add(baseLayoutPane);
 		absoluteRoot.setId("root");
 		stage.setScene(new Scene(top, x, y));
-		initCSS(stage.getScene());
+		this.initCSS(stage.getScene());
 
 		// new Layer for Menu Effects
-		absoluteRoot.getChildren().add(glassPane);
-		absoluteRoot.getChildren().add(dimmer);
+		absoluteRoot.getChildren().add(this.glassPane);
+		absoluteRoot.getChildren().add(this.dimmer);
 		top.setCenter(absoluteRoot);
 	}
 
-	private void initCSS(Scene scene) {
+	private void initCSS(final Scene scene) {
 		scene.getStylesheets().addAll(
 				AFXWorkbench.class.getResource("/styles/jacp-styles.css")
 						.toExternalForm(),
@@ -414,8 +415,8 @@ public abstract class AFXWorkbench
 	 * @param x
 	 * @param y
 	 */
-	private void assignCorrectToolBarLayout(ToolbarPosition position,
-			ToolBar bar, BorderPane pane) {
+	private void assignCorrectToolBarLayout(final ToolbarPosition position,
+			final ToolBar bar, final BorderPane pane) {
 
 		switch (position) {
 		case NORTH:
