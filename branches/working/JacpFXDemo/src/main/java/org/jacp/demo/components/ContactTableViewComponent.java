@@ -19,6 +19,7 @@ package org.jacp.demo.components;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -27,6 +28,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
@@ -34,7 +36,6 @@ import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.components.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.components.optionPane.JACPOptionPane;
@@ -140,7 +141,7 @@ public class ContactTableViewComponent extends AFXComponent {
 		if (contact == null) {
 			view = this.createView(null);
 		} else if (!this.all.containsKey(contact.getFirstName())) {
-			view= this.createView(contact);
+			view = this.createView(contact);
 			this.all.put(contact.getFirstName(), view);
 		} else if (contact != null) {
 			view = this.all.get(contact.getFirstName());
@@ -185,16 +186,6 @@ public class ContactTableViewComponent extends AFXComponent {
 			}
 		});
 		dialog.showDialog();
-
-	}
-
-	@Override
-	public void onStartComponent(final FXComponentLayout layout) {
-
-	}
-
-	@Override
-	public void onTearDownComponent(final FXComponentLayout layout) {
 
 	}
 

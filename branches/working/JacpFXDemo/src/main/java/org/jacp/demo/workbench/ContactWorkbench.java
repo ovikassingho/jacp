@@ -74,7 +74,8 @@ public class ContactWorkbench extends AFXWorkbench {
 	public void postHandle(final FXComponentLayout layout) {
 		final JACPMenuBar menu = layout.getMenu();
 		final Menu menuFile = new Menu("File");
-		menuFile.getItems().addAll(createExitEntry(), createInfoEntry());
+		menuFile.getItems().addAll(this.createExitEntry(),
+				this.createInfoEntry());
 		menu.getMenus().addAll(menuFile);
 
 	}
@@ -101,8 +102,9 @@ public class ContactWorkbench extends AFXWorkbench {
 				});
 
 				hboxButtons.getChildren().addAll(ok);
-				box.getChildren().addAll(createTitle(), createInfoText(),
-						createProjectLink(), hboxButtons);
+				box.getChildren().addAll(ContactWorkbench.this.createTitle(),
+						ContactWorkbench.this.createInfoText(),
+						ContactWorkbench.this.createProjectLink(), hboxButtons);
 				JACPModalDialog.getInstance().showModalMessage(box);
 
 			}
@@ -132,20 +134,20 @@ public class ContactWorkbench extends AFXWorkbench {
 	private Text createInfoText() {
 		return TextBuilder.create().layoutY(100).textOrigin(VPos.TOP)
 				.textAlignment(TextAlignment.JUSTIFY).wrappingWidth(400)
-				.text(message).fill(Color.WHITE).build();
+				.text(this.message).fill(Color.WHITE).build();
 	}
 
 	private Hyperlink createProjectLink() {
 		final Hyperlink link = new Hyperlink();
-		link.setText(projectURL);
+		link.setText(this.projectURL);
 		link.setStyle("-fx-text-fill: white;");
 		link.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent event) {
-				WebView wv = new WebView();
-				wv.getEngine().load(projectURL);
-				Scene scene = new Scene(wv, 1024, 768);
-				Stage stage = new Stage();
+			public void handle(final ActionEvent event) {
+				final WebView wv = new WebView();
+				wv.getEngine().load(ContactWorkbench.this.projectURL);
+				final Scene scene = new Scene(wv, 1024, 768);
+				final Stage stage = new Stage();
 				stage.setTitle("JacpFX documentation");
 				stage.setScene(scene);
 				stage.show();

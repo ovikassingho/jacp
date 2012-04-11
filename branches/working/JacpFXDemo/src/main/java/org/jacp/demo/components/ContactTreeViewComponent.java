@@ -40,9 +40,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.OnStart;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.enums.BarChartAction;
@@ -54,11 +56,11 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.springframework.util.StringUtils;
 
 /**
- * The ContactTreeViewComponent displays the contact category on the left side of the
- * application; It creates a "add category" button to add new categories to view
+ * The ContactTreeViewComponent displays the contact category on the left side
+ * of the application; It creates a "add category" button to add new categories
+ * to view
  * 
- * @author Andy Moncsek
- * 			Patrick Symmangk
+ * @author Andy Moncsek Patrick Symmangk
  */
 @Component(defaultExecutionTarget = "PleftMenu", id = "id001", name = "contactDemoTreeView", active = true)
 public class ContactTreeViewComponent extends AFXComponent {
@@ -93,12 +95,12 @@ public class ContactTreeViewComponent extends AFXComponent {
 		this.contactList.add(contact);
 	}
 
-	@Override
 	/**
 	 * handle menu an toolbar entries on component start up
 	 */
+	@OnStart
 	public void onStartComponent(final FXComponentLayout layout) {
-		final JACPToolBar north = (JACPToolBar) layout
+		final JACPToolBar north = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
 		final Button add = new Button("add category");
 		add.getStyleClass().add("first");
@@ -168,16 +170,11 @@ public class ContactTreeViewComponent extends AFXComponent {
 		JACPModalDialog.getInstance().showModalMessage(box);
 	}
 
-	@Override
-	public void onTearDownComponent(final FXComponentLayout layout) {
-
-	}
-
 	private ScrollPane createInitialLayout() {
 		final GridPane gridPane = new GridPane();
 		gridPane.getStyleClass().addAll("dark", "dark-border");
 		this.pane = new ScrollPane();
-		pane.getStyleClass().addAll("dark-scrollpane");
+		this.pane.getStyleClass().addAll("dark-scrollpane");
 		this.pane.setFitToHeight(true);
 		this.pane.setFitToWidth(true);
 		GridPane.setHgrow(this.pane, Priority.ALWAYS);
@@ -190,7 +187,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 
 		// the label
 		final Label categoryLbl = new Label("Category");
-		categoryLbl.getStyleClass().addAll("light-label","list-label");
+		categoryLbl.getStyleClass().addAll("light-label", "list-label");
 		GridPane.setHalignment(categoryLbl, HPos.CENTER);
 		gridPane.add(categoryLbl, 0, 0);
 
@@ -222,7 +219,8 @@ public class ContactTreeViewComponent extends AFXComponent {
 								super.updateItem(contact, emty);
 								if (contact != null) {
 									label.setText(contact.getFirstName());
-									configureProgressBar(contact);
+									ContactTreeViewComponent.this
+											.configureProgressBar(contact);
 									HBox.setMargin(contact.getProgress(),
 											new Insets(3, 0, 0, 0));
 									HBox.setHgrow(spacer, Priority.ALWAYS);

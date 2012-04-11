@@ -26,10 +26,12 @@ import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+
 /**
- * The CreatorCallback creates contact data with random numbers 
+ * The CreatorCallback creates contact data with random numbers
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 @CallbackComponent(id = "id005", name = "creatorCallback", active = false)
 public class CreatorCallback extends AStatelessCallbackComponent {

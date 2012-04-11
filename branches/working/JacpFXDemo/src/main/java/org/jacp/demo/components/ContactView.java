@@ -17,10 +17,6 @@
  */
 package org.jacp.demo.components;
 
-import org.jacp.demo.entity.Contact;
-import org.jacp.demo.main.Util;
-
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -34,10 +30,10 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -48,13 +44,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
+import org.jacp.demo.entity.Contact;
+import org.jacp.demo.main.Util;
+
 /**
  * The view object returned in a "TableView"-Component; each contact category is
  * associated to an contact view; this view contains the table and all contacts
  * to a parent contact.
  * 
- * @author Andy Moncsek
- * 			Patrick Symmangk
+ * @author Andy Moncsek Patrick Symmangk
  */
 public class ContactView extends GridPane {
 	private Contact contact;
@@ -229,7 +227,7 @@ public class ContactView extends GridPane {
 
 		mainLabel.getChildren().addAll(categoryLbl);
 
-		HBox nav = this.createTablePageNavigation();
+		final HBox nav = this.createTablePageNavigation();
 		nav.setAlignment(Pos.CENTER_RIGHT);
 		mainLabel.setAlignment(Pos.CENTER);
 		HBox.setHgrow(mainLabel, Priority.ALWAYS);
@@ -244,14 +242,14 @@ public class ContactView extends GridPane {
 
 		// container for paginate and table
 		final VBox div = new VBox(2);
-		
+
 		div.getStyleClass().add("table-content");
 		HBox.setHgrow(div, Priority.ALWAYS);
 		this.setFullspanConstraint(div);
 
 		GridPane.setHalignment(this.contactTableView, HPos.CENTER);
 		div.getChildren().addAll(nav, this.contactTableView);
-		
+
 		gridPane.add(div, 0, 0);
 
 		mainLayout.setTop(header);
@@ -263,7 +261,7 @@ public class ContactView extends GridPane {
 	}
 
 	private HBox createTablePageNavigation() {
-		HBox nav = new HBox();
+		final HBox nav = new HBox();
 		this.posOne = new Button("<<");
 		this.posOne.setTooltip(new Tooltip("Position One"));
 		this.left = new Button("<");
@@ -382,8 +380,8 @@ public class ContactView extends GridPane {
 
 		final TableColumn<Contact, String> firstNameColumn = this.createColumn(
 				"First name", "firstName");
-		setColumnConstraints(firstNameColumn, TableColumn.SortType.DESCENDING,
-				120);
+		this.setColumnConstraints(firstNameColumn,
+				TableColumn.SortType.DESCENDING, 120);
 		firstNameColumn
 				.setOnEditCommit(new EventHandler<CellEditEvent<Contact, String>>() {
 					@Override
@@ -405,8 +403,8 @@ public class ContactView extends GridPane {
 								.setLastName(t.getNewValue());
 					}
 				});
-		setColumnConstraints(lastNameColumn, TableColumn.SortType.DESCENDING,
-				120);
+		this.setColumnConstraints(lastNameColumn,
+				TableColumn.SortType.DESCENDING, 120);
 
 		final TableColumn nameCol = new TableColumn("Name");
 		nameCol.getColumns().addAll(firstNameColumn, lastNameColumn);
@@ -422,7 +420,8 @@ public class ContactView extends GridPane {
 								.setZip(t.getNewValue());
 					}
 				});
-		setColumnConstraints(zipColumn, TableColumn.SortType.DESCENDING, 60);
+		this.setColumnConstraints(zipColumn, TableColumn.SortType.DESCENDING,
+				60);
 
 		final TableColumn<Contact, String> addressColumn = this.createColumn(
 				"Address", "address");
@@ -435,8 +434,8 @@ public class ContactView extends GridPane {
 								.setAddress(t.getNewValue());
 					}
 				});
-		setColumnConstraints(addressColumn, TableColumn.SortType.DESCENDING,
-				150);
+		this.setColumnConstraints(addressColumn,
+				TableColumn.SortType.DESCENDING, 150);
 
 		final TableColumn<Contact, String> countryColumn = this.createColumn(
 				"Country", "country");
@@ -449,7 +448,8 @@ public class ContactView extends GridPane {
 								.setCountry(t.getNewValue());
 					}
 				});
-		setColumnConstraints(countryColumn, TableColumn.SortType.DESCENDING, 60);
+		this.setColumnConstraints(countryColumn,
+				TableColumn.SortType.DESCENDING, 60);
 
 		final TableColumn<Contact, String> phoneNumberColumn = this
 				.createColumn("Phone number", "phoneNumber");
@@ -462,7 +462,7 @@ public class ContactView extends GridPane {
 								.setPhoneNumber(t.getNewValue());
 					}
 				});
-		setColumnConstraints(phoneNumberColumn,
+		this.setColumnConstraints(phoneNumberColumn,
 				TableColumn.SortType.DESCENDING, 150);
 
 		this.contactTableView.getColumns().addAll(nameCol, zipColumn,
@@ -470,8 +470,9 @@ public class ContactView extends GridPane {
 
 	}
 
-	private void setColumnConstraints(TableColumn<Contact, String> column,
-			TableColumn.SortType sortType, double width) {
+	private void setColumnConstraints(
+			final TableColumn<Contact, String> column,
+			final TableColumn.SortType sortType, final double width) {
 		column.setSortType(sortType);
 		column.prefWidthProperty().bind(
 				this.contactTableView.widthProperty().divide(6).subtract(1));
