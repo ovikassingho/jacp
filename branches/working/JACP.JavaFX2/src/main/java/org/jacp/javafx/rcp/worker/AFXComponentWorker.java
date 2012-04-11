@@ -268,7 +268,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 			final IAction<Event, Object> action) {
 		final Node editorComponent = component.handle(action);
 		if (editorComponent != null) {
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.AFXCOMPONENT_ROOT, editorComponent);
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component,
+					FXUtil.AFXCOMPONENT_ROOT, editorComponent);
 		}
 	}
 
@@ -285,7 +286,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		final Node tmp = component.postHandle(root, action);
 		if (tmp != null) {
 			tmp.setVisible(true);
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.AFXCOMPONENT_ROOT, tmp);
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component,
+					FXUtil.AFXCOMPONENT_ROOT, tmp);
 		}
 	}
 

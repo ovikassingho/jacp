@@ -48,11 +48,15 @@ import org.jacp.api.component.ISubComponent;
  */
 public class FXUtil {
 
-	public static final String AFXCOMPONENT_ROOT="root";
-	public static final String ACOMPONENT_ACTIVE="active";
-	public static final String ACOMPONENT_ID="id";
-	public static final String ACOMPONENT_NAME="name";
-	public static final String ACOMPONENT_EXTARGET="executionTarget";
+	public static final String AFXCOMPONENT_ROOT = "root";
+	public static final String ACOMPONENT_ACTIVE = "active";
+	public static final String ACOMPONENT_ID = "id";
+	public static final String ACOMPONENT_NAME = "name";
+	public static final String ACOMPONENT_EXTARGET = "executionTarget";
+	public static final String ACOMPONENT_BLOCKED = "blocked";
+	public static final String ACOMPONENT_STARTED = "started";
+	public static final String APERSPECTIVE_MQUEUE = "messageQueue";
+
 	/**
 	 * contains constant values
 	 * 
@@ -154,7 +158,7 @@ public class FXUtil {
 					if (!match) {
 						m.invoke(component);
 					}
-					break;
+
 				} catch (final IllegalArgumentException e) {
 					throw new UnsupportedOperationException(
 							"use @OnStart and @OnTeardown either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
@@ -166,6 +170,7 @@ public class FXUtil {
 					Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
 							null, e);
 				}
+				break;
 			}
 		}
 	}

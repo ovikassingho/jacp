@@ -140,28 +140,27 @@ public abstract class AFXPerspective extends AComponent implements
 		final Component componentAnnotation = component.getClass()
 				.getAnnotation(Component.class);
 		if (componentAnnotation != null) {
-			FXUtil.setPrivateMemberValue(AComponent.class, component, FXUtil.ACOMPONENT_ID,
-					componentAnnotation.id());
-			FXUtil.setPrivateMemberValue(AComponent.class, component, "active",
-					componentAnnotation.active());
-			FXUtil.setPrivateMemberValue(AComponent.class, component, "name",
-					componentAnnotation.name());
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
+					FXUtil.ACOMPONENT_ID, componentAnnotation.id());
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
+					FXUtil.ACOMPONENT_ACTIVE, componentAnnotation.active());
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
+					FXUtil.ACOMPONENT_NAME, componentAnnotation.name());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
-					"executionTarget",
+					FXUtil.ACOMPONENT_EXTARGET,
 					componentAnnotation.defaultExecutionTarget());
 			this.log("register component with annotations : "
 					+ componentAnnotation.id());
 		} else {
-
 			final CallbackComponent callbackAnnotation = component.getClass()
 					.getAnnotation(CallbackComponent.class);
 			if (callbackAnnotation != null) {
-				FXUtil.setPrivateMemberValue(AComponent.class, component, FXUtil.ACOMPONENT_ID,
-						callbackAnnotation.id());
 				FXUtil.setPrivateMemberValue(AComponent.class, component,
-						"active", callbackAnnotation.active());
+						FXUtil.ACOMPONENT_ID, callbackAnnotation.id());
 				FXUtil.setPrivateMemberValue(AComponent.class, component,
-						"name", callbackAnnotation.name());
+						FXUtil.ACOMPONENT_ACTIVE, callbackAnnotation.active());
+				FXUtil.setPrivateMemberValue(AComponent.class, component,
+						FXUtil.ACOMPONENT_NAME, callbackAnnotation.name());
 				this.log("register CallbackComponent with annotations : "
 						+ callbackAnnotation.id());
 			}
