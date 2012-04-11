@@ -27,7 +27,9 @@ import java.util.concurrent.BlockingQueue;
 import org.jacp.api.action.IAction;
 
 /**
- * Defines a subcomponent handled by a root component. A subcomponent is running in a perspective environment an can be represented by an visible UI or non visible background component.
+ * Defines a subcomponent handled by a root component. A subcomponent is running
+ * in a perspective environment an can be represented by an visible UI or non
+ * visible background component.
  * 
  * @author Andy Moncsek
  * 
@@ -53,7 +55,6 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 	 * @param target
 	 */
 	void setExecutionTarget(final String target);
-
 
 	/**
 	 * Returns true if component has message in pipe.
@@ -85,14 +86,16 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 
 	/**
 	 * returns the id of parent component
+	 * 
 	 * @return the parent id
 	 */
 	String getParentId();
-	
+
 	/**
 	 * Set parentId and global message queue to component
 	 * 
 	 * @param messageQueue
 	 */
-	void initEnv(final String parentId, final BlockingQueue<IAction<A, M>> messageQueue);
+	void initEnv(final String parentId,
+			final BlockingQueue<IAction<A, M>> messageQueue);
 }

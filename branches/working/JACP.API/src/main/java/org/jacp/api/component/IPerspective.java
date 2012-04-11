@@ -25,7 +25,6 @@ package org.jacp.api.component;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.handler.IComponentHandler;
@@ -50,18 +49,24 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 		IHandleable<A, M> {
 
 	/**
-	 * The initialization method. 
+	 * The initialization method.
 	 * 
 	 * @param componentDelegateQueue
 	 * @param messageDelegateQueue
 	 */
-	void init(final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,final BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue, final BlockingQueue<IAction<A,M>> globalMessageQueue);
-	
+	void init(
+			final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,
+			final BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue,
+			final BlockingQueue<IAction<A, M>> globalMessageQueue);
+
 	/**
-	 * post init method to set correct component handler and to initialize components depending on objects created in startUp sequence 
+	 * post init method to set correct component handler and to initialize
+	 * components depending on objects created in startUp sequence
+	 * 
 	 * @param componentHandler
 	 */
-	void postInit(IComponentHandler<ISubComponent<L, A, M>, IAction<A,M>> componentHandler);
+	void postInit(
+			IComponentHandler<ISubComponent<L, A, M>, IAction<A, M>> componentHandler);
 
 	/**
 	 * Returns all subcomponents in perspective.
@@ -91,16 +96,17 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * @return the delegate queue
 	 */
 	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
-	
+
 	/**
 	 * Returns delegate queue to delegate actions to correct target
 	 * 
 	 * @return the delegate queue
 	 */
 	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
-	
+
 	/**
 	 * returns the components coordinator message queue;
+	 * 
 	 * @return message queue
 	 */
 	BlockingQueue<IAction<A, M>> getComponentsMessageQueue();

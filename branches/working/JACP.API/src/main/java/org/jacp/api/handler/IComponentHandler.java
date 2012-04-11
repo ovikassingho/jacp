@@ -21,10 +21,12 @@
  *
  ************************************************************************/
 package org.jacp.api.handler;
+
 /**
  * A component handler handles initialization and reassignment of components
+ * 
  * @author Andy Moncsek
- *
+ * 
  * @param <T>
  *            component type to register
  * @param <A>
@@ -45,6 +47,5 @@ public interface IComponentHandler<T, A> {
 	 * @param component
 	 * @param action
 	 */
-	void handleAndReplaceComponent(final A action,
-			final T component);
+	void handleAndReplaceComponent(final A action, final T component);
 }

@@ -25,9 +25,9 @@ package org.jacp.api.action;
 import java.util.Map;
 
 /**
- * Represents an action used by specific listener. An Action targets a component and
- * contains a message; every target get a specific instance of an action (clone)
- * containing only his specific message and action event.
+ * Represents an action used by specific listener. An Action targets a component
+ * and contains a message; every target get a specific instance of an action
+ * (clone) containing only his specific message and action event.
  * 
  * @param <M>
  *            defines the type of message
@@ -38,15 +38,14 @@ import java.util.Map;
 public interface IAction<A, M> extends Cloneable {
 
 	/**
-	 *  Set message for target component.
+	 * Set message for target component.
 	 * 
 	 * @param message
 	 */
 	void setMessage(final M message);
 
 	/**
-	 * Set message for a specified target component.
-	 * the component.
+	 * Set message for a specified target component. the component.
 	 * 
 	 * @param targetId
 	 * @param message

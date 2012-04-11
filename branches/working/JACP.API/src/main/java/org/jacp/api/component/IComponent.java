@@ -29,7 +29,7 @@ import org.jacp.api.action.IActionListener;
  * environment.
  * 
  * @author Andy Moncsek
-
+ * 
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -40,14 +40,16 @@ import org.jacp.api.action.IActionListener;
 public interface IComponent<L, A, M> {
 
 	/**
-	 * Returns an action listener (for local use). Message will be send to caller component.
+	 * Returns an action listener (for local use). Message will be send to
+	 * caller component.
 	 * 
 	 * @return the action listener instance
 	 */
 	IActionListener<L, A, M> getActionListener(M message);
-	
+
 	/**
-	 * Returns an action listener (for  global use). targetId defines the id or your receiver component
+	 * Returns an action listener (for global use). targetId defines the id or
+	 * your receiver component
 	 * 
 	 * @return the action listener instance
 	 */
@@ -82,7 +84,6 @@ public interface IComponent<L, A, M> {
 	 */
 	void setActive(boolean active);
 
-
 	/**
 	 * Get if component was activated, can occur if message was send before
 	 * "init" message arrived
@@ -105,8 +106,5 @@ public interface IComponent<L, A, M> {
 	 */
 	@Deprecated
 	void setName(String name);
-
-
-	
 
 }

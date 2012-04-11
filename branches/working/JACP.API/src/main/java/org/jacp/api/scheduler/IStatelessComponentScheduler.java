@@ -38,21 +38,23 @@ import org.jacp.api.component.IStatelessCallabackComponent;
  * @param <M>
  */
 public interface IStatelessComponentScheduler<L, A, M> {
-    /**
-     * Handles incoming message to managed state less component.
-     * 
-     * @param message
-     */
-    void incomingMessage(final IAction<A, M> message,IStatelessCallabackComponent<L, A, M> component);
+	/**
+	 * Handles incoming message to managed state less component.
+	 * 
+	 * @param message
+	 */
+	void incomingMessage(final IAction<A, M> message,
+			IStatelessCallabackComponent<L, A, M> component);
 
-    /**
-     * Returns a new instance of managed state less component.
-     * 
-     * @param <T>
-     * @param clazz
-     * @return an cloned instance of a state less component.
-     */
-    <T extends ICallbackComponent<L, A, M>> ICallbackComponent<L, A, M> getCloneBean(IStatelessCallabackComponent<L, A, M> component,
-	    final Class<T> clazz);
+	/**
+	 * Returns a new instance of managed state less component.
+	 * 
+	 * @param <T>
+	 * @param clazz
+	 * @return an cloned instance of a state less component.
+	 */
+	<T extends ICallbackComponent<L, A, M>> ICallbackComponent<L, A, M> getCloneBean(
+			IStatelessCallabackComponent<L, A, M> component,
+			final Class<T> clazz);
 
 }

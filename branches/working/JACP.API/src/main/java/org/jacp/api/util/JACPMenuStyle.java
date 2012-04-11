@@ -31,18 +31,18 @@ public enum JACPMenuStyle {
 
 	private String description;
 
-	private JACPMenuStyle(int id, String description) {
+	private JACPMenuStyle(final int id, final String description) {
 
 		this.id = id;
 		this.description = description;
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 }

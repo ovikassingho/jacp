@@ -24,7 +24,6 @@ package org.jacp.api.coordinator;
 
 import java.util.concurrent.BlockingQueue;
 
-
 import org.jacp.api.component.ISubComponent;
 
 /**
@@ -36,7 +35,7 @@ import org.jacp.api.component.ISubComponent;
  * @param <A>
  * @param <M>
  */
-public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M>{
+public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M> {
 
 	/**
 	 * Handles delegate of a component.
@@ -51,7 +50,5 @@ public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M>{
 	 * @return delegateQueue
 	 */
 	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
-
-	
 
 }

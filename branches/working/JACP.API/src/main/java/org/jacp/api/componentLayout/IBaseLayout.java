@@ -35,8 +35,9 @@ public interface IBaseLayout<C> {
 
 	/**
 	 * Gets the registered tool bar.
-	 *
-	 * @param position the position
+	 * 
+	 * @param position
+	 *            the position
 	 * @return the registered tool bar
 	 */
 	C getRegisteredToolBar(ToolbarPosition position);
@@ -47,11 +48,10 @@ public interface IBaseLayout<C> {
 	 * @return the menu instance
 	 */
 	C getMenu();
-	
-	
+
 	/**
 	 * Gets the glass pane.
-	 *
+	 * 
 	 * @return the glass pane
 	 */
 	C getGlassPane();

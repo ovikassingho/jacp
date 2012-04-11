@@ -28,9 +28,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks on start methods in UI components; Usage use @OnStart on method level and provide access to IBaseLayout parameter 
+ * Marks on start methods in UI components; Usage use @OnStart on method level
+ * and provide access to IBaseLayout parameter
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

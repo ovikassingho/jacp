@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
-
 /**
  * Represents a state less background/callback component. This component has a
  * typical handle method, the return value is typically a non UI value (but it
