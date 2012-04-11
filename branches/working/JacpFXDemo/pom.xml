@@ -85,9 +85,11 @@
 
 
 								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html -->
-								<jfxsignjar destdir="${project.build.directory}/deploy"
-									keyStore="${project.basedir}/src/jnlp/fxstore"
-									storePass="jacp11" alias="jacpfx" keyPass="jacp11">
+										<jfxsignjar destdir="${project.build.directory}/deploy"
+
+									keyStore="C:\Users\ady\fxstore"
+									storePass="jacp11" alias="jacpSign" keyPass="jacp11">
+
 									<fileset dir="${project.build.directory}/deploy"
 										includes="*.jar" />
 								</jfxsignjar>
