@@ -39,7 +39,11 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
 import org.springframework.util.StringUtils;
-
+/**
+ * Creates the "add new contact" dialog
+ * @author Andy Moncsek
+ *
+ */
 public class ContactAddDialog {
 	final ContactTreeViewComponent parent;
 	public ContactAddDialog(final ContactTreeViewComponent parent) {
