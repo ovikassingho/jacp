@@ -17,16 +17,17 @@
  */
 package org.jacp.demo.main;
 
-import org.jacp.project.launcher.AFX2SpringLauncher;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import org.jacp.project.launcher.AFX2SpringLauncher;
+
 /**
- * JacpFX application launcher and main method for contact demo. This is the entry
- * class to start initial context of an JacpFX application. Here you define the
- * location of the spring-xml and can handle settings like css configuration.
+ * JacpFX application launcher and main method for contact demo. This is the
+ * entry class to start initial context of an JacpFX application. Here you
+ * define the location of the spring-xml and can handle settings like css
+ * configuration.
  * 
  * @author Andy Moncsek
  * 

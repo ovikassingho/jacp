@@ -32,70 +32,73 @@ public class ContactDTO {
 	private List<XYChart.Data<String, Number>> seriesTwoData;
 	private List<XYChart.Data<String, Number>> seriesThreeData;
 	private List<XYChart.Data<String, Number>> seriesFourData;
-	
-	public ContactDTO(String parentName,int amount) {
+
+	public ContactDTO(final String parentName, final int amount) {
 		this.parentName = parentName;
 		this.amount = amount;
 	}
-	
+
 	public ContactDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public int getAmount() {
-		return amount;
+		return this.amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(final int amount) {
 		this.amount = amount;
 	}
 
 	public String getParentName() {
-		return parentName;
+		return this.parentName;
 	}
 
-	public void setParentName(String parentName) {
+	public void setParentName(final String parentName) {
 		this.parentName = parentName;
 	}
 
 	public ObservableList<Contact> getContacts() {
-		return contacts;
+		return this.contacts;
 	}
 
-	public void setContacts(ObservableList<Contact> contacts) {
+	public void setContacts(final ObservableList<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
 	public List<XYChart.Data<String, Number>> getSeriesOneData() {
-		return seriesOneData;
+		return this.seriesOneData;
 	}
 
-	public void setSeriesOneData(List<XYChart.Data<String, Number>> seriesOneData) {
+	public void setSeriesOneData(
+			final List<XYChart.Data<String, Number>> seriesOneData) {
 		this.seriesOneData = seriesOneData;
 	}
 
 	public List<XYChart.Data<String, Number>> getSeriesTwoData() {
-		return seriesTwoData;
+		return this.seriesTwoData;
 	}
 
-	public void setSeriesTwoData(List<XYChart.Data<String, Number>> seriesTwoData) {
+	public void setSeriesTwoData(
+			final List<XYChart.Data<String, Number>> seriesTwoData) {
 		this.seriesTwoData = seriesTwoData;
 	}
 
 	public List<XYChart.Data<String, Number>> getSeriesThreeData() {
-		return seriesThreeData;
+		return this.seriesThreeData;
 	}
 
 	public void setSeriesThreeData(
-			List<XYChart.Data<String, Number>> seriesThreeData) {
+			final List<XYChart.Data<String, Number>> seriesThreeData) {
 		this.seriesThreeData = seriesThreeData;
 	}
 
 	public List<XYChart.Data<String, Number>> getSeriesFourData() {
-		return seriesFourData;
+		return this.seriesFourData;
 	}
 
-	public void setSeriesFourData(List<XYChart.Data<String, Number>> seriesFourData) {
+	public void setSeriesFourData(
+			final List<XYChart.Data<String, Number>> seriesFourData) {
 		this.seriesFourData = seriesFourData;
 	}
 

@@ -30,6 +30,8 @@ import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.OnStart;
+import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -51,13 +53,13 @@ public class ContactPerspective extends AFXPerspective {
 	private String topId = "PmainContentTop";
 	private String bottomId = "PmainContentBottom";
 
-	@Override
+	@OnStart
 	/**
 	 * create buttons in tool bars; menu entries  
 	 */
 	public void onStartPerspective(final FXComponentLayout layout) {
 		// create button in toolbar; button should switch top and bottom id's
-		final JACPToolBar north = (JACPToolBar) layout
+		final JACPToolBar north = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
 
 		final Button custom = new Button("switch");
@@ -76,9 +78,8 @@ public class ContactPerspective extends AFXPerspective {
 		north.addOnEnd(custom);
 	}
 
-	@Override
+	@OnTearDown
 	public void onTearDownPerspective(final FXComponentLayout layout) {
-
 	}
 
 	@Override

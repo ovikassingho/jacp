@@ -33,7 +33,6 @@ import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 
-
 /**
  * The AnalyticsCallbac components creates chart data (random data)
  * 

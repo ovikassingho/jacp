@@ -27,7 +27,7 @@ package org.jacp.demo.enums;
  * Some Actions as enum
  * 
  * @author Patrick Symmangk
- *
+ * 
  */
 public enum BarChartAction {
 
