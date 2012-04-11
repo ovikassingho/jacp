@@ -50,8 +50,8 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 @Component(defaultExecutionTarget = "PmainContentTop", id = "id002", name = "contactDemoTableView", active = true)
 public class ContactTableViewComponent extends AFXComponent {
 
-	private final Map<String, ContactView> all = new HashMap<String, ContactView>();
-	private ContactView current;
+	private final Map<String, ContactTableView> all = new HashMap<String, ContactTableView>();
+	private ContactTableView current;
 
 	@Override
 	/**
@@ -83,7 +83,7 @@ public class ContactTableViewComponent extends AFXComponent {
 
 		} else if (action.getLastMessage() instanceof ContactDTO) {
 			final ContactDTO dto = (ContactDTO) action.getLastMessage();
-			final ContactView view = this.all.get(dto.getParentName());
+			final ContactTableView view = this.all.get(dto.getParentName());
 			// first 1000 entries
 			if (view.getContactTableView().getItems().size() < Util.PARTITION_SIZE) {
 				view.getContactTableView().getItems().addAll(dto.getContacts());
@@ -131,13 +131,13 @@ public class ContactTableViewComponent extends AFXComponent {
 
 	private void updateContactList(final ContactDTO dto) {
 		// add chunk of contact list to contact
-		final ContactView view = this.all.get(dto.getParentName());
+		final ContactTableView view = this.all.get(dto.getParentName());
 		view.getContact().getContacts().addAll(dto.getContacts());
 		view.updateMaxValue();
 	}
 
-	private ContactView getView(final Contact contact) {
-		ContactView view = null;
+	private ContactTableView getView(final Contact contact) {
+		ContactTableView view = null;
 		if (contact == null) {
 			view = this.createView(null);
 		} else if (!this.all.containsKey(contact.getFirstName())) {
@@ -149,8 +149,8 @@ public class ContactTableViewComponent extends AFXComponent {
 		return view;
 	}
 
-	private ContactView createView(final Contact contact) {
-		final ContactView view = new ContactView();
+	private ContactTableView createView(final Contact contact) {
+		final ContactTableView view = new ContactTableView();
 		view.createInitialTableViewLayout(contact);
 		view.getContactTableView().setRowFactory(this.createRowCallback());
 		return view;

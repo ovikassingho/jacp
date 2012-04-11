@@ -54,7 +54,7 @@ import org.jacp.demo.main.Util;
  * 
  * @author Andy Moncsek Patrick Symmangk
  */
-public class ContactView extends GridPane {
+public class ContactTableView extends GridPane {
 	private Contact contact;
 
 	private ObservableList<Contact> lastSubList;
@@ -275,12 +275,12 @@ public class ContactView extends GridPane {
 		this.end.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(final Event arg0) {
-				ContactView.this.currentPos = ContactView.this.getMaxPos();
-				ContactView.this.setLastSubList(ContactView.this
+				ContactTableView.this.currentPos = ContactTableView.this.getMaxPos();
+				ContactTableView.this.setLastSubList(ContactTableView.this
 						.getNextSublist());
-				ContactView.this.updateTableContent(ContactView.this
+				ContactTableView.this.updateTableContent(ContactTableView.this
 						.getLastSubList());
-				ContactView.this.right.setDisable(true);
+				ContactTableView.this.right.setDisable(true);
 
 			}
 		});
@@ -291,14 +291,14 @@ public class ContactView extends GridPane {
 
 			@Override
 			public void handle(final Event arg0) {
-				ContactView.this.currentPos = ContactView.this
+				ContactTableView.this.currentPos = ContactTableView.this
 						.getNextCorrectPosition();
-				ContactView.this.setLastSubList(ContactView.this
+				ContactTableView.this.setLastSubList(ContactTableView.this
 						.getNextSublist());
-				ContactView.this.updateTableContent(ContactView.this
+				ContactTableView.this.updateTableContent(ContactTableView.this
 						.getLastSubList());
-				ContactView.this.right
-						.setDisable(ContactView.this.currentPos == ContactView.this
+				ContactTableView.this.right
+						.setDisable(ContactTableView.this.currentPos == ContactTableView.this
 								.getMaxPos());
 
 			}
@@ -307,12 +307,12 @@ public class ContactView extends GridPane {
 		this.posOne.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(final Event arg0) {
-				ContactView.this.currentPos = 0;
-				ContactView.this.setLastSubList(ContactView.this
+				ContactTableView.this.currentPos = 0;
+				ContactTableView.this.setLastSubList(ContactTableView.this
 						.getNextSublist());
-				ContactView.this.updateTableContent(ContactView.this
+				ContactTableView.this.updateTableContent(ContactTableView.this
 						.getLastSubList());
-				ContactView.this.left.setDisable(true);
+				ContactTableView.this.left.setDisable(true);
 
 			}
 		});
@@ -321,11 +321,11 @@ public class ContactView extends GridPane {
 
 			@Override
 			public void handle(final Event arg0) {
-				ContactView.this.currentPos = ContactView.this
+				ContactTableView.this.currentPos = ContactTableView.this
 						.getPrevCorrectPosition();
-				ContactView.this.setLastSubList(ContactView.this
+				ContactTableView.this.setLastSubList(ContactTableView.this
 						.getPrevSublist());
-				ContactView.this.updateTableContent(ContactView.this
+				ContactTableView.this.updateTableContent(ContactTableView.this
 						.getLastSubList());
 
 			}

@@ -22,38 +22,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.demo.entity.Contact;
-import org.jacp.demo.enums.BarChartAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
-import org.springframework.util.StringUtils;
 
 /**
  * The ContactTreeViewComponent displays the contact category on the left side
@@ -64,7 +44,7 @@ import org.springframework.util.StringUtils;
  */
 @Component(defaultExecutionTarget = "PleftMenu", id = "id001", name = "contactDemoTreeView", active = true)
 public class ContactTreeViewComponent extends AFXComponent {
-	private ScrollPane pane;
+	private ContactTreeView pane;
 	private ObservableList<Contact> contactList;
 
 	@Override
@@ -72,6 +52,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 	 * handle the component in worker thread
 	 */
 	public Node handleAction(final IAction<Event, Object> action) {
+		// on initial message create the layout outside the FXApplication thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			return this.createInitialLayout();
 		}
@@ -84,6 +65,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 	 */
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
+		// add a new contact in FXApplication thread
 		if (action.getLastMessage() instanceof Contact) {
 			final Contact contact = (Contact) action.getLastMessage();
 			this.addNewContact(contact);
@@ -91,9 +73,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 		return this.pane;
 	}
 
-	private void addNewContact(final Contact contact) {
-		this.contactList.add(contact);
-	}
+	
 
 	/**
 	 * handle menu an toolbar entries on component start up
@@ -104,171 +84,22 @@ public class ContactTreeViewComponent extends AFXComponent {
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
 		final Button add = new Button("add category");
 		add.getStyleClass().add("first");
+		final ContactTreeViewComponent component = this;
 		add.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(final ActionEvent event) {
-				ContactTreeViewComponent.this.createAddContactDialog(event);
+				new ContactAddDialog(component);
 			}
 
 		});
 		north.add(add);
 	}
 
-	private void createAddContactDialog(final ActionEvent arg0) {
-		final VBox box = new VBox();
-		box.setId("ProxyDialog");
-		box.setMaxSize(300, Region.USE_PREF_SIZE);
-		// the title
-		final Label title = new Label("Add new category");
-		title.setId("jacp-custom-title");
-		VBox.setMargin(title, new Insets(2, 2, 10, 2));
-
-		final HBox hboxInput = new HBox();
-		final Label nameLabel = new Label("category name:");
-		HBox.setMargin(nameLabel, new Insets(2));
-		final TextField nameInput = new TextField();
-		HBox.setMargin(nameInput, new Insets(0, 0, 0, 5));
-		HBox.setHgrow(nameInput, Priority.ALWAYS);
-		hboxInput.getChildren().addAll(nameLabel, nameInput);
-
-		final HBox hboxButtons = new HBox();
-		hboxButtons.setAlignment(Pos.CENTER_RIGHT);
-		final Button ok = new Button("OK");
-		HBox.setMargin(ok, new Insets(6, 5, 4, 2));
-		final Button cancel = new Button("Cancel");
-		HBox.setMargin(cancel, new Insets(6, 2, 4, 5));
-		cancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				JACPModalDialog.getInstance().hideModalMessage();
-			}
-		});
-		ok.setDefaultButton(true);
-
-		ok.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(final ActionEvent actionEvent) {
-				final String catName = nameInput.getText();
-				if (catName != null && StringUtils.hasText(catName)) {
-
-					// contacts
-					final Contact contact = new Contact();
-					contact.setFirstName(catName);
-					final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeViewComponent.this
-							.getActionListener(contact);
-					listener.performAction(actionEvent);
-
-					JACPModalDialog.getInstance().hideModalMessage();
-				}
-			}
-		});
-		hboxButtons.getChildren().addAll(ok, cancel);
-
-		box.getChildren().addAll(title, hboxInput, hboxButtons);
-		JACPModalDialog.getInstance().showModalMessage(box);
-	}
-
-	private ScrollPane createInitialLayout() {
-		final GridPane gridPane = new GridPane();
-		gridPane.getStyleClass().addAll("dark", "dark-border");
-		this.pane = new ScrollPane();
-		this.pane.getStyleClass().addAll("dark-scrollpane");
-		this.pane.setFitToHeight(true);
-		this.pane.setFitToWidth(true);
-		GridPane.setHgrow(this.pane, Priority.ALWAYS);
-		GridPane.setVgrow(this.pane, Priority.ALWAYS);
-		this.pane.setContent(gridPane);
-
-		gridPane.setPadding(new Insets(5));
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
-
-		// the label
-		final Label categoryLbl = new Label("Category");
-		categoryLbl.getStyleClass().addAll("light-label", "list-label");
-		GridPane.setHalignment(categoryLbl, HPos.CENTER);
-		gridPane.add(categoryLbl, 0, 0);
-
+	private ContactTreeView createInitialLayout() {
 		this.contactList = this.getCategoryList();
-		final ListView<Contact> categoryListView = this.createList();
-		GridPane.setHgrow(categoryListView, Priority.ALWAYS);
-		GridPane.setVgrow(categoryListView, Priority.ALWAYS);
-		gridPane.add(categoryListView, 0, 1);
-		GridPane.setMargin(categoryListView, new Insets(0, 10, 10, 10));
+		this.pane = new ContactTreeView(this.contactList, this);
 		return this.pane;
-	}
-
-	private ListView<Contact> createList() {
-		final ListView<Contact> categoryListView = new ListView<Contact>(
-				this.contactList);
-		categoryListView
-				.setCellFactory(new Callback<ListView<Contact>, ListCell<Contact>>() {
-
-					@Override
-					public ListCell<Contact> call(final ListView<Contact> arg0) {
-						final Label label = new Label();
-						label.getStyleClass().add("dark-text");
-						final HBox box = new HBox();
-						final Pane spacer = new Pane();
-						final ListCell<Contact> cell = new ListCell<Contact>() {
-							@Override
-							public void updateItem(final Contact contact,
-									final boolean emty) {
-								super.updateItem(contact, emty);
-								if (contact != null) {
-									label.setText(contact.getFirstName());
-									ContactTreeViewComponent.this
-											.configureProgressBar(contact);
-									HBox.setMargin(contact.getProgress(),
-											new Insets(3, 0, 0, 0));
-									HBox.setHgrow(spacer, Priority.ALWAYS);
-									box.getChildren().addAll(label, spacer,
-											contact.getProgress());
-
-									this.setGraphic(box);
-									this.setOnMouseClicked(new EventHandler<Event>() {
-
-										@Override
-										public void handle(final Event event) {
-											// send contact to TableView
-											// component to show containing
-											// contacts
-											final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeViewComponent.this
-													.getActionListener(
-															"id01.id002",
-															contact);
-											listener.performAction(event);
-											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeViewComponent.this
-													.getActionListener(
-															"id01.id003",
-															BarChartAction.RESET);
-											resetListener.performAction(event);
-										}
-									});
-								}
-
-							}
-						}; // ListCell
-						return cell;
-					}
-				});
-
-		return categoryListView;
-	}
-
-	private void configureProgressBar(final Contact contact) {
-		if (contact.getProgress() == null) {
-			final ProgressBar progressBar = new ProgressBar();
-			progressBar.getStyleClass().add("jacp-progress-bar");
-			contact.setProgress(progressBar);
-		}
-		if (contact.getContacts().isEmpty()) {
-			contact.getProgress().setVisible(false);
-		} else {
-			contact.getProgress().setVisible(true);
-		}
 	}
 
 	/**
@@ -289,5 +120,9 @@ public class ContactTreeViewComponent extends AFXComponent {
 		categories.add(publicContact);
 		categories.add(officeContact);
 		return categories;
+	}
+	
+	private void addNewContact(final Contact contact) {
+		this.contactList.add(contact);
 	}
 }
