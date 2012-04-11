@@ -44,7 +44,7 @@ public abstract class AStatefulCallbackComponent extends ASubComponent
 	/**
 	 * {@inheritDoc}
 	 */
-	public <C> C handle(final IAction<Event, Object> action) {
+	public final <C> C handle(final IAction<Event, Object> action) {
 		return (C) this.handleAction(action);
 	}
 

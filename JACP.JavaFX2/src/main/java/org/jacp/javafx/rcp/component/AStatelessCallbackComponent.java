@@ -86,12 +86,12 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 		try {
 			final AStatelessCallbackComponent comp = (AStatelessCallbackComponent) super
 					.clone();
-			FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ID,
-					this.getId());
-			FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ACTIVE,
-					this.isActive());
-			FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_NAME,
-					this.getName());
+			FXUtil.setPrivateMemberValue(AComponent.class, comp,
+					FXUtil.ACOMPONENT_ID, this.getId());
+			FXUtil.setPrivateMemberValue(AComponent.class, comp,
+					FXUtil.ACOMPONENT_ACTIVE, this.isActive());
+			FXUtil.setPrivateMemberValue(AComponent.class, comp,
+					FXUtil.ACOMPONENT_NAME, this.getName());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
 					FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
 			comp.setHandleTarget(this.handleComponentTarget);
@@ -111,11 +111,12 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	 */
 	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
-		FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ID, this.getId());
-		FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_ACTIVE,
-				this.isActive());
-		FXUtil.setPrivateMemberValue(AComponent.class, comp, FXUtil.ACOMPONENT_NAME,
-				this.getName());
+		FXUtil.setPrivateMemberValue(AComponent.class, comp,
+				FXUtil.ACOMPONENT_ID, this.getId());
+		FXUtil.setPrivateMemberValue(AComponent.class, comp,
+				FXUtil.ACOMPONENT_ACTIVE, this.isActive());
+		FXUtil.setPrivateMemberValue(AComponent.class, comp,
+				FXUtil.ACOMPONENT_NAME, this.getName());
 		FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
 				FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
 		comp.setHandleTarget(this.handleComponentTarget);
@@ -124,17 +125,17 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	}
 
 	@Override
-	public List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
+	public final List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
 		return this.componentInstances;
 	}
 
 	@Override
-	public AtomicInteger getThreadCounter() {
+	public final AtomicInteger getThreadCounter() {
 		return this.threadCount;
 	}
 
 	@Override
-	public ExecutorService getExecutorService() {
+	public final ExecutorService getExecutorService() {
 		return this.executor;
 	}
 

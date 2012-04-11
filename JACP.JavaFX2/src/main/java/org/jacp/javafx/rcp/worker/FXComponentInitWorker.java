@@ -72,7 +72,7 @@ public class FXComponentInitWorker
 			throws Exception {
 		synchronized (this.component) {
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					"blocked", new AtomicBoolean(true));
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(true));
 			this.log("3.4.4.2.1: subcomponent handle init START: "
 					+ this.component.getName());
 			this.prepareAndHandleComponent(this.component, this.action);
@@ -94,7 +94,7 @@ public class FXComponentInitWorker
 			this.log("3.4.4.2.4: subcomponent handle init END: "
 					+ this.component.getName());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					"blocked", new AtomicBoolean(false));
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 			return this.component;
 		}
 	}
@@ -153,9 +153,9 @@ public class FXComponentInitWorker
 				// queue
 			}
 			FXUtil.setPrivateMemberValue(AComponent.class, this.component,
-					"started", true);
+					FXUtil.ACOMPONENT_STARTED, true);
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					"blocked", new AtomicBoolean(false));
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		}
 	}
 

@@ -259,12 +259,12 @@ public abstract class AFXWorkbench
 		final Perspective perspectiveAnnotation = perspective.getClass()
 				.getAnnotation(Perspective.class);
 		if (perspectiveAnnotation != null) {
-			FXUtil.setPrivateMemberValue(AComponent.class, perspective, "id",
-					perspectiveAnnotation.id());
 			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
-					"active", perspectiveAnnotation.active());
-			FXUtil.setPrivateMemberValue(AComponent.class, perspective, "name",
-					perspectiveAnnotation.name());
+					FXUtil.ACOMPONENT_ID, perspectiveAnnotation.id());
+			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
+					FXUtil.ACOMPONENT_ACTIVE, perspectiveAnnotation.active());
+			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
+					FXUtil.ACOMPONENT_NAME, perspectiveAnnotation.name());
 			this.log("register perspective with annotations : "
 					+ perspectiveAnnotation.id());
 		}
@@ -277,7 +277,7 @@ public abstract class AFXWorkbench
 	public final void unregisterComponent(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-				"messageQueue", null);
+				FXUtil.APERSPECTIVE_MQUEUE, null);
 		this.perspectiveCoordinator.removePerspective(perspective);
 		this.componentDelegator.removePerspective(perspective);
 		this.messageDelegator.removePerspective(perspective);

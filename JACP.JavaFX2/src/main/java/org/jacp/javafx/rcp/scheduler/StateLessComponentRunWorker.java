@@ -56,8 +56,8 @@ public class StateLessComponentRunWorker
 			throws Exception {
 		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked",
-					new AtomicBoolean(true));
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(true));
 			while (comp.hasIncomingMessage()) {
 				final IAction<Event, Object> myAction = comp
 						.getNextIncomingMessage();
@@ -66,8 +66,8 @@ public class StateLessComponentRunWorker
 				final String targetId = comp.getHandleTargetAndClear();
 				this.delegateReturnValue(comp, targetId, value, myAction);
 			}
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked",
-					new AtomicBoolean(false));
+			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		}
 		return comp;
 	}
@@ -87,7 +87,7 @@ public class StateLessComponentRunWorker
 		} finally {
 			// release lock
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					"blocked", new AtomicBoolean(false));
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		}
 
 	}

@@ -79,7 +79,8 @@ public class FXComponentReplaceWorker
 		synchronized (this.component) {
 			try {
 				FXUtil.setPrivateMemberValue(ASubComponent.class,
-						this.component, "blocked", new AtomicBoolean(true));
+						this.component, FXUtil.ACOMPONENT_BLOCKED,
+						new AtomicBoolean(true));
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
@@ -110,7 +111,8 @@ public class FXComponentReplaceWorker
 				}
 			} finally {
 				FXUtil.setPrivateMemberValue(ASubComponent.class,
-						this.component, "blocked", new AtomicBoolean(false));
+						this.component, FXUtil.ACOMPONENT_BLOCKED,
+						new AtomicBoolean(false));
 			}
 
 		}
@@ -244,7 +246,7 @@ public class FXComponentReplaceWorker
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component = this
 					.get();
 			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
-					"blocked", new AtomicBoolean(false));
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if
@@ -262,7 +264,7 @@ public class FXComponentReplaceWorker
 			// queue
 		} finally {
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					"blocked", new AtomicBoolean(false));
+					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		}
 
 	}

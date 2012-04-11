@@ -90,8 +90,8 @@ public class StatelessCallbackScheduler implements
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final IAction<Event, Object> message) {
-		FXUtil.setPrivateMemberValue(ASubComponent.class, comp, "blocked",
-				new AtomicBoolean(true));
+		FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
+				FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(true));
 		comp.putIncomingMessage(message);
 		final StateLessComponentRunWorker worker = new StateLessComponentRunWorker(
 				comp);
