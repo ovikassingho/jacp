@@ -24,14 +24,14 @@ package org.jacp.api.workbench;
 
 import java.util.List;
 
-
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.launcher.Launcher;
 
-
 /**
  * 
- * This Interface defines the basic root construct of an AHCP application, it has no dependencies to any UI 
+ * This Interface defines the basic root construct of an AHCP application, it
+ * has no dependencies to any UI
+ * 
  * @param <L>
  *            defines the action listener type
  * @param <A>
@@ -39,17 +39,16 @@ import org.jacp.api.launcher.Launcher;
  * @param <M>
  *            defines the basic message type
  * @author Andy Moncsek
- *
+ * 
  */
 public interface IBase<L, A, M> {
-	
+
 	/**
 	 * Set perspectives to workbench.
 	 * 
 	 * @param perspectives
 	 */
-	void setPerspectives(
-			final List<IPerspective<L, A, M>> perspectives);
+	void setPerspectives(final List<IPerspective<L, A, M>> perspectives);
 
 	/**
 	 * Get perspectives in workbench.
@@ -57,7 +56,7 @@ public interface IBase<L, A, M> {
 	 * @return a list of all perspectives
 	 */
 	List<IPerspective<L, A, M>> getPerspectives();
-	
+
 	/**
 	 * Initialization sequence returns basic container to handle perspectives.
 	 * 
@@ -65,7 +64,5 @@ public interface IBase<L, A, M> {
 	 *            for di container
 	 */
 	void init(final Launcher<?> launcher);
-
-
 
 }

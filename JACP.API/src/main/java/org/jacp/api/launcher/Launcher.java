@@ -24,20 +24,24 @@ package org.jacp.api.launcher;
 
 /**
  * Defines an interface for launchers witch is an abstraction used DI containers
+ * 
  * @author Andy Moncsek
- *
+ * 
  * @param <E>
  */
 public interface Launcher<E> {
 	/**
 	 * Returns the DI container context.
+	 * 
 	 * @return the DI contect object
 	 */
-    E getContext();
-    /**
-     * Returns a bean by class name.
-     * @param clazz
-     * @return the bean
-     */
-    <P> P getBean(final Class<P> clazz);
+	E getContext();
+
+	/**
+	 * Returns a bean by class name.
+	 * 
+	 * @param clazz
+	 * @return the bean
+	 */
+	<P> P getBean(final Class<P> clazz);
 }

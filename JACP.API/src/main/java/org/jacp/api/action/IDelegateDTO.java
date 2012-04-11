@@ -43,6 +43,7 @@ public interface IDelegateDTO<A, M> {
 
 	/**
 	 * returns the action
+	 * 
 	 * @return the action
 	 */
 	public IAction<A, M> getAction();

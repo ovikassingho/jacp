@@ -50,7 +50,6 @@ public interface ICoordinator<L, A, M> {
 	 */
 	void handleMessage(final String id, final IAction<A, M> action);
 
-
 	/**
 	 * Handle a message to an active component.
 	 * 
@@ -68,23 +67,27 @@ public interface ICoordinator<L, A, M> {
 	 */
 	<P extends IComponent<L, A, M>> void handleInActive(final P component,
 			final IAction<A, M> action);
+
 	/**
 	 * Returns the message queue of coordinator.
+	 * 
 	 * @return the message queue
 	 */
 	BlockingQueue<IAction<A, M>> getMessageQueue();
-	
-	
+
 	/**
 	 * Returns the associated componentHandler.
+	 * 
 	 * @return the component handler
 	 */
-    <P extends IComponent<L,A,M>>IComponentHandler<P, IAction<A,M>> getComponentHandler();
+	<P extends IComponent<L, A, M>> IComponentHandler<P, IAction<A, M>> getComponentHandler();
+
 	/**
 	 * set associated componentHandler
-	 *  @param handler
+	 * 
+	 * @param handler
 	 */
-    <P extends IComponent<L,A,M>> void setComponentHandler(final IComponentHandler<P, IAction<A,M>> handler);
-    
- 
+	<P extends IComponent<L, A, M>> void setComponentHandler(
+			final IComponentHandler<P, IAction<A, M>> handler);
+
 }

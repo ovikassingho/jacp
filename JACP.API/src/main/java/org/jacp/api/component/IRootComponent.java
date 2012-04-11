@@ -58,8 +58,11 @@ public interface IRootComponent<T, A> {
 	 * @param action
 	 */
 	void initComponents(final A action);
+
 	/**
-	 * Returns component handler to handle initialization and reassignment of subcomponents.
+	 * Returns component handler to handle initialization and reassignment of
+	 * subcomponents.
+	 * 
 	 * @return the component handler
 	 */
 	IComponentHandler<T, A> getComponentHandler();

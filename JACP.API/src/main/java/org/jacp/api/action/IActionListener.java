@@ -25,6 +25,7 @@ package org.jacp.api.action;
 /**
  * Handles implementation specific Listener to perform events. This Interface is
  * an abstraction to hide toolkit specific event/action details.
+ * 
  * @param <L>
  *            defines the basic listener type
  * @param <M>
@@ -57,8 +58,8 @@ public interface IActionListener<L, A, M> {
 	IAction<A, M> getAction();
 
 	/**
-	 * Returns implementation specific ActionListener. All listeners should extend
-	 * java.util.EventListener.
+	 * Returns implementation specific ActionListener. All listeners should
+	 * extend java.util.EventListener.
 	 * 
 	 * @return a new listener instance
 	 */

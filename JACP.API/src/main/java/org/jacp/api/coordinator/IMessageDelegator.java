@@ -25,23 +25,28 @@ package org.jacp.api.coordinator;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IDelegateDTO;
+
 /**
  * Defines an interface for a message delegator.
+ * 
  * @author Andy Moncsek
- *
+ * 
  * @param <L>
  * @param <A>
  * @param <M>
  */
 public interface IMessageDelegator<L, A, M> extends IDelegator<L, A, M> {
-	
+
 	/**
 	 * Delegate message to correct perspective/component
+	 * 
 	 * @param messageDTO
 	 */
 	void delegateMessage(final IDelegateDTO<A, M> messageDTO);
+
 	/**
 	 * Returns the delegate queue.
+	 * 
 	 * @return the delegate queue
 	 */
 	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();

@@ -51,7 +51,7 @@ public interface IDelegator<L, A, M> {
 	 * @param perspective
 	 */
 	void removePerspective(final IPerspective<L, A, M> perspective);
-	
+
 	/**
 	 * Set the associated component handler.
 	 * 
