@@ -41,8 +41,7 @@ public class Contact {
 	private boolean empty = true;
 	private ProgressIndicator progress;
 	private final ObservableList<Contact> contacts = FXCollections
-			.<Contact> synchronizedObservableList(FXCollections
-					.<Contact> observableArrayList());
+			.<Contact> observableArrayList();
 
 	public Contact() {
 	}

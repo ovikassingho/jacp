@@ -17,9 +17,11 @@
  */
 package org.jacp.demo.components;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -50,7 +52,8 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 @Component(defaultExecutionTarget = "PmainContentTop", id = "id002", name = "contactDemoTableView", active = true)
 public class ContactTableViewComponent extends AFXComponent {
 
-	private final Map<String, ContactTableView> all = new HashMap<String, ContactTableView>();
+	private final Map<String, ContactTableView> all = Collections
+			.synchronizedMap(new HashMap<String, ContactTableView>());
 	private ContactTableView current;
 
 	@Override
@@ -58,10 +61,6 @@ public class ContactTableViewComponent extends AFXComponent {
 	 * run handleAction in worker Thread
 	 */
 	public Node handleAction(final IAction<Event, Object> action) {
-		if (action.getLastMessage() instanceof ContactDTO) {
-			this.updateContactList((ContactDTO) action.getLastMessage());
-
-		}
 		return null;
 	}
 
@@ -71,22 +70,26 @@ public class ContactTableViewComponent extends AFXComponent {
 	 */
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
-		GridPane pane = null;
+
 		if (action.getLastMessage() instanceof Contact) {
+			// contact selected
 			final Contact contact = (Contact) action.getLastMessage();
 			if (contact.isEmpty()) {
 				this.showDialogIfEmpty(contact);
 			}
 			this.current = this.getView(contact);
-			pane = this.current.getTableViewLayout();
-			return pane;
+			
 
 		} else if (action.getLastMessage() instanceof ContactDTO) {
+			// contact data received
 			final ContactDTO dto = (ContactDTO) action.getLastMessage();
 			final ContactTableView view = this.all.get(dto.getParentName());
-			// first 1000 entries
+			// add first 1000 entries directly to table
 			if (view.getContactTableView().getItems().size() < Util.PARTITION_SIZE) {
 				view.getContactTableView().getItems().addAll(dto.getContacts());
+			} else {
+				// all other entries are added to list for paging
+				this.updateContactList(view, dto.getContacts());
 			}
 			view.updatePositionLabel();
 
@@ -129,10 +132,10 @@ public class ContactTableViewComponent extends AFXComponent {
 		};
 	}
 
-	private void updateContactList(final ContactDTO dto) {
+	private void updateContactList(final ContactTableView view,
+			final ObservableList<Contact> list) {
 		// add chunk of contact list to contact
-		final ContactTableView view = this.all.get(dto.getParentName());
-		view.getContact().getContacts().addAll(dto.getContacts());
+		view.getContact().getContacts().addAll(list);
 		view.updateMaxValue();
 	}
 
