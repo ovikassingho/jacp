@@ -50,7 +50,8 @@ import javafx.util.Callback;
 /**
  * The view object returned in a "TableView"-Component; each contact category is
  * associated to an contact view; this view contains the table and all contacts
- * to a parent contact.
+ * to a parent contact. Also a table is a virtualized component (only visible
+ * parts are loaded to memory) this is a paging table with site indicator.
  * 
  * @author Andy Moncsek Patrick Symmangk
  */
