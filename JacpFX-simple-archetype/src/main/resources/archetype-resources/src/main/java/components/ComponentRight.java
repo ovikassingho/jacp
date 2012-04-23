@@ -17,9 +17,12 @@ import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.javafx2.rcp.component.AFX2Component;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
+import org.jacp.api.annotations.Component;
+import org.jacp.api.util.ToolbarPosition;
+import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
  * Simple UI component, creates a ScrollPane with a Button and a label. The
@@ -28,7 +31,8 @@ import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-public class ComponentRight extends AFX2Component {
+@Component(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true)
+public class ComponentRight extends AFXComponent {
 	private ScrollPane pane;
 	private Label rightLabel;
 
@@ -73,14 +77,5 @@ public class ComponentRight extends AFX2Component {
 		return pane;
 	}
 
-	@Override
-	public void onStartComponent(FX2ComponentLayout arg0) {
-
-	}
-
-	@Override
-	public void onTearDownComponent(FX2ComponentLayout arg0) {
-
-	}
 
 }

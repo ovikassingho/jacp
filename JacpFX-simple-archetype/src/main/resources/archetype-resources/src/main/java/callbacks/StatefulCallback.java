@@ -8,7 +8,9 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
-import org.jacp.javafx2.rcp.component.ACallbackComponent;
+import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 
 /**
  * A StatefulCallback component is a simple background component whose result
@@ -18,7 +20,8 @@ import org.jacp.javafx2.rcp.component.ACallbackComponent;
  * @author Andy Moncsek
  * 
  */
-public class StatefulCallback extends ACallbackComponent {
+@CallbackComponent(id = "id003", name = "statefulCallback", active = true)
+public class StatefulCallback extends AStatefulCallbackComponent {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Override
