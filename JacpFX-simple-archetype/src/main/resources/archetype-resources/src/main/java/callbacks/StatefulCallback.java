@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 
