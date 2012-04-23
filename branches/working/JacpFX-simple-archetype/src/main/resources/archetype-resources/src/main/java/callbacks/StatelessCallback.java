@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
-import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
+import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 
 /**
  * a simple stateless callback component. Messages to this type of component
@@ -21,6 +22,7 @@ import org.jacp.javafx2.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
+@CallbackComponent(id = "id004", name = "statelessCallback", active = true)
 public class StatelessCallback extends AStatelessCallbackComponent {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 

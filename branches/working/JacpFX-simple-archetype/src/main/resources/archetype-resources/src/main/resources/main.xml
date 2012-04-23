@@ -1,6 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
+#set(
+$symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -16,9 +17,6 @@
 	</bean>
 
 	<bean id="perspectiveOne" class="${package}.perspectives.PerspectiveOne">
-		<property name="name" value="perspectiveOne" />
-		<property name="id" value="id01" />
-		<property name="active" value="true" />
 		<property name="subcomponents">
 			<list>
 				<ref bean="componentLeft" />
@@ -30,28 +28,9 @@
 	</bean>
 
 
-	<bean id="componentLeft" class=" ${package}.components.ComponentLeft">
-		<property name="name" value="componentLeft" />
-		<property name="active" value="true" />
-		<property name="id" value="id001" />
-		<property name="executionTarget" value="Pleft" />
-	</bean>
-	<bean id="componentRight" class=" ${package}.components.ComponentRight">
-		<property name="name" value="componentRight" />
-		<property name="active" value="true" />
-		<property name="id" value="id002" />
-		<property name="executionTarget" value="PMain" />
-	</bean>
+	<bean id="componentLeft" class=" ${package}.components.ComponentLeft" />
+	<bean id="componentRight" class=" ${package}.components.ComponentRight" />
 
-	<bean id="statefulCallback" class=" ${package}.callbacks.StatefulCallback"
-		scope="prototype">
-		<property name="name" value="statefulCallback" />
-		<property name="active" value="true" />
-		<property name="id" value="id003" />
-	</bean>
-	<bean id="statelessCallback" class=" ${package}.callbacks.StatelessCallback" scope="prototype">
-		<property name="name" value="statelessCallback" />
-		<property name="active" value="true" />
-		<property name="id" value="id004" />
-	</bean>
+	<bean id="statefulCallback" class=" ${package}.callbacks.StatefulCallback" />
+	<bean id="statelessCallback" class=" ${package}.callbacks.StatelessCallback" />
 </beans>

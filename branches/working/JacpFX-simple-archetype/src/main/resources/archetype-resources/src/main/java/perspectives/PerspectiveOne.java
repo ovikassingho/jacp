@@ -10,20 +10,27 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
-import org.jacp.javafx2.rcp.componentLayout.FX2ComponentLayout;
-import org.jacp.javafx2.rcp.componentLayout.FX2PerspectiveLayout;
-import org.jacp.javafx2.rcp.perspective.AFX2Perspective;
-import org.jacp.javafx2.rcp.util.FX2Util.MessageUtil;
+import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.OnStart;
+import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.Perspective;
+import org.jacp.api.util.ToolbarPosition;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
+import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.perspective.AFXPerspective;
+import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 /**
  * A simple perspective defining a split pane
  * @author Andy Moncsek
  *
  */
-public class PerspectiveOne extends AFX2Perspective {
+@Perspective(id = "id01", name = "perspectiveOne")
+public class PerspectiveOne extends AFXPerspective {
 
 	@Override
 	public void handlePerspective(IAction<Event, Object> action,
-			FX2PerspectiveLayout perspectiveLayout) {
+			FXPerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			SplitPane mainLayout = new SplitPane();
 			mainLayout.setOrientation(Orientation.HORIZONTAL);
@@ -54,14 +61,14 @@ public class PerspectiveOne extends AFX2Perspective {
 		
 	}
 
-	@Override
-	public void onStartPerspective(FX2ComponentLayout layout) {
+	@OnStart
+	public void onStartPerspective(FXComponentLayout layout) {
 		// define toolbars and menu entries
 		
 	}
 
-	@Override
-	public void onTearDownPerspective(FX2ComponentLayout arg0) {
+	@OnTearDown
+	public void onTearDownPerspective(FXComponentLayout arg0) {
 		// define toolbars and menu entries when close perspective
 		
 	}
