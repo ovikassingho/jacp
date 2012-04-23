@@ -24,9 +24,9 @@
 	</bean>
 
 
-	<bean id="componentLeft" class=" com.trivadis.techevent.components.ComponentLeft" />
-	<bean id="componentRight" class=" com.trivadis.techevent.components.ComponentRight" />
+	<bean id="componentLeft" class="com.trivadis.techevent.components.ComponentLeft" />
+	<bean id="componentRight" class="com.trivadis.techevent.components.ComponentRight" />
 
-	<bean id="statefulCallback" class=" com.trivadis.techevent.callbacks.StatefulCallback" />
-	<bean id="statelessCallback" class=" com.trivadis.techevent.callbacks.StatelessCallback" />
+	<bean id="statefulCallback" class="com.trivadis.techevent.callbacks.StatefulCallback" />
+	<bean id="statelessCallback" class="com.trivadis.techevent.callbacks.StatelessCallback" />
 </beans>
