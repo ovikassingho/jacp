@@ -18,10 +18,7 @@ import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
-import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
