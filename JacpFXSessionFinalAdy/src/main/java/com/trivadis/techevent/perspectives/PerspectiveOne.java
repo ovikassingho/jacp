@@ -48,7 +48,7 @@ public class PerspectiveOne extends AFXPerspective {
 			// Register root component
 			perspectiveLayout.registerRootComponent(mainLayout);
 			// register left menu
-			perspectiveLayout.registerTargetLayoutComponent("Pleft", leftMenu);
+			perspectiveLayout.registerTargetLayoutComponent("PLeft", leftMenu);
 			// register main content 
 			perspectiveLayout.registerTargetLayoutComponent("PMain", mainContent);
 		}

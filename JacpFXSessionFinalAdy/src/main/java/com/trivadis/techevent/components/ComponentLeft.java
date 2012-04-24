@@ -30,7 +30,7 @@ import com.trivadis.techevent.views.ContactTreeView;
  * @author Andy Moncsek
  * 
  */
-@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentLeft", active = true)
+@Component(defaultExecutionTarget = "PLeft", id = "id001", name = "componentLeft", active = true)
 public class ComponentLeft extends AFXComponent {
 	private ContactTreeView pane;
 
