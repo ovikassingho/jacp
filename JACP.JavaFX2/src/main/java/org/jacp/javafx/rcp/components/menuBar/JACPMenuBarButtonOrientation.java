@@ -1,6 +1,6 @@
 package org.jacp.javafx.rcp.components.menuBar;
 
-public enum JACPMenuBarButtonOrientatioin {
+public enum JACPMenuBarButtonOrientation {
 
 	RIGHT, LEFT;
 }

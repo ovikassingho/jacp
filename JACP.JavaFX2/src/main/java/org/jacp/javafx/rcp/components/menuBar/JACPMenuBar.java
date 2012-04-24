@@ -23,9 +23,11 @@
 package org.jacp.javafx.rcp.components.menuBar;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ToolBar;
@@ -35,7 +37,6 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class JACPMenuBar.
  * 
@@ -63,7 +64,13 @@ public class JACPMenuBar extends HBox {
 
 	private Stage stage;
 
+	private Button minimize;
+	private Button maximize;
+	private Button close;
+
 	private boolean maximized = false;
+
+	private boolean unregistered = false;
 
 	/**
 	 * Instantiates a new jACP menu bar.
@@ -91,7 +98,6 @@ public class JACPMenuBar extends HBox {
 		this.getStyleClass().addAll(this.mainBar.getStyleClass());
 		this.clearBackground(this.leftBar, this.mainBar, this.rightBar);
 
-		// rightBar.getItems().addAll(b, b1, b2);
 		this.bind(this.rightBar);
 		this.getChildren().addAll(this.leftBar, this.mainBar, this.rightBar);
 	}
@@ -138,12 +144,21 @@ public class JACPMenuBar extends HBox {
 	 * @param node
 	 *            the node
 	 */
-	public void addNode(final JACPMenuBarButtonOrientatioin orientation,
+	public void addNode(final JACPMenuBarButtonOrientation orientation,
 			final Node... node) {
-		if (JACPMenuBarButtonOrientatioin.LEFT.equals(orientation)) {
+		if (JACPMenuBarButtonOrientation.LEFT.equals(orientation)) {
 			this.leftBar.getItems().addAll(node);
 		} else {
 			this.rightBar.getItems().addAll(node);
+		}
+	}
+
+	public void removeNode(final JACPMenuBarButtonOrientation orientation,
+			final Node... node) {
+		if (JACPMenuBarButtonOrientation.LEFT.equals(orientation)) {
+			this.leftBar.getItems().removeAll(node);
+		} else {
+			this.rightBar.getItems().removeAll(node);
 		}
 	}
 
@@ -207,7 +222,50 @@ public class JACPMenuBar extends HBox {
 			}
 			this.maximized = !this.maximized;
 		}
+	}
 
+	public void registerWindowButtons() {
+		this.initWindowButtons();
+	}
+
+	private void initWindowButtons() {
+		if (!unregistered) {
+			minimize = new Button("_");
+			maximize = new Button("-");
+			close = new Button("x");
+			minimize.getStyleClass().add("window-buttons");
+			maximize.getStyleClass().add("window-buttons");
+			close.getStyleClass().add("window-buttons");
+			minimize.setId("window-min");
+			maximize.setId("window-max");
+			maximize.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					maximize();
+				}
+			});
+			close.setId("window-close");
+			close.setOnAction(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent arg0) {
+					System.exit(0);
+				}
+			});
+
+			this.addNode(JACPMenuBarButtonOrientation.RIGHT, minimize,
+					maximize, close);
+		} else {
+			handleDeregistration();
+		}
+	}
+
+	private void handleDeregistration() {
+		this.removeNode(JACPMenuBarButtonOrientation.RIGHT, minimize, maximize,
+				close);
+	}
+
+	public void deregisterWindowButtons() {
+		this.unregistered = true;
 	}
 
 }

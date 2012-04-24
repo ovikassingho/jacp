@@ -333,6 +333,7 @@ public abstract class AFXWorkbench
 		// the top most pane is a Stackpane
 
 		final BorderPane top = new BorderPane();
+		top.getStyleClass().add("dark-border");
 		final StackPane absoluteRoot = new StackPane();
 
 		final BorderPane baseLayoutPane = new BorderPane();
@@ -381,6 +382,7 @@ public abstract class AFXWorkbench
 
 			// add root to the center
 			toolbarPane.setCenter(this.root);
+			toolbarPane.getStyleClass().add("dark-border");
 
 		} else {
 			baseLayoutPane.setCenter(this.root);

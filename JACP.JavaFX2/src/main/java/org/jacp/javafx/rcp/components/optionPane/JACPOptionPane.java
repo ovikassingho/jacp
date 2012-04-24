@@ -265,23 +265,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	}
 
 	/**
-	 * Show dialog.
-	 */
-	public void showDialog() {
-		JACPModalDialog.getInstance().showModalMessage(this);
-	}
-
-	/**
-	 * Show dialog.
-	 * 
-	 * @param node
-	 *            the node
-	 */
-	public void showDialog(final Node node) {
-		JACPModalDialog.getInstance().showModalMessage(node);
-	}
-
-	/**
 	 * Sets the default close button orientation.
 	 * 
 	 * @param pos
