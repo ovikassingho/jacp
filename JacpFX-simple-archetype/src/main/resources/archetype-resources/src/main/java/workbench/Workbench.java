@@ -15,7 +15,6 @@ import javafx.stage.StageStyle;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
-import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.components.optionPane.JACPDialogUtil;
@@ -37,7 +36,7 @@ public class Workbench extends AFXWorkbench {
 	public void handleInitialLayout(IAction<Event, Object> action,
 			IWorkbenchLayout<Node> layout, Stage stage) {
 		layout.setWorkbenchXYSize(1024, 768);
-		layout.registerToolBar(ToolbarPosition.NORTH);
+		//layout.registerToolBar(ToolbarPosition.NORTH);
 		layout.setStyle(StageStyle.DECORATED);
 		layout.setMenuEnabled(true);
 
@@ -63,7 +62,7 @@ public class Workbench extends AFXWorkbench {
 						JACPModalDialog.getInstance().hideModalMessage();
 					}
 				});
-				dialog.showDialog();
+				JACPModalDialog.getInstance().showModalMessage(dialog);
 
 			}
 		});
