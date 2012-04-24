@@ -57,7 +57,7 @@
 
 								<jfxdeploy width="1024" height="768" outdir="${project.build.directory}/deploy" outfile="${build.finalName}">
 									<info title="${project.name}" />
-									<application name="${project.name}" mainClass="org.jacp.demo.main.ContactDemoMain" />
+									<application name="${project.name}" mainClass="${package}.main.ApplicationLauncher" />
 									<resources>
 										<fileset dir="${project.build.directory}" includes="*.jar" />
 										<fileset dir="${project.build.directory}/dependency" includes="*.jar" />
@@ -68,7 +68,15 @@
 									</platform>
 								</jfxdeploy>
 
+								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html -->
+								<jfxsignjar destdir="${project.build.directory}/deploy"
 
+									keyStore="C:\..\fxstore"
+									storePass="pass" alias="sign" keyPass="keypass">
+
+									<fileset dir="${project.build.directory}/deploy"
+										includes="*.jar" />
+								</jfxsignjar>
 
 
 							</target>

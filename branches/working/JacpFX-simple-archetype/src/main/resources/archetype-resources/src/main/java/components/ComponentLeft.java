@@ -27,7 +27,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentLeft", active = true)
+@Component(defaultExecutionTarget = "PLeft", id = "id001", name = "componentLeft", active = true)
 public class ComponentLeft extends AFXComponent {
 	private ScrollPane pane;
 	private Label leftLabel;
