@@ -2,3 +2,15 @@
 1.1 ) com.trivadis.techevent
 1.2 ) JacpFXSession
 1.3 ) import maven project¨
+2. ) copy com.trivadis.techevent entity | util | views
+2.1 ) show workbench and perspective
+2.2 ) start app, than change divider to 0.35f in perspective -- start again
+3.) copy content of stateful and stateless component
+4.) copy ComponentLeft
+4.1 ) start app ... show contact on left side!!!
+5.) copy componentRight
+6.) start app ... only sequential contact generation!!
+7.) change Stateful to stateless component .. start app
+....
+
+Pete
