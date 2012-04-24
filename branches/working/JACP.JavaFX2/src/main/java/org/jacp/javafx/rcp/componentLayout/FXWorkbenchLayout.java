@@ -27,6 +27,7 @@ import java.util.TreeMap;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
@@ -61,6 +62,7 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 		if (enabled && this.menu == null) {
 			this.menu = new JACPMenuBar();
 			this.menu.setId("main-menu");
+			checkWindowButtons();
 		}
 	}
 
@@ -90,7 +92,12 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 	@Override
 	public <S extends Enum> void setStyle(final S style) {
 		this.style = (StageStyle) style;
+		checkWindowButtons();
+	}
 
+	private void checkWindowButtons() {
+		if (this.menu != null && StageStyle.DECORATED.equals(style))
+			this.menu.deregisterWindowButtons();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
