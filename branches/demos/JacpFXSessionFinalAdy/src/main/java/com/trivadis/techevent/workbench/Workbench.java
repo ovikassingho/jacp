@@ -60,7 +60,7 @@ public class Workbench extends AFXWorkbench {
 						JACPModalDialog.getInstance().hideModalMessage();
 					}
 				});
-				dialog.showDialog();
+				JACPModalDialog.getInstance().showModalMessage(dialog);
 
 			}
 		});
