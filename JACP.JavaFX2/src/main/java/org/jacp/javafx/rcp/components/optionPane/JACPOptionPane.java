@@ -146,7 +146,8 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		this.titleLabel = new Label(this.title);
 		this.titleLabel.getStyleClass().add("jacp-option-pane-title");
 		this.titleLabel.setId("title");
-		this.titleLabel.setMinHeight(22);
+		this.titleLabel.setMinHeight(30);
+		this.titleLabel.setMaxHeight(Double.MAX_VALUE);
 		this.titleLabel.setPrefHeight(22);
 		this.titleLabel.setMaxWidth(Double.MAX_VALUE);
 		this.titleLabel.setAlignment(Pos.CENTER);
