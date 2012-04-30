@@ -40,6 +40,7 @@ import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.components.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.components.optionPane.JACPDialogUtil;
+import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.components.optionPane.JACPOptionPane;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
@@ -188,7 +189,7 @@ public class ContactTableViewComponent extends AFXComponent {
 
 			}
 		});
-		dialog.showDialog();
+		JACPModalDialog.getInstance().showModalMessage(dialog);
 
 	}
 
