@@ -27,7 +27,6 @@ import java.util.TreeMap;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import org.jacp.api.componentLayout.IWorkbenchLayout;
