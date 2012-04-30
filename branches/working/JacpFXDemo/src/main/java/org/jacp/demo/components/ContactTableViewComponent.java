@@ -28,7 +28,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
