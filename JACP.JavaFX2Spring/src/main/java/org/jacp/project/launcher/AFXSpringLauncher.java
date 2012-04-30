@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  * @author Andy Moncsek
  * 
  */
-public abstract class AFX2SpringLauncher extends Application {
+public abstract class AFXSpringLauncher extends Application {
 	private Launcher<ClassPathXmlApplicationContext> launcher = null;
 	private final String springXML;
 	private final String workbenchName;
@@ -28,12 +28,12 @@ public abstract class AFX2SpringLauncher extends Application {
 	 * default constructor; add reference to valid spring.xml
 	 * @param springXML
 	 */
-	public AFX2SpringLauncher(final String springXML) {
+	public AFXSpringLauncher(final String springXML) {
 		this.springXML = springXML;
 		this.workbenchName = null;
 	}
 
-	public AFX2SpringLauncher(final String springXML, final String workbenchName) {
+	public AFXSpringLauncher(final String springXML, final String workbenchName) {
 		this.springXML = springXML;
 		this.workbenchName = workbenchName;
 	}
