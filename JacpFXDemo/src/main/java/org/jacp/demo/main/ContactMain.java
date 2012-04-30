@@ -21,7 +21,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import org.jacp.project.launcher.AFX2SpringLauncher;
+import org.jacp.project.launcher.AFXSpringLauncher;
 
 /**
  * JacpFX application launcher and main method for contact demo. This is the
@@ -32,7 +32,7 @@ import org.jacp.project.launcher.AFX2SpringLauncher;
  * @author Andy Moncsek
  * 
  */
-public class ContactMain extends AFX2SpringLauncher {
+public class ContactMain extends AFXSpringLauncher {
 
 	private Scene scene;
 
