@@ -81,6 +81,7 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	 * @param style
 	 *            , the style of workbench
 	 */
+	@SuppressWarnings("rawtypes")
 	<S extends Enum> void setStyle(S style);
 
 	/**
@@ -88,6 +89,7 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	 * 
 	 * @return style
 	 */
+	@SuppressWarnings("rawtypes")
 	<S extends Enum> S getStyle();
 
 }
