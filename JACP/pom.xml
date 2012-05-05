@@ -20,16 +20,16 @@
 			<id>all</id>
 			<modules>
 				<module>../JACP.API</module>
-				<module>../JACP.JavaFX2</module>	
-				<module>../JACP.JavaFX2Spring</module>		
+				<module>../JACP.JavaFX2</module>
+				<module>../JACP.JavaFX2Spring</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>javafx2</id>
 			<modules>
 				<module>../JACP.API</module>
-				<module>../JACP.JavaFX2</module>	
-				<module>../JACP.JavaFX2Spring</module>					
+				<module>../JACP.JavaFX2</module>
+				<module>../JACP.JavaFX2Spring</module>
 			</modules>
 		</profile>
 		<profile>
@@ -47,4 +47,17 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>jacp</id>
+			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
+		</repository>
+		<snapshotRepository>
+			<id>jacp-snapshots</id>
+			<name>jacp-snapshots</name>
+			<url>http://developer.ahcp.de/nexus/content/repositories/jacp-snapshots</url>
+		</snapshotRepository>
+
+	</distributionManagement>
+
 </project>
