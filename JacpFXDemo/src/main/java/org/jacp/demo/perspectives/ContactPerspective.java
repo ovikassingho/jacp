@@ -122,7 +122,7 @@ public class ContactPerspective extends AFXPerspective {
 		// Main Content Area to the right
 		final SplitPane splitPane = new SplitPane();
 		splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		splitPane.setDividerPosition(0, 0.25f);
+		splitPane.setDividerPosition(0, 0.20f);
 		splitPane.getItems().addAll(leftMenu, splitPaneRight);
 		splitPane.setId("h-splitpane");
 
