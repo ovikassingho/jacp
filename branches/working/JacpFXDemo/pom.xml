@@ -19,6 +19,12 @@
 			<email>pete.ahcp@gmail.com</email>
 		</developer>
 	</developers>
+	<repositories>
+		<repository>
+			<id>jacp</id>
+			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -84,15 +90,10 @@
 
 
 
-								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html -->
-										<jfxsignjar destdir="${project.build.directory}/deploy"
-
-									keyStore="C:\Users\ady\fxstore"
-									storePass="jacp11" alias="jacpSign" keyPass="jacp11">
-
-									<fileset dir="${project.build.directory}/deploy"
-										includes="*.jar" />
-								</jfxsignjar>
+								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html 
+									<jfxsignjar destdir="${project.build.directory}/deploy" keyStore="C:\Users\ady\fxstore" 
+									storePass="jacp11" alias="jacpSign" keyPass="jacp11"> <fileset dir="${project.build.directory}/deploy" 
+									includes="*.jar" /> </jfxsignjar> -->
 
 								<!-- add to create jnlp: <security> <all-permissions/> </security> -->
 
@@ -129,22 +130,17 @@
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
 			<version>1.05</version>
-<!-- 			<scope>system</scope>
-			<systemPath>${basedir}/lib/JACP.API-1.0.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX2</artifactId>
 			<version>1.05</version>
-<!-- 			<scope>system</scope>
-			<systemPath>${basedir}/lib/JACP.JavaFX2-1.0.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX2Spring</artifactId>
 			<version>1.05</version>
-<!-- 			<scope>system</scope>
-			<systemPath>${basedir}/lib/JACP.JavaFX2Spring-1.0.jar</systemPath> -->
+			<!-- <scope>system</scope> <systemPath>${basedir}/lib/JACP.JavaFX2Spring-1.0.jar</systemPath> -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
