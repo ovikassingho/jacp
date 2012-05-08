@@ -20,6 +20,7 @@
  *
  *
  ************************************************************************/
+
 package org.jacp.api.action;
 
 import java.util.Map;
@@ -37,18 +38,18 @@ import java.util.Map;
  */
 public interface IAction<A, M> extends Cloneable {
 
-	/**
-	 * Set message for target component.
-	 * 
-	 * @param message
-	 */
+
+    /**
+     * Set message for target component.
+     * @param message ;  the message set to action
+     */
 	void setMessage(final M message);
 
 	/**
 	 * Set message for a specified target component. the component.
 	 * 
-	 * @param targetId
-	 * @param message
+	 * @param targetId ; the actions target id
+	 * @param message ;  the message set to action
 	 */
 	void addMessage(final String targetId, final M message);
 
@@ -76,7 +77,7 @@ public interface IAction<A, M> extends Cloneable {
 	/**
 	 * Set implementation specific event.
 	 * 
-	 * @param event
+	 * @param event , the fired event initialize the action
 	 */
 	void setActionEvent(final A event);
 

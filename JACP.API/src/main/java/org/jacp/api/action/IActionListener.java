@@ -39,14 +39,14 @@ public interface IActionListener<L, A, M> {
 	/**
 	 * Notify component when action fired.
 	 * 
-	 * @param action
+	 * @param action ;  the action fired by components
 	 */
 	void notifyComponents(final IAction<A, M> action);
 
 	/**
 	 * Set Action to listener.
 	 * 
-	 * @param action
+	 * @param action ;  the action fired by components
 	 */
 	void setAction(final IAction<A, M> action);
 
@@ -60,7 +60,7 @@ public interface IActionListener<L, A, M> {
 	/**
 	 * Returns implementation specific ActionListener. All listeners should
 	 * extend java.util.EventListener.
-	 * 
+	 * @param <C> ; the specific listener type 
 	 * @return a new listener instance
 	 */
 	<C extends L> C getListener();
@@ -69,7 +69,7 @@ public interface IActionListener<L, A, M> {
 	 * Abstraction to handle actions/events uniform on different toolkits.
 	 * Method invokes toolkit specific handle method perform event call.
 	 * 
-	 * @param event
+	 * @param event ; proxy to common event handlers
 	 */
 	void performAction(A event);
 }

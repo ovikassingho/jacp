@@ -45,7 +45,7 @@ public interface ICallbackComponent<L, A, M> extends ISubComponent<L, A, M>,
 	/**
 	 * Returns component id which is targeted by bg component return value; the
 	 * return value will be handled like an average message and will be
-	 * delivered to targeted component
+	 * delivered to targeted component.
 	 * 
 	 * @return the target id
 	 */
@@ -54,9 +54,9 @@ public interface ICallbackComponent<L, A, M> extends ISubComponent<L, A, M>,
 	/**
 	 * Set component target id which is targeted by background component return
 	 * value; the return value will be handled like an average message and will
-	 * be delivered to targeted component
+	 * be delivered to targeted component.
 	 * 
-	 * @param componentTargetId
+	 * @param componentTargetId ; represents a component id to return the value to
 	 */
 	void setHandleTarget(final String componentTargetId);
 

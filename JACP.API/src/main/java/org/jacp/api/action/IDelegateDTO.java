@@ -23,7 +23,7 @@
 package org.jacp.api.action;
 
 /**
- * DTO interface to transfer messages to desired target in different perspective
+ * DTO interface to transfer messages to desired target in different perspective.
  * 
  * @author Andy Moncsek
  * 
@@ -35,16 +35,16 @@ package org.jacp.api.action;
 public interface IDelegateDTO<A, M> {
 
 	/**
-	 * get the target id to transfer to
+	 * Get the target id to transfer to.
 	 * 
 	 * @return targetId
 	 */
 	String getTarget();
 
 	/**
-	 * returns the action
+	 * Returns the action.
 	 * 
 	 * @return the action
 	 */
-	public IAction<A, M> getAction();
+	IAction<A, M> getAction();
 }
