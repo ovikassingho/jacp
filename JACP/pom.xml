@@ -47,6 +47,45 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<xrefLocation>${basedir}/xref</xrefLocation>
+					<enableRulesSummary>false</enableRulesSummary>
+					<configLocation>checkstyle.xml</configLocation>
+					<headerLocation>checkstyle-license.txt</headerLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<xrefLocation>${basedir}/xref</xrefLocation>
+					<enableRulesSummary>false</enableRulesSummary>
+					<configLocation>checkstyle.xml</configLocation>
+					<headerLocation>checkstyle-license.txt</headerLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 	<distributionManagement>
 		<repository>
 			<id>jacp</id>
@@ -57,7 +96,6 @@
 			<name>jacp-snapshots</name>
 			<url>http://developer.ahcp.de/nexus/content/repositories/jacp-snapshots</url>
 		</snapshotRepository>
-
 	</distributionManagement>
 
 </project>
