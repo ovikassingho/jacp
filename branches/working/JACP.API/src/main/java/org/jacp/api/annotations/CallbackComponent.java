@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the meta attributes for a callback component
+ * Defines the meta attributes for a callback component.
  * 
  * @author Andy Moncsek
  * 
@@ -15,23 +15,23 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CallbackComponent {
 	/**
-	 * the components name
+	 * The components name.
 	 * 
 	 * @return
 	 */
-	public String name();
+	String name();
 
 	/**
-	 * the component id
+	 * The component id.
 	 * 
 	 * @return
 	 */
-	public String id();
+	String id();
 
 	/**
-	 * the active state at start time
+	 * The active state at start time.
 	 * 
 	 * @return
 	 */
-	public boolean active() default true;
+	boolean active() default true;
 }

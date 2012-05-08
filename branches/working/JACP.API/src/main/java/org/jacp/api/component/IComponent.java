@@ -42,7 +42,7 @@ public interface IComponent<L, A, M> {
 	/**
 	 * Returns an action listener (for local use). Message will be send to
 	 * caller component.
-	 * 
+	 * @param message ; the initial message to be send by invoking the listener
 	 * @return the action listener instance
 	 */
 	IActionListener<L, A, M> getActionListener(M message);

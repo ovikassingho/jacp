@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marks on start methods in UI components; Usage use @OnStart on method level
- * and provide access to IBaseLayout parameter
+ * and provide access to IBaseLayout parameter.
  * 
  * @author Andy Moncsek
  * 

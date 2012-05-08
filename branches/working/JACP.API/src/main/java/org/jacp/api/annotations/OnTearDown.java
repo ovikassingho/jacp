@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 
 /**
  * Marks the tear down method in ui components;Usage use @OnTearDown on method
- * level and provide access to IBaseLayout parameter
+ * level and provide access to IBaseLayout parameter.
  * 
  * @author Andy Moncsek
  * 

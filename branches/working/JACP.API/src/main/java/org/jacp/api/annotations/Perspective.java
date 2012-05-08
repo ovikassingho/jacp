@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the meta attributes for a perspective
+ * Defines the meta attributes for a perspective.
  * 
  * @author Andy Moncsek
  * 
@@ -37,23 +37,23 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Perspective {
 	/**
-	 * the components name
+	 * The component name.
 	 * 
-	 * @return
+	 * @return 
 	 */
-	public String name();
+	String name();
 
 	/**
-	 * the component id
+	 * The component id.
 	 * 
 	 * @return
 	 */
-	public String id();
+	String id();
 
 	/**
-	 * the active state at start time
+	 * The active state at start time.
 	 * 
 	 * @return
 	 */
-	public boolean active() default true;
+	 boolean active() default true;
 }

@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation defines the meta definition of an JACP UI component
+ * This annotation defines the meta definition of an JACP UI component.
  * 
  * @author Andy Moncsek
  * 
@@ -37,31 +37,31 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Component {
 	/**
-	 * the components name
+	 * The components name.
 	 * 
 	 * @return
 	 */
-	public String name();
+	String name();
 
 	/**
-	 * the component id
+	 * The component id.
 	 * 
 	 * @return
 	 */
-	public String id();
+	String id();
 
 	/**
-	 * the active state at start time
+	 * The active state at start time.
 	 * 
 	 * @return
 	 */
-	public boolean active() default true;
+	boolean active() default true;
 
 	/**
-	 * the execution target at start time
+	 * The execution target at start time.
 	 * 
 	 * @return
 	 */
-	public String defaultExecutionTarget();
+	String defaultExecutionTarget();
 
 }
