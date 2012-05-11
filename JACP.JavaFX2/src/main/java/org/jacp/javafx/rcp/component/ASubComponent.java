@@ -41,7 +41,7 @@ import org.jacp.api.component.ISubComponent;
 public abstract class ASubComponent extends AComponent implements
 		ISubComponent<EventHandler<Event>, Event, Object> {
 
-	private volatile String executionTarget;
+	private volatile String executionTarget="";
 
 	private volatile String parentId;
 
