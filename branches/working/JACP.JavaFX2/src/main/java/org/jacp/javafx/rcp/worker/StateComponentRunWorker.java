@@ -98,10 +98,10 @@ public class StateComponentRunWorker
 			this.get();
 		} catch (final InterruptedException e) {
 			// FIXME: Handle Exceptions the right way
-			// e.printStackTrace();
+			 e.printStackTrace();
 		} catch (final ExecutionException e) {
 			// FIXME: Handle Exceptions the right way
-			// e.printStackTrace();
+			 e.printStackTrace();
 		} finally {
 			// release lock
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
