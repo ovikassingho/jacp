@@ -19,12 +19,12 @@
 
 == Version 1.1 (Jun. 2012) == 
  * avoid manual declaration of scope=prototype when use spring and stateless components -- DONE
- * annotation support: make meta tags like id, name, execution target as annotations available
- * annotation support: provide access to "onStartup, onTeardown" by annotations and remove abstract methods from API
- * official {{{FXML support / FXMLComponents}}} 
- * cleanup and refractor component API
- * define custom {{{Menu/ToolBar components}}} 
- * extract UI component package to make UI components such as {{{OptionPane, custom- Menu/Toolbar }}} optional in API
+ * annotation support: make meta tags like id, name, execution target as annotations available -- DONE
+ * annotation support: provide access to "onStartup, onTeardown" by annotations and remove abstract methods from API -- DONE
+ * official {{{FXML support / FXMLComponents}}} --IN PROGRESS
+ * cleanup and refractor component API -- DONE
+ * define custom {{{Menu/ToolBar components}}} --IN PROGRESS
+ * extract UI component package to make UI components such as {{{OptionPane, custom- Menu/Toolbar }}} optional in API  --IN PROGRESS
 
 ---
 === Fixed Bugs ===
