@@ -25,8 +25,10 @@
  * cleanup and refractor component API -- DONE
  * define custom {{{Menu/ToolBar components}}} --IN PROGRESS
  * extract UI component package to make UI components such as {{{OptionPane, custom- Menu/Toolbar }}} optional in API  --IN PROGRESS
+ * provide a nexus repository for easy integration of JacpFX in maven projects -- DONE
+ * create archetypes (simple and extended) for easy start up with JacpFX  --IN PROGRESS
 
----
+
 === Fixed Bugs ===
  *  fixed bug where a message to a component right after / while initialization can be dropped because it is added to message queue and the initWorker won't receive messages from this queue
  *   fixed missing content if no toolbars were defined 
