@@ -32,9 +32,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.OnStart;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
@@ -42,17 +40,18 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
-import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
 import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
+import org.jacp.javafx.rcp.worker.FXMLComponentReplaceWorker;
 import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
 
 /**
- * Handles initialization an reassignment of components in perspective
+ * Handles initialization an reassignment of components in perspective.
  * 
  * @author Andy moncsek
  * 
@@ -131,53 +130,71 @@ public class FXPerspectiveHandler
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action, final FXComponentLayout layout) {
-		if (component instanceof AFXComponent) {
-			this.log("CREATE NEW THREAD:::" + component.getName());
-			this.putMessageToQueue(component, action);
-			this.runFXComponent(perspectiveLayout, component, layout);
-
-		} else if (component instanceof AStatefulCallbackComponent) {
-			this.log("CREATE NEW THREAD:::" + component.getName());
-			this.putMessageToQueue(component, action);
-			this.runStateComponent(action,
-					((AStatefulCallbackComponent) component));
-		} else if (component instanceof AStatelessCallbackComponent) {
+		if (component instanceof AStatelessCallbackComponent) {
 			this.log("RUN STATELESS COMPONENTS:::" + component.getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
+			return;
 		}
+		this.putMessageToQueue(component, action);
+		if (component instanceof AFXComponent) {
+			this.log("CREATE NEW THREAD:::" + component.getName());			
+			this.runFXComponent(perspectiveLayout, component, layout);
+			return;
+		} 
+		if (component instanceof AFXMLComponent) {
+			this.log("CREATE NEW THREAD:::" + component.getName());			
+			this.runFXMLComponent(perspectiveLayout, component, layout);
+			return;
+		} 
+		if (component instanceof AStatefulCallbackComponent) {
+			this.log("CREATE NEW THREAD:::" + component.getName());
+			this.runStateComponent(action,
+					((AStatefulCallbackComponent) component));
+			return;
+		} 
+		
 
 	}
 
-	/**
-	 * run at startup method in perspective
-	 * 
-	 * @param component
-	 */
-	private void runComponentOnStartupSequence(final AFXComponent component) {
-		FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component,
-				this.layout);
-	}
+	
+	
+	
 
 	/**
-	 * handle state less callback component
+	 * Handle state less callback component. This Method is invoked when an action is triggered.
 	 * 
 	 * @param component
 	 * @param action
 	 */
-	private final void runStatelessCallbackComponent(
+	private void runStatelessCallbackComponent(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		this.scheduler.incomingMessage(action, component);
 	}
-
+	
 	/**
-	 * run component in background thread
+	 * Run component in background thread.
 	 * 
 	 * @param layout
 	 * @param component
 	 */
-	private final void runFXComponent(
+	private void runFXMLComponent(
+			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
+			final ISubComponent<EventHandler<Event>, Event, Object> component,
+			final FXComponentLayout layout) {
+		this.executor.execute(new FXMLComponentReplaceWorker(perspectiveLayout
+				.getTargetLayoutComponents(), this.componentDelegateQueue,
+				((AFXMLComponent) component), layout));
+	}
+
+	/**
+	 * Run component in background thread.
+	 * 
+	 * @param layout
+	 * @param component
+	 */
+	private void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
@@ -187,12 +204,12 @@ public class FXPerspectiveHandler
 	}
 
 	/**
-	 * run background components thread
+	 * Run background components thread.
 	 * 
 	 * @param action
 	 * @param component
 	 */
-	private final void runStateComponent(
+	private void runStateComponent(
 			final IAction<Event, Object> action,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		this.executor.execute(new StateComponentRunWorker(
@@ -200,7 +217,7 @@ public class FXPerspectiveHandler
 	}
 
 	/**
-	 * Execute component initialization.
+	 * Execute subComponent initialization. This methods run's on "init" action while bootstrap.
 	 * 
 	 * @param action
 	 * @param component
@@ -209,28 +226,41 @@ public class FXPerspectiveHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (component instanceof AFXComponent) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getName());
-			this.runComponentOnStartupSequence(((AFXComponent) component));
 			final FXComponentInitWorker tmp = new FXComponentInitWorker(
 					this.perspectiveLayout.getTargetLayoutComponents(),
-					((AFXComponent) component), this.layout, action);
+					((AFXComponent) component), action, this.layout);
+			tmp.runPreInitMethods();
 			this.executor.execute(tmp);
+			return;
 		}// if END
-		else if (component instanceof AStatefulCallbackComponent) {
+		if (component instanceof AFXMLComponent) {
+			this.log("FXML COMPONENT EXECUTE INIT:::" + component.getName());
+			final FXComponentInitWorker tmp = new FXComponentInitWorker(
+					this.perspectiveLayout.getTargetLayoutComponents(),
+					((AFXMLComponent) component), action, this.layout);
+			tmp.runPreInitMethods();
+			this.executor.execute(tmp);
+			return;
+		}// if END
+		if (component instanceof AStatefulCallbackComponent) {
 			this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
 			this.putMessageToQueue(component, action);
 			this.runStateComponent(action,
 					((AStatefulCallbackComponent) component));
+			return;
 		}// else if END
-		else if (component instanceof AStatelessCallbackComponent) {
+		if (component instanceof AStatelessCallbackComponent) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
+			return;
 		}// else if END
 
 	}
-
+	
+	
 	/**
 	 * set component blocked and add message to queue
 	 * 

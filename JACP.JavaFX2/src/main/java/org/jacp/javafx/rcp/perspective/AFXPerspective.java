@@ -22,7 +22,6 @@
  ************************************************************************/
 
 package org.jacp.javafx.rcp.perspective;
-
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
@@ -31,11 +30,11 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.component.IPerspectiveView;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -43,6 +42,7 @@ import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
+import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
@@ -99,10 +99,10 @@ public abstract class AFXPerspective extends AComponent implements
 	}
 
 	/**
-	 * handle perspective method to initialize the perspective and the layout
+	 * Handle perspective method to initialize the perspective and the layout.
 	 * 
-	 * @param action
-	 * @param perspectiveLayout
+	 * @param action ; the action triggering the method
+	 * @param perspectiveLayout ,  the layout handler defining the pwerspective
 	 */
 	public abstract void handlePerspective(IAction<Event, Object> action,
 			final FXPerspectiveLayout perspectiveLayout);
@@ -131,40 +131,48 @@ public abstract class AFXPerspective extends AComponent implements
 	}
 
 	/**
-	 * set meta attributes defined in annotations
+	 * Set meta attributes defined in annotations.
 	 * 
-	 * @param component
+	 * @param component ; the component containing metadata.
 	 */
-	private void handleMetaAnnotation(
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final Component componentAnnotation = component.getClass()
-				.getAnnotation(Component.class);
+	private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		final Component componentAnnotation = component.getClass().getAnnotation(Component.class);
 		if (componentAnnotation != null) {
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					FXUtil.ACOMPONENT_ID, componentAnnotation.id());
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					FXUtil.ACOMPONENT_ACTIVE, componentAnnotation.active());
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					FXUtil.ACOMPONENT_NAME, componentAnnotation.name());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
-					FXUtil.ACOMPONENT_EXTARGET,
+			handleBaseAttributes(AComponent.class, component, componentAnnotation.id(), componentAnnotation.active(),
+					componentAnnotation.name());
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
 					componentAnnotation.defaultExecutionTarget());
-			this.log("register component with annotations : "
-					+ componentAnnotation.id());
-		} else {
-			final CallbackComponent callbackAnnotation = component.getClass()
-					.getAnnotation(CallbackComponent.class);
-			if (callbackAnnotation != null) {
-				FXUtil.setPrivateMemberValue(AComponent.class, component,
-						FXUtil.ACOMPONENT_ID, callbackAnnotation.id());
-				FXUtil.setPrivateMemberValue(AComponent.class, component,
-						FXUtil.ACOMPONENT_ACTIVE, callbackAnnotation.active());
-				FXUtil.setPrivateMemberValue(AComponent.class, component,
-						FXUtil.ACOMPONENT_NAME, callbackAnnotation.name());
-				this.log("register CallbackComponent with annotations : "
-						+ callbackAnnotation.id());
-			}
+			this.log("register component with annotations : " + componentAnnotation.id());
+			return;
 		}
+		final CallbackComponent callbackAnnotation = component.getClass().getAnnotation(CallbackComponent.class);
+		if (callbackAnnotation != null) {
+			handleBaseAttributes(AComponent.class, component, callbackAnnotation.id(), callbackAnnotation.active(),
+					callbackAnnotation.name());
+			this.log("register CallbackComponent with annotations : " + callbackAnnotation.id());
+			return;
+		}
+		final DeclarativeComponent declarativeComponent = component.getClass()
+				.getAnnotation(DeclarativeComponent.class);
+		if (declarativeComponent != null) {
+			handleBaseAttributes(AComponent.class, component, declarativeComponent.id(), declarativeComponent.active(),
+					declarativeComponent.name());
+			FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
+					declarativeComponent.defaultExecutionTarget());
+			FXUtil.setPrivateMemberValue(AFXMLComponent.class, component, FXUtil.ADECLARATIVECOMPONENT_DOCUMENT,
+					declarativeComponent.uiDescriptionFile());
+			this.log("register component with annotations : " + declarativeComponent.id());
+			return;
+		}
+
+	}
+
+	private void handleBaseAttributes(Class<?> clazz,
+			final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
+			final String name) {
+		FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ID, id);
+		FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ACTIVE, active);
+		FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_NAME, name);
 	}
 
 	@Override
@@ -216,7 +224,7 @@ public abstract class AFXPerspective extends AComponent implements
 	}
 
 	/**
-	 * register components at componentHandler
+	 * Register components at componentHandler.
 	 * 
 	 * @param <M>
 	 * @param components

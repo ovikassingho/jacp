@@ -93,12 +93,12 @@ public class FXComponentReplaceWorker
 					// run code
 					this.log(" //1.1.1.1.2// handle component: "
 							+ this.component.getName());
-					this.prepareAndHandleComponent(this.component, myAction);
+					final Node handleReturnValue = this.prepareAndRunHandleMethod(this.component, myAction);
 					this.log(" //1.1.1.1.3// publish component: "
 							+ this.component.getName());
 
 					this.publish(this.component, myAction,
-							this.targetComponents, this.layout,
+							this.targetComponents, this.layout,handleReturnValue,
 							previousContainer, currentTaget);
 
 					this.waitOnAppThreadLockRelease();
@@ -126,7 +126,7 @@ public class FXComponentReplaceWorker
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> myAction,
 			final Map<String, Node> targetComponents,
-			final FXComponentLayout layout, final Node previousContainer,
+			final FXComponentLayout layout,final Node handleReturnValue, final Node previousContainer,
 			final String currentTaget) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -134,7 +134,7 @@ public class FXComponentReplaceWorker
 				if (component.isActive()) {
 					FXComponentReplaceWorker.this.publishComponentValue(
 							component, myAction, targetComponents, layout,
-							previousContainer, currentTaget);
+							handleReturnValue, previousContainer, currentTaget);
 				} else {
 					// unregister component
 					FXComponentReplaceWorker.this.removeComponentValue(
@@ -173,13 +173,13 @@ public class FXComponentReplaceWorker
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action,
 			final Map<String, Node> targetComponents,
-			final FXComponentLayout layout, final Node previousContainer,
+			final FXComponentLayout layout, final Node handleReturnValue, final Node previousContainer,
 			final String currentTaget) {
 		if (previousContainer != null) {
-			this.executePostHandle(component, action);
+			this.executeComponentViewPostHandle(handleReturnValue, component, action);
 			this.removeOldComponentValue(component, previousContainer,
 					currentTaget);
-			this.addNewComponentValue(component, previousContainer,
+			this.checkAndHandleTargetChange(component, previousContainer,
 					currentTaget, layout);
 
 		}
@@ -203,7 +203,7 @@ public class FXComponentReplaceWorker
 	/**
 	 * add new component value to root node
 	 */
-	private void addNewComponentValue(
+	private void checkAndHandleTargetChange(
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final Node previousContainer, final String currentTaget,
 			final FXComponentLayout layout) {

@@ -63,7 +63,7 @@ public class AComponent implements
 				this.globalMessageQueue);
 	}
 
-	private final void checkPolicy(final String member, final String name) {
+	protected final void checkPolicy(final String member, final String name) {
 		if (member != null || this.started) {
 			throw new UnsupportedOperationException(name);
 		}
