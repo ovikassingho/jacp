@@ -22,11 +22,15 @@
  ************************************************************************/
 package org.jacp.api.component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import org.jacp.api.action.IAction;
 
 /**
- * Represents an UI component handled by a perspective. A IVComponent is an // *
- * visible UI component displayed in a defined area of perspective.
+ * Represents an Declarative UI component handled by a perspective. A
+ * IVComponent is an // * visible UI component displayed in a defined area of
+ * perspective.
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -38,7 +42,28 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
+public interface IDeclarativComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
+
+	/**
+	 * Contains the document url describing the UI.
+	 * 
+	 * @return the document url
+	 */
+	String getDocument();
+
+	/**
+	 * Set the document location on component start.
+	 * 
+	 * @param documentURL
+	 */
+	void setDocument(String documentURL);
+
+	/**
+	 * The document URL describing the UI.
+	 * 
+	 * @return the document url
+	 */
+	URL getDocumentURL();
 
 	/**
 	 * To avoid toolkit specific threading issues the postHandle method always
@@ -48,12 +73,24 @@ public interface IComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
 	 * thread in the handle method but when you like to recycle your components
 	 * you should use the postHandle method. In the postHandle method you should
 	 * avoid long running tasks. Use it only to create or update your ui
-	 * components.
+	 * components. The first parameter represents the document, the second a
+	 * node created in handle method. This method does not have a return value
+	 * as the documentNode will always be returned to perspective.
 	 * 
+	 * @param documentNode
+	 *            the node representing the document
 	 * @param node
+	 *            a node created in handle method
 	 * @param action
-	 * @return an ui component
+	 * 
 	 */
-	C postHandle(final C node, final IAction<A, M> action);
+	void postHandle(final C documentNode, final C node, final IAction<A, M> action);
+
+	/**
+	 * Contains locale-specific objects.
+	 * 
+	 * @return the resource bundle for the UI document
+	 */
+	ResourceBundle getResourceBundle();
 
 }
