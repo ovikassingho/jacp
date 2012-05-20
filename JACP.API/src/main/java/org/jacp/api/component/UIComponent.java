@@ -22,11 +22,9 @@
  ************************************************************************/
 package org.jacp.api.component;
 
-import org.jacp.api.action.IAction;
-
 /**
- * Represents an UI component handled by a perspective. A IVComponent is an // *
- * visible UI component displayed in a defined area of perspective.
+ * Represents an basic UI component handled by a perspective. A UIComponent is
+ * an // * visible UI component displayed in a defined area of perspective.
  * 
  * @author Andy Moncsek
  * @param <C>
@@ -38,22 +36,12 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
+public interface UIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
 
 	/**
-	 * To avoid toolkit specific threading issues the postHandle method always
-	 * called after the handle method. While the handle method is executed in a
-	 * separate thread the postHandle method is guaranteed to run in application
-	 * main thread. It is mostly save to create new components outside the main
-	 * thread in the handle method but when you like to recycle your components
-	 * you should use the postHandle method. In the postHandle method you should
-	 * avoid long running tasks. Use it only to create or update your ui
-	 * components.
+	 * Returns the 'root' ui component created by the handle method.
 	 * 
-	 * @param node
-	 * @param action
-	 * @return an ui component
+	 * @return the root component
 	 */
-	C postHandle(final C node, final IAction<A, M> action);
-
+	C getRoot();
 }
