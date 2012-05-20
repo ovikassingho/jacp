@@ -51,7 +51,7 @@ import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
- * Handles initialization and re assignment of perspectives in workbench
+ * Handles initialization and re assignment of perspectives in workbench.
  * 
  * @author Andy Moncsek
  * 

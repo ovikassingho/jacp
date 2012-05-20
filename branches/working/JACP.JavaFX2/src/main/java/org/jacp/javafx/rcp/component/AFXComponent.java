@@ -30,8 +30,8 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponentView;
 
 /**
- * represents a basic FX2 component to extend from, uses this abstract class to
- * create UI components
+ * Represents a basic FX2 component to extend from, uses this abstract class to
+ * create UI components.
  * 
  * @author Andy Moncsek
  */

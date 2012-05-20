@@ -56,6 +56,9 @@ public class FXUtil {
 	public static final String ACOMPONENT_BLOCKED = "blocked";
 	public static final String ACOMPONENT_STARTED = "started";
 	public static final String APERSPECTIVE_MQUEUE = "messageQueue";
+	public static final String ADECLARATIVECOMPONENT_DOCUMENT = "document";
+	public static final String ADECLARATIVECOMPONENT_ROOT = "root";
+	public static final String ADECLARATIVECOMPONENT_DOCUMENT_URL = "documentURL";
 
 	/**
 	 * contains constant values
@@ -138,26 +141,25 @@ public class FXUtil {
 	 * @param value
 	 */
 	public final static void invokeHandleMethodsByAnnotation(
-			final Class annotation, final Object component, final Object value) {
+			final Class annotation, final Object component, final Object ...value) {
 		final Class<?> componentClass = component.getClass();
 		final Method[] methods = componentClass.getMethods();
 		for (final Method m : methods) {
 			if (m.isAnnotationPresent(annotation)) {
 				try {
-					boolean match = false;
 					final Class<?>[] types = m.getParameterTypes();
-					for (final Class<?> t : types) {
-						if (t.equals(value.getClass())) {
-							m.invoke(component, value);
-							match = true;
-							break;
-						}
+					if(types.length==value.length){
+						m.invoke(component, value);
+						return;
+					}
+					
+					if(types.length>0){
+						m.invoke(component, getValidParameterList(types, value));
+						return;
+					}				
 
-					}
-					// call without parameter
-					if (!match) {
-						m.invoke(component);
-					}
+					m.invoke(component);
+					return;
 
 				} catch (final IllegalArgumentException e) {
 					throw new UnsupportedOperationException(
@@ -173,6 +175,27 @@ public class FXUtil {
 				break;
 			}
 		}
+	}
+	
+	private static Object[] getValidParameterList(final Class<?>[] types, Object ...value) {
+		final Object[] found=new Object[types.length];
+		int i=0;
+		for (final Class<?> t : types) {
+			final Object result =findByClass(t, value);
+			if (result!=null) {
+				found[i]=result;
+				i++;
+			}
+		}
+		
+		return found;
+	}
+	
+	private static Object findByClass(Class<?> key, Object[] values) {
+		for(Object val:values) {
+			if(val!=null && val.getClass().equals(key)) return val;
+		}
+		return null;
 	}
 
 	/**

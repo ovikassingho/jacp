@@ -38,9 +38,12 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IComponentView;
+import org.jacp.api.component.IDeclarativComponentView;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.UIComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil;
 
@@ -71,7 +74,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 */
 	protected final void addComponentByType(
 			final Node validContainer,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component) {
+			final UIComponent<Node, EventHandler<Event>, Event, Object> component) {
 		this.handleAdd(validContainer, component.getRoot(), component.getName());
 		this.handleViewState(validContainer, true);
 
@@ -211,7 +214,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param validContainer
 	 */
 	protected void handleLocalTargetChange(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
 			final Map<String, Node> targetComponents, final Node validContainer) {
 		this.addComponentByType(validContainer, component);
 	}
@@ -228,9 +231,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 */
 	protected void handlePerspectiveChange(
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
-		if (component instanceof AFXComponent) {
+		if (component instanceof AFXComponent || component instanceof AFXMLComponent) {
 			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component,
 					layout);
 		}
@@ -239,7 +242,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	}
 
 	/**
-	 * move component to new target
+	 * Move component to new target in perspective.
 	 * 
 	 * @param component
 	 */
@@ -257,39 +260,53 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	}
 
 	/**
-	 * runs subcomponents handle method
+	 * Runs the handle method of a componentView.
 	 * 
 	 * @param component
 	 * @param action
 	 * @return
 	 */
-	protected final void prepareAndHandleComponent(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+	protected final Node prepareAndRunHandleMethod(
+			final UIComponent <Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
-		final Node editorComponent = component.handle(action);
-		if (editorComponent != null) {
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component,
-					FXUtil.AFXCOMPONENT_ROOT, editorComponent);
-		}
-	}
+		return component.handle(action);
+		
+	}	
+
 
 	/**
-	 * executes post handle method in application main thread
+	 * Executes post handle method in application main thread. The result value of handle method (from worker thread) is Input for the postHandle Method. The return value or the handleReturnValue are the root node of this component.  
 	 * 
 	 * @param component
 	 * @param action
 	 */
-	protected void executePostHandle(
+	protected void executeComponentViewPostHandle(final Node handleReturnValue,
 			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
-		final Node root = component.getRoot();
-		final Node tmp = component.postHandle(root, action);
+		Node tmp = component.postHandle(handleReturnValue, action);
+		if(tmp==null) {
+			tmp = handleReturnValue;
+		}
 		if (tmp != null) {
 			tmp.setVisible(true);
 			FXUtil.setPrivateMemberValue(AFXComponent.class, component,
 					FXUtil.AFXCOMPONENT_ROOT, tmp);
-		}
+		} 
 	}
+	
+	/**
+	 * Executes post handle method in application main thread. The result value of handle method (from worker thread) is Input for the postHandle Method. The return value or the handleReturnValue are the root node of this component.  
+	 * 
+	 * @param component
+	 * @param action
+	 */
+	protected void executeDeclarativComponentViewPostHandle(final Node handleReturnValue,
+			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> component,
+			final IAction<Event, Object> action) {
+		component.postHandle(component.getRoot(),handleReturnValue, action);
+		
+	}
+
 
 	protected void log(final String message) {
 		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(

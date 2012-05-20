@@ -22,8 +22,10 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -32,11 +34,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.OnStart;
 import org.jacp.api.component.IComponentView;
+import org.jacp.api.component.IDeclarativComponentView;
+import org.jacp.api.component.UIComponent;
 import org.jacp.javafx.rcp.component.AComponent;
+import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil;
@@ -46,82 +54,162 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * 
  * @author Andy Moncsek
  */
-public class FXComponentInitWorker
-		extends
-		AFXComponentWorker<IComponentView<Node, EventHandler<Event>, Event, Object>> {
+public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, EventHandler<Event>, Event, Object>> {
 
 	private final Map<String, Node> targetComponents;
-	private final IComponentView<Node, EventHandler<Event>, Event, Object> component;
-	private final IAction<Event, Object> action;
+	private final UIComponent<Node, EventHandler<Event>, Event, Object> component;
 	private final FXComponentLayout layout;
-	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
-			1);
+	private final IAction<Event, Object> action;
+	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(1);
 
-	public FXComponentInitWorker(
-			final Map<String, Node> targetComponents,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout, final IAction<Event, Object> action) {
+	/**
+	 * The workers constructor.
+	 * 
+	 * @param targetComponents
+	 *            ; a map with all targets provided by perspective
+	 * @param component
+	 *            ; the UI component to init
+	 * @param action
+	 *            ; the init action
+	 */
+	public FXComponentInitWorker(final Map<String, Node> targetComponents,
+			final UIComponent<Node, EventHandler<Event>, Event, Object> component, final IAction<Event, Object> action,
+			final FXComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
 		this.layout = layout;
 	}
 
-	@Override
-	protected IComponentView<Node, EventHandler<Event>, Event, Object> call()
-			throws Exception {
+	/**
+	 * run all methods that need to be invoked before worker thread start to run
+	 */
+	public void runPreInitMethods() {
 		synchronized (this.component) {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(true));
-			this.log("3.4.4.2.1: subcomponent handle init START: "
-					+ this.component.getName());
-			this.prepareAndHandleComponent(this.component, this.action);
-			this.log("3.4.4.2.2: subcomponent handle init get valid container: "
-					+ this.component.getName());
-			// expect always local target id
-			this.component.setExecutionTarget(FXUtil
-					.getTargetComponentId(this.component.getExecutionTarget()));
-			final Node validContainer = this.getValidContainerById(
-					this.targetComponents, this.component.getExecutionTarget());
-			this.log("3.4.4.2.3: subcomponent handle init add component by type: "
-					+ this.component.getName());
+			if (this.component instanceof IDeclarativComponentView) {
+				IDeclarativComponentView <Node, EventHandler<Event>, Event, Object> dcComponent = (IDeclarativComponentView<Node, EventHandler<Event>, Event, Object>) this.component;
+				FXUtil.setPrivateMemberValue(
+						AFXMLComponent.class,
+						component,
+						FXUtil.ADECLARATIVECOMPONENT_ROOT,
+						loadFXMLandSetController(dcComponent));
+				this.runComponentOnStartupSequence((UIComponent<Node, EventHandler<Event>, Event, Object>) component, this.layout,dcComponent.getDocumentURL(),dcComponent.getResourceBundle());
+				return;
+			}
+			this.runComponentOnStartupSequence((UIComponent<Node, EventHandler<Event>, Event, Object>) component, this.layout);
+		}
+	}
 
-			this.addComonent(validContainer, this.component, this.action,
-					this.layout);
+	@Override
+	protected UIComponent<Node, EventHandler<Event>, Event, Object> call() throws Exception {
+		synchronized (this.component) {
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
+					new AtomicBoolean(true));
+			this.log("3.4.4.2.1: subcomponent handle init START: " + this.component.getName());
+
+			final Node handleReturnValue = this.prepareAndRunHandleMethod(this.component, this.action);
+
+			this.log("3.4.4.2.2: subcomponent handle init get valid container: " + this.component.getName());
+			// expect always local target id
+			this.component.setExecutionTarget(FXUtil.getTargetComponentId(this.component.getExecutionTarget()));
+			final Node validContainer = this.getValidContainerById(this.targetComponents,
+					this.component.getExecutionTarget());
+			this.log("3.4.4.2.3: subcomponent handle init add component by type: " + this.component.getName());
+			if (this.component instanceof IComponentView) {
+				this.addComonent(validContainer, handleReturnValue,
+						(IComponentView<Node, EventHandler<Event>, Event, Object>) this.component, this.action);
+			} else {
+				this.addComonent(validContainer, handleReturnValue,
+						(IDeclarativComponentView<Node, EventHandler<Event>, Event, Object>) this.component,
+						this.action);
+			}
 
 			this.waitOnAppThreadLockRelease();
 
-			this.log("3.4.4.2.4: subcomponent handle init END: "
-					+ this.component.getName());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
+			this.log("3.4.4.2.4: subcomponent handle init END: " + this.component.getName());
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
+					new AtomicBoolean(false));
 			return this.component;
 		}
 	}
 
 	/**
-	 * handles "component add" in EDT must be called outside EDT
+	 * Run at startup method in perspective.
+	 * 
+	 * @param component
+	 */
+	private void runComponentOnStartupSequence(UIComponent<Node, EventHandler<Event>, Event, Object> component, Object ...param) {
+		FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component, param);
+	}
+
+	private Node loadFXMLandSetController(
+			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> fxmlComponent) {
+		final URL url = getClass().getResource(fxmlComponent.getDocument());
+		final FXMLLoader fxmlLoader = new FXMLLoader(url);
+		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
+			@Override
+			public Object call(Class<?> paramClass) {
+				log("set FXML controller" + fxmlComponent.getName());
+				return fxmlComponent;
+			}
+		});
+
+		try {
+			return (Node) fxmlLoader.load();
+		} catch (IOException e) {
+			throw new MissingResourceException(
+					"fxml file not found --  place in resource folder and reference like this: uiDescriptionFile = \"/myUIFile.fxml\"",
+					fxmlComponent.getDocument(), "");
+		}
+	}
+
+	/**
+	 * Handles "component add" in EDT must be called outside EDT.
 	 * 
 	 * @param validContainer
+	 *            , a valid target where the component ui node is included
 	 * @param component
-	 * @param bars
-	 * @param menu
+	 *            , the ui component
 	 * @throws InterruptedException
 	 * @throws InvocationTargetException
 	 */
-	private void addComonent(
-			final Node validContainer,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action, final FXComponentLayout layout)
-			throws InterruptedException {
+	private void addComonent(final Node validContainer, final Node handleReturnValue,
+			final IComponentView<Node, EventHandler<Event>, Event, Object> myComponent,
+			final IAction<Event, Object> myAction) throws InterruptedException {
 
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
-				FXComponentInitWorker.this.executePostHandle(component, action);
-				FXComponentInitWorker.this.addComponentByType(validContainer,
-						component);
+				FXComponentInitWorker.this.executeComponentViewPostHandle(handleReturnValue, myComponent, myAction);
+				FXComponentInitWorker.this.addComponentByType(validContainer, myComponent);
+				FXComponentInitWorker.this.appThreadlock.add(true);
+			}
+		});
+
+	}
+
+	/**
+	 * Handles "component add" in EDT must be called outside EDT.
+	 * 
+	 * @param validContainer
+	 *            , a valid target where the component ui node is included
+	 * @param component
+	 *            , the ui component
+	 * @throws InterruptedException
+	 * @throws InvocationTargetException
+	 */
+	private void addComonent(final Node validContainer, final Node handleReturnValue,
+			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> myComponent,
+			final IAction<Event, Object> myAction) throws InterruptedException {
+
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				FXComponentInitWorker.this.executeDeclarativComponentViewPostHandle(handleReturnValue, myComponent,
+						myAction);
+				FXComponentInitWorker.this.addComponentByType(validContainer, myComponent);
 				FXComponentInitWorker.this.appThreadlock.add(true);
 			}
 		});
@@ -134,28 +222,24 @@ public class FXComponentInitWorker
 			try {
 				this.get();
 			} catch (final InterruptedException e) {
-				this.log("Exception in Component INIT Worker, Thread interrupted: "
-						+ e.getMessage());
+				this.log("Exception in Component INIT Worker, Thread interrupted: " + e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			} catch (final ExecutionException e) {
-				this.log("Exception in Component INIT Worker, Thread Excecution Exception: "
-						+ e.getMessage());
+				this.log("Exception in Component INIT Worker, Thread Excecution Exception: " + e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			} catch (final Exception e) {
-				this.log("Exception in Component INIT Worker, Thread Exception: "
-						+ e.getMessage());
+				this.log("Exception in Component INIT Worker, Thread Exception: " + e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 			}
-			FXUtil.setPrivateMemberValue(AComponent.class, this.component,
-					FXUtil.ACOMPONENT_STARTED, true);
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
+			FXUtil.setPrivateMemberValue(AComponent.class, this.component, FXUtil.ACOMPONENT_STARTED, true);
+			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
+					new AtomicBoolean(false));
 		}
 	}
 
