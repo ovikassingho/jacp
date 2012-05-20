@@ -58,6 +58,7 @@ public class ContactPerspective extends AFXPerspective {
 	 * create buttons in tool bars; menu entries  
 	 */
 	public void onStartPerspective(final FXComponentLayout layout) {
+		System.out.println("Perspective Post");
 		// create button in toolbar; button should switch top and bottom id's
 		final JACPToolBar north = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);

@@ -118,7 +118,7 @@ public class ContactTreeView extends ScrollPane {
 											// contacts
 											final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeView.this.parent
 													.getActionListener(
-															"id01.id002",
+															"id01.id006",
 															contact);
 											listener.performAction(event);
 											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent

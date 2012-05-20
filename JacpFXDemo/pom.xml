@@ -19,12 +19,12 @@
 			<email>pete.ahcp@gmail.com</email>
 		</developer>
 	</developers>
-	<repositories>
+<!-- 	<repositories>
 		<repository>
 			<id>jacp</id>
 			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
 		</repository>
-	</repositories>
+	</repositories> -->
 	<build>
 		<plugins>
 			<plugin>
@@ -35,7 +35,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.3</version>
@@ -53,7 +53,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -126,22 +126,24 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+		 <dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
 			<version>1.05</version>
+			<scope>compile</scope>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX2</artifactId>
 			<version>1.05</version>
-		</dependency>
+			<scope>compile</scope>
+		</dependency> 
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX2Spring</artifactId>
 			<version>1.05</version>
-			<!-- <scope>system</scope> <systemPath>${basedir}/lib/JACP.JavaFX2Spring-1.0.jar</systemPath> -->
-		</dependency>
+			<scope>compile</scope>
+		</dependency> 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
