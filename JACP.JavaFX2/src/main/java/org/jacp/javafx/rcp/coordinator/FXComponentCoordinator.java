@@ -121,10 +121,8 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 			final String targetPerspectiveId = FXUtil
 					.getTargetPerspectiveId(targetId);
 			if (this.parentId.equals(targetPerspectiveId)) {
-				// TODO target is in same perspective but component was not
-				// found previously
 				throw new UnsupportedOperationException(
-						"invalid component id handling not supported yet.");
+						"invalid component id handling not supported yet. Source: "+action.getSourceId()+" target: "+action.getTargetId());
 			}
 		}
 		// possible message to perspective

@@ -61,7 +61,11 @@ public abstract class AFXCoordinator extends Thread implements
 			final Map<String, Object> myMessages = action.getMessageList();
 			for (final String targetId : myMessages.keySet()) {
 				this.log(" handle message to: " + targetId);
-				this.handleMessage(targetId, action);
+				try {
+					this.handleMessage(targetId, action);
+				} catch (UnsupportedOperationException e) {
+					e.printStackTrace();
+				}
 			}
 			this.log(" observer thread DONE");
 		}
