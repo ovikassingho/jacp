@@ -17,8 +17,8 @@
 			<list>
 				<ref bean="contactTreeView" />
 				<ref bean="XMLTestView" />
-				<!-- <ref bean="contactTableView" /> -->
-				<ref bean="contactChartView" />
+				<!-- <ref bean="contactTableView" /> 
+				<ref bean="contactChartView" />-->
 				<ref bean="coordinatorCallback" />
 				<ref bean="creatorCallback" />
 				<ref bean="analyticsCallback" />

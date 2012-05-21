@@ -121,11 +121,11 @@ public class ContactTreeView extends ScrollPane {
 															"id01.id006",
 															contact);
 											listener.performAction(event);
-											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent
-													.getActionListener(
-															"id01.id003",
-															BarChartAction.RESET);
-											resetListener.performAction(event);
+//											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent
+//													.getActionListener(
+//															"id01.id003",
+//															BarChartAction.RESET);
+//											resetListener.performAction(event);
 										}
 									});
 								}
