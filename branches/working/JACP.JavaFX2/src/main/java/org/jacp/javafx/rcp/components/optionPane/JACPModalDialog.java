@@ -71,6 +71,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 	 *            the root node
 	 */
 	public static void initDialog(final Node rootNode) {
+		// FIXME not thread safe; use double check
 		if (JACPModalDialog.instance == null) {
 			JACPModalDialog.root = rootNode;
 			JACPModalDialog.instance = new JACPModalDialog();
