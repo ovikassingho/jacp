@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="AnchorPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.perspective.AFXPerspective" GridPane.vgrow="always" GridPane.hgrow="always">
+  <children>
+    <SplitPane id="splitPaneHorizontal1" dividerPositions="0.21052631578947367" focusTraversable="true" layoutX="14.0" GridPane.vgrow="always" GridPane.hgrow="always">
+      <items>
+       <GridPane id="gridPane1" fx:id="gridPane1" prefHeight="370.0" prefWidth="117.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+        <SplitPane id="splitPaneVertical1" dividerPositions="0.5" focusTraversable="true" orientation="VERTICAL" prefHeight="370.0" prefWidth="447.0">
+              <items>
+                <AnchorPane id="anchorPane3" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                  <children>
+                    <GridPane id="gridPane2" fx:id="gridPane2" layoutX="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="181.0" prefWidth="438.0">
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="127.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+                      </rowConstraints>
+                    </GridPane>
+                  </children>
+                </AnchorPane>
+                <AnchorPane id="anchorPane4" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                  <children>
+                    <GridPane id="gridPane3" fx:id="gridPane3" layoutX="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="181.0" prefWidth="426.0">
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                  </children>
+                </AnchorPane>
+              </items>
+            </SplitPane>
+      </items>
+    </SplitPane>
+  </children>
+</BorderPane>
