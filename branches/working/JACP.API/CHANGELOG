@@ -1,4 +1,5 @@
-20. Mai. 2012 - amo - extended API to support declarative UI components; Declarative components do not have a UI return becose the xml file or whatever is always the root UI object
+29. Mai. 2012 - amo - add viewLocation to perspective annotation, add IDeclarative interface to mark components that can be implemented
+20. Mai. 2012 - amo - extended API to support declarative UI components; Declarative components do not have a UI return because the xml file or whatever is always the root UI object
 09. Apr. 2012 - amo - IExtendedComponent deleted
 09. Apr. 2012 - amo - removed setRoot from IComponentView
 09. Apr. 2012 - amo - add perspective annotation

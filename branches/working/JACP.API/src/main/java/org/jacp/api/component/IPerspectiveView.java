@@ -38,7 +38,7 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspectiveView<C, L, A, M> extends IPerspective<L, A, M> {
+public interface IPerspectiveView<C, L, A, M> extends IPerspective<L, A, M>, IDeclarative {
 	/**
 	 * Returns layout dto.
 	 * 
@@ -46,4 +46,6 @@ public interface IPerspectiveView<C, L, A, M> extends IPerspective<L, A, M> {
 	 *         perspective
 	 */
 	IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
+	
+	
 }

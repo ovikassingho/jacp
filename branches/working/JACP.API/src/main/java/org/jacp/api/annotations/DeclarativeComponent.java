@@ -65,8 +65,8 @@ public @interface DeclarativeComponent {
 	String defaultExecutionTarget();
 	
 	/**
-	 * Represents the file name of the declarative UI.
+	 * Represents the location (URI) of the declarative UI.
 	 * @return
 	 */
-	String uiDescriptionFile();
+	String viewLocation();
 }
