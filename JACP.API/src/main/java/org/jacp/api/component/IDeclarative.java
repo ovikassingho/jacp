@@ -2,8 +2,8 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [Component.java]
- * AHCP Project (http://jacp.googlecode.com/)
+ * [IVComponent.java]
+ * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,47 +20,42 @@
  *
  *
  ************************************************************************/
-package org.jacp.api.annotations;
+package org.jacp.api.component;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
- * Defines the meta attributes for a perspective.
+ * Declarative Components always have a document URL and should have an resourceBundle.
  * 
  * @author Andy Moncsek
- * 
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Perspective {
+public interface IDeclarative {
 	/**
-	 * The component name.
+	 * Contains the document url describing the UI.
 	 * 
-	 * @return
+	 * @return the document url
 	 */
-	String name();
+	String getViewLocation();
 
 	/**
-	 * The component id.
+	 * Set the viewLocation location on component start.
 	 * 
-	 * @return
+	 * @param documentURL
 	 */
-	String id();
+	void setViewLocation(String documentURL);
 
 	/**
-	 * The active state at start time.
+	 * The document URL describing the UI.
 	 * 
-	 * @return
+	 * @return the document url
 	 */
-	boolean active() default true;
-
+	URL getDocumentURL();
+	
 	/**
-	 * Represents the location (URI) of the declarative UI.
+	 * Contains locale-specific objects.
 	 * 
-	 * @return
+	 * @return the resource bundle for the UI document
 	 */
-	String viewLocation() default "";
+	ResourceBundle getResourceBundle();
 }

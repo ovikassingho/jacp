@@ -42,28 +42,9 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IDeclarativComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
+public interface IDeclarativComponentView<C, L, A, M> extends UIComponent<C, L, A, M> , IDeclarative{
 
-	/**
-	 * Contains the document url describing the UI.
-	 * 
-	 * @return the document url
-	 */
-	String getDocument();
-
-	/**
-	 * Set the document location on component start.
-	 * 
-	 * @param documentURL
-	 */
-	void setDocument(String documentURL);
-
-	/**
-	 * The document URL describing the UI.
-	 * 
-	 * @return the document url
-	 */
-	URL getDocumentURL();
+	
 
 	/**
 	 * To avoid toolkit specific threading issues the postHandle method always
@@ -86,11 +67,6 @@ public interface IDeclarativComponentView<C, L, A, M> extends UIComponent<C, L, 
 	 */
 	void postHandle(final C documentNode, final C node, final IAction<A, M> action);
 
-	/**
-	 * Contains locale-specific objects.
-	 * 
-	 * @return the resource bundle for the UI document
-	 */
-	ResourceBundle getResourceBundle();
+
 
 }
