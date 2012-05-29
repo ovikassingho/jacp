@@ -15,7 +15,7 @@ public class HelloMenu extends Application {
     @Override public void start(Stage stage) {
         // load the image
         Image image = new Image(HelloMenu.class.getResourceAsStream("/home/ady/Downloads/6986014746_e32904121f_o.jpg"),0d,0d,true,true);
-
+        
         // simple displays ImageView the image as is
         ImageView iv1 = new ImageView();
         iv1.setImage(image);

@@ -15,10 +15,9 @@ import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
-@DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, uiDescriptionFile = "/AdoptionForm.fxml")
+@DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, viewLocation = "/AdoptionForm.fxml")
 public class XMLTestView extends AFXMLComponent {
 	@FXML
 	private GridPane grid;

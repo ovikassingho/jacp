@@ -17,13 +17,18 @@
  */
 package org.jacp.demo.perspectives;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -35,7 +40,7 @@ import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
+import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
@@ -47,11 +52,18 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "contactPerspective")
+@Perspective(id = "id01", name = "contactPerspective" ,viewLocation="/perspective.fxml" )
 public class ContactPerspective extends AFXPerspective {
 
 	private String topId = "PmainContentTop";
 	private String bottomId = "PmainContentBottom";
+	
+	@FXML
+	private GridPane gridPane1;
+	@FXML
+	private GridPane gridPane2;
+	@FXML
+	private GridPane gridPane3;
 
 	@OnStart
 	/**
@@ -85,7 +97,7 @@ public class ContactPerspective extends AFXPerspective {
 
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action,
-			final FXPerspectiveLayout perspectiveLayout) {
+			final PerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			this.createPerspectiveLayout(perspectiveLayout);
 		} else if (action.getLastMessage().equals("switch")) {
@@ -97,50 +109,59 @@ public class ContactPerspective extends AFXPerspective {
 	}
 
 	private void createPerspectiveLayout(
-			final FXPerspectiveLayout perspectiveLayout) {
+			final PerspectiveLayout perspectiveLayout) {
 
-		final BorderPane mainLayout = new BorderPane();
-		// create left button menu
-		final GridPane leftMenu = new GridPane();
-		leftMenu.getStyleClass().add("dark-border");
-		// GridPane.setHgrow(leftMenu, Priority.ALWAYS);
-		// GridPane.setVgrow(leftMenu, Priority.ALWAYS);
-
-		// create main content right
-		final SplitPane splitPaneRight = new SplitPane();
-		splitPaneRight.setOrientation(Orientation.VERTICAL);
-		splitPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		splitPaneRight.setDividerPosition(0, 0.55f);
-		splitPaneRight.setId("v-splitpane");
-
-		// create main content Top
-		final GridPane mainContentTop = new GridPane();
-		// create main content Bottom
-		final GridPane mainContentBottom = new GridPane();
-
-		splitPaneRight.getItems().addAll(mainContentTop, mainContentBottom);
-
-		// Main Content Area to the right
-		final SplitPane splitPane = new SplitPane();
-		splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-		splitPane.setDividerPosition(0, 0.20f);
-		splitPane.getItems().addAll(leftMenu, splitPaneRight);
-		splitPane.setId("h-splitpane");
-
-		mainLayout.setCenter(splitPane);
-		GridPane.setVgrow(mainLayout, Priority.ALWAYS);
-		GridPane.setHgrow(mainLayout, Priority.ALWAYS);
-
-		// Register root component
-		perspectiveLayout.registerRootComponent(mainLayout);
-		// register left menu
-		perspectiveLayout.registerTargetLayoutComponent("PleftMenu", leftMenu);
+//		final BorderPane mainLayout = new BorderPane();
+//		// create left button menu
+//		final GridPane leftMenu = new GridPane();
+//		leftMenu.getStyleClass().add("dark-border");
+//		// GridPane.setHgrow(leftMenu, Priority.ALWAYS);
+//		// GridPane.setVgrow(leftMenu, Priority.ALWAYS);
+//
+//		// create main content right
+//		final SplitPane splitPaneRight = new SplitPane();
+//		splitPaneRight.setOrientation(Orientation.VERTICAL);
+//		splitPaneRight.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//		splitPaneRight.setDividerPosition(0, 0.55f);
+//		splitPaneRight.setId("v-splitpane");
+//
+//		// create main content Top
+//		final GridPane mainContentTop = new GridPane();
+//		// create main content Bottom
+//		final GridPane mainContentBottom = new GridPane();
+//
+//		splitPaneRight.getItems().addAll(mainContentTop, mainContentBottom);
+//
+//		// Main Content Area to the right
+//		final SplitPane splitPane = new SplitPane();
+//		splitPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//		splitPane.setDividerPosition(0, 0.20f);
+//		splitPane.getItems().addAll(leftMenu, splitPaneRight);
+//		splitPane.setId("h-splitpane");
+//
+//		mainLayout.setCenter(splitPane);
+//		GridPane.setVgrow(mainLayout, Priority.ALWAYS);
+//		GridPane.setHgrow(mainLayout, Priority.ALWAYS);
+//
+//		// Register root component
+//		perspectiveLayout.registerRootComponent(mainLayout);
+//		// register left menu
+//		perspectiveLayout.registerTargetLayoutComponent("PleftMenu", leftMenu);
+//		// register main content Top
+//		perspectiveLayout.registerTargetLayoutComponent(this.topId,
+//				mainContentTop);
+//		// register main content Bottom
+//		perspectiveLayout.registerTargetLayoutComponent(this.bottomId,
+//				mainContentBottom);
+		
+		perspectiveLayout.registerTargetLayoutComponent("PleftMenu", gridPane1);
 		// register main content Top
 		perspectiveLayout.registerTargetLayoutComponent(this.topId,
-				mainContentTop);
+				gridPane2);
 		// register main content Bottom
 		perspectiveLayout.registerTargetLayoutComponent(this.bottomId,
-				mainContentBottom);
+				gridPane3);
 	}
 
+	
 }
