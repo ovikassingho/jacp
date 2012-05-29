@@ -43,10 +43,10 @@ import org.jacp.api.annotations.OnStart;
 import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.IDeclarativComponentView;
 import org.jacp.api.component.UIComponent;
-import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
@@ -144,7 +144,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 
 	private Node loadFXMLandSetController(
 			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> fxmlComponent) {
-		final URL url = getClass().getResource(fxmlComponent.getDocument());
+		final URL url = getClass().getResource(fxmlComponent.getViewLocation());
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
 		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
 			@Override
@@ -159,7 +159,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 		} catch (IOException e) {
 			throw new MissingResourceException(
 					"fxml file not found --  place in resource folder and reference like this: uiDescriptionFile = \"/myUIFile.fxml\"",
-					fxmlComponent.getDocument(), "");
+					fxmlComponent.getViewLocation(), "");
 		}
 	}
 
@@ -237,7 +237,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 				// messages in
 				// queue
 			}
-			FXUtil.setPrivateMemberValue(AComponent.class, this.component, FXUtil.ACOMPONENT_STARTED, true);
+			FXUtil.setPrivateMemberValue(Checkable.class, this.component, FXUtil.ACOMPONENT_STARTED, true);
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
 					new AtomicBoolean(false));
 		}

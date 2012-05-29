@@ -267,6 +267,9 @@ public abstract class AFXWorkbench
 					FXUtil.ACOMPONENT_NAME, perspectiveAnnotation.name());
 			this.log("register perspective with annotations : "
 					+ perspectiveAnnotation.id());
+			final String viewLocation = perspectiveAnnotation.viewLocation();
+			if(viewLocation.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
+					FXUtil.ADECLARATIVECOMPONENT_VIEW_LOCATION, viewLocation);
 		}
 	}
 

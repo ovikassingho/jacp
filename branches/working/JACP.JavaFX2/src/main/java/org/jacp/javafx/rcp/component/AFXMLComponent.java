@@ -47,7 +47,7 @@ public abstract class AFXMLComponent extends ASubComponent implements
 
 	private Node root;
 
-	private String document;
+	private String viewLocation;
 
 	private URL documentURL;
 
@@ -57,16 +57,16 @@ public abstract class AFXMLComponent extends ASubComponent implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getDocument() {
-		return document;
+	public final String getViewLocation() {
+		return viewLocation;
 	}
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void setDocument(String document){
-		super.checkPolicy(this.document, "Do Not Set document manually");
-		this.document = document;
+	public final void setViewLocation(String document){
+		super.checkPolicy(this.viewLocation, "Do Not Set document manually");
+		this.viewLocation = document;
 	}
 
 	

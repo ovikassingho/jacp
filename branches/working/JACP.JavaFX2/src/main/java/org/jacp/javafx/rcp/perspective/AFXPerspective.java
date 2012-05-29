@@ -22,13 +22,16 @@
  ************************************************************************/
 
 package org.jacp.javafx.rcp.perspective;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
@@ -45,6 +48,7 @@ import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
+import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.FXUtil;
 
@@ -56,14 +60,18 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * @author Andy Moncsek
  */
 public abstract class AFXPerspective extends AComponent implements
-		IPerspectiveView<Node, EventHandler<Event>, Event, Object> {
+		IPerspectiveView<Node, EventHandler<Event>, Event, Object> ,
+		Initializable {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents;
 	private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
 	private IComponentCoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
-	private final IPerspectiveLayout<Node, Node> perspectiveLayout = new FXPerspectiveLayout();
+	private String viewLocation;
+	private URL documentURL;
+	private ResourceBundle resourceBundle;
+	private IPerspectiveLayout<Node, Node> perspectiveLayout;
 
 	@Override
 	public final void init(
@@ -105,12 +113,12 @@ public abstract class AFXPerspective extends AComponent implements
 	 * @param perspectiveLayout ,  the layout handler defining the pwerspective
 	 */
 	public abstract void handlePerspective(IAction<Event, Object> action,
-			final FXPerspectiveLayout perspectiveLayout);
+			final PerspectiveLayout perspectiveLayout);
 
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action) {
 		this.handlePerspective(action,
-				(FXPerspectiveLayout) this.perspectiveLayout);
+				(PerspectiveLayout) this.perspectiveLayout);
 
 	}
 
@@ -159,8 +167,8 @@ public abstract class AFXPerspective extends AComponent implements
 					declarativeComponent.name());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
 					declarativeComponent.defaultExecutionTarget());
-			FXUtil.setPrivateMemberValue(AFXMLComponent.class, component, FXUtil.ADECLARATIVECOMPONENT_DOCUMENT,
-					declarativeComponent.uiDescriptionFile());
+			FXUtil.setPrivateMemberValue(AFXMLComponent.class, component, FXUtil.ADECLARATIVECOMPONENT_VIEW_LOCATION,
+					declarativeComponent.viewLocation());
 			this.log("register component with annotations : " + declarativeComponent.id());
 			return;
 		}
@@ -267,4 +275,31 @@ public abstract class AFXPerspective extends AComponent implements
 	public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
 		return this.componentHandler;
 	}
+	
+	@Override
+	public String getViewLocation(){
+		return this.viewLocation;
+	}
+	
+	@Override
+	public void setViewLocation(String documentURL){
+		this.viewLocation = documentURL;
+	}
+	
+	@Override
+	public final void initialize(URL url, ResourceBundle resourceBundle) {
+		this.documentURL = url;
+		this.resourceBundle = resourceBundle;
+	}
+	
+	@Override
+	public URL getDocumentURL() {
+		return this.documentURL;
+	}
+
+	@Override
+	public ResourceBundle getResourceBundle() {
+		return this.resourceBundle;
+	}
+
 }

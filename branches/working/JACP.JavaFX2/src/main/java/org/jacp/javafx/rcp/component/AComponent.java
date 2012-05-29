@@ -32,6 +32,7 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.util.Checkable;
 
 /**
  * The most abstract component, used to define components as well as
@@ -41,12 +42,12 @@ import org.jacp.javafx.rcp.action.FXActionListener;
  * 
  */
 
-public class AComponent implements
+public class AComponent extends Checkable implements
 		IComponent<EventHandler<Event>, Event, Object> {
 	protected volatile String id;
 	private volatile String name;
 	private volatile boolean active;
-	private volatile boolean started = false;
+
 	protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
 	@Override
@@ -63,11 +64,7 @@ public class AComponent implements
 				this.globalMessageQueue);
 	}
 
-	protected final void checkPolicy(final String member, final String name) {
-		if (member != null || this.started) {
-			throw new UnsupportedOperationException(name);
-		}
-	}
+	
 
 	/**
 	 * {@inheritDoc}
@@ -100,7 +97,7 @@ public class AComponent implements
 
 	@Override
 	public final boolean isStarted() {
-		return this.started;
+		return super.started;
 	}
 
 	@Override

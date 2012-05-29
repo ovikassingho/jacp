@@ -22,16 +22,21 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.handler;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnStart;
@@ -46,6 +51,8 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.componentLayout.FXMLPerspectiveLayout;
+import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
@@ -100,12 +107,13 @@ public class FXWorkbenchHandler
 	@Override
 	public final void initComponent(final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
-				.getIPerspectiveLayout();
+
 		this.log("3.4.3: perspective handle init");
 		this.handlePerspectiveInitMethod(action, perspective);
 		this.log("3.4.4: perspective init subcomponents");
 		perspective.initComponents(action);
+		final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
+				.getIPerspectiveLayout();
 		this.log("3.4.5: perspective init bar entries");
 		this.initPerspectiveUI(perspective, perspectiveLayout);
 
@@ -236,10 +244,24 @@ public class FXWorkbenchHandler
 					.getWorkbenchLayout().getMenu(), this.getWorkbenchLayout()
 					.getRegisteredToolbars(), this.getWorkbenchLayout()
 					.getGlassPane());
-			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,
-					layout);
-			final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) perspective)
-					.getIPerspectiveLayout();
+			
+
+			
+			final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>)perspective);			
+			
+			if(perspectiveView.getViewLocation()!=null && perspectiveView.getViewLocation().length()>1) {
+				// init IPerspectiveLayout for FXML 
+				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPerspective_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(loadFXMLandSetController(perspectiveView)));
+				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,layout, perspectiveView.getDocumentURL(),perspectiveView.getResourceBundle());
+			} else {
+				// init default IPerspectiveLayout
+				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPerspective_PERSPECTIVE_LAYOUT, new FXPerspectiveLayout());
+				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,
+						layout);
+			}
+			
+			
+			final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) perspectiveView.getIPerspectiveLayout();
 			perspective.postInit(new FXPerspectiveHandler(this.launcher,
 					layout, perspectiveLayout, perspective
 							.getComponentDelegateQueue()));
@@ -258,7 +280,27 @@ public class FXWorkbenchHandler
 					perspective.getId(), "init"));
 		} // End else
 	}
+	
+	private Node loadFXMLandSetController(
+			final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {
+		final URL url = getClass().getResource(perspectiveView.getViewLocation());
+		final FXMLLoader fxmlLoader = new FXMLLoader(url);
+		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
+			@Override
+			public Object call(Class<?> paramClass) {
+				log("set FXML controller" + perspectiveView.getName());
+				return perspectiveView;
+			}
+		});
 
+		try {
+			return (Node) fxmlLoader.load();
+		} catch (IOException e) {
+			throw new MissingResourceException(
+					"fxml file not found --  place in resource folder and reference like this: uiDescriptionFile = \"/myUIFile.fxml\"",
+					perspectiveView.getViewLocation(), "");
+		}
+	}
 	/**
 	 * get perspectives ui root container
 	 * 
