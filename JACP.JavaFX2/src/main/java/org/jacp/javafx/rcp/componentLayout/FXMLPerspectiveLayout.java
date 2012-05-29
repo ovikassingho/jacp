@@ -20,7 +20,6 @@
  *
  *
  ************************************************************************/
-
 package org.jacp.javafx.rcp.componentLayout;
 
 
@@ -30,18 +29,22 @@ import javafx.scene.Node;
 /**
  * Configuration handler for perspective components, used in handle method for
  * configuration and registration of layout 'leaves' where subcomponents can
- * live in. Create your own complex layout, return the root node and register
- * parts of your layout that can handle subcomponents
+ * live in. Create your own complex layout, the root node is defined by FXML
+ * definition. Mark your leaf nodes as privet @FXML components and register
+ * them.
  * 
  * @author Andy Moncsek
  */
-public class FXPerspectiveLayout extends PerspectiveLayout {
+public class FXMLPerspectiveLayout extends PerspectiveLayout{
 
+	public FXMLPerspectiveLayout(final Node rootComponent) {
+		super(rootComponent);
+	}
+	
 	@Override
 	public final void registerRootComponent(final Node comp) {
-		this.rootComponent = comp;
+		super.checkPolicy(this.rootComponent, "Do Not Set rootComponent manually in FXML components");
 	}
 
-	
-
 }
+

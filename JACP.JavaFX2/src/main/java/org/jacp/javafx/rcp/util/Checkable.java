@@ -2,8 +2,8 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [FX2PerspectiveLayout.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * [AFXSubComponent.java]
+ * AHCP Project (http://jacp.googlecode.com/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,28 +20,21 @@
  *
  *
  ************************************************************************/
-
-package org.jacp.javafx.rcp.componentLayout;
-
-
-import javafx.scene.Node;
-
+package org.jacp.javafx.rcp.util;
 
 /**
- * Configuration handler for perspective components, used in handle method for
- * configuration and registration of layout 'leaves' where subcomponents can
- * live in. Create your own complex layout, return the root node and register
- * parts of your layout that can handle subcomponents
+ * A checkable component allows to check component states and to avoid manual manipulation in components.
  * 
  * @author Andy Moncsek
+ * 
  */
-public class FXPerspectiveLayout extends PerspectiveLayout {
 
-	@Override
-	public final void registerRootComponent(final Node comp) {
-		this.rootComponent = comp;
-	}
-
+public abstract class Checkable {
+	protected volatile boolean started = false;
 	
-
+	protected final void checkPolicy(final Object member, final String name) {
+		if (member != null || this.started) {
+			throw new UnsupportedOperationException(name);
+		}
+	}
 }
