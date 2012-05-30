@@ -7,7 +7,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXMLComponent" GridPane.vgrow="always" GridPane.hgrow="always">
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent" GridPane.vgrow="always" GridPane.hgrow="always">
 	<children>
 		<GridPane fx:id="grid" hgap="10" vgap="10" style="-fx-padding: 20">
 			<columnConstraints>
