@@ -13,12 +13,13 @@ import javafx.scene.layout.GridPane;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.annotations.OnStart;
-import org.jacp.javafx.rcp.component.AFXMLComponent;
+import org.jacp.api.annotations.OnTearDown;
+import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 @DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, viewLocation = "/AdoptionForm.fxml")
-public class XMLTestView extends AFXMLComponent {
+public class XMLTestView extends AFXComponent {
 	@FXML
 	private GridPane grid;
 	@FXML
@@ -59,17 +60,24 @@ public class XMLTestView extends AFXMLComponent {
 	}
 
 	@Override
-	public void postHandleAction(Node xmlParent, Node handleNode, IAction<Event, Object> action) {
+	public Node postHandleAction(final Node node,
+			final IAction<Event, Object> action) {
 		// TODO Auto-generated method stub
 		System.out.println("postHandle : " + grid + " " + action.getLastMessage() + " thread" + Thread.currentThread());
 		if (!action.getLastMessage().equals(MessageUtil.INIT) && !action.getLastMessage().equals("stop"))
 			field1.setText(action.getLastMessage().toString());
+		
+		return null;
 
 	}
 
 	@OnStart
 	public void start(FXComponentLayout layout, URL url, ResourceBundle resourceBundle) {
 		System.out.println("STRAT" + grid + "  " + layout + " url: " + url.getPath());
+	}
+	@OnTearDown
+	public void stop(FXComponentLayout layout) {
+		System.out.println("STOP");
 	}
 
 	// @OnStart
