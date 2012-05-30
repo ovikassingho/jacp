@@ -1,3 +1,4 @@
+30. Mai. 2012 - amo -  removed AFXMLComponent and add behavior to AFXComponent 
 29. Mai. 2012 - amo -  add checkable class that can be implemented by components where the state should not be changed after initilaisation; implemented FXML perspective handling. Add PerspectiveLayout abstract class to handle FXPerspectiveLayout and FXMLPerspectiveLayout.
 23. Mai. 2012 - amo -  switch to JavaFX 2.2
 21. Mai. 2012 - amo -  add missing source and target ID when throw exception if component was not found

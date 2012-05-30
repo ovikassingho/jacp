@@ -23,7 +23,6 @@
 package org.jacp.javafx.rcp.worker;
 
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,7 +34,6 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnTearDown;
-import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
@@ -51,22 +49,17 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * @author Andy Moncsek
  * 
  */
-public class FXComponentReplaceWorker
-		extends
-		AFXComponentWorker<IComponentView<Node, EventHandler<Event>, Event, Object>> {
+public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
 	private final Map<String, Node> targetComponents;
-	private final IComponentView<Node, EventHandler<Event>, Event, Object> component;
+	private final AFXComponent component;
 	private final FXComponentLayout layout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
-	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(
-			1);
 
 	public FXComponentReplaceWorker(
 			final Map<String, Node> targetComponents,
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout) {
+			final AFXComponent component, final FXComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.layout = layout;
@@ -74,8 +67,7 @@ public class FXComponentReplaceWorker
 	}
 
 	@Override
-	protected IComponentView<Node, EventHandler<Event>, Event, Object> call()
-			throws Exception {
+	protected AFXComponent call() throws Exception {
 		synchronized (this.component) {
 			try {
 				FXUtil.setPrivateMemberValue(ASubComponent.class,
@@ -93,13 +85,14 @@ public class FXComponentReplaceWorker
 					// run code
 					this.log(" //1.1.1.1.2// handle component: "
 							+ this.component.getName());
-					final Node handleReturnValue = this.prepareAndRunHandleMethod(this.component, myAction);
+					final Node handleReturnValue = this
+							.prepareAndRunHandleMethod(this.component, myAction);
 					this.log(" //1.1.1.1.3// publish component: "
 							+ this.component.getName());
 
 					this.publish(this.component, myAction,
-							this.targetComponents, this.layout,handleReturnValue,
-							previousContainer, currentTaget);
+							this.targetComponents, this.layout,
+							handleReturnValue, previousContainer, currentTaget);
 
 					this.waitOnAppThreadLockRelease();
 
@@ -122,12 +115,11 @@ public class FXComponentReplaceWorker
 	/**
 	 * publish handle result in application main thread
 	 */
-	private void publish(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+	private void publish(final AFXComponent component,
 			final IAction<Event, Object> myAction,
 			final Map<String, Node> targetComponents,
-			final FXComponentLayout layout,final Node handleReturnValue, final Node previousContainer,
-			final String currentTaget) {
+			final FXComponentLayout layout, final Node handleReturnValue,
+			final Node previousContainer, final String currentTaget) {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
@@ -140,10 +132,8 @@ public class FXComponentReplaceWorker
 					FXComponentReplaceWorker.this.removeComponentValue(
 							component, previousContainer, layout);
 					// run teardown
-					if (component instanceof AFXComponent) {
-						FXUtil.invokeHandleMethodsByAnnotation(
-								OnTearDown.class, component, layout);
-					}
+					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+							component, layout);
 				}
 				// release lock
 				FXComponentReplaceWorker.this.appThreadlock.add(true);
@@ -151,8 +141,7 @@ public class FXComponentReplaceWorker
 		});
 	}
 
-	private void removeComponentValue(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+	private void removeComponentValue(final AFXComponent component,
 			final Node previousContainer, final FXComponentLayout layout) {
 		if (previousContainer != null) {
 			final Node parent = previousContainer.getParent();
@@ -169,14 +158,14 @@ public class FXComponentReplaceWorker
 	 * @param previousContainer
 	 * @param currentTaget
 	 */
-	private void publishComponentValue(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+	private void publishComponentValue(final AFXComponent component,
 			final IAction<Event, Object> action,
 			final Map<String, Node> targetComponents,
-			final FXComponentLayout layout, final Node handleReturnValue, final Node previousContainer,
-			final String currentTaget) {
+			final FXComponentLayout layout, final Node handleReturnValue,
+			final Node previousContainer, final String currentTaget) {
 		if (previousContainer != null) {
-			this.executeComponentViewPostHandle(handleReturnValue, component, action);
+			this.executeComponentViewPostHandle(handleReturnValue, component,
+					action);
 			this.removeOldComponentValue(component, previousContainer,
 					currentTaget);
 			this.checkAndHandleTargetChange(component, previousContainer,
@@ -188,8 +177,7 @@ public class FXComponentReplaceWorker
 	/**
 	 * remove old component value from root node
 	 */
-	private void removeOldComponentValue(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+	private void removeOldComponentValue(final AFXComponent component,
 			final Node previousContainer, final String currentTaget) {
 		final Node root = component.getRoot();
 		// avoid remove/add when root component did not changed!
@@ -203,8 +191,7 @@ public class FXComponentReplaceWorker
 	/**
 	 * add new component value to root node
 	 */
-	private void checkAndHandleTargetChange(
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+	private void checkAndHandleTargetChange(final AFXComponent component,
 			final Node previousContainer, final String currentTaget,
 			final FXComponentLayout layout) {
 		final Node root = component.getRoot();
@@ -232,19 +219,11 @@ public class FXComponentReplaceWorker
 
 	}
 
-	private void waitOnAppThreadLockRelease() {
-		try {
-			this.appThreadlock.take();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	@Override
 	protected final void done() {
 		try {
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component = this
-					.get();
+			final AFXComponent component = this.get();
 			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
 					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		} catch (final InterruptedException e) {
@@ -257,6 +236,8 @@ public class FXComponentReplaceWorker
 			// TODO add to error queue and restart thread if
 			// messages in
 			// queue
+		} catch (final UnsupportedOperationException e) {
+			e.printStackTrace();
 		} catch (final Exception e) {
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if

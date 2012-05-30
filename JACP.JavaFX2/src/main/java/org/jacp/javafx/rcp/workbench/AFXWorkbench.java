@@ -57,6 +57,7 @@ import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.ToolbarPosition;
+import org.jacp.api.util.UIType;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
@@ -268,8 +269,10 @@ public abstract class AFXWorkbench
 			this.log("register perspective with annotations : "
 					+ perspectiveAnnotation.id());
 			final String viewLocation = perspectiveAnnotation.viewLocation();
+			FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
+					FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION, viewLocation);
 			if(viewLocation.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-					FXUtil.ADECLARATIVECOMPONENT_VIEW_LOCATION, viewLocation);
+					FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
 		}
 	}
 
