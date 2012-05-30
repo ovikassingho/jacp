@@ -33,9 +33,9 @@ import org.jacp.api.component.IStatelessCallabackComponent;
  * 
  * @author Andy Moncsek
  * 
- * @param <L>
- * @param <A>
- * @param <M>
+ * @param <L> The listener type.
+ * @param <A> The action type.
+ * @param <M> The Message type.
  */
 public interface IStatelessComponentScheduler<L, A, M> {
 	/**
