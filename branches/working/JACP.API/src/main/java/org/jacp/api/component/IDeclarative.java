@@ -25,6 +25,8 @@ package org.jacp.api.component;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.jacp.api.util.UIType;
+
 /**
  * Declarative Components always have a document URL and should have an resourceBundle.
  * 
@@ -58,4 +60,10 @@ public interface IDeclarative {
 	 * @return the resource bundle for the UI document
 	 */
 	ResourceBundle getResourceBundle();
+	
+	/**
+	 * Distinguish component types.
+	 * @return the type of the component.
+	 */
+	UIType getType();
 }
