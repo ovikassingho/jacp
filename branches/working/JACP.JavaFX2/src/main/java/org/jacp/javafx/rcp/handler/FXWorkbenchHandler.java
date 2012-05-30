@@ -251,11 +251,11 @@ public class FXWorkbenchHandler
 			
 			if(perspectiveView.getViewLocation()!=null && perspectiveView.getViewLocation().length()>1) {
 				// init IPerspectiveLayout for FXML 
-				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPerspective_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(loadFXMLandSetController(perspectiveView)));
+				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(loadFXMLandSetController(perspectiveView)));
 				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,layout, perspectiveView.getDocumentURL(),perspectiveView.getResourceBundle());
 			} else {
 				// init default IPerspectiveLayout
-				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPerspective_PERSPECTIVE_LAYOUT, new FXPerspectiveLayout());
+				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXPerspectiveLayout());
 				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,
 						layout);
 			}

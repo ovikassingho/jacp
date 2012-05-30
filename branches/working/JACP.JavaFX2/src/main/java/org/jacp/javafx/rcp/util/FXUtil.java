@@ -56,10 +56,10 @@ public class FXUtil {
 	public static final String ACOMPONENT_BLOCKED = "blocked";
 	public static final String ACOMPONENT_STARTED = "started";
 	public static final String APERSPECTIVE_MQUEUE = "messageQueue";
-	public static final String ADECLARATIVECOMPONENT_VIEW_LOCATION = "viewLocation";
-	public static final String ADECLARATIVECOMPONENT_ROOT = "root";
-	public static final String ADECLARATIVECOMPONENT_DOCUMENT_URL = "documentURL";
-	public static final String AFXPerspective_PERSPECTIVE_LAYOUT = "perspectiveLayout";
+	public static final String IDECLARATIVECOMPONENT_VIEW_LOCATION = "viewLocation";
+	public static final String IDECLARATIVECOMPONENT_TYPE = "type";
+	public static final String IDECLARATIVECOMPONENT_DOCUMENT_URL = "documentURL";
+	public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
 
 	/**
 	 * contains constant values

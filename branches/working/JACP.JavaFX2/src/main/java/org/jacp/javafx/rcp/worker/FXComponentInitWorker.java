@@ -26,24 +26,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnStart;
-import org.jacp.api.component.IComponentView;
-import org.jacp.api.component.IDeclarativComponentView;
-import org.jacp.api.component.UIComponent;
-import org.jacp.javafx.rcp.component.AFXMLComponent;
+import org.jacp.api.util.UIType;
+import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.Checkable;
@@ -54,13 +49,13 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * 
  * @author Andy Moncsek
  */
-public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, EventHandler<Event>, Event, Object>> {
+public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	private final Map<String, Node> targetComponents;
-	private final UIComponent<Node, EventHandler<Event>, Event, Object> component;
+	private final AFXComponent component;
 	private final FXComponentLayout layout;
 	private final IAction<Event, Object> action;
-	private volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(1);
+	
 
 	/**
 	 * The workers constructor.
@@ -73,35 +68,36 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 	 *            ; the init action
 	 */
 	public FXComponentInitWorker(final Map<String, Node> targetComponents,
-			final UIComponent<Node, EventHandler<Event>, Event, Object> component, final IAction<Event, Object> action,
+			final AFXComponent component, final IAction<Event, Object> action,
 			final FXComponentLayout layout) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
 		this.layout = layout;
+		runPreInitMethods();
 	}
 
 	/**
-	 * run all methods that need to be invoked before worker thread start to run
+	 * Run all methods that need to be invoked before worker thread start to run. Programmatic components runs OnStart; declarative components init the FXML and set the value to root node.
 	 */
-	public void runPreInitMethods() {
+	private void runPreInitMethods() {
 		synchronized (this.component) {
-			if (this.component instanceof IDeclarativComponentView) {
-				IDeclarativComponentView <Node, EventHandler<Event>, Event, Object> dcComponent = (IDeclarativComponentView<Node, EventHandler<Event>, Event, Object>) this.component;
+			if (this.component.getType().equals(UIType.DECLARATIVE)) {
 				FXUtil.setPrivateMemberValue(
-						AFXMLComponent.class,
+						AFXComponent.class,
 						component,
-						FXUtil.ADECLARATIVECOMPONENT_ROOT,
-						loadFXMLandSetController(dcComponent));
-				this.runComponentOnStartupSequence((UIComponent<Node, EventHandler<Event>, Event, Object>) component, this.layout,dcComponent.getDocumentURL(),dcComponent.getResourceBundle());
+						FXUtil.AFXCOMPONENT_ROOT,
+						loadFXMLandSetController(this.component));
+				this.runComponentOnStartupSequence(component, this.layout,this.component.getDocumentURL(),this.component.getResourceBundle());
 				return;
+				
 			}
-			this.runComponentOnStartupSequence((UIComponent<Node, EventHandler<Event>, Event, Object>) component, this.layout);
+			this.runComponentOnStartupSequence(component, this.layout);
 		}
 	}
 
 	@Override
-	protected UIComponent<Node, EventHandler<Event>, Event, Object> call() throws Exception {
+	protected AFXComponent call() throws Exception {
 		synchronized (this.component) {
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
 					new AtomicBoolean(true));
@@ -115,14 +111,9 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 			final Node validContainer = this.getValidContainerById(this.targetComponents,
 					this.component.getExecutionTarget());
 			this.log("3.4.4.2.3: subcomponent handle init add component by type: " + this.component.getName());
-			if (this.component instanceof IComponentView) {
-				this.addComonent(validContainer, handleReturnValue,
-						(IComponentView<Node, EventHandler<Event>, Event, Object>) this.component, this.action);
-			} else {
-				this.addComonent(validContainer, handleReturnValue,
-						(IDeclarativComponentView<Node, EventHandler<Event>, Event, Object>) this.component,
-						this.action);
-			}
+			
+			this.addComonent(validContainer, handleReturnValue,
+					this.component, this.action);
 
 			this.waitOnAppThreadLockRelease();
 
@@ -138,12 +129,18 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 	 * 
 	 * @param component
 	 */
-	private void runComponentOnStartupSequence(UIComponent<Node, EventHandler<Event>, Event, Object> component, Object ...param) {
+	private void runComponentOnStartupSequence(AFXComponent component, Object ...param) {
 		FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component, param);
 	}
-
+	
+	/**
+	 * Loads the FXML document provided by viewLocation-
+	 * @param fxmlComponent a FXML aware component
+	 * @param componentName the components name.
+	 * @return The components root Node.
+	 */
 	private Node loadFXMLandSetController(
-			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> fxmlComponent) {
+			final AFXComponent fxmlComponent) {
 		final URL url = getClass().getResource(fxmlComponent.getViewLocation());
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
 		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
@@ -174,7 +171,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 	 * @throws InvocationTargetException
 	 */
 	private void addComonent(final Node validContainer, final Node handleReturnValue,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> myComponent,
+			final AFXComponent myComponent,
 			final IAction<Event, Object> myAction) throws InterruptedException {
 
 		Platform.runLater(new Runnable() {
@@ -189,33 +186,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 
 	}
 
-	/**
-	 * Handles "component add" in EDT must be called outside EDT.
-	 * 
-	 * @param validContainer
-	 *            , a valid target where the component ui node is included
-	 * @param component
-	 *            , the ui component
-	 * @throws InterruptedException
-	 * @throws InvocationTargetException
-	 */
-	private void addComonent(final Node validContainer, final Node handleReturnValue,
-			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> myComponent,
-			final IAction<Event, Object> myAction) throws InterruptedException {
-
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				FXComponentInitWorker.this.executeDeclarativComponentViewPostHandle(handleReturnValue, myComponent,
-						myAction);
-				FXComponentInitWorker.this.addComponentByType(validContainer, myComponent);
-				FXComponentInitWorker.this.appThreadlock.add(true);
-			}
-		});
-
-	}
-
+	
 	@Override
 	public final void done() {
 		synchronized (this.component) {
@@ -231,6 +202,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
+			} catch (final UnsupportedOperationException e) {
+				e.printStackTrace();
 			} catch (final Exception e) {
 				this.log("Exception in Component INIT Worker, Thread Exception: " + e.getMessage());
 				// TODO add to error queue and restart thread if
@@ -243,12 +216,5 @@ public class FXComponentInitWorker extends AFXComponentWorker<UIComponent<Node, 
 		}
 	}
 
-	private void waitOnAppThreadLockRelease() {
-
-		try {
-			this.appThreadlock.take();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+	
 }

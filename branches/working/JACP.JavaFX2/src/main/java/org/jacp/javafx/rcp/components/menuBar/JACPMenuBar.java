@@ -247,6 +247,7 @@ public class JACPMenuBar extends HBox {
 			});
 			close.setId("window-close");
 			close.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
 				public void handle(ActionEvent arg0) {
 					System.exit(0);
 				}

@@ -22,12 +22,18 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponentView;
+import org.jacp.api.component.IDeclarative;
+import org.jacp.api.util.UIType;
 
 /**
  * Represents a basic FX2 component to extend from, uses this abstract class to
@@ -36,9 +42,18 @@ import org.jacp.api.component.IComponentView;
  * @author Andy Moncsek
  */
 public abstract class AFXComponent extends ASubComponent implements
-		IComponentView<Node, EventHandler<Event>, Event, Object> {
+		IComponentView<Node, EventHandler<Event>, Event, Object>, IDeclarative,
+		Initializable  {
 
 	private Node root;
+
+	private String viewLocation;
+
+	private URL documentURL;
+
+	private ResourceBundle resourceBundle;
+	
+	private UIType type = UIType.PROGRAMMATIC;
 
 	/**
 	 * {@inheritDoc}
@@ -82,5 +97,51 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	public abstract Node postHandleAction(final Node node,
 			final IAction<Event, Object> action);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final String getViewLocation() {
+		return viewLocation;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final void setViewLocation(String document){
+		super.checkPolicy(this.viewLocation, "Do Not Set document manually");
+		this.viewLocation = document;
+		this.type = UIType.DECLARATIVE;
+	}
+
+	@Override
+	public final void initialize(URL url, ResourceBundle resourceBundle) {
+		this.documentURL = url;
+		this.resourceBundle = resourceBundle;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final URL getDocumentURL() {
+		return documentURL;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final ResourceBundle getResourceBundle() {
+		return resourceBundle;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final UIType getType() {
+		return type;
+	}
 
 }

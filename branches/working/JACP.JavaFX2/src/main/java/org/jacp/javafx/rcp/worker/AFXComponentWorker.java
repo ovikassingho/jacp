@@ -23,6 +23,7 @@
 package org.jacp.javafx.rcp.worker;
 
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,12 +39,11 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IComponentView;
-import org.jacp.api.component.IDeclarativComponentView;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.UIComponent;
+import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil;
 
@@ -53,6 +53,8 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * @author Andy Moncsek
  */
 public abstract class AFXComponentWorker<T> extends Task<T> {
+	
+	protected volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(1);
 	/**
 	 * find valid target component in perspective
 	 * 
@@ -233,7 +235,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
 			final FXComponentLayout layout) {
-		if (component instanceof AFXComponent || component instanceof AFXMLComponent) {
+		if (component instanceof AFXComponent) {
 			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component,
 					layout);
 		}
@@ -281,31 +283,22 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param action
 	 */
 	protected void executeComponentViewPostHandle(final Node handleReturnValue,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+			final AFXComponent component,
 			final IAction<Event, Object> action) {
-		Node tmp = component.postHandle(handleReturnValue, action);
-		if(tmp==null) {
-			tmp = handleReturnValue;
+		Node potsHandleReturnValue = component.postHandle(handleReturnValue, action);
+		if(potsHandleReturnValue==null) {
+			potsHandleReturnValue = handleReturnValue;
+		} else if(component.getType().equals(UIType.DECLARATIVE)) {
+			throw new UnsupportedOperationException("declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
 		}
-		if (tmp != null) {
-			tmp.setVisible(true);
+		if (potsHandleReturnValue != null && component.getType().equals(UIType.PROGRAMMATIC)) {
+			potsHandleReturnValue.setVisible(true);
 			FXUtil.setPrivateMemberValue(AFXComponent.class, component,
-					FXUtil.AFXCOMPONENT_ROOT, tmp);
+					FXUtil.AFXCOMPONENT_ROOT, potsHandleReturnValue);
 		} 
 	}
 	
-	/**
-	 * Executes post handle method in application main thread. The result value of handle method (from worker thread) is Input for the postHandle Method. The return value or the handleReturnValue are the root node of this component.  
-	 * 
-	 * @param component
-	 * @param action
-	 */
-	protected void executeDeclarativComponentViewPostHandle(final Node handleReturnValue,
-			final IDeclarativComponentView<Node, EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action) {
-		component.postHandle(component.getRoot(),handleReturnValue, action);
-		
-	}
+	
 
 
 	protected void log(final String message) {
@@ -313,6 +306,14 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 				Level.FINE)) {
 			Logger.getLogger(AFXComponentWorker.class.getName()).fine(
 					">> " + message);
+		}
+	}
+	
+	protected void waitOnAppThreadLockRelease() {
+		try {
+			this.appThreadlock.take();
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 

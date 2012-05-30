@@ -43,11 +43,11 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
-import org.jacp.javafx.rcp.component.AFXMLComponent;
+import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.FXUtil;
@@ -72,6 +72,7 @@ public abstract class AFXPerspective extends AComponent implements
 	private URL documentURL;
 	private ResourceBundle resourceBundle;
 	private IPerspectiveLayout<Node, Node> perspectiveLayout;
+	private UIType type = UIType.PROGRAMMATIC;
 
 	@Override
 	public final void init(
@@ -167,8 +168,10 @@ public abstract class AFXPerspective extends AComponent implements
 					declarativeComponent.name());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
 					declarativeComponent.defaultExecutionTarget());
-			FXUtil.setPrivateMemberValue(AFXMLComponent.class, component, FXUtil.ADECLARATIVECOMPONENT_VIEW_LOCATION,
-					declarativeComponent.viewLocation());
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION,
+					declarativeComponent.viewLocation()); 			
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_TYPE,
+					UIType.DECLARATIVE);
 			this.log("register component with annotations : " + declarativeComponent.id());
 			return;
 		}
@@ -283,7 +286,9 @@ public abstract class AFXPerspective extends AComponent implements
 	
 	@Override
 	public void setViewLocation(String documentURL){
+		super.checkPolicy(this.viewLocation, "Do Not Set document manually");
 		this.viewLocation = documentURL;
+		this.type = UIType.DECLARATIVE;
 	}
 	
 	@Override
@@ -300,6 +305,14 @@ public abstract class AFXPerspective extends AComponent implements
 	@Override
 	public ResourceBundle getResourceBundle() {
 		return this.resourceBundle;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final UIType getType() {
+		return type;
 	}
 
 }

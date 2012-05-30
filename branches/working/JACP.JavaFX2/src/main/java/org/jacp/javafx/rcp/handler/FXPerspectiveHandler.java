@@ -40,20 +40,18 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.component.AFXMLComponent;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
 import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
-import org.jacp.javafx.rcp.worker.FXMLComponentReplaceWorker;
 import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
 
 /**
  * Handles initialization an reassignment of components in perspective.
  * 
- * @author Andy moncsek
+ * @author Andy Moncsek
  * 
  */
 public class FXPerspectiveHandler
@@ -141,12 +139,7 @@ public class FXPerspectiveHandler
 			this.log("CREATE NEW THREAD:::" + component.getName());			
 			this.runFXComponent(perspectiveLayout, component, layout);
 			return;
-		} 
-		if (component instanceof AFXMLComponent) {
-			this.log("CREATE NEW THREAD:::" + component.getName());			
-			this.runFXMLComponent(perspectiveLayout, component, layout);
-			return;
-		} 
+		} 		
 		if (component instanceof AStatefulCallbackComponent) {
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.runStateComponent(action,
@@ -173,21 +166,7 @@ public class FXPerspectiveHandler
 		this.scheduler.incomingMessage(action, component);
 	}
 	
-	/**
-	 * Run component in background thread.
-	 * 
-	 * @param layout
-	 * @param component
-	 */
-	private void runFXMLComponent(
-			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
-			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout) {
-		this.executor.execute(new FXMLComponentReplaceWorker(perspectiveLayout
-				.getTargetLayoutComponents(), this.componentDelegateQueue,
-				((AFXMLComponent) component), layout));
-	}
-
+	
 	/**
 	 * Run component in background thread.
 	 * 
@@ -229,16 +208,6 @@ public class FXPerspectiveHandler
 			final FXComponentInitWorker tmp = new FXComponentInitWorker(
 					this.perspectiveLayout.getTargetLayoutComponents(),
 					((AFXComponent) component), action, this.layout);
-			tmp.runPreInitMethods();
-			this.executor.execute(tmp);
-			return;
-		}// if END
-		if (component instanceof AFXMLComponent) {
-			this.log("FXML COMPONENT EXECUTE INIT:::" + component.getName());
-			final FXComponentInitWorker tmp = new FXComponentInitWorker(
-					this.perspectiveLayout.getTargetLayoutComponents(),
-					((AFXMLComponent) component), action, this.layout);
-			tmp.runPreInitMethods();
 			this.executor.execute(tmp);
 			return;
 		}// if END
