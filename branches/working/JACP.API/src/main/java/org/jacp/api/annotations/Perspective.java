@@ -63,4 +63,15 @@ public @interface Perspective {
 	 * @return
 	 */
 	String viewLocation() default "";
+	
+	/**
+	 * Represents the location of your resource bundle file.
+	 * @return
+	 */
+	String resourceBundleLocation() default "";
+	/**
+	 * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
+	 * @return
+	 */
+	String localeID() default "";
 }
