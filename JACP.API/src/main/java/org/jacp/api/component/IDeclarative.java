@@ -66,4 +66,15 @@ public interface IDeclarative {
 	 * @return the type of the component.
 	 */
 	UIType getType();
+	
+	/**
+	 * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
+	 * @return
+	 */
+	String getLocaleID();
+	/**
+	 * Represents the location of your resource bundle file.
+	 * @return
+	 */
+	String getResourceBundleLocation();
 }
