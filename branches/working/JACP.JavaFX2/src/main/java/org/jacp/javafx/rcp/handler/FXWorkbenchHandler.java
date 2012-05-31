@@ -25,7 +25,9 @@ package org.jacp.javafx.rcp.handler;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,6 +50,7 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
+import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -249,7 +252,7 @@ public class FXWorkbenchHandler
 			
 			final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>)perspective);			
 			
-			if(perspectiveView.getViewLocation()!=null && perspectiveView.getViewLocation().length()>1) {
+			if(perspectiveView.getType().equals(UIType.DECLARATIVE)) {
 				// init IPerspectiveLayout for FXML 
 				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective, FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(loadFXMLandSetController(perspectiveView)));
 				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective,layout, perspectiveView.getDocumentURL(),perspectiveView.getResourceBundle());
@@ -283,8 +286,13 @@ public class FXWorkbenchHandler
 	
 	private Node loadFXMLandSetController(
 			final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {
+		final String bundleLocation = perspectiveView.getResourceBundleLocation();
+		final String localeID = perspectiveView.getLocaleID();
 		final URL url = getClass().getResource(perspectiveView.getViewLocation());
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
+		if(bundleLocation!=null && bundleLocation.length()>1) {
+			fxmlLoader.setResources(ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+		}
 		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
 			@Override
 			public Object call(Class<?> paramClass) {
@@ -300,6 +308,20 @@ public class FXWorkbenchHandler
 					"fxml file not found --  place in resource folder and reference like this: uiDescriptionFile = \"/myUIFile.fxml\"",
 					perspectiveView.getViewLocation(), "");
 		}
+	}
+	
+	private Locale getCorrectLocale(final String localeID) {
+		Locale locale = Locale.getDefault();
+		if(localeID!=null && localeID.length()>1){
+			if(localeID.contains("_")) {
+				String[] loc = localeID.split("_");
+				locale = new Locale(loc[0],loc[1]);
+			} else {
+				locale = new Locale(localeID);
+			}
+			
+		}
+		return locale;
 	}
 	/**
 	 * get perspectives ui root container

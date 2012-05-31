@@ -24,8 +24,10 @@ package org.jacp.javafx.rcp.worker;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -141,8 +143,14 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private Node loadFXMLandSetController(
 			final AFXComponent fxmlComponent) {
+		final String bundleLocation = fxmlComponent.getResourceBundleLocation();
+		final String localeID = fxmlComponent.getLocaleID();
 		final URL url = getClass().getResource(fxmlComponent.getViewLocation());
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
+		if(bundleLocation!=null && bundleLocation.length()>1) {
+			fxmlLoader.setResources(ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+		}
+		
 		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
 			@Override
 			public Object call(Class<?> paramClass) {
@@ -158,6 +166,20 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 					"fxml file not found --  place in resource folder and reference like this: uiDescriptionFile = \"/myUIFile.fxml\"",
 					fxmlComponent.getViewLocation(), "");
 		}
+	}
+	
+	private Locale getCorrectLocale(final String localeID) {
+		Locale locale = Locale.getDefault();
+		if(localeID!=null && localeID.length()>1){
+			if(localeID.contains("_")) {
+				String[] loc = localeID.split("_");
+				locale = new Locale(loc[0],loc[1]);
+			} else {
+				locale = new Locale(localeID);
+			}
+			
+		}
+		return locale;
 	}
 
 	/**

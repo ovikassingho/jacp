@@ -59,6 +59,8 @@ public class FXUtil {
 	public static final String IDECLARATIVECOMPONENT_VIEW_LOCATION = "viewLocation";
 	public static final String IDECLARATIVECOMPONENT_TYPE = "type";
 	public static final String IDECLARATIVECOMPONENT_DOCUMENT_URL = "documentURL";
+	public static final String IDECLARATIVECOMPONENT_LOCALE = "localeID";
+	public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
 	public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
 
 	/**

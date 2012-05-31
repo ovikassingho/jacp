@@ -72,7 +72,9 @@ public abstract class AFXPerspective extends AComponent implements
 	private URL documentURL;
 	private ResourceBundle resourceBundle;
 	private IPerspectiveLayout<Node, Node> perspectiveLayout;
-	private UIType type = UIType.PROGRAMMATIC;
+	private UIType type = UIType.PROGRAMMATIC;	
+	private String localeID;	
+	private String resourceBundleLocation;
 
 	@Override
 	public final void init(
@@ -172,6 +174,10 @@ public abstract class AFXPerspective extends AComponent implements
 					declarativeComponent.viewLocation()); 			
 			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_TYPE,
 					UIType.DECLARATIVE);
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
+					declarativeComponent.localeID()); 			
+			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
+					declarativeComponent.resourceBundleLocation()); 			
 			this.log("register component with annotations : " + declarativeComponent.id());
 			return;
 		}
@@ -281,6 +287,7 @@ public abstract class AFXPerspective extends AComponent implements
 	
 	@Override
 	public String getViewLocation(){
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return this.viewLocation;
 	}
 	
@@ -297,22 +304,55 @@ public abstract class AFXPerspective extends AComponent implements
 		this.resourceBundle = resourceBundle;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public URL getDocumentURL() {
-		return this.documentURL;
+	public final URL getDocumentURL() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		return documentURL;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public ResourceBundle getResourceBundle() {
-		return this.resourceBundle;
+	public final ResourceBundle getResourceBundle() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		return resourceBundle;
 	}
-	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public final UIType getType() {
 		return type;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getLocaleID() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		return localeID;
+	}
+
+	public void setLocaleID(String localeID) {
+		super.checkPolicy(this.localeID, "Do Not Set document manually");
+		this.localeID = localeID;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getResourceBundleLocation() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		return resourceBundleLocation;
+	}
+
+	public void setResourceBundleLocation(String resourceBundleLocation) {
+		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
+		this.resourceBundleLocation = resourceBundleLocation;
 	}
 
 }

@@ -273,6 +273,12 @@ public abstract class AFXWorkbench
 					FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION, viewLocation);
 			if(viewLocation.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
 					FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
+			final String localeID = perspectiveAnnotation.localeID();
+			if(localeID.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
+					FXUtil.IDECLARATIVECOMPONENT_LOCALE, localeID);
+			final String resourceBundleLocation = perspectiveAnnotation.resourceBundleLocation();
+			if(resourceBundleLocation.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
+					FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION, resourceBundleLocation);
 		}
 	}
 

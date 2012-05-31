@@ -54,6 +54,10 @@ public abstract class AFXComponent extends ASubComponent implements
 	private ResourceBundle resourceBundle;
 	
 	private UIType type = UIType.PROGRAMMATIC;
+	
+	private String localeID;
+	
+	private String resourceBundleLocation;
 
 	/**
 	 * {@inheritDoc}
@@ -103,6 +107,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final String getViewLocation() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return viewLocation;
 	}
 	/**
@@ -126,6 +131,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final URL getDocumentURL() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return documentURL;
 	}
 
@@ -134,6 +140,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final ResourceBundle getResourceBundle() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return resourceBundle;
 	}
 	/**
@@ -142,6 +149,32 @@ public abstract class AFXComponent extends ASubComponent implements
 	@Override
 	public final UIType getType() {
 		return type;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getLocaleID() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		return localeID;
+	}
+
+	public void setLocaleID(String localeID) {
+		super.checkPolicy(this.localeID, "Do Not Set document manually");
+		this.localeID = localeID;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getResourceBundleLocation() {
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		return resourceBundleLocation;
+	}
+
+	public void setResourceBundleLocation(String resourceBundleLocation) {
+		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
+		this.resourceBundleLocation = resourceBundleLocation;
 	}
 
 }
