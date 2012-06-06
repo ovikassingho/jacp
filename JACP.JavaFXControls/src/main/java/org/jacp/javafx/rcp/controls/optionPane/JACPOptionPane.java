@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.components.optionPane;
+package org.jacp.javafx.rcp.controls.optionPane;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.components.optionPane;
+package org.jacp.javafx.rcp.controls.optionPane;
 
 /**
  * The Enum JACPDialogButton.
