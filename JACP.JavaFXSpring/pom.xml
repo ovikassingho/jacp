@@ -9,10 +9,10 @@
 		<relativePath>../JACP</relativePath>
 	</parent>
 
-	<artifactId>JACP.JavaFX2Spring</artifactId>
+	<artifactId>JACP.JavaFXSpring</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JACP.JavaFX2Spring</name>
+	<name>JACP.JavaFXSpring</name>
 	<url>http://jacp.googlecode.com</url>
 	<developers>
 		<developer>
