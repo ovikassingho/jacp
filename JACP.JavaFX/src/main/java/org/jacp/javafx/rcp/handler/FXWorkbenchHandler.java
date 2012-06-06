@@ -243,10 +243,8 @@ public class FXWorkbenchHandler
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (perspective instanceof IPerspectiveView) {
-			final FXComponentLayout layout = new FXComponentLayout(this
-					.getWorkbenchLayout().getMenu(), this.getWorkbenchLayout()
-					.getRegisteredToolbars(), this.getWorkbenchLayout()
-					.getGlassPane());
+			final FXComponentLayout layout = new FXComponentLayout(
+					this.getWorkbenchLayout());
 			
 
 			
