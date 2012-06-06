@@ -8,10 +8,10 @@
 		<version>1.05</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
-	<artifactId>JACP.JavaFX2Controls</artifactId>
+	<artifactId>JACP.JavaFXControls</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JACP.JavaFX2Controls</name>
+	<name>JACP.JavaFXControls</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
