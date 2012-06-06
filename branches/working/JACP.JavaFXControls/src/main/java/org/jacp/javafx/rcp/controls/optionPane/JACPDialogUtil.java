@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IModalMessageNode.java]
+ * [JACPDialogUtil.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -20,18 +20,28 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.components.api;
+package org.jacp.javafx.rcp.controls.optionPane;
 
 /**
- * The Interface IModalMessageNode.
+ * The Class JACPDialogUtil.
  * 
  * @author Patrick Symmangk
+ * 
  */
-public interface IModalMessageNode {
+public class JACPDialogUtil {
 
 	/**
-	 * Hide modal message.
+	 * Creates the option pane.
+	 * 
+	 * @param title
+	 *            the title
+	 * @param message
+	 *            the message
+	 * @return the jACP option pane
 	 */
-	public void hideModalMessage();
+	public static JACPOptionPane createOptionPane(final String title,
+			final String message) {
+		return new JACPOptionPane(title, message);
+	}
 
 }

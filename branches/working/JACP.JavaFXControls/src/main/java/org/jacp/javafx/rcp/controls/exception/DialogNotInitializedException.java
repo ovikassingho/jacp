@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.components.exception;
+package org.jacp.javafx.rcp.controls.exception;
 
 /**
  * The Class DialogNotInitializedException.

@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.components.optionPane;
+package org.jacp.javafx.rcp.controls.optionPane;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
