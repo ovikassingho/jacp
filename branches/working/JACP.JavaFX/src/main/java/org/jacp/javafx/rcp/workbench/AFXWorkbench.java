@@ -64,8 +64,8 @@ import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
-import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.controls.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
 import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
@@ -123,9 +123,11 @@ public abstract class AFXWorkbench
 		this.handleInitialLayout(new FXAction("TODO", "init"),
 				this.getWorkbenchLayout());
 		this.setBasicLayout(stage);
+
 		this.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
 				.getMenu(), this.getWorkbenchLayout().getRegisteredToolbars(),
 				this.glassPane));
+
 		this.log("3: handle initialisation sequence");
 		this.componentHandler = new FXWorkbenchHandler(this.launcher,
 				this.workbenchLayout, this.root, this.perspectives);
@@ -353,6 +355,7 @@ public abstract class AFXWorkbench
 		this.dimmer = JACPModalDialog.getInstance();
 		this.dimmer.setVisible(false);
 
+		// Pane for custom elements added to the glasspane
 		this.glassPane = this.getWorkbenchLayout().getGlassPane();
 		this.glassPane.autosize();
 		this.glassPane.setVisible(false);

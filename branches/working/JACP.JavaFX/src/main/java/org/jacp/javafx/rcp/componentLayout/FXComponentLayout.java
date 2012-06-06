@@ -51,6 +51,12 @@ public class FXComponentLayout implements IBaseLayout<Node> {
 		this.menu = menu;
 		this.registeredToolBars = registeredToolBars;
 		this.glassPane = glassPane;
+
+	}
+
+	public FXComponentLayout(final FXWorkbenchLayout layout) {
+		this(layout.getMenu(), layout.getRegisteredToolbars(), layout
+				.getGlassPane());
 	}
 
 	@Override

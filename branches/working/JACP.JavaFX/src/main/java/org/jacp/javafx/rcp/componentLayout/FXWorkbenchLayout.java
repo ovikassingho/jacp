@@ -48,6 +48,7 @@ public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 	private final Map<ToolbarPosition, JACPToolBar> registeredToolbars = new TreeMap<ToolbarPosition, JACPToolBar>();
 	private JACPMenuBar menu;
 	private Pane glassPane;
+	private Pane hoverMenuPane;
 	private StageStyle style = StageStyle.DECORATED;
 
 	@Override
