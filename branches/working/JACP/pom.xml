@@ -21,8 +21,8 @@
 			<modules>
 				<module>../JACP.API</module>
 				<module>../JACP.JavaFX2</module>
-				<module>../JACP.JavaFX2Spring</module>
-				<module>../JACP.JavaFX2CustomUI</module>
+				<module>../JACP.JavaFXSpring</module>
+				<module>../JACP.JavaFXControls</module>
 			</modules>
 		</profile>
 		<profile>
@@ -30,8 +30,8 @@
 			<modules>
 				<module>../JACP.API</module>
 				<module>../JACP.JavaFX2</module>
-				<module>../JACP.JavaFX2Spring</module>
-				<module>../JACP.JavaFX2CustomUI</module>
+				<module>../JACP.JavaFXSpring</module>
+				<module>../JACP.JavaFXControls</module>
 			</modules>
 		</profile>
 		<profile>
