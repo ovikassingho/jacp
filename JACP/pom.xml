@@ -20,7 +20,7 @@
 			<id>all</id>
 			<modules>
 				<module>../JACP.API</module>
-				<module>../JACP.JavaFX2</module>
+				<module>../JACP.JavaFX</module>
 				<module>../JACP.JavaFXSpring</module>
 				<module>../JACP.JavaFXControls</module>
 			</modules>
@@ -29,7 +29,7 @@
 			<id>javafx2</id>
 			<modules>
 				<module>../JACP.API</module>
-				<module>../JACP.JavaFX2</module>
+				<module>../JACP.JavaFX</module>
 				<module>../JACP.JavaFXSpring</module>
 				<module>../JACP.JavaFXControls</module>
 			</modules>
