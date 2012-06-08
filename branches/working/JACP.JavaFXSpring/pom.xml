@@ -55,7 +55,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
-			<artifactId>JACP.JavaFX2</artifactId>
+			<artifactId>JACP.JavaFX</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
