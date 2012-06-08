@@ -37,8 +37,8 @@
 				<Label text="Additional Info: " wrapText="true" textAlignment="right" GridPane.rowIndex="5" GridPane.valignment="baseline"/>
 				<TextArea prefRowCount="8" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.vgrow="always"/>
 				
-				<Button text="Switch" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="left" onAction="#change"/>
-				<Button text="Turn Off" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="right" onAction="#handleSubmit"/>
+				<Button text="%switch" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="left" onAction="#change"/>
+				<Button text="%turnoff" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="right" onAction="#handleSubmit"/>
 
 			</children>
 		</GridPane>

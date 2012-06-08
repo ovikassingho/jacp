@@ -17,19 +17,13 @@
  */
 package org.jacp.demo.perspectives;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -52,7 +46,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "contactPerspective" ,viewLocation="/perspective2.fxml" )
+@Perspective(id = "id01", name = "contactPerspective" ,viewLocation="/perspective2.fxml" , resourceBundleLocation="bundles.languageBundle")//, localeID="en_US")
 public class ContactPerspective extends AFXPerspective {
 
 	private String topId = "PmainContentTop";

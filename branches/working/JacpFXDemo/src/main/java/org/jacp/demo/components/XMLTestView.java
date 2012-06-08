@@ -1,6 +1,7 @@
 package org.jacp.demo.components;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -18,7 +19,7 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
-@DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, viewLocation = "/AdoptionForm.fxml")
+@DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, viewLocation = "/AdoptionForm.fxml", resourceBundleLocation="bundles.languageBundle")//, localeID="en_US")
 public class XMLTestView extends AFXComponent {
 	@FXML
 	private GridPane grid;
@@ -40,7 +41,8 @@ public class XMLTestView extends AFXComponent {
 	
 	@FXML
 	private void change(ActionEvent event) {
-
+		System.out.println("default locale: "+Locale.getDefault());
+		
 		System.out.println("action : " + grid);
 		grid.setGridLinesVisible(!grid.isGridLinesVisible());
 		this.getActionListener("change").performAction(null);
@@ -73,7 +75,7 @@ public class XMLTestView extends AFXComponent {
 
 	@OnStart
 	public void start(FXComponentLayout layout, URL url, ResourceBundle resourceBundle) {
-		System.out.println("STRAT" + grid + "  " + layout + " url: " + url.getPath());
+		System.out.println("STRAT" + grid + "  " + layout + " url: " + url.getPath()+" resourceBundle"+resourceBundle);
 	}
 	@OnTearDown
 	public void stop(FXComponentLayout layout) {
