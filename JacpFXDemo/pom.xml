@@ -134,13 +134,19 @@
 		</dependency>
  		<dependency>
 			<groupId>org.jacp.project</groupId>
-			<artifactId>JACP.JavaFX2</artifactId>
+			<artifactId>JACP.JavaFX</artifactId>
 			<version>1.05</version>
 			<scope>compile</scope>
 		</dependency> 
 		<dependency>
 			<groupId>org.jacp.project</groupId>
-			<artifactId>JACP.JavaFX2Spring</artifactId>
+			<artifactId>JACP.JavaFXSpring</artifactId>
+			<version>1.05</version>
+			<scope>compile</scope>
+		</dependency> 
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFXControls</artifactId>
 			<version>1.05</version>
 			<scope>compile</scope>
 		</dependency> 
