@@ -37,7 +37,7 @@ import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IActionListener;
 import org.jacp.demo.entity.Contact;
-import org.jacp.javafx.rcp.components.optionPane.JACPModalDialog;
+import org.jacp.javafx.rcp.controls.optionPane.JACPModalDialog;
 import org.springframework.util.StringUtils;
 /**
  * Creates the "add new contact" dialog
