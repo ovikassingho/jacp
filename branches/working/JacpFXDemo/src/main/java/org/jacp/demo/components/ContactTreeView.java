@@ -116,16 +116,18 @@ public class ContactTreeView extends ScrollPane {
 											// send contact to TableView
 											// component to show containing
 											// contacts
+											// send event to Table View
 											final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeView.this.parent
 													.getActionListener(
-															"id01.id006",
+															"id01.id002",
 															contact);
 											listener.performAction(event);
-//											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent
-//													.getActionListener(
-//															"id01.id003",
-//															BarChartAction.RESET);
-//											resetListener.performAction(event);
+											// Send Event to BarChart
+											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent
+													.getActionListener(
+															"id01.id003",
+															BarChartAction.RESET);
+											resetListener.performAction(event);
 										}
 									});
 								}

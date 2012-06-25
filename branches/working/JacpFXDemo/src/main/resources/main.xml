@@ -16,9 +16,10 @@
 		<property name="subcomponents">
 			<list>
 				<ref bean="contactTreeView" />
-				<ref bean="XMLTestView" />
-				<!-- <ref bean="contactTableView" /> 
-				<ref bean="contactChartView" />-->
+				<!-- <ref bean="XMLTestView" /> -->
+				<ref bean="XMLDetailView" />
+				<ref bean="contactTableView" />
+				<ref bean="contactChartView" />
 				<ref bean="coordinatorCallback" />
 				<ref bean="creatorCallback" />
 				<ref bean="analyticsCallback" />
@@ -27,6 +28,7 @@
 	</bean>
 
 	<bean id="XMLTestView" class="org.jacp.demo.components.XMLTestView" />
+	<bean id="XMLDetailView" class="org.jacp.demo.components.XMLDetailView" />
 	<bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent" />
 	<bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent" />
 	<bean id="contactChartView" class="org.jacp.demo.components.ContactChartViewComponent" />

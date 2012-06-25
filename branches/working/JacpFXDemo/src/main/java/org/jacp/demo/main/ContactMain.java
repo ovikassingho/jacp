@@ -53,6 +53,8 @@ public class ContactMain extends AFXSpringLauncher {
 		// add style sheet
 		this.scene.getStylesheets().addAll(
 				ContactMain.class.getResource("/styles/main.css")
+						.toExternalForm(),
+				ContactMain.class.getResource("/styles/windowbuttons.css")
 						.toExternalForm());
 
 	}

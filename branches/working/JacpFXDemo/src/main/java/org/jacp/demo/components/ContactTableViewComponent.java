@@ -41,7 +41,6 @@ import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.controls.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
-
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
@@ -71,7 +70,6 @@ public class ContactTableViewComponent extends AFXComponent {
 	 */
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
-
 		if (action.getLastMessage() instanceof Contact) {
 			// contact selected
 			final Contact contact = (Contact) action.getLastMessage();
@@ -79,7 +77,6 @@ public class ContactTableViewComponent extends AFXComponent {
 				this.showDialogIfEmpty(contact);
 			}
 			this.current = this.getView(contact);
-			
 
 		} else if (action.getLastMessage() instanceof ContactDTO) {
 			// contact data received
@@ -122,6 +119,12 @@ public class ContactTableViewComponent extends AFXComponent {
 											.getActionListener("id01.id006",
 													contact);
 									listener.performAction(arg0);
+									final IActionListener<EventHandler<Event>, Event, Object> detailListener = ContactTableViewComponent.this
+											.getActionListener("id01.id007",
+													contact);
+									detailListener.performAction(arg0);
+									
+									
 								}
 							});
 						}

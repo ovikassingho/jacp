@@ -10,7 +10,7 @@
 #root {
     -fx-background-color: #333333;
     -fx-padding: 1px;
-     -light-black: rgb(74, 75, 78);
+    -light-black: rgb(74, 75, 78);
     -dark-highlight: rgb(87, 89, 92);
     -dark-black: rgb(39, 40, 40);
     -darkest-black: rgb(5, 5, 5);
@@ -23,7 +23,7 @@
 	-fx-focus-color:rgba(200,200,200,0.7);
 	/* every text is white by default */
 	-fx-text-base-color: white;
-	 -fx-box-border: -jacp-dark-color;
+	-fx-box-border: -jacp-dark-color;
 }
 
 
@@ -31,6 +31,9 @@
 	-fx-padding: 10 5 0 5;
 }
 
+.dark-background{
+	-fx-background-color: #373837;
+}
 
 
 /**********************************************
@@ -442,6 +445,26 @@
 }
 #jacp-option-pane-close:armed {
     -fx-background-image: url("images/op-close-armed.png");
+}
+
+/*********************
+ * 
+ * Profile
+ * 
+ *********************/
+
+.female {
+    -fx-background-image: url("../images/female.png");
+   -fx-background-repeat: no-repeat;   
+    -fx-background-size: 120 120;
+    -fx-background-position: center center;
+}
+
+.male {
+	-fx-background-image: url('../images/male.png');
+	-fx-background-repeat: no-repeat;   
+    -fx-background-size: 120 120;
+    -fx-background-position: center center;
 }
 
 

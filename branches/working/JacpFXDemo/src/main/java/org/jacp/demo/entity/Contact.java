@@ -23,6 +23,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ProgressIndicator;
 
+import org.jacp.demo.common.GenderType;
+
 /**
  * Simple contact entity
  * 
@@ -36,6 +38,7 @@ public class Contact {
 	private final StringProperty address = new SimpleStringProperty();
 	private final StringProperty country = new SimpleStringProperty();
 	private final StringProperty phoneNumber = new SimpleStringProperty();
+	private final StringProperty gender = new SimpleStringProperty();
 	private int amount = 0;
 	private ContactDTO dto;
 	private boolean empty = true;
@@ -48,13 +51,14 @@ public class Contact {
 
 	public Contact(final String firstName, final String lastName,
 			final String zip, final String address, final String country,
-			final String phoneNumber) {
+			final String phoneNumber, final GenderType gender) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setZip(zip);
 		this.setAddress(address);
 		this.setCountry(country);
 		this.setPhoneNumber(phoneNumber);
+		this.setGender(gender.getLabel());
 	}
 
 	public ObservableList<Contact> getContacts() {
@@ -83,6 +87,14 @@ public class Contact {
 
 	public void setZip(final String zip) {
 		this.zip.set(zip);
+	}
+
+	public String getGender() {
+		return gender.get();
+	}
+
+	public void setGender(String gender) {
+		this.gender.set(gender);
 	}
 
 	public String getAddress() {
@@ -138,7 +150,8 @@ public class Contact {
 		return "Contact [firstName=" + this.getFirstName() + ", lastName="
 				+ this.getLastName() + ", zip=" + this.getZip() + ", address="
 				+ this.getAddress() + ", country=" + this.getCountry()
-				+ ", phoneNumber=" + this.getPhoneNumber() + "]";
+				+ ", phoneNumber=" + this.getPhoneNumber() + "" + ", gender ="
+				+ this.getGender() + "]";
 	}
 
 	public ProgressIndicator getProgress() {
