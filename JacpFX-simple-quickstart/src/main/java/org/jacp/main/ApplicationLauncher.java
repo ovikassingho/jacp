@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IModalMessageNode.java]
+ * [ApplicationLauncher.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -27,7 +27,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import org.jacp.project.launcher.AFXSpringLauncher;
-
+/**
+ * The application launcher containing the main method
+ * @author Andy Moncsek
+ *
+ */
 public class ApplicationLauncher extends AFXSpringLauncher {
 
 
