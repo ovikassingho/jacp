@@ -13,9 +13,6 @@
 	</bean>
 
 	<bean id="perspectiveOne" class="org.jacp.perspectives.PerspectiveOne">
-		<property name="name" value="perspectiveOne" />
-		<property name="id" value="id01" />
-		<property name="active" value="true" />
 		<property name="subcomponents">
 			<list>
 				<ref bean="componentLeft" />

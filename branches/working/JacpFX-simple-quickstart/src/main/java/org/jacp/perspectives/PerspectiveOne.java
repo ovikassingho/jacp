@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IModalMessageNode.java]
+ * [PerspectiveOne.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -35,6 +35,7 @@ import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
@@ -52,6 +53,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
+@Perspective(id = "id01", name = "perspectiveOne")
 public class PerspectiveOne extends AFXPerspective {
 
 	@Override

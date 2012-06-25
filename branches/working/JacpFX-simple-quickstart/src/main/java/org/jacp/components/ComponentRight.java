@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IModalMessageNode.java]
+ * [ComponentRight.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
