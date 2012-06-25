@@ -275,7 +275,8 @@ public class ContactTableView extends GridPane {
 		this.end.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(final Event arg0) {
-				ContactTableView.this.currentPos = ContactTableView.this.getMaxPos();
+				ContactTableView.this.currentPos = ContactTableView.this
+						.getMaxPos();
 				ContactTableView.this.setLastSubList(ContactTableView.this
 						.getNextSublist());
 				ContactTableView.this.updateTableContent(ContactTableView.this
@@ -378,6 +379,20 @@ public class ContactTableView extends GridPane {
 
 		this.contactTableView.setCache(false);
 
+		final TableColumn<Contact, String> genderColumn = this.createColumn(
+				"Gender", "gender");
+		this.setColumnConstraints(genderColumn,
+				TableColumn.SortType.DESCENDING, 30);
+		genderColumn
+				.setOnEditCommit(new EventHandler<CellEditEvent<Contact, String>>() {
+					@Override
+					public void handle(final CellEditEvent<Contact, String> t) {
+						t.getTableView().getItems()
+								.get(t.getTablePosition().getRow())
+								.setGender(t.getNewValue());
+					}
+				});
+
 		final TableColumn<Contact, String> firstNameColumn = this.createColumn(
 				"First name", "firstName");
 		this.setColumnConstraints(firstNameColumn,
@@ -465,8 +480,8 @@ public class ContactTableView extends GridPane {
 		this.setColumnConstraints(phoneNumberColumn,
 				TableColumn.SortType.DESCENDING, 150);
 
-		this.contactTableView.getColumns().addAll(nameCol, zipColumn,
-				addressColumn, countryColumn, phoneNumberColumn);
+		this.contactTableView.getColumns().addAll(genderColumn, nameCol,
+				zipColumn, addressColumn, countryColumn, phoneNumberColumn);
 
 	}
 
@@ -475,7 +490,7 @@ public class ContactTableView extends GridPane {
 			final TableColumn.SortType sortType, final double width) {
 		column.setSortType(sortType);
 		column.prefWidthProperty().bind(
-				this.contactTableView.widthProperty().divide(6).subtract(1));
+				this.contactTableView.widthProperty().divide(7).subtract(1));
 	}
 
 	/**

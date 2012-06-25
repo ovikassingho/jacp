@@ -66,7 +66,7 @@ public class ContactWorkbench extends AFXWorkbench {
 			final IWorkbenchLayout<Node> layout, final Stage stage) {
 		layout.setWorkbenchXYSize(1024, 768);
 		layout.registerToolBar(ToolbarPosition.NORTH);
-		layout.setStyle(StageStyle.DECORATED);
+		layout.setStyle(StageStyle.UNDECORATED);
 		layout.setMenuEnabled(true);
 	}
 
@@ -77,6 +77,8 @@ public class ContactWorkbench extends AFXWorkbench {
 		menuFile.getItems().addAll(this.createExitEntry(),
 				this.createInfoEntry());
 		menu.getMenus().addAll(menuFile);
+		
+		menu.registerWindowButtons();
 
 	}
 

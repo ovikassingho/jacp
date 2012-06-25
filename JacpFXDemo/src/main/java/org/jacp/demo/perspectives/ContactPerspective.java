@@ -17,13 +17,13 @@
  */
 package org.jacp.demo.perspectives;
 
-
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -46,18 +46,28 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "contactPerspective" ,viewLocation="/perspective2.fxml" , resourceBundleLocation="bundles.languageBundle")//, localeID="en_US")
+@Perspective(id = "id01", name = "contactPerspective", viewLocation = "/perspective2.fxml", resourceBundleLocation = "bundles.languageBundle")
+// , localeID="en_US")
 public class ContactPerspective extends AFXPerspective {
 
 	private String topId = "PmainContentTop";
+	
 	private String bottomId = "PmainContentBottom";
 	
+	private String detailId = "PdetailComponent";
+
 	@FXML
 	private GridPane gridPane1;
 	@FXML
 	private GridPane gridPane2;
 	@FXML
-	private GridPane gridPane3;
+	private GridPane chartView;
+	@FXML
+	private GridPane detailView;
+	@FXML
+	private AnchorPane chartAnchor;
+	@FXML
+	private AnchorPane detailAnchor;
 
 	@OnStart
 	/**
@@ -105,17 +115,25 @@ public class ContactPerspective extends AFXPerspective {
 	private void createPerspectiveLayout(
 			final PerspectiveLayout perspectiveLayout) {
 
+		// bind width and height to ensure that the gridpane is always on
+		// fullspan!
+		chartView.minWidthProperty().bind(chartAnchor.widthProperty());
+		chartView.minHeightProperty().bind(chartAnchor.heightProperty());
+
+		detailView.minWidthProperty().bind(detailAnchor.widthProperty());
+		detailView.minHeightProperty().bind(detailAnchor.heightProperty());
+
 
 		GridPane.setVgrow(perspectiveLayout.getRootComponent(), Priority.ALWAYS);
 		GridPane.setHgrow(perspectiveLayout.getRootComponent(), Priority.ALWAYS);
 		perspectiveLayout.registerTargetLayoutComponent("PleftMenu", gridPane1);
 		// register main content Top
-		perspectiveLayout.registerTargetLayoutComponent(this.topId,
-				gridPane2);
+		perspectiveLayout.registerTargetLayoutComponent(this.topId, gridPane2);
 		// register main content Bottom
 		perspectiveLayout.registerTargetLayoutComponent(this.bottomId,
-				gridPane3);
+				chartView);
+		perspectiveLayout.registerTargetLayoutComponent(this.detailId,
+				detailView);
 	}
 
-	
 }
