@@ -1,3 +1,4 @@
+26. Jun. 2012 - amo -  updated refresh behavior when switching between components
 31. Mai. 2012 - amo -  added resourceBundle and locale handling to declarative components
 30. Mai. 2012 - amo -  removed AFXMLComponent and add behavior to AFXComponent 
 29. Mai. 2012 - amo -  add checkable class that can be implemented by components where the state should not be changed after initilaisation; implemented FXML perspective handling. Add PerspectiveLayout abstract class to handle FXPerspectiveLayout and FXMLPerspectiveLayout.
