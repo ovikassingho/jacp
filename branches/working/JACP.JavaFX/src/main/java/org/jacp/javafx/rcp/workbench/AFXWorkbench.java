@@ -329,8 +329,8 @@ public abstract class AFXWorkbench
 	}
 
 	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener() {
-		return new FXActionListener(new FXAction("workbench"),
+	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(final String targetId, final Object message) {
+		return new FXActionListener(new FXAction("workbench",targetId, message),
 				this.perspectiveCoordinator.getMessageQueue());
 	}
 
@@ -340,6 +340,7 @@ public abstract class AFXWorkbench
 	 * @param stage
 	 *            javafx.stage.Stage
 	 */
+	// TODO aufräumen!!!!
 	private void setBasicLayout(final Stage stage) {
 		final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
 		final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
@@ -350,6 +351,7 @@ public abstract class AFXWorkbench
 		final BorderPane baseLayoutPane = new BorderPane();
 		// top most pane
 		this.root = new GridPane();
+		this.root.setCache(true);
 		this.root.setId("root-pane");
 		JACPModalDialog.initDialog(baseLayoutPane);
 		this.dimmer = JACPModalDialog.getInstance();

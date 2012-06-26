@@ -106,7 +106,7 @@ public abstract class AFXPerspective extends AComponent implements
 		this.componentCoordinator
 				.setMessageDelegateQueue(this.messageDelegateQueue);
 		this.componentCoordinator.setParentId(this.getId());
-		this.registerSubcomponents(this.subcomponents);
+		if(this.subcomponents!=null)this.registerSubcomponents(this.subcomponents);
 	}
 
 	/**
@@ -210,6 +210,7 @@ public abstract class AFXPerspective extends AComponent implements
 		this.log("3.4.4.1: subcomponent targetId: " + targetId);
 		final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this
 				.getSubcomponents();
+		if(components==null)return;
 		for (int i = 0; i < components.size(); i++) {
 			final ISubComponent<EventHandler<Event>, Event, Object> component = components
 					.get(i);
