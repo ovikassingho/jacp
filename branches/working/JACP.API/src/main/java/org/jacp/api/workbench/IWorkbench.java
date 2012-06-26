@@ -62,12 +62,12 @@ public interface IWorkbench<C, L, A, M> extends IBase<L, A, M> {
 	 *         workbench
 	 */
 	IWorkbenchLayout<C> getWorkbenchLayout();
-
+	
 	/**
 	 * Returns an action listener (for local, target and global use).
 	 * 
 	 * @return the action listener instance
 	 */
-	IActionListener<L, A, M> getActionListener();
+	IActionListener<L, A, M> getActionListener(final String targetId, final Object message);
 
 }

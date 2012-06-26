@@ -1,3 +1,4 @@
+26. Jun. 2012 - amo - update getActionListener to support target id and message
 30. Mai. 2012 - amo - added resourceBundle and locale interfaces to declarative components
 30. Mai. 2012 - amo - remove IDeclarative view, add UIType enum
 29. Mai. 2012 - amo - add viewLocation to perspective annotation, add IDeclarative interface to mark components that can be implemented
