@@ -16,7 +16,6 @@
 		<property name="subcomponents">
 			<list>
 				<ref bean="contactTreeView" />
-				<!-- <ref bean="XMLTestView" /> -->
 				<ref bean="XMLDetailView" />
 				<ref bean="contactTableView" />
 				<ref bean="contactChartView" />

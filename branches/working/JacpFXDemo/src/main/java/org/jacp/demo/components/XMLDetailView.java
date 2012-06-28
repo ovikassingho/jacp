@@ -21,7 +21,7 @@ import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
-@DeclarativeComponent(defaultExecutionTarget = "PdetailComponent", id = "id007", name = "XMlDetailView", active = true, viewLocation = "/UserDetail.fxml", resourceBundleLocation = "bundles.languageBundle")
+@DeclarativeComponent(defaultExecutionTarget = "PdetailComponent", id = "id007", name = "XMlDetailView", active = true, viewLocation = "/fxml/UserDetail.fxml", resourceBundleLocation = "bundles.languageBundle")
 // , localeID="en_US")
 public class XMLDetailView extends AFXComponent {
 

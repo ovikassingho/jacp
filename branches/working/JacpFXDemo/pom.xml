@@ -19,23 +19,22 @@
 			<email>pete.ahcp@gmail.com</email>
 		</developer>
 	</developers>
-<!-- 	<repositories>
-		<repository>
-			<id>jacp</id>
-			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
-		</repository>
-	</repositories> -->
+	<properties>
+		<javafx.version>2.2</javafx.version>
+	</properties>
+	<!-- <repositories> <repository> <id>jacp</id> <url>http://developer.ahcp.de/nexus/content/repositories/jacp</url> 
+		</repository> </repositories> -->
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.3</version>
@@ -53,7 +52,28 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<JavaFX-Version>${javafx.version}+</JavaFX-Version>
+							<Main-Class>org.jacp.demo.main.ContactMain</Main-Class>
+							<implementation-version>1.0</implementation-version>
+							<JavaFX-Application-Class>org.jacp.demo.main.ContactMain</JavaFX-Application-Class>
+							<JavaFX-Class-Path>
+								aopalliance-1.0.jar commons-logging-1.1.1.jar JACP.API-1.05.jar JACP.JavaFX-1.05.jar JACP.JavaFXControls-1.05.jar JACP.JavaFXSpring-1.05.jar spring-aop-3.0.6.RELEASE.jar spring-asm-3.0.6.RELEASE.jar spring-beans-3.0.6.RELEASE.jar spring-context-3.0.6.RELEASE.jar spring-core-3.0.6.RELEASE.jar spring-expression-3.0.6.RELEASE.jar  
+							</JavaFX-Class-Path>
+						    <Class-Path>javafx-${javafx.version}.jar</Class-Path>
+						</manifestEntries>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -69,31 +89,41 @@
 
 								<taskdef name="jfxsignjar" classname="com.sun.javafx.tools.ant.FXSignJarTask"
 									classpathref="maven.plugin.classpath" />
+									
+									
+<!-- 								<taskdef name="csstobin" classname="com.sun.javafx.tools.ant.CSSToBinTask"
+									classpathref="maven.plugin.classpath" />
 
-								<!-- <taskdef name="jfxpatform" classname="com.sun.javafx.tools.ant.Platform" 
-									classpathref="maven.plugin.classpath" />http://docs.oracle.com/javafx/2.0/deployment/javafx_ant_task_reference002.htm#CIAHJIJG -->
-
+							
+								<csstobin outdir="tmpCSS">
+									<fileset dir="target/classes" includes="**/*.css"/>
+								</csstobin> -->
+								
 								<jfxdeploy width="1024" height="768"
-									outdir="${project.build.directory}/deploy" outfile="${build.finalName}">
+									outdir="${project.build.directory}/deploy" outfile="${build.finalName}" nativeBundles="all">
 									<info title="${project.name}" />
-									<application name="${project.name}" mainClass="org.jacp.demo.main.ContactMain" />
+									<application name="${project.name}" mainClass="com.javafx.main.Main" />
 									<resources>
 										<fileset dir="${project.build.directory}" includes="*.jar" />
 										<fileset dir="${project.build.directory}/dependency"
 											includes="*.jar" />
 									</resources>
-									<platform javafx="2.0">
+									<platform javafx="${javafx.version}+">
 										<jvmarg value="-Xms512m" />
 										<jvmarg value="-Xmx1024m" />
 									</platform>
+
 								</jfxdeploy>
 
 
 
-								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html 
-									<jfxsignjar destdir="${project.build.directory}/deploy" keyStore="C:\Users\ady\fxstore" 
-									storePass="jacp11" alias="jacpSign" keyPass="jacp11"> <fileset dir="${project.build.directory}/deploy" 
-									includes="*.jar" /> </jfxsignjar> -->
+								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html -->
+								 <jfxsignjar destdir="${project.build.directory}/deploy"
+									keyStore="C:\Users\ady\fxstore" storePass="jacp11" alias="jacpSign"
+									keyPass="jacp11">
+									<fileset dir="${project.build.directory}/deploy"
+										includes="*.jar" />
+								</jfxsignjar>
 
 								<!-- add to create jnlp: <security> <all-permissions/> </security> -->
 
@@ -111,7 +141,7 @@
 					<dependency>
 						<groupId>com.oracle</groupId>
 						<artifactId>ant-javafx</artifactId>
-						<version>2.2</version>
+						<version>${javafx.version}</version>
 						<scope>compile</scope>
 					</dependency>
 				</dependencies>
@@ -121,35 +151,36 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>javafx-runtime</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
-		</dependency>
-		 <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx</artifactId>
+            <version>${javafx.version}</version>
+            <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+            <scope>system</scope>
+        </dependency>		
+		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
 			<version>1.05</version>
 			<scope>compile</scope>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX</artifactId>
 			<version>1.05</version>
 			<scope>compile</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFXSpring</artifactId>
 			<version>1.05</version>
 			<scope>compile</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFXControls</artifactId>
 			<version>1.05</version>
 			<scope>compile</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
