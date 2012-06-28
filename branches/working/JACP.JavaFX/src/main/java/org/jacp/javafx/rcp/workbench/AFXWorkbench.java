@@ -414,10 +414,7 @@ public abstract class AFXWorkbench
 	private void initCSS(final Scene scene) {
 		scene.getStylesheets().addAll(
 				AFXWorkbench.class.getResource("/styles/jacp-styles.css")
-						.toExternalForm(),
-				// Workaround for CSS issue with HTML Editor
-				com.sun.javafx.scene.web.skin.HTMLEditorSkin.class.getResource(
-						"html-editor.css").toExternalForm());
+						.toExternalForm());
 
 	}
 
