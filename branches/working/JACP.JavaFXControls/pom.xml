@@ -14,6 +14,7 @@
 	<name>JACP.JavaFXControls</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javafx.version>2.2</javafx.version>
 	</properties>
 
 	<url>http://jacp.googlecode.com</url>
@@ -58,9 +59,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>javafx-runtime</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
+			<artifactId>javafx</artifactId>
+			<version>${javafx.version}</version>
+			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+			<scope>system</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
