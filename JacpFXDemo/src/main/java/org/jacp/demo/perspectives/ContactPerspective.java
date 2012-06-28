@@ -46,7 +46,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "contactPerspective", viewLocation = "/perspective2.fxml", resourceBundleLocation = "bundles.languageBundle")
+@Perspective(id = "id01", name = "contactPerspective", viewLocation = "/fxml/perspective2.fxml", resourceBundleLocation = "bundles.languageBundle")
 // , localeID="en_US")
 public class ContactPerspective extends AFXPerspective {
 

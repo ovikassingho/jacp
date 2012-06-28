@@ -20,7 +20,7 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
-@DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, viewLocation = "/AdoptionForm.fxml", resourceBundleLocation = "bundles.languageBundle")
+@DeclarativeComponent(defaultExecutionTarget = "PmainContentTop", id = "id006", name = "XMLTestView", active = false, viewLocation = "/fxml/AdoptionForm.fxml", resourceBundleLocation = "bundles.languageBundle")
 // , localeID="en_US")
 public class XMLTestView extends AFXComponent {
 	@FXML
