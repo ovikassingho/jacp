@@ -164,7 +164,8 @@
 						<groupId>com.oracle</groupId>
 						<artifactId>ant-javafx</artifactId>
 						<version>${javafx.version}</version>
-						<scope>compile</scope>
+						<systemPath>${java.home}/../lib/ant-javafx.jar</systemPath>
+						<scope>system</scope>
 					</dependency>
 					<dependency>
 						<groupId>com.oracle</groupId>
@@ -190,7 +191,8 @@
 			<groupId>com.oracle</groupId>
 			<artifactId>ant-javafx</artifactId>
 			<version>${javafx.version}</version>
-			<scope>compile</scope>
+			<systemPath>${java.home}/../lib/ant-javafx.jar</systemPath>
+			<scope>system</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
