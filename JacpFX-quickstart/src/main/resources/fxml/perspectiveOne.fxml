@@ -8,7 +8,7 @@
 
 <BorderPane id="BorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.perspective.AFXPerspective">
   <center>
-    <SplitPane id="splitPaneHorizontal1" cache="true" cacheHint="SPEED" dividerPositions="0.20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0">
+    <SplitPane id="splitPaneHorizontal1" styleClass="hsplitpane" cache="true" cacheHint="SPEED" dividerPositions="0.20" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0">
       <items>
         <GridPane fx:id="gridPaneLeft" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
           <columnConstraints>

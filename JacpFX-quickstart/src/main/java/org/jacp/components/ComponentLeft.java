@@ -27,10 +27,12 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -51,7 +53,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  */
 @Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentLeft", active = true)
 public class ComponentLeft extends AFXComponent {
-	private ScrollPane pane;
+	private AnchorPane pane;
 	private Label leftLabel;
 	private Logger log = Logger.getLogger(ComponentLeft.class.getName());
 
@@ -74,7 +76,7 @@ public class ComponentLeft extends AFXComponent {
 	public Node postHandleAction(Node arg0, IAction<Event, Object> action) {
 		// runs in FX application thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			this.pane = (ScrollPane) arg0;
+			this.pane = (AnchorPane) arg0;
 		} else {
 			leftLabel.setText(action.getLastMessage().toString());
 		}
@@ -107,19 +109,35 @@ public class ComponentLeft extends AFXComponent {
 	 * @return
 	 */
 	private Node createUI() {
-		final ScrollPane pane = new ScrollPane();
-		pane.setFitToHeight(true);
-		pane.setFitToWidth(true);
-		GridPane.setHgrow(pane, Priority.ALWAYS);
-		GridPane.setVgrow(pane, Priority.ALWAYS);
-		final VBox box = new VBox();
+
+
+		AnchorPane anchor = new AnchorPane();
+		anchor.getStyleClass().add("roundedAnchorPaneFX");
+		final Label heading = new Label("JavaFX component");
+		heading.setAlignment(Pos.CENTER);
+		heading.getStyleClass().add("propLabel");
+		anchor.getChildren().add(heading);
+		
+		
+		AnchorPane.setTopAnchor(heading, 10.0);	
+
 		final Button left = new Button("Left");
-		leftLabel = new Label("");
+		left.setLayoutY(120);
 		left.setOnMouseClicked(getMessage());
-		VBox.setMargin(left, new Insets(4, 2, 4, 5));
-		box.getChildren().addAll(left, leftLabel);
-		pane.setContent(box);
-		return pane;
+		left.setAlignment(Pos.CENTER);
+		anchor.getChildren().add(left);
+		AnchorPane.setTopAnchor(left, 80.0);	
+		
+		leftLabel = new Label("");			
+		leftLabel.setAlignment(Pos.CENTER);
+		anchor.getChildren().add(leftLabel);
+		AnchorPane.setTopAnchor(leftLabel, 50.0);	
+		
+		GridPane.setMargin(anchor, new Insets(5, 2, 4, 5));
+		GridPane.setHgrow(anchor, Priority.ALWAYS);
+		GridPane.setVgrow(anchor, Priority.ALWAYS);
+
+		return anchor;
 	}
 
 	private EventHandler<Event> getMessage() {
