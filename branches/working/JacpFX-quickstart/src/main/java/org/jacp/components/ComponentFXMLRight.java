@@ -36,7 +36,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -47,9 +47,9 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  *
  */
-@Component(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true)
+@DeclarativeComponent(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true, viewLocation = "/fxml/ComponentRightFXML.fxml", resourceBundleLocation = "bundles.languageBundle")
 public class ComponentFXMLRight extends AFXComponent {
-	private ScrollPane pane;
+
 	private Label rightLabel;
 	private Logger log = Logger.getLogger(ComponentFXMLRight.class.getName());
 
@@ -72,11 +72,11 @@ public class ComponentFXMLRight extends AFXComponent {
 	public Node postHandleAction(Node arg0, IAction<Event, Object> action) {
 		// runs in FX application thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			this.pane = (ScrollPane) arg0;
+			
 		}else {
 			rightLabel.setText(action.getLastMessage().toString());
 		}
-		return this.pane;
+		return null;
 	}
 
 

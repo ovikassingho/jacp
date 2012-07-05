@@ -52,7 +52,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "perspectiveOne" ,viewLocation="/perspectiveOne.fxml" , resourceBundleLocation="bundles.languageBundle")
+@Perspective(id = "id01", name = "perspectiveOne" ,viewLocation="/fxml/perspectiveOne.fxml" , resourceBundleLocation="bundles.languageBundle")
 public class PerspectiveOne extends AFXPerspective {
 	@FXML
 	private GridPane gridPaneLeft;
