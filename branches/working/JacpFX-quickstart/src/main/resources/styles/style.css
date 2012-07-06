@@ -151,6 +151,7 @@
 }
 
 .roundedAnchorPaneFX {
+    -fx-border-insets: 10 10 10 10;
     -fx-border-radius:10 10 10 10;
     -fx-border-color: #d6d6d6;
     -fx-border-width: 0.083333em;

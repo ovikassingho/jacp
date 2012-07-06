@@ -26,16 +26,14 @@ import java.util.logging.Logger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
@@ -54,7 +52,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 @Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentLeft", active = true)
 public class ComponentLeft extends AFXComponent {
 	private AnchorPane pane;
-	private Label leftLabel;
+	private TextField textField;
 	private Logger log = Logger.getLogger(ComponentLeft.class.getName());
 
 	@Override
@@ -78,7 +76,7 @@ public class ComponentLeft extends AFXComponent {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			this.pane = (AnchorPane) arg0;
 		} else {
-			leftLabel.setText(action.getLastMessage().toString());
+			textField.setText(action.getLastMessage().toString());
 		}
 		return this.pane;
 	}
@@ -109,37 +107,41 @@ public class ComponentLeft extends AFXComponent {
 	 * @return
 	 */
 	private Node createUI() {
-
-
-		AnchorPane anchor = new AnchorPane();
+		final AnchorPane anchor = new AnchorPane();
 		anchor.getStyleClass().add("roundedAnchorPaneFX");
 		final Label heading = new Label("JavaFX component");
 		heading.setAlignment(Pos.CENTER);
 		heading.getStyleClass().add("propLabel");
 		anchor.getChildren().add(heading);
 		
-		
+		AnchorPane.setRightAnchor(heading, 50.0);
 		AnchorPane.setTopAnchor(heading, 10.0);	
 
-		final Button left = new Button("Left");
+		final Button left = new Button("Send");
 		left.setLayoutY(120);
 		left.setOnMouseClicked(getMessage());
 		left.setAlignment(Pos.CENTER);
 		anchor.getChildren().add(left);
 		AnchorPane.setTopAnchor(left, 80.0);	
+		AnchorPane.setRightAnchor(left, 25.0);
 		
-		leftLabel = new Label("");			
-		leftLabel.setAlignment(Pos.CENTER);
-		anchor.getChildren().add(leftLabel);
-		AnchorPane.setTopAnchor(leftLabel, 50.0);	
+		textField = new TextField("");	
+		textField.getStyleClass().add("propTextField");
+		textField.setAlignment(Pos.CENTER);
+		anchor.getChildren().add(textField);
+		AnchorPane.setTopAnchor(textField, 50.0);	
+		AnchorPane.setRightAnchor(textField, 25.0);
 		
-		GridPane.setMargin(anchor, new Insets(5, 2, 4, 5));
+
 		GridPane.setHgrow(anchor, Priority.ALWAYS);
 		GridPane.setVgrow(anchor, Priority.ALWAYS);
 
 		return anchor;
 	}
-
+	/**
+	 * create a message when event is fired
+	 * @return
+	 */
 	private EventHandler<Event> getMessage() {
 		return new EventHandler<Event>() {
 			@Override

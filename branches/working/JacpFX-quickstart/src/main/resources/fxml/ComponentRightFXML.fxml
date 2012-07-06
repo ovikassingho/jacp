@@ -12,15 +12,15 @@
 
 <BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent">
   <center>
-    <AnchorPane fx:id="details">
+    <AnchorPane fx:id="details" styleClass="roundedAnchorPaneFX">
       <children>
-        <AnchorPane fx:id="descriptionArea"  minWidth="385.0" prefHeight="223.5" prefWidth="392.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="344.5" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="121.0">
+        <AnchorPane fx:id="descriptionArea"  minWidth="385.0" prefHeight="223.5" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="344.5" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="121.0">
           <children>
             <Label id="descriptionLabel" layoutX="10.0" layoutY="8.0" styleClass="propLabel" text="DESCRIPTION" />
             <TextArea fx:id="descriptionValue" minHeight="118.0" minWidth="374.19" prefHeight="127.0" prefWidth="374.19" styleClass="descriptionValue" text="TextArea" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="12.81" AnchorPane.topAnchor="20.0" />
           </children>
         </AnchorPane>
-        <AnchorPane id="propertyArea" minHeight="158.0" minWidth="156.0" prefHeight="223.5" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="121.0">
+        <AnchorPane id="propertyArea" minHeight="158.0" minWidth="156.0" prefHeight="228" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="121.0">
           <children>
             <TextField id="creationTimeValue" fx:id="countryTextField" layoutX="13.0" layoutY="169.0" minWidth="-Infinity" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" />
             <Label id="creationTimeLabel" contentDisplay="TOP" layoutY="146.0" styleClass="propLabel" text="Country" AnchorPane.leftAnchor="12.0" />
@@ -39,12 +39,12 @@
         <TextField id="synopsis" fx:id="message" minWidth="573.0" prefHeight="38.0" prefWidth="573.0" styleClass="synopsisField" text="messages" AnchorPane.leftAnchor="19.5" AnchorPane.rightAnchor="20.5" AnchorPane.topAnchor="77.0" />
         <AnchorPane fx:id="titleLine" layoutY="32.0" minHeight="38.0" minWidth="310.0" prefHeight="38.0" prefWidth="310.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
           <children>
-            <Label id="Label" layoutX="11.0" layoutY="9.0" styleClass="propLabel" text="FXML example form" />
+            <Label id="Label" layoutX="11.0" layoutY="9.0" styleClass="propLabel" text="FXML component" />
           </children>
         </AnchorPane>
-        <AnchorPane id="buttonAnchorPane" fx:id="buttonAnchor" layoutX="20.0" layoutY="394.0" minHeight="-Infinity" minWidth="310.0" prefWidth="-Infinity">
+        <AnchorPane id="buttonAnchorPane" fx:id="buttonAnchor" layoutX="20.0" layoutY="394.0" minHeight="-Infinity" minWidth="310.0" prefWidth="-Infinity"  AnchorPane.rightAnchor="20">
           <children>
-            <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" text="Send" />
+            <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" text="Send" AnchorPane.rightAnchor="1"/>
           </children>
         </AnchorPane>
       </children>
