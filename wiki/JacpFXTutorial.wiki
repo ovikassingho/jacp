@@ -1,0 +1,7 @@
+#install and usage tutorial for JacpFX.
+
+= Prerequirements =
+
+= Create a project from archetype =
+
+= JacpFX development=
