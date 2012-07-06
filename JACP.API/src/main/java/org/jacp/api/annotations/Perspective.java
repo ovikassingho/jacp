@@ -70,7 +70,7 @@ public @interface Perspective {
 	 */
 	String resourceBundleLocation() default "";
 	/**
-	 * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
+	 * Represents the Locale ID. see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
 	 * @return
 	 */
 	String localeID() default "";
