@@ -233,7 +233,7 @@ public class FXWorkbenchHandler implements
 				// init IPerspectiveLayout for FXML
 				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
 						FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(
-								loadFXMLandSetController(perspectiveView)));
+				loadFXMLandSetController(perspectiveView)));
 				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective, layout,
 						perspectiveView.getDocumentURL(), perspectiveView.getResourceBundle());
 			} else {

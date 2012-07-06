@@ -154,8 +154,7 @@ public class FXUtil {
 					if(types.length==value.length){
 						m.invoke(component, value);
 						return;
-					}
-					
+					}					
 					if(types.length>0){
 						m.invoke(component, getValidParameterList(types, value));
 						return;
@@ -196,7 +195,7 @@ public class FXUtil {
 	
 	private static Object findByClass(Class<?> key, Object[] values) {
 		for(Object val:values) {
-			if(val!=null && val.getClass().equals(key)) return val;
+			if(val!=null && val.getClass().getGenericSuperclass().equals(key) || val.getClass().equals(key)) return val;
 		}
 		return null;
 	}

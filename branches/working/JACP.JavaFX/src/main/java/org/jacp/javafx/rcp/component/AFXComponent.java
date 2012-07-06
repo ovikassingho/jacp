@@ -45,7 +45,7 @@ public abstract class AFXComponent extends ASubComponent implements
 		IComponentView<Node, EventHandler<Event>, Event, Object>, IDeclarative,
 		Initializable  {
 
-	private Node root;
+	private volatile Node root;
 
 	private String viewLocation;
 
@@ -140,7 +140,6 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final ResourceBundle getResourceBundle() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return resourceBundle;
 	}
 	/**
@@ -155,7 +154,6 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public String getLocaleID() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return localeID;
 	}
 
@@ -168,7 +166,6 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public String getResourceBundleLocation() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return resourceBundleLocation;
 	}
 
