@@ -36,32 +36,47 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Component {
-	/**
-	 * The components name.
-	 * 
-	 * @return
-	 */
-	String name();
+    /**
+     * The components name.
+     * 
+     * @return
+     */
+    String name();
 
-	/**
-	 * The component id.
-	 * 
-	 * @return
-	 */
-	String id();
+    /**
+     * The component id.
+     * 
+     * @return
+     */
+    String id();
 
-	/**
-	 * The active state at start time.
-	 * 
-	 * @return
-	 */
-	boolean active() default true;
+    /**
+     * The active state at start time.
+     * 
+     * @return
+     */
+    boolean active() default true;
 
-	/**
-	 * The execution target at start time.
-	 * 
-	 * @return
-	 */
-	String defaultExecutionTarget();
+    /**
+     * The execution target at start time.
+     * 
+     * @return
+     */
+    String defaultExecutionTarget();
+
+    /**
+     * Represents the location of your resource bundle file.
+     * 
+     * @return
+     */
+    String resourceBundleLocation() default "";
+
+    /**
+     * Represents the Locale ID. see:
+     * http://www.oracle.com/technetwork/java/javase/locales-137662.html
+     * 
+     * @return
+     */
+    String localeID() default "";
 
 }
