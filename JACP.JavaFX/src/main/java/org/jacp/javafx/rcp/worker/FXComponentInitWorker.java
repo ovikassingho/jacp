@@ -83,18 +83,21 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * Run all methods that need to be invoked before worker thread start to run. Programmatic components runs OnStart; declarative components init the FXML and set the value to root node.
 	 */
 	private void runPreInitMethods() {
-		synchronized (this.component) {
+		synchronized (this.component) {			
 			if (this.component.getType().equals(UIType.DECLARATIVE)) {
+				final URL url = getClass().getResource(this.component.getViewLocation());
+				initLocalization(url, this.component);
 				FXUtil.setPrivateMemberValue(
 						AFXComponent.class,
-						component,
+						this.component,
 						FXUtil.AFXCOMPONENT_ROOT,
-						loadFXMLandSetController(this.component));
-				this.runComponentOnStartupSequence(component, this.layout,this.component.getDocumentURL(),this.component.getResourceBundle());
+						loadFXMLandSetController(this.component,url));
+				this.runComponentOnStartupSequence(this.component, this.layout,this.component.getDocumentURL(),this.component.getResourceBundle());
 				return;
 				
 			}
-			this.runComponentOnStartupSequence(component, this.layout);
+			initLocalization(null, this.component);
+			this.runComponentOnStartupSequence(this.component, this.layout,this.component.getResourceBundle());
 		}
 	}
 
@@ -125,6 +128,15 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			return this.component;
 		}
 	}
+	
+	private void initLocalization(final URL url, final AFXComponent component) {
+		final String bundleLocation = component.getResourceBundleLocation();
+		if(bundleLocation.equals(""))return;
+		final String localeID = component.getLocaleID();
+		component.initialize(url, ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+		
+	}
+	
 
 	/**
 	 * Run at startup method in perspective.
@@ -142,13 +154,10 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @return The components root Node.
 	 */
 	private Node loadFXMLandSetController(
-			final AFXComponent fxmlComponent) {
-		final String bundleLocation = fxmlComponent.getResourceBundleLocation();
-		final String localeID = fxmlComponent.getLocaleID();
-		final URL url = getClass().getResource(fxmlComponent.getViewLocation());
+			final AFXComponent fxmlComponent,final URL url) {		
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
-		if(bundleLocation!=null && bundleLocation.length()>1) {
-			fxmlLoader.setResources(ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+		if(fxmlComponent.getResourceBundle()!=null) {
+			fxmlLoader.setResources(fxmlComponent.getResourceBundle());
 		}
 		
 		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
@@ -163,7 +172,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			return (Node) fxmlLoader.load();
 		} catch (IOException e) {
 			throw new MissingResourceException(
-					"fxml file not found --  place in resource folder and reference like this: uiDescriptionFile = \"/myUIFile.fxml\"",
+					"fxml file not found --  place in resource folder and reference like this: viewLocation = \"/myUIFile.fxml\"",
 					fxmlComponent.getViewLocation(), "");
 		}
 	}

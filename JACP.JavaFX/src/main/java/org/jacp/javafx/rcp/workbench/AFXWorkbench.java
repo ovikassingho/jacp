@@ -196,9 +196,6 @@ public abstract class AFXWorkbench
 						.start();
 				((FXMessageDelegator) AFXWorkbench.this.messageDelegator)
 						.start();
-				// init toolbar instance
-				AFXWorkbench.this.log("3.2: workbench tool bars");
-				// initToolBars();
 				// handle perspectives
 				AFXWorkbench.this.log("3.3: workbench init perspectives");
 				AFXWorkbench.this.initComponents(null);
@@ -262,17 +259,19 @@ public abstract class AFXWorkbench
 		final Perspective perspectiveAnnotation = perspective.getClass()
 				.getAnnotation(Perspective.class);
 		if (perspectiveAnnotation != null) {
-			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
-					FXUtil.ACOMPONENT_ID, perspectiveAnnotation.id());
+			final String id=perspectiveAnnotation.id();
+			if(id!=null)FXUtil.setPrivateMemberValue(AComponent.class, perspective,
+					FXUtil.ACOMPONENT_ID, id);
 			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
 					FXUtil.ACOMPONENT_ACTIVE, perspectiveAnnotation.active());
-			FXUtil.setPrivateMemberValue(AComponent.class, perspective,
-					FXUtil.ACOMPONENT_NAME, perspectiveAnnotation.name());
+			final String name = perspectiveAnnotation.name();
+			if(name!=null)FXUtil.setPrivateMemberValue(AComponent.class, perspective,
+					FXUtil.ACOMPONENT_NAME, name);
 			this.log("register perspective with annotations : "
 					+ perspectiveAnnotation.id());
 			final String viewLocation = perspectiveAnnotation.viewLocation();
-			FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-					FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION, viewLocation);
+			if(viewLocation.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
+					FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION, perspectiveAnnotation.viewLocation());
 			if(viewLocation.length()>1)FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
 					FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
 			final String localeID = perspectiveAnnotation.localeID();

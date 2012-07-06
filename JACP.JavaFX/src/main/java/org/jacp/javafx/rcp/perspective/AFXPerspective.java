@@ -149,10 +149,7 @@ public abstract class AFXPerspective extends AComponent implements
 	private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final Component componentAnnotation = component.getClass().getAnnotation(Component.class);
 		if (componentAnnotation != null) {
-			handleBaseAttributes(AComponent.class, component, componentAnnotation.id(), componentAnnotation.active(),
-					componentAnnotation.name());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
-					componentAnnotation.defaultExecutionTarget());
+			handleComponentAnnotation(componentAnnotation, component);
 			this.log("register component with annotations : " + componentAnnotation.id());
 			return;
 		}
@@ -166,22 +163,38 @@ public abstract class AFXPerspective extends AComponent implements
 		final DeclarativeComponent declarativeComponent = component.getClass()
 				.getAnnotation(DeclarativeComponent.class);
 		if (declarativeComponent != null) {
-			handleBaseAttributes(AComponent.class, component, declarativeComponent.id(), declarativeComponent.active(),
-					declarativeComponent.name());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
-					declarativeComponent.defaultExecutionTarget());
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION,
-					declarativeComponent.viewLocation()); 			
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_TYPE,
-					UIType.DECLARATIVE);
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
-					declarativeComponent.localeID()); 			
-			FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
-					declarativeComponent.resourceBundleLocation()); 			
+			handleDeclarativeComponentAnnotations(declarativeComponent, component);
 			this.log("register component with annotations : " + declarativeComponent.id());
 			return;
 		}
 
+	}
+	
+	private void handleComponentAnnotation(final Component componentAnnotation,final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		handleBaseAttributes(AComponent.class, component, componentAnnotation.id(), componentAnnotation.active(),
+				componentAnnotation.name());
+		FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
+				componentAnnotation.defaultExecutionTarget());
+		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
+				componentAnnotation.localeID());
+		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
+				componentAnnotation.resourceBundleLocation()); 		
+		this.log("register component with annotations : " + componentAnnotation.id());
+	}
+	
+	private void handleDeclarativeComponentAnnotations(final DeclarativeComponent declarativeComponent,final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		handleBaseAttributes(AComponent.class, component, declarativeComponent.id(), declarativeComponent.active(),
+				declarativeComponent.name());
+		FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
+				declarativeComponent.defaultExecutionTarget());
+		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION,
+				declarativeComponent.viewLocation()); 			
+		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_TYPE,
+				UIType.DECLARATIVE);
+		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
+				declarativeComponent.localeID()); 			
+		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
+				declarativeComponent.resourceBundleLocation()); 			
 	}
 
 	private void handleBaseAttributes(Class<?> clazz,
