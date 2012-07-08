@@ -55,9 +55,9 @@ public abstract class AFXComponent extends ASubComponent implements
 	
 	private UIType type = UIType.PROGRAMMATIC;
 	
-	private String localeID;
+	private String localeID="";
 	
-	private String resourceBundleLocation;
+	private String resourceBundleLocation="";
 
 	/**
 	 * {@inheritDoc}

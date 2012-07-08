@@ -231,16 +231,19 @@ public class FXWorkbenchHandler implements
 
 			if (perspectiveView.getType().equals(UIType.DECLARATIVE)) {
 				// init IPerspectiveLayout for FXML
+				final URL url = getClass().getResource(perspectiveView.getViewLocation());
+				initLocalization(url, (AFXPerspective) perspective);
 				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
 						FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(
-				loadFXMLandSetController(perspectiveView)));
+				loadFXMLandSetController(url, (AFXPerspective) perspectiveView)));
 				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective, layout,
 						perspectiveView.getDocumentURL(), perspectiveView.getResourceBundle());
 			} else {
 				// init default IPerspectiveLayout
+				initLocalization(null, (AFXPerspective) perspective);
 				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
 						FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXPerspectiveLayout());
-				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective, layout);
+				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective, layout, perspectiveView.getResourceBundle());
 			}
 
 			final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) perspectiveView
@@ -260,15 +263,20 @@ public class FXWorkbenchHandler implements
 			perspective.handlePerspective(new FXAction(perspective.getId(), perspective.getId(), "init"));
 		} // End else
 	}
+	
+	private void initLocalization(final URL url, final AFXPerspective perspective) {
+		final String bundleLocation = perspective.getResourceBundleLocation();
+		if(bundleLocation.equals(""))return;
+		final String localeID = perspective.getLocaleID();
+		perspective.initialize(url, ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+		
+	}
 
-	private Node loadFXMLandSetController(
-			final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {
-		final String bundleLocation = perspectiveView.getResourceBundleLocation();
-		final String localeID = perspectiveView.getLocaleID();
-		final URL url = getClass().getResource(perspectiveView.getViewLocation());
+	private Node loadFXMLandSetController(final URL url,
+			final AFXPerspective perspectiveView) {
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
-		if (bundleLocation != null && bundleLocation.length() > 1) {
-			fxmlLoader.setResources(ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+		if (perspectiveView.getResourceBundle() != null) {
+			fxmlLoader.setResources(perspectiveView.getResourceBundle());
 		}
 		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
 			@Override

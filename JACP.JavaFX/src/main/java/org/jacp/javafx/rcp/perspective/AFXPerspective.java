@@ -73,8 +73,9 @@ public abstract class AFXPerspective extends AComponent implements
 	private ResourceBundle resourceBundle;
 	private IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private UIType type = UIType.PROGRAMMATIC;	
-	private String localeID;	
-	private String resourceBundleLocation;
+	private String localeID="";	
+	private String resourceBundleLocation="";
+	private Object lock= new Object();
 
 	@Override
 	public final void init(
@@ -128,15 +129,15 @@ public abstract class AFXPerspective extends AComponent implements
 	@Override
 	public final void registerComponent(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-
-		this.handleMetaAnnotation(component);
-		this.log("register component: " + component.getId());
-
-		component.initEnv(this.getId(),
-				this.componentCoordinator.getMessageQueue());
-		this.componentCoordinator.addComponent(component);
-		if (!this.subcomponents.contains(component)) {
-			this.subcomponents.add(component);
+		synchronized (lock) {
+			this.handleMetaAnnotation(component);
+			this.log("register component: " + component.getId());
+			component.initEnv(this.getId(),
+					this.componentCoordinator.getMessageQueue());
+			this.componentCoordinator.addComponent(component);
+			if (!this.subcomponents.contains(component)) {
+				this.subcomponents.add(component);
+			}
 		}
 
 	}
@@ -148,8 +149,10 @@ public abstract class AFXPerspective extends AComponent implements
 	 */
 	private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final Component componentAnnotation = component.getClass().getAnnotation(Component.class);
-		if (componentAnnotation != null) {
-			handleComponentAnnotation(componentAnnotation, component);
+		if (componentAnnotation != null && component instanceof AFXComponent) {
+			handleBaseAttributes(AComponent.class, component, componentAnnotation.id(), componentAnnotation.active(),
+					componentAnnotation.name());
+			handleComponentAnnotation(componentAnnotation, (AFXComponent) component);
 			this.log("register component with annotations : " + componentAnnotation.id());
 			return;
 		}
@@ -162,57 +165,84 @@ public abstract class AFXPerspective extends AComponent implements
 		}
 		final DeclarativeComponent declarativeComponent = component.getClass()
 				.getAnnotation(DeclarativeComponent.class);
-		if (declarativeComponent != null) {
-			handleDeclarativeComponentAnnotations(declarativeComponent, component);
+		if (declarativeComponent != null&& component instanceof AFXComponent) {
+			handleBaseAttributes(AComponent.class, component, declarativeComponent.id(), declarativeComponent.active(),
+					declarativeComponent.name());
+			handleDeclarativeComponentAnnotations(declarativeComponent, (AFXComponent) component);
 			this.log("register component with annotations : " + declarativeComponent.id());
 			return;
 		}
 
 	}
 	
-	private void handleComponentAnnotation(final Component componentAnnotation,final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		handleBaseAttributes(AComponent.class, component, componentAnnotation.id(), componentAnnotation.active(),
-				componentAnnotation.name());
-		FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
-				componentAnnotation.defaultExecutionTarget());
-		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
-				componentAnnotation.localeID());
-		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
-				componentAnnotation.resourceBundleLocation()); 		
+	/**
+	 * set component members
+	 * @param componentAnnotation
+	 * @param component
+	 */
+	private void handleComponentAnnotation(final Component componentAnnotation,final AFXComponent component) {		
+		setExecutionTarget(component, componentAnnotation.defaultExecutionTarget());
+		setLocale(component, componentAnnotation.localeID());
+		setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
 		this.log("register component with annotations : " + componentAnnotation.id());
 	}
 	
-	private void handleDeclarativeComponentAnnotations(final DeclarativeComponent declarativeComponent,final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		handleBaseAttributes(AComponent.class, component, declarativeComponent.id(), declarativeComponent.active(),
-				declarativeComponent.name());
-		FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
-				declarativeComponent.defaultExecutionTarget());
+	/**
+	 * set declarative component members
+	 * @param declarativeComponent
+	 * @param component
+	 */
+	private void handleDeclarativeComponentAnnotations(final DeclarativeComponent declarativeComponent,final AFXComponent component) {
+		setExecutionTarget(component, declarativeComponent.defaultExecutionTarget());
 		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION,
 				declarativeComponent.viewLocation()); 			
 		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_TYPE,
 				UIType.DECLARATIVE);
-		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
-				declarativeComponent.localeID()); 			
-		FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
-				declarativeComponent.resourceBundleLocation()); 			
+		setLocale(component, declarativeComponent.localeID());	
+		setRessourceBundleLocation(component, declarativeComponent.resourceBundleLocation());			
 	}
-
+	
+	private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation){
+		if(component.getResourceBundleLocation()!=null)FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
+				bundleLocation); 	
+	}
+	
+	private void setLocale(final AFXComponent component, String locale){
+		if(component.getLocaleID()!=null)FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
+				locale);
+	}
+	
+	private void setExecutionTarget(final AFXComponent component, String value){
+		if(component.getExecutionTarget().length()<=1)FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
+				value);
+	}
+	
+	/**
+	 * set base component members
+	 * @param clazz
+	 * @param component
+	 * @param id
+	 * @param active
+	 * @param name
+	 */
 	private void handleBaseAttributes(Class<?> clazz,
 			final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
 			final String name) {
-		FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ID, id);
+		if(id!=null)FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ID, id);
 		FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ACTIVE, active);
-		FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_NAME, name);
+		if(name!=null)FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_NAME, name);
 	}
 
 	@Override
 	public final void unregisterComponent(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.log("unregister component: " + component.getId());
-		component.initEnv(null, null);
-		this.componentCoordinator.removeComponent(component);
-		if (this.subcomponents.contains(component)) {
-			this.subcomponents.remove(component);
+		synchronized (lock) {
+			this.log("unregister component: " + component.getId());
+			component.initEnv(null, null);
+			this.componentCoordinator.removeComponent(component);
+			if (this.subcomponents.contains(component)) {
+				this.subcomponents.remove(component);
+			}
 		}
 	}
 
@@ -295,18 +325,18 @@ public abstract class AFXPerspective extends AComponent implements
 	}
 
 	@Override
-	public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+	public final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
 		return this.componentHandler;
 	}
 	
 	@Override
-	public String getViewLocation(){
+	public final String getViewLocation(){
 		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return this.viewLocation;
 	}
 	
 	@Override
-	public void setViewLocation(String documentURL){
+	public final void setViewLocation(String documentURL){
 		super.checkPolicy(this.viewLocation, "Do Not Set document manually");
 		this.viewLocation = documentURL;
 		this.type = UIType.DECLARATIVE;
@@ -332,7 +362,6 @@ public abstract class AFXPerspective extends AComponent implements
 	 */
 	@Override
 	public final ResourceBundle getResourceBundle() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
 		return resourceBundle;
 	}
 	/**
@@ -346,12 +375,11 @@ public abstract class AFXPerspective extends AComponent implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getLocaleID() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+	public final String getLocaleID() {
 		return localeID;
 	}
 
-	public void setLocaleID(String localeID) {
+	public final void setLocaleID(String localeID) {
 		super.checkPolicy(this.localeID, "Do Not Set document manually");
 		this.localeID = localeID;
 	}
@@ -359,12 +387,11 @@ public abstract class AFXPerspective extends AComponent implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getResourceBundleLocation() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+	public final String getResourceBundleLocation() {
 		return resourceBundleLocation;
 	}
 
-	public void setResourceBundleLocation(String resourceBundleLocation) {
+	public final void setResourceBundleLocation(String resourceBundleLocation) {
 		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
 		this.resourceBundleLocation = resourceBundleLocation;
 	}
