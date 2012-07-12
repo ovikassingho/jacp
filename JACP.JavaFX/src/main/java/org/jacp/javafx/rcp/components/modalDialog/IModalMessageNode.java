@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.controls.api;
+package org.jacp.javafx.rcp.components.modalDialog;
 
 /**
  * The Interface IModalMessageNode.

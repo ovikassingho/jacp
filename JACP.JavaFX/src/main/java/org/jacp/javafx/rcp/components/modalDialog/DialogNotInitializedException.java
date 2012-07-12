@@ -2,8 +2,8 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [ComponentIds.java]
- * AHCP Project http://jacp.googlecode.com
+ * [DialogNotInitializedException.java]
+ * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,22 +20,26 @@
  *
  *
  ************************************************************************/
-package org.jacp.demo.constants;
+package org.jacp.javafx.rcp.components.modalDialog;
 
-public class GlobalConstants {
+/**
+ * The Class DialogNotInitializedException.
+ * 
+ * @author Patrick Symmangk
+ */
+public class DialogNotInitializedException extends RuntimeException {
 
-	class perspectiveConstants {
-		public static final String DEMO_PERSPECTIVE = "id01";
-	}
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -343178301862250777L;
 
-	class ComponentConstants {
-		public static final String COMPONENT_TABLE_VIEW = "id002";
-	}
-
-	class CSSConstants {
-
-		public static final String CLASS_DARK_BORDER = "dark-border";
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Throwable#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		return "Initialize JACPDialog before using it -> Call initJACPDialog()";
 	}
 
 }

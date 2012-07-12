@@ -20,10 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.controls.optionPane;
-
-import org.jacp.javafx.rcp.controls.api.IModalMessageNode;
-import org.jacp.javafx.rcp.controls.exception.DialogNotInitializedException;
+package org.jacp.javafx.rcp.components.modalDialog;
 
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;

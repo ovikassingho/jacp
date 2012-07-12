@@ -46,7 +46,7 @@ import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
-import org.jacp.javafx.rcp.controls.optionPane.JACPModalDialog;
+import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 
 /**

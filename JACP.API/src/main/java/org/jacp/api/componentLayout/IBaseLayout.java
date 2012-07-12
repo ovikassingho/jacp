@@ -55,4 +55,5 @@ public interface IBaseLayout<C> {
 	 * @return the glass pane
 	 */
 	C getGlassPane();
+
 }
