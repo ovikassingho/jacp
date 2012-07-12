@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacp.components;
 
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javafx.event.Event;
@@ -49,7 +50,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentLeft", active = true)
+@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentLeft", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class ComponentLeft extends AFXComponent {
 	private AnchorPane pane;
 	private TextField textField;
@@ -86,9 +87,8 @@ public class ComponentLeft extends AFXComponent {
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
 	 */
-	public void onStartComponent(FXComponentLayout arg0) {
+	public void onStartComponent(FXComponentLayout arg0,ResourceBundle resourceBundle) {
 		log.info("run on start of ComponentLeft ");
-
 	}
 
 	@OnTearDown
@@ -109,44 +109,46 @@ public class ComponentLeft extends AFXComponent {
 	private Node createUI() {
 		final AnchorPane anchor = new AnchorPane();
 		anchor.getStyleClass().add("roundedAnchorPaneFX");
-		final Label heading = new Label("JavaFX component");
+		final Label heading = new Label(getResourceBundle().getString("javafxComp"));
 		heading.setAlignment(Pos.CENTER);
 		heading.getStyleClass().add("propLabel");
 		anchor.getChildren().add(heading);
-		
-		AnchorPane.setRightAnchor(heading, 50.0);
-		AnchorPane.setTopAnchor(heading, 10.0);	
 
-		final Button left = new Button("Send");
+		AnchorPane.setRightAnchor(heading, 50.0);
+		AnchorPane.setTopAnchor(heading, 10.0);
+
+		final Button left = new Button(getResourceBundle().getString("send"));
 		left.setLayoutY(120);
 		left.setOnMouseClicked(getMessage());
 		left.setAlignment(Pos.CENTER);
 		anchor.getChildren().add(left);
-		AnchorPane.setTopAnchor(left, 80.0);	
+		AnchorPane.setTopAnchor(left, 80.0);
 		AnchorPane.setRightAnchor(left, 25.0);
-		
-		textField = new TextField("");	
+
+		textField = new TextField("");
 		textField.getStyleClass().add("propTextField");
 		textField.setAlignment(Pos.CENTER);
 		anchor.getChildren().add(textField);
-		AnchorPane.setTopAnchor(textField, 50.0);	
+		AnchorPane.setTopAnchor(textField, 50.0);
 		AnchorPane.setRightAnchor(textField, 25.0);
-		
 
 		GridPane.setHgrow(anchor, Priority.ALWAYS);
 		GridPane.setVgrow(anchor, Priority.ALWAYS);
 
 		return anchor;
 	}
+
 	/**
 	 * create a message when event is fired
+	 * 
 	 * @return
 	 */
 	private EventHandler<Event> getMessage() {
 		return new EventHandler<Event>() {
 			@Override
 			public void handle(Event arg0) {
-				getActionListener("id01.id003", "hello stateful component").performAction(arg0);
+				getActionListener("id01.id003", "hello stateful component")
+						.performAction(arg0);
 			}
 		};
 	}

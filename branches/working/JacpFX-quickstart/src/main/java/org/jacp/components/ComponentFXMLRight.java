@@ -22,18 +22,16 @@
  ************************************************************************/
 package org.jacp.components;
 
+import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.DeclarativeComponent;
@@ -42,16 +40,29 @@ import org.jacp.api.annotations.OnTearDown;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
+
 /**
- * A simple JacpFX UI component
+ * A simple JacpFX FXML UI component
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
-@DeclarativeComponent(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true, viewLocation = "/fxml/ComponentRightFXML.fxml", resourceBundleLocation = "bundles.languageBundle")
+@DeclarativeComponent(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true, viewLocation = "/fxml/ComponentRightFXML.fxml", resourceBundleLocation = "bundles.languageBundle",localeID="en_US")
 public class ComponentFXMLRight extends AFXComponent {
 
-	private Label rightLabel;
 	private Logger log = Logger.getLogger(ComponentFXMLRight.class.getName());
+	@FXML
+	private TextField message;
+	@FXML
+	private TextField countryTextField;
+	@FXML
+	private TextField streetTextField;
+	@FXML
+	private TextField nameTextField;
+	@FXML
+	private TextArea descriptionValue;
+	
+	private AtomicInteger counter = new AtomicInteger(0);
 
 	@Override
 	/**
@@ -59,9 +70,7 @@ public class ComponentFXMLRight extends AFXComponent {
 	 */
 	public Node handleAction(IAction<Event, Object> action) {
 		// runs in worker thread
-		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			return createUI();
-		}
+		
 		return null;
 	}
 
@@ -72,23 +81,28 @@ public class ComponentFXMLRight extends AFXComponent {
 	public Node postHandleAction(Node arg0, IAction<Event, Object> action) {
 		// runs in FX application thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			
-		}else {
-			rightLabel.setText(action.getLastMessage().toString());
+			// the initial message for all components
+		} else {
+			int counterLoc = counter.incrementAndGet();
+			countryTextField.setText("my country"+counterLoc);
+			streetTextField.setText("my street"+counterLoc);
+			nameTextField.setText("my name"+counterLoc);
+			descriptionValue.setText(counterLoc+": Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.");
+			message.setText(action.getLastMessage().toString());
 		}
 		return null;
 	}
-
 
 	@OnStart
 	/**
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
 	 */
-	public void onStartComponent(FXComponentLayout arg0) {
+	public void onStartComponent(FXComponentLayout arg0,ResourceBundle resourceBundle) {
 		log.info("run on start of ComponentRight ");
 
 	}
+	
 
 	@OnTearDown
 	/**
@@ -99,36 +113,14 @@ public class ComponentFXMLRight extends AFXComponent {
 		log.info("run on tear down of ComponentRight ");
 
 	}
-	
-	/**
-	 * create the UI on first call
-	 * 
-	 * @return
-	 */
-	private Node createUI() {
-		ScrollPane pane = new ScrollPane();
-		pane.setFitToHeight(true);
-		pane.setFitToWidth(true);
-		GridPane.setHgrow(pane, Priority.ALWAYS);
-		GridPane.setVgrow(pane, Priority.ALWAYS);
-		final VBox box = new VBox();
-		final Button right = new Button("right");
-		rightLabel = new Label("");
-		right.setOnMouseClicked( getMessage());
-		VBox.setMargin(right, new Insets(4, 2, 4, 5));
-		box.getChildren().addAll(right,rightLabel);
-		pane.setContent(box);
-		return pane;
+
+	@SuppressWarnings("unused")
+	@FXML
+	private void handleSend(ActionEvent event) {
+		getActionListener("id01.id004", "hello stateless component")
+		.performAction(event);
 	}
 
-	private EventHandler<Event> getMessage() {
-		return new EventHandler<Event>() {
-			@Override
-			public void handle(Event arg0) {
-				getActionListener("id01.id004", "hello stateless component").performAction(arg0);
-			}
-		};
-	}
+	
 
 }
-
