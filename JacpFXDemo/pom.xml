@@ -187,13 +187,14 @@
 			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
-		<!-- <dependency>
+
+		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ant-javafx</artifactId>
 			<version>${javafx.version}</version>
-			<systemPath>${java.home}../lib/ant-javafx.jar</systemPath>
+			<systemPath>${java.home}/../lib/ant-javafx.jar</systemPath>
 			<scope>system</scope>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
@@ -216,6 +217,13 @@
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFXControls</artifactId>
 			<version>${jacp.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

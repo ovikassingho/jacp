@@ -22,37 +22,11 @@
  ************************************************************************/
 package com.javafx.main;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import org.jacp.demo.main.ContactMain;
-import org.jacp.project.launcher.AFXSpringLauncher;
 
-public class Main  extends AFXSpringLauncher {
 
-	private Scene scene;
+public class Main  extends ContactMain {
 
-	public Main() {
-		super("main.xml");
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args) {
-		Application.launch(args);
-	}
-
-	@Override
-	public void postInit(final Stage stage) {
-		this.scene = stage.getScene();
-		// add style sheet
-		this.scene.getStylesheets().addAll(
-				ContactMain.class.getResource("/styles/main.css")
-						.toExternalForm(),
-				ContactMain.class.getResource("/styles/windowbuttons.css")
-						.toExternalForm());
-
-	}
+	
 }

@@ -19,6 +19,7 @@ package org.jacp.demo.main;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import org.jacp.project.launcher.AFXSpringLauncher;
@@ -50,6 +51,9 @@ public class ContactMain extends AFXSpringLauncher {
 	@Override
 	public void postInit(final Stage stage) {
 		this.scene = stage.getScene();
+
+		stage.getIcons().add(
+				new Image("images/icons/JACP_512_512.png"));
 		// add style sheet
 		this.scene.getStylesheets().addAll(
 				ContactMain.class.getResource("/styles/main.css")
