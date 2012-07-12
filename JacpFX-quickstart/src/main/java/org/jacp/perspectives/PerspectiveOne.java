@@ -22,6 +22,8 @@
  ************************************************************************/
 package org.jacp.perspectives;
 
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -38,10 +40,10 @@ import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
+import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
-import org.jacp.javafx.rcp.controls.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
@@ -78,7 +80,7 @@ public class PerspectiveOne extends AFXPerspective {
 	}
 
 	@OnStart
-	public void onStartPerspective(FXComponentLayout layout) {
+	public void onStartPerspective(FXComponentLayout layout,ResourceBundle resourceBundle) {
 		// define toolbars and menu entries
 		JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
 		Button pressMe = new Button("press me");
@@ -101,7 +103,7 @@ public class PerspectiveOne extends AFXPerspective {
 			}
 		});
 		toolbar.addOnEnd(pressMe);
-
+		System.out.println("Perspective one: "+resourceBundle);
 	}
 
 	@OnTearDown

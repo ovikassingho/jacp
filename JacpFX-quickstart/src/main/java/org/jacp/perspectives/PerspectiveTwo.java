@@ -22,6 +22,8 @@
  ************************************************************************/
 package org.jacp.perspectives;
 
+import java.util.ResourceBundle;
+
 import javafx.event.Event;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -44,7 +46,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id02", name = "perspectiveTwo")
+@Perspective(id = "id02", name = "perspectiveTwo",resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class PerspectiveTwo extends AFXPerspective {
 
 	@Override
@@ -82,9 +84,9 @@ public class PerspectiveTwo extends AFXPerspective {
 	}
 
 	@OnStart
-	public void onStartPerspective(FXComponentLayout layout) {
+	public void onStartPerspective(FXComponentLayout layout,ResourceBundle resourceBundle) {
 		// define toolbars and menu entries
-
+		System.out.println("Perspective two: "+resourceBundle);
 	}
 
 	@OnTearDown
