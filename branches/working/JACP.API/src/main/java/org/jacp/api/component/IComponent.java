@@ -50,7 +50,8 @@ public interface IComponent<L, A, M> {
 	/**
 	 * Returns an action listener (for global use). targetId defines the id or
 	 * your receiver component
-	 * 
+	 * @param message ; the message to send to target.
+	 * @param targetId ; the targets component id.
 	 * @return the action listener instance
 	 */
 	IActionListener<L, A, M> getActionListener(String targetId, M message);
@@ -65,7 +66,7 @@ public interface IComponent<L, A, M> {
 	/**
 	 * Set unique id of component.
 	 * 
-	 * @param id
+	 * @param id ; the component id.
 	 */
 	@Deprecated
 	void setId(final String id);
@@ -80,13 +81,13 @@ public interface IComponent<L, A, M> {
 	/**
 	 * Set default active state of component.
 	 * 
-	 * @param active
+	 * @param active ; the component active state.
 	 */
 	void setActive(boolean active);
 
 	/**
 	 * Get if component was activated, can occur if message was send before
-	 * "init" message arrived
+	 * "init" message arrived.
 	 * 
 	 * @return the active status
 	 */
@@ -102,7 +103,7 @@ public interface IComponent<L, A, M> {
 	/**
 	 * Defines the name of a component.
 	 * 
-	 * @param name
+	 * @param name ; the component name
 	 */
 	@Deprecated
 	void setName(String name);
