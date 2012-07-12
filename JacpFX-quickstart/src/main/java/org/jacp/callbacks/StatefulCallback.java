@@ -37,10 +37,12 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
  *
  */
 public class StatefulCallback extends AStatefulCallbackComponent {
-	private Logger log = Logger.getLogger(StatefulCallback.class.getName());
+	private final Logger log = Logger.getLogger(StatefulCallback.class
+			.getName());
+
 	@Override
-	public Object handleAction(IAction<Event, Object> arg0) {
-		log.info(arg0.getLastMessage().toString());
+	public Object handleAction(final IAction<Event, Object> arg0) {
+		this.log.info(arg0.getLastMessage().toString());
 		return "StatefulCallback - hello";
 	}
 

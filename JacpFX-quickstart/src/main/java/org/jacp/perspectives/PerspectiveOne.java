@@ -54,47 +54,52 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "perspectiveOne" ,viewLocation="/fxml/perspectiveOne.fxml" , resourceBundleLocation="bundles.languageBundle")
+@Perspective(id = "id01", name = "perspectiveOne", viewLocation = "/fxml/perspectiveOne.fxml", resourceBundleLocation = "bundles.languageBundle")
 public class PerspectiveOne extends AFXPerspective {
 	@FXML
 	private GridPane gridPaneLeft;
 	@FXML
 	private GridPane gridPaneRight;
 
-
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action,
 			final PerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			
-			GridPane.setVgrow(perspectiveLayout.getRootComponent(), Priority.ALWAYS);
-			GridPane.setHgrow(perspectiveLayout.getRootComponent(), Priority.ALWAYS);
 
-			// register left panel  
-			perspectiveLayout.registerTargetLayoutComponent("Pleft", gridPaneLeft);
-			// register main panel 
+			GridPane.setVgrow(perspectiveLayout.getRootComponent(),
+					Priority.ALWAYS);
+			GridPane.setHgrow(perspectiveLayout.getRootComponent(),
+					Priority.ALWAYS);
+
+			// register left panel
+			perspectiveLayout.registerTargetLayoutComponent("Pleft",
+					this.gridPaneLeft);
+			// register main panel
 			perspectiveLayout.registerTargetLayoutComponent("PMain",
-					gridPaneRight);
+					this.gridPaneRight);
 		}
 
 	}
 
 	@OnStart
-	public void onStartPerspective(FXComponentLayout layout,ResourceBundle resourceBundle) {
+	public void onStartPerspective(final FXComponentLayout layout,
+			final ResourceBundle resourceBundle) {
 		// define toolbars and menu entries
-		JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
-		Button pressMe = new Button("press me");
+		final JACPToolBar toolbar = layout
+				.getRegisteredToolBar(ToolbarPosition.NORTH);
+		final Button pressMe = new Button("press me");
 		pressMe.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
+			public void handle(final ActionEvent arg0) {
 				// create a modal dialog
-				JACPOptionPane dialog = JACPDialogUtil.createOptionPane("modal dialog", "Add some action");
+				final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
+						"modal dialog", "Add some action");
 				dialog.setDefaultButton(JACPDialogButton.NO);
 				dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
 
 					@Override
-					public void handle(ActionEvent arg0) {
+					public void handle(final ActionEvent arg0) {
 						JACPModalDialog.getInstance().hideModalMessage();
 					}
 				});
@@ -103,11 +108,10 @@ public class PerspectiveOne extends AFXPerspective {
 			}
 		});
 		toolbar.addOnEnd(pressMe);
-		System.out.println("Perspective one: "+resourceBundle);
 	}
 
 	@OnTearDown
-	public void onTearDownPerspective(FXComponentLayout arg0) {
+	public void onTearDownPerspective(final FXComponentLayout arg0) {
 		// define toolbars and menu entries when close perspective
 
 	}

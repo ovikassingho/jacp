@@ -54,8 +54,8 @@ import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 public class Workbench extends AFXWorkbench {
 
 	@Override
-	public void handleInitialLayout(IAction<Event, Object> action,
-			IWorkbenchLayout<Node> layout, Stage stage) {
+	public void handleInitialLayout(final IAction<Event, Object> action,
+			final IWorkbenchLayout<Node> layout, final Stage stage) {
 		layout.setWorkbenchXYSize(1024, 768);
 		layout.registerToolBar(ToolbarPosition.NORTH);
 		layout.setStyle(StageStyle.DECORATED);
@@ -64,22 +64,22 @@ public class Workbench extends AFXWorkbench {
 	}
 
 	@Override
-	public void postHandle(FXComponentLayout layout) {
+	public void postHandle(final FXComponentLayout layout) {
 		final JACPMenuBar menu = layout.getMenu();
 		final Menu menuFile = new Menu("File");
 		final MenuItem itemHelp = new MenuItem("Help");
 		itemHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
+			public void handle(final ActionEvent arg0) {
 				// create a modal dialog
-				JACPOptionPane dialog = JACPDialogUtil.createOptionPane("Help",
-						"Add some help text ");
+				final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
+						"Help", "Add some help text ");
 				dialog.setDefaultButton(JACPDialogButton.NO);
 				dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
 
 					@Override
-					public void handle(ActionEvent arg0) {
+					public void handle(final ActionEvent arg0) {
 						JACPModalDialog.getInstance().hideModalMessage();
 					}
 				});
@@ -91,22 +91,24 @@ public class Workbench extends AFXWorkbench {
 		menu.getMenus().addAll(menuFile);
 
 		// define toolbars and menu entries
-		JACPToolBar toolbar = layout
+		final JACPToolBar toolbar = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
-		Button perspectiveOne = new Button("FXMLPerspective");
+		final Button perspectiveOne = new Button("FXMLPerspective");
 		perspectiveOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
-				getActionListener("id01", "switch").performAction(arg0);
+			public void handle(final ActionEvent arg0) {
+				Workbench.this.getActionListener("id01", "switch")
+						.performAction(arg0);
 
 			}
 		});
 		toolbar.add(perspectiveOne);
-		Button perspectiveTwo = new Button("Perspective");
+		final Button perspectiveTwo = new Button("Perspective");
 		perspectiveTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
-				getActionListener("id02", "switch").performAction(arg0);
+			public void handle(final ActionEvent arg0) {
+				Workbench.this.getActionListener("id02", "switch")
+						.performAction(arg0);
 
 			}
 		});

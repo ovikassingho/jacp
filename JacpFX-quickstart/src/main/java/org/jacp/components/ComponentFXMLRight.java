@@ -47,10 +47,11 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@DeclarativeComponent(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true, viewLocation = "/fxml/ComponentRightFXML.fxml", resourceBundleLocation = "bundles.languageBundle",localeID="en_US")
+@DeclarativeComponent(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true, viewLocation = "/fxml/ComponentRightFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class ComponentFXMLRight extends AFXComponent {
 
-	private Logger log = Logger.getLogger(ComponentFXMLRight.class.getName());
+	private final Logger log = Logger.getLogger(ComponentFXMLRight.class
+			.getName());
 	@FXML
 	private TextField message;
 	@FXML
@@ -61,16 +62,16 @@ public class ComponentFXMLRight extends AFXComponent {
 	private TextField nameTextField;
 	@FXML
 	private TextArea descriptionValue;
-	
-	private AtomicInteger counter = new AtomicInteger(0);
+
+	private final AtomicInteger counter = new AtomicInteger(0);
 
 	@Override
 	/**
 	 * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
 	 */
-	public Node handleAction(IAction<Event, Object> action) {
+	public Node handleAction(final IAction<Event, Object> action) {
 		// runs in worker thread
-		
+
 		return null;
 	}
 
@@ -78,17 +79,20 @@ public class ComponentFXMLRight extends AFXComponent {
 	/**
 	 * The postHandleAction method runs always in the main application thread.
 	 */
-	public Node postHandleAction(Node arg0, IAction<Event, Object> action) {
+	public Node postHandleAction(final Node arg0,
+			final IAction<Event, Object> action) {
 		// runs in FX application thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			// the initial message for all components
 		} else {
-			int counterLoc = counter.incrementAndGet();
-			countryTextField.setText("my country"+counterLoc);
-			streetTextField.setText("my street"+counterLoc);
-			nameTextField.setText("my name"+counterLoc);
-			descriptionValue.setText(counterLoc+": Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.");
-			message.setText(action.getLastMessage().toString());
+			final int counterLoc = this.counter.incrementAndGet();
+			this.countryTextField.setText("my country" + counterLoc);
+			this.streetTextField.setText("my street" + counterLoc);
+			this.nameTextField.setText("my name" + counterLoc);
+			this.descriptionValue
+					.setText(counterLoc
+							+ ": Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.");
+			this.message.setText(action.getLastMessage().toString());
 		}
 		return null;
 	}
@@ -98,29 +102,27 @@ public class ComponentFXMLRight extends AFXComponent {
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
 	 */
-	public void onStartComponent(FXComponentLayout arg0,ResourceBundle resourceBundle) {
-		log.info("run on start of ComponentRight ");
+	public void onStartComponent(final FXComponentLayout arg0,
+			final ResourceBundle resourceBundle) {
+		this.log.info("run on start of ComponentRight ");
 
 	}
-	
 
 	@OnTearDown
 	/**
 	 * The @OnTearDown annotations labels methods executed when the component is set to inactive
 	 * @param arg0
 	 */
-	public void onTearDownComponent(FXComponentLayout arg0) {
-		log.info("run on tear down of ComponentRight ");
+	public void onTearDownComponent(final FXComponentLayout arg0) {
+		this.log.info("run on tear down of ComponentRight ");
 
 	}
 
 	@SuppressWarnings("unused")
 	@FXML
-	private void handleSend(ActionEvent event) {
-		getActionListener("id01.id004", "hello stateless component")
-		.performAction(event);
+	private void handleSend(final ActionEvent event) {
+		this.getActionListener("id01.id004", "hello stateless component")
+				.performAction(event);
 	}
-
-	
 
 }

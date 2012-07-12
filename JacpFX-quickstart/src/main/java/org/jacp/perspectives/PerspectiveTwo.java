@@ -46,26 +46,26 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id02", name = "perspectiveTwo",resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Perspective(id = "id02", name = "perspectiveTwo", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class PerspectiveTwo extends AFXPerspective {
 
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action,
 			final PerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			SplitPane mainLayout = new SplitPane();
+			final SplitPane mainLayout = new SplitPane();
 			mainLayout.setOrientation(Orientation.VERTICAL);
 			mainLayout.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			mainLayout.setDividerPosition(0, 0.55f);
 
 			// create left button menu
-			GridPane top = new GridPane();
+			final GridPane top = new GridPane();
 			top.setAlignment(Pos.TOP_CENTER);
 			GridPane.setHgrow(top, Priority.ALWAYS);
 			GridPane.setVgrow(top, Priority.ALWAYS);
 
 			// create main content Top
-			GridPane bottom = new GridPane();
+			final GridPane bottom = new GridPane();
 			GridPane.setHgrow(bottom, Priority.ALWAYS);
 			GridPane.setVgrow(bottom, Priority.ALWAYS);
 			bottom.setAlignment(Pos.BOTTOM_CENTER);
@@ -84,13 +84,13 @@ public class PerspectiveTwo extends AFXPerspective {
 	}
 
 	@OnStart
-	public void onStartPerspective(FXComponentLayout layout,ResourceBundle resourceBundle) {
+	public void onStartPerspective(final FXComponentLayout layout,
+			final ResourceBundle resourceBundle) {
 		// define toolbars and menu entries
-		System.out.println("Perspective two: "+resourceBundle);
 	}
 
 	@OnTearDown
-	public void onTearDownPerspective(FXComponentLayout arg0) {
+	public void onTearDownPerspective(final FXComponentLayout arg0) {
 		// define toolbars and menu entries when close perspective
 
 	}
