@@ -54,16 +54,16 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 public class ComponentLeft extends AFXComponent {
 	private AnchorPane pane;
 	private TextField textField;
-	private Logger log = Logger.getLogger(ComponentLeft.class.getName());
+	private final Logger log = Logger.getLogger(ComponentLeft.class.getName());
 
 	@Override
 	/**
 	 * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
 	 */
-	public Node handleAction(IAction<Event, Object> action) {
+	public Node handleAction(final IAction<Event, Object> action) {
 		// runs in worker thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			return createUI();
+			return this.createUI();
 		}
 		return null;
 	}
@@ -72,12 +72,13 @@ public class ComponentLeft extends AFXComponent {
 	/**
 	 * The postHandleAction method runs always in the main application thread.
 	 */
-	public Node postHandleAction(Node arg0, IAction<Event, Object> action) {
+	public Node postHandleAction(final Node arg0,
+			final IAction<Event, Object> action) {
 		// runs in FX application thread
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			this.pane = (AnchorPane) arg0;
 		} else {
-			textField.setText(action.getLastMessage().toString());
+			this.textField.setText(action.getLastMessage().toString());
 		}
 		return this.pane;
 	}
@@ -87,8 +88,9 @@ public class ComponentLeft extends AFXComponent {
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
 	 */
-	public void onStartComponent(FXComponentLayout arg0,ResourceBundle resourceBundle) {
-		log.info("run on start of ComponentLeft ");
+	public void onStartComponent(final FXComponentLayout arg0,
+			final ResourceBundle resourceBundle) {
+		this.log.info("run on start of ComponentLeft ");
 	}
 
 	@OnTearDown
@@ -96,8 +98,8 @@ public class ComponentLeft extends AFXComponent {
 	 * The @OnTearDown annotations labels methods executed when the component is set to inactive
 	 * @param arg0
 	 */
-	public void onTearDownComponent(FXComponentLayout arg0) {
-		log.info("run on tear down of ComponentLeft ");
+	public void onTearDownComponent(final FXComponentLayout arg0) {
+		this.log.info("run on tear down of ComponentLeft ");
 
 	}
 
@@ -109,7 +111,8 @@ public class ComponentLeft extends AFXComponent {
 	private Node createUI() {
 		final AnchorPane anchor = new AnchorPane();
 		anchor.getStyleClass().add("roundedAnchorPaneFX");
-		final Label heading = new Label(getResourceBundle().getString("javafxComp"));
+		final Label heading = new Label(this.getResourceBundle().getString(
+				"javafxComp"));
 		heading.setAlignment(Pos.CENTER);
 		heading.getStyleClass().add("propLabel");
 		anchor.getChildren().add(heading);
@@ -117,20 +120,22 @@ public class ComponentLeft extends AFXComponent {
 		AnchorPane.setRightAnchor(heading, 50.0);
 		AnchorPane.setTopAnchor(heading, 10.0);
 
-		final Button left = new Button(getResourceBundle().getString("send"));
+		final Button left = new Button(this.getResourceBundle().getString(
+				"send"));
 		left.setLayoutY(120);
-		left.setOnMouseClicked(getMessage());
+		left.setOnMouseClicked(this.getMessage());
 		left.setAlignment(Pos.CENTER);
 		anchor.getChildren().add(left);
 		AnchorPane.setTopAnchor(left, 80.0);
 		AnchorPane.setRightAnchor(left, 25.0);
 
-		textField = new TextField("");
-		textField.getStyleClass().add("propTextField");
-		textField.setAlignment(Pos.CENTER);
-		anchor.getChildren().add(textField);
-		AnchorPane.setTopAnchor(textField, 50.0);
-		AnchorPane.setRightAnchor(textField, 25.0);
+		this.textField = new TextField("");
+		this.textField.getStyleClass().add("propTextField");
+		this.textField.setAlignment(Pos.CENTER);
+		anchor.getChildren().add(this.textField);
+		AnchorPane.setTopAnchor(this.textField, 50.0);
+		AnchorPane.setRightAnchor(this.textField, 25.0);
+		AnchorPane.setLeftAnchor(this.textField, 25.0);
 
 		GridPane.setHgrow(anchor, Priority.ALWAYS);
 		GridPane.setVgrow(anchor, Priority.ALWAYS);
@@ -146,9 +151,9 @@ public class ComponentLeft extends AFXComponent {
 	private EventHandler<Event> getMessage() {
 		return new EventHandler<Event>() {
 			@Override
-			public void handle(Event arg0) {
-				getActionListener("id01.id003", "hello stateful component")
-						.performAction(arg0);
+			public void handle(final Event arg0) {
+				ComponentLeft.this.getActionListener("id01.id003",
+						"hello stateful component").performAction(arg0);
 			}
 		};
 	}

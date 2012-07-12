@@ -32,15 +32,18 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 
 /**
  * A stateless JacpFX component
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 @CallbackComponent(id = "id004", name = "statelessCallback", active = false)
 public class StatelessCallback extends AStatelessCallbackComponent {
-	private Logger log = Logger.getLogger(StatelessCallback.class.getName());
+	private final Logger log = Logger.getLogger(StatelessCallback.class
+			.getName());
+
 	@Override
-	public Object handleAction(IAction<Event, Object> arg0) {
-		log.info(arg0.getLastMessage().toString());
+	public Object handleAction(final IAction<Event, Object> arg0) {
+		this.log.info(arg0.getLastMessage().toString());
 		return "StatelessCallback - hello";
 	}
 

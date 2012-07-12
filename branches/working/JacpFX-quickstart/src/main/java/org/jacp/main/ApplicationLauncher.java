@@ -24,16 +24,18 @@ package org.jacp.main;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import org.jacp.project.launcher.AFXSpringLauncher;
+
 /**
  * The application launcher containing the main method
+ * 
  * @author Andy Moncsek
- *
+ * 
  */
 public class ApplicationLauncher extends AFXSpringLauncher {
-
 
 	public ApplicationLauncher() {
 		super("main.xml");
@@ -42,13 +44,14 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		Application.launch(args);
 	}
 
 	@Override
-	public void postInit(Stage stage) {
-		Scene scene = stage.getScene();
+	public void postInit(final Stage stage) {
+		final Scene scene = stage.getScene();
+		stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
 		// add style sheet
 		scene.getStylesheets().addAll(
 				ApplicationLauncher.class.getResource("/styles/style.css")

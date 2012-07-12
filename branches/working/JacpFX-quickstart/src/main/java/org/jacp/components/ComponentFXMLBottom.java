@@ -24,40 +24,34 @@ package org.jacp.components;
 
 import java.util.logging.Logger;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextField;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
-@Component(defaultExecutionTarget = "PBottom", id = "id005", name = "componentBottom", active = true)
+@DeclarativeComponent(defaultExecutionTarget = "PBottom", id = "id005", name = "componentBottom", active = true, viewLocation = "/fxml/ComponentBottomFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class ComponentFXMLBottom extends AFXComponent {
-	private ScrollPane pane;
-	private Label bottomLabel;
-	private Logger log = Logger.getLogger(ComponentFXMLBottom.class.getName());
+	@FXML
+	private TextField textField;
+	private final Logger log = Logger.getLogger(ComponentFXMLBottom.class
+			.getName());
 
 	@Override
 	/**
 	 * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
 	 */
-	public Node handleAction(IAction<Event, Object> action) {
+	public Node handleAction(final IAction<Event, Object> action) {
 		// runs in worker thread
-		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			return createUI();
-		}
+
 		return null;
 	}
 
@@ -65,14 +59,13 @@ public class ComponentFXMLBottom extends AFXComponent {
 	/**
 	 * The postHandleAction method runs always in the main application thread.
 	 */
-	public Node postHandleAction(Node arg0, IAction<Event, Object> action) {
+	public Node postHandleAction(final Node arg0,
+			final IAction<Event, Object> action) {
 		// runs in FX application thread
-		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			this.pane = (ScrollPane) arg0;
-		} else {
-			bottomLabel.setText(action.getLastMessage().toString());
+		if (!action.getLastMessage().equals(MessageUtil.INIT)) {
+			this.textField.setText(action.getLastMessage().toString());
 		}
-		return this.pane;
+		return null;
 	}
 
 	@OnStart
@@ -80,8 +73,8 @@ public class ComponentFXMLBottom extends AFXComponent {
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
 	 */
-	public void onStartComponent(FXComponentLayout arg0) {
-		log.info("run on start of ComponentFXMLBottom ");
+	public void onStartComponent(final FXComponentLayout arg0) {
+		this.log.info("run on start of ComponentFXMLBottom ");
 
 	}
 
@@ -90,39 +83,16 @@ public class ComponentFXMLBottom extends AFXComponent {
 	 * The @OnTearDown annotations labels methods executed when the component is set to inactive
 	 * @param arg0
 	 */
-	public void onTearDownComponent(FXComponentLayout arg0) {
-		log.info("run on tear down of ComponentFXMLBottom ");
+	public void onTearDownComponent(final FXComponentLayout arg0) {
+		this.log.info("run on tear down of ComponentFXMLBottom ");
 
 	}
 
-	/**
-	 * create the UI on first call
-	 * 
-	 * @return
-	 */
-	private Node createUI() {
-		ScrollPane pane = new ScrollPane();
-		pane.setFitToHeight(true);
-		pane.setFitToWidth(true);
-		GridPane.setHgrow(pane, Priority.ALWAYS);
-		GridPane.setVgrow(pane, Priority.ALWAYS);
-		final VBox box = new VBox();
-		final Button bottom = new Button("bottom");
-		bottomLabel = new Label("");
-		bottom.setOnMouseClicked(getMessage());
-		VBox.setMargin(bottom, new Insets(4, 2, 4, 5));
-		box.getChildren().addAll(bottom, bottomLabel);
-		pane.setContent(box);
-		return pane;
-	}
-
-	private EventHandler<Event> getMessage() {
-		return new EventHandler<Event>() {
-			@Override
-			public void handle(Event arg0) {
-				getActionListener("id01.id004", "hello stateless component").performAction(arg0);
-			}
-		};
+	@SuppressWarnings("unused")
+	@FXML
+	private void handleSend(final ActionEvent event) {
+		this.getActionListener("id01.id004", "hello stateless component")
+				.performAction(event);
 	}
 
 }
