@@ -37,9 +37,9 @@ import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
-import org.jacp.javafx.rcp.controls.optionPane.JACPModalDialog;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 

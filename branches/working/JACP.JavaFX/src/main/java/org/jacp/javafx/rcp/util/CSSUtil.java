@@ -2,8 +2,8 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [DialogNotInitializedException.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * [CSSUtil.java]
+ * AHCP Project http://jacp.googlecode.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,26 +20,21 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.controls.exception;
+package org.jacp.javafx.rcp.util;
 
-/**
- * The Class DialogNotInitializedException.
- * 
- * @author Patrick Symmangk
- */
-public class DialogNotInitializedException extends RuntimeException {
+public class CSSUtil {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -343178301862250777L;
+    public class CSSConstants {
+        // CLASSES
+        public static final String CLASS_DARK_BORDER = "dark-border";
+        public static final String CLASS_WINDOW_BUTTONS = "window-buttons";
+        public static final String CLASS_JACP_TOOL_BAR = "jacp-tool-bar";
+        public static final String CLASS_JACP_BUTTON_BAR = "jacp-button-bars";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Throwable#getMessage()
-	 */
-	@Override
-	public String getMessage() {
-		return "Initialize JACPDialog before using it -> Call initJACPDialog()";
-	}
-
+        // IDS
+        public static final String ID_WINDOW_MIN = "window-min";
+        public static final String ID_WINDOW_MAX = "window-max";
+        public static final String ID_WINDOW_CLOSE = "window-close";
+        public static final String ID_ROOT = "root";
+    }
 }

@@ -40,6 +40,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
+
 /**
  * The Class JACPoptionDialogV2.
  * 
@@ -131,7 +133,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		// topBox.setAlignment(Pos.TOP_RIGHT);
 		this.topBox.setAlignment(Pos.TOP_LEFT);
 		final Button defaultClose = new Button("x");
-		defaultClose.setOnMouseClicked(this);
+		 defaultClose.setOnMouseClicked(this);
 		this.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 		defaultClose.setId("jacp-option-pane-close");
 		this.setDefaultCloseButtonVisible(false);
@@ -241,7 +243,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		but.setId(button.getLabel().toLowerCase() + "Button");
 		but.setMinWidth(JACPOptionPane.BUTTON_SIZE);
 		but.setPrefWidth(JACPOptionPane.BUTTON_SIZE);
-		but.setOnMouseClicked(this);
+		 but.setOnMouseClicked(this);
 		HBox.setMargin(but, new Insets(0, 8, 0, 0));
 		if (this.defaultButton != null
 				&& button.getId() == this.defaultButton.getId()) {
@@ -255,10 +257,10 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javafx.event.EventHandler#handle(javafx.event.Event)
-	 */
+	* (non-Javadoc)
+	*
+	* @see javafx.event.EventHandler#handle(javafx.event.Event)
+	*/
 	@Override
 	public void handle(final MouseEvent arg0) {
 		JACPModalDialog.getInstance().hideModalMessage();
