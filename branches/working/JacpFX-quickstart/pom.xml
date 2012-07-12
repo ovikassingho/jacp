@@ -9,6 +9,9 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javafx.version>2.2</javafx.version>
+		<jacp.version>1.05</jacp.version>
+		<spring.version>3.0.6.RELEASE</spring.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -23,68 +26,220 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
-			</plugin>			
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<configuration>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<JavaFX-Version>${javafx.version}+</JavaFX-Version>
+							<Main-Class>org.jacp.main.ApplicationLauncher</Main-Class>
+							<implementation-version>1.0</implementation-version>
+							<JavaFX-Application-Class>org.jacp.main.ApplicationLauncher</JavaFX-Application-Class>
+							<JavaFX-Class-Path>
+								aopalliance-1.0.jar commons-logging-1.1.1.jar
+								JACP.API-${jacp.version}.jar JACP.JavaFX-${jacp.version}.jar
+								JACP.JavaFXControls-${jacp.version}.jar
+								JACP.JavaFXSpring-${jacp.version}.jar
+								spring-aop-${spring.version}.jar
+								spring-asm-${spring.version}.jar
+								spring-beans-${spring.version}.jar
+								spring-context-${spring.version}.jar
+								spring-core-${spring.version}.jar
+								spring-expression-${spring.version}.jar
+							</JavaFX-Class-Path>
+							<Class-Path>javafx-${javafx.version}.jar</Class-Path>
+						</manifestEntries>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+
+								<taskdef name="jfxdeploy" classname="com.sun.javafx.tools.ant.DeployFXTask"
+									classpathref="maven.plugin.classpath" />
+
+								<taskdef name="jfxsignjar" classname="com.sun.javafx.tools.ant.FXSignJarTask"
+									classpathref="maven.plugin.classpath" />
+
+								<taskdef name="csstobin" classname="com.sun.javafx.tools.ant.CSSToBinTask"
+									classpathref="maven.plugin.classpath" />
+
+								<csstobin outdir="${project.build.directory}/deploy">
+									<fileset dir="${project.build.directory}/classes/styles"
+										includes="**/*.css" />
+								</csstobin>
+
+								<jfxdeploy width="1024" height="768"
+									outdir="${project.build.directory}/deploy" outfile="${build.finalName}"
+									nativeBundles="all">
+									<info title="${project.name}" />
+									<application name="${project.name}" mainClass="com.javafx.main.Main" />
+									<resources>
+										<fileset dir="${project.build.directory}" includes="*.jar" />
+										<fileset dir="${project.build.directory}/dependency"
+											includes="*.jar" />
+									</resources>
+									<platform javafx="${javafx.version}+">
+										<jvmarg value="-Xms512m" />
+										<jvmarg value="-Xmx1024m" />
+									</platform>
+								</jfxdeploy>
+
+
+								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html 
+								<jfxsignjar destdir="${project.build.directory}/deploy"
+									keyStore="fxstore" storePass="yourStorPass" alias="yourSign"
+									keyPass="yourPass">
+									<fileset dir="${project.build.directory}/deploy"
+										includes="*.jar" />
+								</jfxsignjar>-->
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.oracle</groupId>
+						<artifactId>ant-javafx</artifactId>
+						<version>${javafx.version}</version>
+						<systemPath>${java.home}/../lib/ant-javafx.jar</systemPath>
+						<scope>system</scope>
+					</dependency>
+					<dependency>
+						<groupId>com.oracle</groupId>
+						<artifactId>javafx</artifactId>
+						<version>${javafx.version}</version>
+						<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+						<scope>system</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>javafx-runtime</artifactId>
-			<version>2.2</version>
-			<scope>provided</scope>
+			<artifactId>javafx</artifactId>
+			<version>${javafx.version}</version>
+			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+			<scope>system</scope>
 		</dependency>
-		 <dependency>
+		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
-			<version>1.05</version>
+			<version>${jacp.version}</version>
 			<scope>compile</scope>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFX</artifactId>
-			<version>1.05</version>
+			<version>${jacp.version}</version>
 			<scope>compile</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFXSpring</artifactId>
-			<version>1.05</version>
+			<version>${jacp.version}</version>
 			<scope>compile</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.JavaFXControls</artifactId>
-			<version>1.05</version>
+			<version>${jacp.version}</version>
 			<scope>compile</scope>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>3.0.6.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.0.6.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>3.0.6.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
-			<version>3.0.6.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
