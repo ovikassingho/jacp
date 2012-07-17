@@ -216,14 +216,13 @@
 			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
 			<scope>system</scope>
 		</dependency>
-
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ant-javafx</artifactId>
 			<version>${javafx.version}</version>
 			<systemPath>${java.home}/../lib/ant-javafx.jar</systemPath>
 			<scope>system</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>

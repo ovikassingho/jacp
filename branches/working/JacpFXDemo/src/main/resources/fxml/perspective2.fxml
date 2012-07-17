@@ -19,7 +19,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           </rowConstraints>
         </GridPane>
-        <SplitPane id="h-splitpane" cache="true" dividerPositions="0.6593959731543624" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL">
+        <SplitPane id="h-splitpane" cache="true" dividerPositions="0.5503355704697986" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL">
           <items>
             <GridPane fx:id="gridPane2">
               <columnConstraints>

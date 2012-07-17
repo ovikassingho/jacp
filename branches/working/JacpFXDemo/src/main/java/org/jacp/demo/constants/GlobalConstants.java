@@ -33,9 +33,7 @@ public class GlobalConstants {
 	}
 
 	class CSSConstants {
-
 		public static final String CLASS_DARK_BORDER = "dark-border";
-
 	}
 
 }
