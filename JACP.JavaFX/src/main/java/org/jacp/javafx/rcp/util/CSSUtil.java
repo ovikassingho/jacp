@@ -36,5 +36,6 @@ public class CSSUtil {
         public static final String ID_WINDOW_MAX = "window-max";
         public static final String ID_WINDOW_CLOSE = "window-close";
         public static final String ID_ROOT = "root";
+        public static final String ID_ROOT_PANE = "root-pane";
     }
 }

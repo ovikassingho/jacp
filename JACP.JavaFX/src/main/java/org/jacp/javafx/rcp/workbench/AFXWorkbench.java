@@ -93,6 +93,8 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
     private Launcher<?> launcher;
     private Stage stage;
     private GridPane root;
+    private BorderPane baseLayoutPane;
+    private StackPane absoluteRoot;
     private Pane glassPane;
     private JACPModalDialog dimmer;
 
@@ -312,31 +314,57 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
      * @param stage
      *            javafx.stage.Stage
      */
+    
+    // TODO: handle the custom decorator
     private void setBasicLayout(final Stage stage) {
+        // the top most pane is a Stackpane
+        this.absoluteRoot = new StackPane();
+        this.baseLayoutPane = new BorderPane();
+        this.stage = stage;
+        
+        stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
 
+        this.initBaseLayout();
+        this.initMenuLayout();
+        this.initToolbarLayout();
+        this.completeLayout();
+    }
+
+    private void completeLayout() {
         // fetch current workbenchsize
         final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
         final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 
-        // the top most pane is a Stackpane
-        final StackPane absoluteRoot = new StackPane();
-        BorderPane baseLayoutPane = initBaseLayout();
-        stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
+        this.initMenuLayout();
+        this.initToolbarLayout();
 
-        // TODO: handle the custom decorator
+        this.absoluteRoot.getChildren().add(this.baseLayoutPane);
+        this.absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);
+        this.stage.setScene(new Scene(this.absoluteRoot, x, y));
+        this.initCSS(this.stage.getScene());
 
+        // new Layer for Menu Effects
+        this.absoluteRoot.getChildren().add(this.glassPane);
+        this.absoluteRoot.getChildren().add(this.dimmer);
+
+    }
+
+    private void initMenuLayout() {
         // add the menu if needed
         if (this.getWorkbenchLayout().isMenuEnabled()) {
-            baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
+            this.baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
             this.getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
         }
 
+    }
+
+    private void initToolbarLayout() {
         // add toolbars in a specific order
         if (!this.getWorkbenchLayout().getRegisteredToolbars().isEmpty()) {
-            
+
             // add another Layer to hold all the toolbars
             final BorderPane toolbarPane = new BorderPane();
-            baseLayoutPane.setCenter(toolbarPane);
+            this.baseLayoutPane.setCenter(toolbarPane);
 
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this.getWorkbenchLayout().getRegisteredToolbars();
             final Iterator<Entry<ToolbarPosition, JACPToolBar>> it = registeredToolbars.entrySet().iterator();
@@ -354,50 +382,46 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
 
         } else {
             // no toolbars -> no special Layout needed
-            baseLayoutPane.setCenter(this.root);
+            this.baseLayoutPane.setCenter(this.root);
         }
 
-        absoluteRoot.getChildren().add(baseLayoutPane);
-        absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);
-        stage.setScene(new Scene(absoluteRoot, x, y));
-        this.initCSS(stage.getScene());
-
-        // new Layer for Menu Effects
-        absoluteRoot.getChildren().add(this.glassPane);
-        absoluteRoot.getChildren().add(this.dimmer);
     }
 
     private void initCSS(final Scene scene) {
         scene.getStylesheets().addAll(AFXWorkbench.class.getResource("/styles/jacp-styles.css").toExternalForm());
-
     }
 
-    private BorderPane initBaseLayout() {
+    private void initBaseLayout() {
+        this.initRootPane();
+        this.initDimmer();
+        this.initGlassPane();
+    }
 
-        final BorderPane baseLayoutPane = new BorderPane();
-
+    private void initRootPane() {
         // root is top most pane
         this.root = new GridPane();
         this.root.setCache(true);
-        this.root.setId("root-pane");
+        this.root.setId(CSSUtil.CSSConstants.ID_ROOT_PANE);
 
-        JACPModalDialog.initDialog(baseLayoutPane);
+    }
+
+    private void initDimmer() {
+        JACPModalDialog.initDialog(this.baseLayoutPane);
         this.dimmer = JACPModalDialog.getInstance();
         this.dimmer.setVisible(false);
 
+        // add some FX
+        final GaussianBlur blur = new GaussianBlur();
+        blur.setRadius(0);
+        this.baseLayoutPane.setEffect(blur);
+    }
+
+    private void initGlassPane() {
         // Pane for custom elements added to the glasspane
         this.glassPane = this.getWorkbenchLayout().getGlassPane();
         this.glassPane.autosize();
         this.glassPane.setVisible(false);
         this.glassPane.setPrefSize(0, 0);
-
-        // add some FX
-        final GaussianBlur blur = new GaussianBlur();
-        blur.setRadius(0);
-        baseLayoutPane.setEffect(blur);
-
-        return baseLayoutPane;
-
     }
 
     /**
@@ -410,7 +434,6 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
      * @param y
      */
     private void assignCorrectToolBarLayout(final ToolbarPosition position, final ToolBar bar, final BorderPane pane) {
-
         switch (position) {
         case NORTH:
             pane.setTop(bar);
