@@ -195,6 +195,10 @@ public class JACPMenuBar extends HBox {
         });
     }
 
+    public void minimize() {
+        this.stage.setIconified(true);
+    }
+
     /**
      * Maximize.
      */
@@ -235,6 +239,13 @@ public class JACPMenuBar extends HBox {
             maximize.getStyleClass().add(CSSUtil.CSSConstants.CLASS_WINDOW_BUTTONS);
             close.getStyleClass().add(CSSUtil.CSSConstants.CLASS_WINDOW_BUTTONS);
             minimize.setId(CSSUtil.CSSConstants.ID_WINDOW_MIN);
+            minimize.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent arg0) {
+                    minimize();
+                }
+            });
+
             maximize.setId(CSSUtil.CSSConstants.ID_WINDOW_MAX);
             maximize.setOnAction(new EventHandler<ActionEvent>() {
 
