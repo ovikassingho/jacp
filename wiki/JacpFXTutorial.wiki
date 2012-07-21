@@ -1,7 +1,26 @@
 #install and usage tutorial for JacpFX.
 
+*currently for JacpFX beta 1.1*
+
 = Prerequirements =
+  * OS: windows >= xp, OSX (lion), any Linux
+  * Java 7 update 6 (only dev. preview available)... download here: http://jdk7.java.net/download.html
+  * set JAVA_HOME
+  * maven installed
+
+if you want to create native executables yo need:
+
+  * on windows: http://www.jrsoftware.org/isdl.php to generate exe; http://wix.sourceforge.net/ to generate msi
+  * on osx (xcode? it is always installed? at least for me ;-) )
+- on linux "rpmbuild"
 
 = Create a project from archetype =
+mvn archetype:generate   \
+-DarchetypeGroupId=org.jacp \
+-DarchetypeArtifactId=JacpFX-quickstart-archetype  \
+-DarchetypeVersion=1.1  \
+-DarchetypeRepository=\
+http://developer.ahcp.de/nexus/content/repositories/jacp 
 
 = JacpFX development=
+  * the archetype genaretes an example project including a JavaFX perspective, a FXML perspective, two JavaFX components, two FXML components, astateful- and a stateless-component
