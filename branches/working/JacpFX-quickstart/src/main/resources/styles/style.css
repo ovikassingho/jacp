@@ -5,20 +5,15 @@
     -fx-background: #B4B4B4;
     -fx-focus-color: #0093FF;
     -fx-control-inner-background: #FFFFFF;
-
+    -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,74.0%) 0%, derive(-fx-color,36.400000000000006%) 100%);
+    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
 }
 .button, .toggle-button, .choice-box {
- -fx-background-radius: 0, 0, -1, -2;
+    -fx-background-radius: 5, 5, 4, 3;
     -fx-padding: 3px 10px 3px 10px;
 }
-.tool-bar {
-    -fx-base: #8EBDD0;
-    -fx-background-color: #8EBDD0;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-
-}
 .menu-button {
- -fx-background-radius: 0, 0, -1, -2;
+    -fx-background-radius: 5, 5, 4, 3;
 }
 .menu-button .label {
     -fx-padding: 3px 18px 3px 10px;
@@ -224,9 +219,8 @@
     -fx-background-insets: 1; /* remov left right line of splitPane*/
 }
 
-.vsplitpane:vertical > * > .split-pane-divider {
-     -fx-base: #8EBDD0;
-    -fx-background-color: #8EBDD0;
+.vsplitpane:horizontal > * > .split-pane-divider {
+    -fx-background-color:linear-gradient(to bottom, white, #B4B4B4);
     -fx-background-insets: 0,0;
 }
 
@@ -234,20 +228,20 @@
     -fx-background-color:black;
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
-
+ 
 .vsplitpane  *.horizontal-grabber {
     -fx-background-color:black;
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
 
 .hsplitpane {
+
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
 }
 
-.hsplitpane:horizontal > * > .split-pane-divider {
-     -fx-base: #8EBDD0;
-    -fx-background-color: #8EBDD0;
+.hsplitpane:vertical > * > .split-pane-divider {
+    -fx-background-color:linear-gradient(to bottom, white, #B4B4B4);
     -fx-background-insets: 0,0;
 }
 
