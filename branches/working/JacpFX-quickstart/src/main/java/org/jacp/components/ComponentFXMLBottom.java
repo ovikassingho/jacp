@@ -87,8 +87,7 @@ public class ComponentFXMLBottom extends AFXComponent {
 		this.log.info("run on tear down of ComponentFXMLBottom ");
 
 	}
-
-	@SuppressWarnings("unused")
+ 
 	@FXML
 	private void handleSend(final ActionEvent event) {
 		this.getActionListener("id01.id004", "hello stateless component")

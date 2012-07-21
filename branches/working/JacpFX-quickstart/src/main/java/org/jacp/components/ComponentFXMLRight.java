@@ -118,7 +118,7 @@ public class ComponentFXMLRight extends AFXComponent {
 
 	}
 
-	@SuppressWarnings("unused")
+ 
 	@FXML
 	private void handleSend(final ActionEvent event) {
 		this.getActionListener("id01.id004", "hello stateless component")
