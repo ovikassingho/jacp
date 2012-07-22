@@ -12,7 +12,7 @@ if you want to create native executables yo need:
 
   * on windows: http://www.jrsoftware.org/isdl.php to generate exe; http://wix.sourceforge.net/ to generate msi
   * on osx (xcode? it is always installed? at least for me ;-) )
-- on linux "rpmbuild"
+  * on linux "rpmbuild"
 
 = Create a project from archetype =
 {{{ mvn archetype:generate   \ }}}
