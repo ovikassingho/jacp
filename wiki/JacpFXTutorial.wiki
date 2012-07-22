@@ -15,12 +15,12 @@ if you want to create native executables yo need:
 - on linux "rpmbuild"
 
 = Create a project from archetype =
-{{{mvn archetype:generate   \
--DarchetypeGroupId=org.jacp \
--DarchetypeArtifactId=JacpFX-quickstart-archetype  \
--DarchetypeVersion=1.1  \
--DarchetypeRepository=\
-http://developer.ahcp.de/nexus/content/repositories/jacp }}}
+{{{ mvn archetype:generate   \ }}}
+{{{ -DarchetypeGroupId=org.jacp \ }}}
+{{{ -DarchetypeArtifactId=JacpFX-quickstart-archetype  \ }}}
+{{{ -DarchetypeVersion=1.1  \ }}}
+{{{ -DarchetypeRepository=\ }}}
+{{{ http://developer.ahcp.de/nexus/content/repositories/jacp }}}
 
 = JacpFX development=
   * the archetype genaretes an example project including a JavaFX perspective, a FXML perspective, two JavaFX components, two FXML components, astateful- and a stateless-component
