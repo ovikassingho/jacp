@@ -37,7 +37,6 @@ import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
 import org.jacp.demo.entity.Contact;
-import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.enums.BarChartAction;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -86,17 +85,11 @@ public class ContactChartViewComponent extends AFXComponent {
 			final List<Data<String, Number>> data = contact.getDto()
 					.getSeriesOneData();
 			this.addData(this.series1, data);
+			this.addData(this.series2, contact.getDto().getSeriesTwoData());
+			this.addData(this.series3, contact.getDto().getSeriesThreeData());
+			this.addData(this.series4, contact.getDto().getSeriesFourData());
 
-		} else if (action.getLastMessage() instanceof ContactDTO) {
-			final ContactDTO contact = (ContactDTO) action.getLastMessage();
-			if (contact.getSeriesTwoData() != null) {
-				this.addData(this.series2, contact.getSeriesTwoData());
-			} else if (contact.getSeriesThreeData() != null) {
-				this.addData(this.series3, contact.getSeriesThreeData());
-			} else if (contact.getSeriesFourData() != null) {
-				this.addData(this.series4, contact.getSeriesFourData());
-			}
-		}
+		} 
 		return this.root;
 	}
 

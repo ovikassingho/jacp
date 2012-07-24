@@ -63,9 +63,11 @@ public class AnalyticsCallback extends AStatefulCallbackComponent {
 		contact.setDto(dto);
 
 		dto.setSeriesOneData(this.createChartData());
+		dto.setSeriesTwoData(this.createChartData());
+		dto.setSeriesThreeData(this.createChartData());
+		dto.setSeriesFourData(this.createChartData());
 		this.sendChartData(contact);
-		this.waitAmount(300);
-		this.createAndSendDTOData();
+
 	}
 
 	private void sendChartData(final Object data) {
@@ -81,37 +83,6 @@ public class AnalyticsCallback extends AStatefulCallbackComponent {
 		}
 
 		return data;
-	}
-
-	/**
-	 * send other data, wait after each category
-	 */
-	private void createAndSendDTOData() {
-		ContactDTO dto = new ContactDTO();
-
-		dto.setSeriesTwoData(this.createChartData());
-		this.sendChartData(dto);
-		this.waitAmount(300);
-
-		dto = new ContactDTO();
-		dto.setSeriesThreeData(this.createChartData());
-		this.sendChartData(dto);
-		this.waitAmount(300);
-
-		dto = new ContactDTO();
-		dto.setSeriesFourData(this.createChartData());
-		this.sendChartData(dto);
-	}
-
-	/**
-	 * for demo purposes
-	 */
-	private void waitAmount(final int amount) {
-		try {
-			Thread.sleep(amount);
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	// Common but flawed!
