@@ -214,11 +214,13 @@ public class FXWorkbenchHandler implements
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout) {
 		this.log("3.4.6: perspective init SINGLE_PANE");
 		final Node comp = perspectiveLayout.getRootComponent();
-		comp.setVisible(true);
-		final ObservableList<Node> children = this.root.getChildren();
-		this.hideChildren(children);
-		GridPane.setConstraints(comp, 0, 0);
-		children.add(comp);
+		if (comp!=null) {
+			comp.setVisible(true);
+			final ObservableList<Node> children = this.root.getChildren();
+			this.hideChildren(children);
+			GridPane.setConstraints(comp, 0, 0);
+			children.add(comp);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
