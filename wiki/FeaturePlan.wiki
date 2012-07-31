@@ -26,7 +26,7 @@
  * define custom {{{Menu/ToolBar components}}} --DONE
  * extract UI component package to make UI components such as {{{OptionPane, custom- Menu/Toolbar }}} optional in API  --DONE
  * provide a nexus repository for easy integration of JacpFX in maven projects -- DONE
- * create archetypes (simple and extended) for easy start up with JacpFX  --IN PROGRESS
+ * create archetypes (simple and extended) for easy start up with JacpFX  --DONE
 
 
 === Fixed Bugs ===
