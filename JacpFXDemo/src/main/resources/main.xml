@@ -26,7 +26,6 @@
 		</property>
 	</bean>
 
-	<bean id="XMLTestView" class="org.jacp.demo.components.XMLTestView" />
 	<bean id="XMLDetailView" class="org.jacp.demo.components.XMLDetailView" />
 	<bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent" />
 	<bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent" />

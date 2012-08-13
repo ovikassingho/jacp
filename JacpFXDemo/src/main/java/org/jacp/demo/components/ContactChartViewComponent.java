@@ -63,7 +63,6 @@ public class ContactChartViewComponent extends AFXComponent {
 
 	@Override
 	public Node handleAction(final IAction<Event, Object> action) {
-		System.out.println(action.getLastMessage());
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			this.root = this.createRoot();
 			this.root.getChildren().add(this.createChart());
@@ -99,7 +98,6 @@ public class ContactChartViewComponent extends AFXComponent {
 		myRoot.setAlignment(Pos.CENTER);
 		GridPane.setHgrow(myRoot, Priority.ALWAYS);
 		GridPane.setVgrow(myRoot, Priority.ALWAYS);
-		System.out.println(myRoot);
 		return myRoot;
 	}
 
