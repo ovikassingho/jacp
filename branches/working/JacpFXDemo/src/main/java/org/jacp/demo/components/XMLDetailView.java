@@ -39,12 +39,10 @@ public class XMLDetailView extends AFXComponent {
 
 	@FXML
 	private void handleSubmit(ActionEvent event) {
-		System.out.println("UPDATE");
 	}
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		System.out.println("HANDLE");
 		return null;
 	}
 
@@ -63,7 +61,6 @@ public class XMLDetailView extends AFXComponent {
 	@Override
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
-		System.out.println("POST HANDLE");
 		if (action.getLastMessage() instanceof Contact) {
 			// contact selected
 			final Contact contact = (Contact) action.getLastMessage();
@@ -79,12 +76,10 @@ public class XMLDetailView extends AFXComponent {
 	@OnStart
 	public void start(FXComponentLayout layout, URL url,
 			ResourceBundle resourceBundle) {
-		System.out.println("START");
 	}
 
 	@OnTearDown
 	public void stop(FXComponentLayout layout) {
-		System.out.println("STOP");
 	}
 
 }
