@@ -25,6 +25,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.OnStart;
@@ -44,6 +46,8 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  */
 @Component(defaultExecutionTarget = "PleftMenu", id = "id001", name = "contactDemoTreeView", active = true)
 public class ContactTreeViewComponent extends AFXComponent {
+	private final static Log LOGGER = LogFactory
+			.getLog(ContactTreeViewComponent.class);
 	private ContactTreeView pane;
 	private ObservableList<Contact> contactList;
 
@@ -56,6 +60,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			return this.createInitialLayout();
 		}
+		LOGGER.debug("ContactTreeViewComponent handleAction message: "+action.getLastMessage());
 		return null;
 	}
 

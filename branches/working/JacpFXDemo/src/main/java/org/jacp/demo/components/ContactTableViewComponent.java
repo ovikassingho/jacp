@@ -30,6 +30,8 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
@@ -51,7 +53,8 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  */
 @Component(defaultExecutionTarget = "PmainContentTop", id = "id002", name = "contactDemoTableView", active = true)
 public class ContactTableViewComponent extends AFXComponent {
-
+	private final static Log LOGGER = LogFactory
+			.getLog(ContactTableViewComponent.class);
 	private final Map<String, ContactTableView> all = Collections
 			.synchronizedMap(new HashMap<String, ContactTableView>());
 	private ContactTableView current;
@@ -94,7 +97,7 @@ public class ContactTableViewComponent extends AFXComponent {
 		} else if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			return this.getView(null).getTableViewLayout();
 		}
-
+		LOGGER.debug("ContactTableViewComponent handleAction message: "+action.getLastMessage());
 		return this.current.getTableViewLayout();
 	}
 

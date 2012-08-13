@@ -27,6 +27,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.OnStart;
@@ -48,7 +50,8 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  */
 @Perspective(id = "id01", name = "contactPerspective", viewLocation = "/fxml/contactPerspective.fxml", resourceBundleLocation = "bundles.languageBundle" , localeID="en_US")
 public class ContactPerspective extends AFXPerspective {
-
+	private final static Log LOGGER = LogFactory
+			.getLog(ContactPerspective.class);
 	private String topId = "PmainContentTop";
 	
 	private String bottomId = "PmainContentBottom";
@@ -73,7 +76,7 @@ public class ContactPerspective extends AFXPerspective {
 	 * create buttons in tool bars; menu entries  
 	 */
 	public void onStartPerspective(final FXComponentLayout layout) {
-		System.out.println("Perspective Post");
+		LOGGER.debug("onStartPerspective");
 		// create button in toolbar; button should switch top and bottom id's
 		final JACPToolBar north = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
@@ -96,6 +99,7 @@ public class ContactPerspective extends AFXPerspective {
 
 	@OnTearDown
 	public void onTearDownPerspective(final FXComponentLayout layout) {
+		LOGGER.debug("onTearDownPerspective");
 	}
 
 	@Override
@@ -109,6 +113,7 @@ public class ContactPerspective extends AFXPerspective {
 			this.bottomId = tmp;
 			this.createPerspectiveLayout(perspectiveLayout);
 		}
+		LOGGER.debug("handlePerspective message: "+action.getLastMessage());
 	}
 
 	private void createPerspectiveLayout(

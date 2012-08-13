@@ -34,6 +34,8 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
 import org.jacp.demo.entity.Contact;
@@ -50,6 +52,8 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  */
 @Component(defaultExecutionTarget = "PmainContentBottom", id = "id003", name = "contactDemoChartView", active = true)
 public class ContactChartViewComponent extends AFXComponent {
+	private final static Log LOGGER = LogFactory
+			.getLog(ContactChartViewComponent.class);
 	private GridPane root;
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
@@ -67,6 +71,7 @@ public class ContactChartViewComponent extends AFXComponent {
 			this.root = this.createRoot();
 			this.root.getChildren().add(this.createChart());
 		}
+		LOGGER.debug("ContactChartViewComponent handleAction message: "+action.getLastMessage());
 		return null;
 	}
 
