@@ -55,6 +55,12 @@ import org.jacp.javafx.rcp.util.FXUtil;
 public abstract class AFXComponentWorker<T> extends Task<T> {
 	
 	protected volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(1);
+	
+	private final String componentName;
+	
+	public AFXComponentWorker(final String componentName) {
+		this.componentName = componentName;
+	}
 	/**
 	 * find valid target component in perspective
 	 * 
@@ -315,6 +321,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	public String getComponentName() {
+		return componentName;
 	}
 
 }

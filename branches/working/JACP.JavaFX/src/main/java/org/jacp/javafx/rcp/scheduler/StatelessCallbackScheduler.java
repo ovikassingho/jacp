@@ -37,6 +37,7 @@ import org.jacp.api.scheduler.IStatelessComponentScheduler;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.worker.StateLessComponentRunWorker;
 
 public class StatelessCallbackScheduler implements
 		IStatelessComponentScheduler<EventHandler<Event>, Event, Object> {

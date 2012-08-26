@@ -65,14 +65,8 @@ public class FXPerspectiveHandler
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private final ExecutorService executor = Executors
-			.newFixedThreadPool(FXPerspectiveHandler.MAX_INCTANCE_COUNT);
+			.newCachedThreadPool();
 
-	static {
-		final Runtime runtime = Runtime.getRuntime();
-		final int nrOfProcessors = runtime.availableProcessors();
-		FXPerspectiveHandler.MAX_INCTANCE_COUNT = nrOfProcessors
-				+ (nrOfProcessors / 2);
-	}
 
 	public FXPerspectiveHandler(
 			final Launcher<?> launcher,
@@ -176,7 +170,7 @@ public class FXPerspectiveHandler
 	private void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout) {
+			final FXComponentLayout layout) {		
 		this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
 				.getTargetLayoutComponents(), this.componentDelegateQueue,
 				((AFXComponent) component), layout));

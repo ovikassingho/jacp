@@ -50,6 +50,7 @@ public class StateComponentRunWorker
 	public StateComponentRunWorker(
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		super(component.getName());
 		this.component = component;
 		this.delegateQueue = delegateQueue;
 	}

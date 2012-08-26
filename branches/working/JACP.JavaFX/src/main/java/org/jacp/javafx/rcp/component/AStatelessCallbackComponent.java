@@ -55,13 +55,8 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
 
 	private final ExecutorService executor = Executors
-			.newFixedThreadPool(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
-
-	static {
-		final Runtime runtime = Runtime.getRuntime();
-		final int nrOfProcessors = runtime.availableProcessors();
-		AStatelessCallbackComponent.MAX_INCTANCE_COUNT = nrOfProcessors + 1;
-	}
+			.newCachedThreadPool();
+	
 
 	@Override
 	public final String getHandleTargetAndClear() {
