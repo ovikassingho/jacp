@@ -72,6 +72,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	public FXComponentInitWorker(final Map<String, Node> targetComponents,
 			final AFXComponent component, final IAction<Event, Object> action,
 			final FXComponentLayout layout) {
+		super(component.getName());
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;

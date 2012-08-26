@@ -60,6 +60,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			final Map<String, Node> targetComponents,
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
 			final AFXComponent component, final FXComponentLayout layout) {
+		super(component.getName());
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.layout = layout;

@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.scheduler;
+package org.jacp.javafx.rcp.worker;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,7 +32,6 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.javafx.rcp.worker.AFXComponentWorker;
 
 /**
  * Component worker to run instances of a stateless component in a worker
@@ -48,6 +47,7 @@ public class StateLessComponentRunWorker
 
 	public StateLessComponentRunWorker(
 			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		super(component.getName()+component);
 		this.component = component;
 	}
 
