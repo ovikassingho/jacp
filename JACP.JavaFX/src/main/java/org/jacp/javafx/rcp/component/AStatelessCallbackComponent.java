@@ -56,7 +56,11 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 
 	private final ExecutorService executor = Executors
 			.newCachedThreadPool();
-	
+	static {
+		final Runtime runtime = Runtime.getRuntime();
+		final int nrOfProcessors = runtime.availableProcessors();
+		AStatelessCallbackComponent.MAX_INCTANCE_COUNT = nrOfProcessors + 1;
+	}
 
 	@Override
 	public final String getHandleTargetAndClear() {
