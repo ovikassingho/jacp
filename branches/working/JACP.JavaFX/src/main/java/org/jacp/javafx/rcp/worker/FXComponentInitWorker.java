@@ -229,11 +229,13 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
+				e.printStackTrace();
 			} catch (final ExecutionException e) {
 				this.log("Exception in Component INIT Worker, Thread Excecution Exception: " + e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
+				e.printStackTrace();
 			} catch (final UnsupportedOperationException e) {
 				e.printStackTrace();
 			} catch (final Exception e) {
@@ -241,6 +243,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
+				e.printStackTrace();
 			}
 			FXUtil.setPrivateMemberValue(Checkable.class, this.component, FXUtil.ACOMPONENT_STARTED, true);
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
