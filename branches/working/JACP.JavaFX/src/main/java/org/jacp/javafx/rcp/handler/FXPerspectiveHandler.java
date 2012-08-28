@@ -32,6 +32,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
@@ -44,6 +45,8 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
+import org.jacp.javafx.rcp.util.HandlerThreadFactory;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
 import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
 import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
@@ -65,7 +68,7 @@ public class FXPerspectiveHandler
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private final ExecutorService executor = Executors
-			.newCachedThreadPool();
+			.newCachedThreadPool(new HandlerThreadFactory("FXPerspectiveHandler:"));
 
 
 	public FXPerspectiveHandler(
@@ -78,6 +81,7 @@ public class FXPerspectiveHandler
 		this.perspectiveLayout = perspectiveLayout;
 		this.componentDelegateQueue = componentDelegateQueue;
 		this.scheduler = new StatelessCallbackScheduler(this.launcher);
+		ShutdownThreadsHandler.registerexecutor(executor);
 	}
 
 	@Override

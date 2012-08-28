@@ -50,6 +50,10 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
 	private String parentId;
 
+	public FXComponentCoordinator() {
+		super("FXComponentCoordinator");
+	}
+
 	@Override
 	public void addComponent(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -122,7 +126,9 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 					.getTargetPerspectiveId(targetId);
 			if (this.parentId.equals(targetPerspectiveId)) {
 				throw new UnsupportedOperationException(
-						"invalid component id handling not supported yet. Source: "+action.getSourceId()+" target: "+action.getTargetId());
+						"invalid component id handling not supported yet. Source: "
+								+ action.getSourceId() + " target: "
+								+ action.getTargetId());
 			}
 		}
 		// possible message to perspective

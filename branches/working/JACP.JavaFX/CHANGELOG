@@ -1,3 +1,4 @@
+28. Aug. 2012 - amo -  Created  process to Shutdown all JacpFX correct; Created ShutdownUtil class; set name of JacpFX Threads
 26. Jun. 2012 - amo -  updated refresh behavior when switching between components
 31. Mai. 2012 - amo -  added resourceBundle and locale handling to declarative components
 30. Mai. 2012 - amo -  removed AFXMLComponent and add behavior to AFXComponent 

@@ -39,6 +39,7 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * The message delegate handles messages from one perspective to an other.
@@ -54,6 +55,11 @@ public class FXMessageDelegator extends Thread implements
 			10000);
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 
+	public FXMessageDelegator() {
+		super("FXMessageDelegator");
+		ShutdownThreadsHandler.registerThread(this);
+	}
+
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
@@ -64,7 +70,8 @@ public class FXMessageDelegator extends Thread implements
 				final IAction<Event, Object> action = dto.getAction();
 				this.delegateMessage(targetId, action);
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				logger.info("queue in FXComponentDelegator interrupted");
+				break;
 			}
 
 		}

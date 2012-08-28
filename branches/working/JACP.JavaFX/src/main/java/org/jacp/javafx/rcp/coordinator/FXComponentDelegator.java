@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -39,6 +40,7 @@ import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * The component delegator handles a component target change, find the correct
@@ -49,11 +51,16 @@ import org.jacp.javafx.rcp.util.FXUtil;
  */
 public class FXComponentDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>>(
 			100);
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 
+	public FXComponentDelegator() {
+		super("FXComponentDelegator");
+		ShutdownThreadsHandler.registerThread(this);
+	}
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
@@ -65,7 +72,8 @@ public class FXComponentDelegator extends Thread implements
 				this.delegateTargetChange(targetId, component);
 
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				logger.info("queue in FXComponentDelegator interrupted");
+				break;
 			}
 
 		}
