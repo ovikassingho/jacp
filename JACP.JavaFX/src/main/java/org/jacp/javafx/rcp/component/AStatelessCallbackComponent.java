@@ -35,6 +35,8 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.HandlerThreadFactory;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * represents a abstract stateless background component
@@ -55,11 +57,15 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
 
 	private final ExecutorService executor = Executors
-			.newCachedThreadPool();
+			.newCachedThreadPool(new HandlerThreadFactory("AStatelessCallbackComponent:"));
 	static {
 		final Runtime runtime = Runtime.getRuntime();
 		final int nrOfProcessors = runtime.availableProcessors();
 		AStatelessCallbackComponent.MAX_INCTANCE_COUNT = nrOfProcessors + 1;
+	}
+	
+	public AStatelessCallbackComponent() {
+		ShutdownThreadsHandler.registerexecutor(executor);
 	}
 
 	@Override

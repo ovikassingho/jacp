@@ -47,6 +47,10 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 
+	public FXPerspectiveCoordinator() {
+		super("FXPerspectiveCoordinator");
+	}
+
 	@Override
 	public void handleMessage(final String target,
 			final IAction<Event, Object> action) {

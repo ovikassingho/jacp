@@ -33,6 +33,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * Observer handles messages and notifies correct components, the observer is
@@ -47,6 +48,11 @@ public abstract class AFXCoordinator extends Thread implements
 	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<IAction<Event, Object>>(
 			100000);
 
+	public AFXCoordinator(String name) {
+		super(name);
+		ShutdownThreadsHandler.registerThread(this);
+	}
+
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
@@ -56,7 +62,8 @@ public abstract class AFXCoordinator extends Thread implements
 			try {
 				action = this.messages.take();
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				logger.info("queue in AFXCoordinator interrupted");
+				break;
 			}
 			final Map<String, Object> myMessages = action.getMessageList();
 			for (final String targetId : myMessages.keySet()) {

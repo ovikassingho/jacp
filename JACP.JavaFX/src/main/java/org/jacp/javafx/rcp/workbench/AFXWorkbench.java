@@ -73,6 +73,7 @@ import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.CSSUtil;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -114,7 +115,9 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
                 // ((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
                 // ((FX2ComponentDelegator)componentDelegator).interrupt();
                 // ((FX2MessageDelegator)messageDelegator).interrupt();
-                System.exit(0);
+            	ShutdownThreadsHandler.shutdowAll();
+                Platform.exit();   
+             
 
             }
         });
