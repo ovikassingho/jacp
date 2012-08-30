@@ -39,119 +39,110 @@ import javafx.scene.layout.Priority;
 import javafx.util.Callback;
 
 import org.jacp.api.action.IActionListener;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.enums.BarChartAction;
 
 public class ContactTreeView extends ScrollPane {
-	final ObservableList<Contact> contactList;
-	final ContactTreeViewComponent parent;
+    final ObservableList<Contact> contactList;
+    final ContactTreeViewComponent parent;
 
-	public ContactTreeView() {
-		this.contactList = null;
-		this.parent = null;
-	}
+    public ContactTreeView() {
+        this.contactList = null;
+        this.parent = null;
+    }
 
-	public ContactTreeView(final ObservableList<Contact> contactList,
-			final ContactTreeViewComponent parent) {
-		this.contactList = contactList;
-		this.parent = parent;
-		final GridPane gridPane = new GridPane();
-		gridPane.getStyleClass().addAll("dark", "dark-border");
-		this.getStyleClass().addAll("dark-scrollpane");
-		this.setFitToHeight(true);
-		this.setFitToWidth(true);
-		GridPane.setHgrow(this, Priority.ALWAYS);
-		GridPane.setVgrow(this, Priority.ALWAYS);
-		this.setContent(gridPane);
+    public ContactTreeView(final ObservableList<Contact> contactList, final ContactTreeViewComponent parent) {
+        this.contactList = contactList;
+        this.parent = parent;
+        final GridPane gridPane = new GridPane();
+        gridPane.getStyleClass().addAll("dark", "dark-border");
+        this.getStyleClass().addAll("dark-scrollpane");
+        this.setFitToHeight(true);
+        this.setFitToWidth(true);
+        GridPane.setHgrow(this, Priority.ALWAYS);
+        GridPane.setVgrow(this, Priority.ALWAYS);
+        this.setContent(gridPane);
 
-		gridPane.setPadding(new Insets(5));
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(5));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
 
-		// the label
-		final Label categoryLbl = new Label("Category");
-		categoryLbl.getStyleClass().addAll("light-label", "list-label");
-		GridPane.setHalignment(categoryLbl, HPos.CENTER);
-		gridPane.add(categoryLbl, 0, 0);
+        // the label
+        final Label categoryLbl = new Label("Category");
+        categoryLbl.getStyleClass().addAll("light-label", "list-label");
+        GridPane.setHalignment(categoryLbl, HPos.CENTER);
+        gridPane.add(categoryLbl, 0, 0);
 
-		final ListView<Contact> categoryListView = this.createList();
-		GridPane.setHgrow(categoryListView, Priority.ALWAYS);
-		GridPane.setVgrow(categoryListView, Priority.ALWAYS);
-		gridPane.add(categoryListView, 0, 1);
-		GridPane.setMargin(categoryListView, new Insets(0, 10, 10, 10));
-	}
+        final ListView<Contact> categoryListView = this.createList();
+        GridPane.setHgrow(categoryListView, Priority.ALWAYS);
+        GridPane.setVgrow(categoryListView, Priority.ALWAYS);
+        gridPane.add(categoryListView, 0, 1);
+        GridPane.setMargin(categoryListView, new Insets(0, 10, 10, 10));
+    }
 
-	private ListView<Contact> createList() {
-		final ListView<Contact> categoryListView = new ListView<Contact>(
-				this.contactList);
-		categoryListView
-				.setCellFactory(new Callback<ListView<Contact>, ListCell<Contact>>() {
+    private ListView<Contact> createList() {
+        final ListView<Contact> categoryListView = new ListView<Contact>(this.contactList);
+        categoryListView.setCellFactory(new Callback<ListView<Contact>, ListCell<Contact>>() {
 
-					@Override
-					public ListCell<Contact> call(final ListView<Contact> arg0) {
-						final Label label = new Label();
-						label.getStyleClass().add("dark-text");
-						final HBox box = new HBox();
-						final Pane spacer = new Pane();
-						final ListCell<Contact> cell = new ListCell<Contact>() {
-							@Override
-							public void updateItem(final Contact contact,
-									final boolean emty) {
-								super.updateItem(contact, emty);
-								if (contact != null) {
-									label.setText(contact.getFirstName());
-									ContactTreeView.this
-											.configureProgressBar(contact);
-									HBox.setMargin(contact.getProgress(),
-											new Insets(3, 0, 0, 0));
-									HBox.setHgrow(spacer, Priority.ALWAYS);
-									box.getChildren().addAll(label, spacer,
-											contact.getProgress());
+            @Override
+            public ListCell<Contact> call(final ListView<Contact> arg0) {
+                final Label label = new Label();
+                label.getStyleClass().add("dark-text");
+                final HBox box = new HBox();
+                final Pane spacer = new Pane();
+                final ListCell<Contact> cell = new ListCell<Contact>() {
+                    @Override
+                    public void updateItem(final Contact contact, final boolean emty) {
+                        super.updateItem(contact, emty);
+                        if (contact != null) {
+                            label.setText(contact.getFirstName());
+                            ContactTreeView.this.configureProgressBar(contact);
+                            HBox.setMargin(contact.getProgress(), new Insets(3, 0, 0, 0));
+                            HBox.setHgrow(spacer, Priority.ALWAYS);
+                            box.getChildren().addAll(label, spacer, contact.getProgress());
 
-									this.setGraphic(box);
-									this.setOnMouseClicked(new EventHandler<Event>() {
+                            this.setGraphic(box);
+                            this.setOnMouseClicked(new EventHandler<Event>() {
 
-										@Override
-										public void handle(final Event event) {
-											// send contact to TableView
-											// component to show containing
-											// contacts
-											// send event to Table View
-											final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeView.this.parent
-													.getActionListener(
-															"id01.id002",
-															contact);
-											listener.performAction(event);
-											// Send Event to BarChart
-											final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent
-													.getActionListener(
-															"id01.id003",
-															BarChartAction.RESET);
-											resetListener.performAction(event);
-										}
-									});
-								}
+                                @Override
+                                public void handle(final Event event) {
+                                    // send contact to TableView
+                                    // component to show containing
+                                    // contacts
+                                    // send event to Table View
+                                    final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeView.this.parent.getActionListener(
+                                            GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW), contact);
+                                    listener.performAction(event);
+                                    // Send Event to BarChart
+                                    final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent.getActionListener(
+                                            GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_CHART_VIEW),
+                                            BarChartAction.RESET);
+                                    resetListener.performAction(event);
+                                }
+                            });
+                        }
 
-							}
-						}; // ListCell
-						return cell;
-					}
-				});
+                    }
+                }; // ListCell
+                return cell;
+            }
+        });
 
-		return categoryListView;
-	}
+        return categoryListView;
+    }
 
-	private void configureProgressBar(final Contact contact) {
-		if (contact.getProgress() == null) {
-			final ProgressBar progressBar = new ProgressBar();
-			progressBar.getStyleClass().add("jacp-progress-bar");
-			contact.setProgress(progressBar);
-		}
-		if (contact.getContacts().isEmpty()) {
-			contact.getProgress().setVisible(false);
-		} else {
-			contact.getProgress().setVisible(true);
-		}
-	}
+    private void configureProgressBar(final Contact contact) {
+        if (contact.getProgress() == null) {
+            final ProgressBar progressBar = new ProgressBar();
+            progressBar.getStyleClass().add("jacp-progress-bar");
+            contact.setProgress(progressBar);
+        }
+        if (contact.getContacts().isEmpty()) {
+            contact.getProgress().setVisible(false);
+        } else {
+            contact.getProgress().setVisible(true);
+        }
+    }
 
 }

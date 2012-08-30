@@ -35,6 +35,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
@@ -51,152 +52,141 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Component(defaultExecutionTarget = "PmainContentTop", id = "id002", name = "contactDemoTableView", active = true)
+@Component(defaultExecutionTarget = "PmainContentTop", id = GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW, name = "contactDemoTableView", active = true)
 public class ContactTableViewComponent extends AFXComponent {
 	private final static Log LOGGER = LogFactory
 			.getLog(ContactTableViewComponent.class);
-	private final Map<String, ContactTableView> all = Collections
-			.synchronizedMap(new HashMap<String, ContactTableView>());
-	private ContactTableView current;
+    private final Map<String, ContactTableView> all = Collections.synchronizedMap(new HashMap<String, ContactTableView>());
+    private ContactTableView current;
 
-	@Override
-	/**
-	 * run handleAction in worker Thread
-	 */
-	public Node handleAction(final IAction<Event, Object> action) {
-		return null;
-	}
+    @Override
+    /**
+     * run handleAction in worker Thread
+     */
+    public Node handleAction(final IAction<Event, Object> action) {
+        return null;
+    }
 
-	@Override
-	/**
-	 * run postHandle in FX application Thread, use this method to update UI code
-	 */
-	public Node postHandleAction(final Node node,
-			final IAction<Event, Object> action) {
-		if (action.getLastMessage() instanceof Contact) {
-			// contact selected
-			final Contact contact = (Contact) action.getLastMessage();
-			if (contact.isEmpty()) {
-				this.showDialogIfEmpty(contact);
-			}
-			this.current = this.getView(contact);
+    @Override
+    /**
+     * run postHandle in FX application Thread, use this method to update UI code
+     */
+    public Node postHandleAction(final Node node, final IAction<Event, Object> action) {
+        if (action.getLastMessage() instanceof Contact) {
+            // contact selected
+            final Contact contact = (Contact) action.getLastMessage();
+            if (contact.isEmpty()) {
+                this.showDialogIfEmpty(contact);
+            }
+            this.current = this.getView(contact);
 
-		} else if (action.getLastMessage() instanceof ContactDTO) {
-			// contact data received
-			final ContactDTO dto = (ContactDTO) action.getLastMessage();
-			final ContactTableView view = this.all.get(dto.getParentName());
-			// add first 1000 entries directly to table
-			if (view.getContactTableView().getItems().size() < Util.PARTITION_SIZE) {
-				view.getContactTableView().getItems().addAll(dto.getContacts());
-			} else {
-				// all other entries are added to list for paging
-				this.updateContactList(view, dto.getContacts());
-			}
-			view.updatePositionLabel();
+        } else if (action.getLastMessage() instanceof ContactDTO) {
+            // contact data received
+            final ContactDTO dto = (ContactDTO) action.getLastMessage();
+            final ContactTableView view = this.all.get(dto.getParentName());
+            // add first 1000 entries directly to table
+            if (view.getContactTableView().getItems().size() < Util.PARTITION_SIZE) {
+                view.getContactTableView().getItems().addAll(dto.getContacts());
+            } else {
+                // all other entries are added to list for paging
+                this.updateContactList(view, dto.getContacts());
+            }
+            view.updatePositionLabel();
 
-		} else if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			return this.getView(null).getTableViewLayout();
-		}
+        } else if (action.getLastMessage().equals(MessageUtil.INIT)) {
+            return this.getView(null).getTableViewLayout();
+        }
 		LOGGER.debug("ContactTableViewComponent handleAction message: "+action.getLastMessage());
-		return this.current.getTableViewLayout();
-	}
+        return this.current.getTableViewLayout();
+    }
 
-	private Callback<TableView<Contact>, TableRow<Contact>> createRowCallback() {
-		return new Callback<TableView<Contact>, TableRow<Contact>>() {
+    private Callback<TableView<Contact>, TableRow<Contact>> createRowCallback() {
+        return new Callback<TableView<Contact>, TableRow<Contact>>() {
 
-			@Override
-			public TableRow<Contact> call(final TableView<Contact> arg0) {
-				final TableRow<Contact> row = new TableRow<Contact>() {
-					@Override
-					public void updateItem(final Contact contact,
-							final boolean emty) {
-						super.updateItem(contact, emty);
-						if (contact != null) {
-							this.setOnMouseClicked(new EventHandler<Event>() {
-								@Override
-								public void handle(final Event arg0) {
-									// send contact to TableView
-									// component to show containing
-									// contacts
-									final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTableViewComponent.this
-											.getActionListener("id01.id006",
-													contact);
-									listener.performAction(arg0);
-									final IActionListener<EventHandler<Event>, Event, Object> detailListener = ContactTableViewComponent.this
-											.getActionListener("id01.id007",
-													contact);
-									detailListener.performAction(arg0);
-									
-									
-								}
-							});
-						}
-					}
-				};
-				return row;
-			}
+            @Override
+            public TableRow<Contact> call(final TableView<Contact> arg0) {
+                final TableRow<Contact> row = new TableRow<Contact>() {
+                    @Override
+                    public void updateItem(final Contact contact, final boolean emty) {
+                        super.updateItem(contact, emty);
+                        if (contact != null) {
+                            this.setOnMouseClicked(new EventHandler<Event>() {
+                                @Override
+                                public void handle(final Event arg0) {
+                                    // send contact to TableView
+                                    // component to show containing
+                                    // contacts
+                                    final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTableViewComponent.this.getActionListener(
+                                            GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.CallbackConstants.CALLBACK_ANALYTICS), contact);
+                                    listener.performAction(arg0);
+                                    final IActionListener<EventHandler<Event>, Event, Object> detailListener = ContactTableViewComponent.this.getActionListener(
+                                            GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_DETAIL_VIEW), contact);
+                                    detailListener.performAction(arg0);
 
-		};
-	}
+                                }
+                            });
+                        }
+                    }
+                };
+                return row;
+            }
 
-	private void updateContactList(final ContactTableView view,
-			final ObservableList<Contact> list) {
-		// add chunk of contact list to contact
-		view.getContact().getContacts().addAll(list);
-		view.updateMaxValue();
-	}
+        };
+    }
 
-	private ContactTableView getView(final Contact contact) {
-		ContactTableView view = null;
-		if (contact == null) {
-			view = this.createView(null);
-		} else if (!this.all.containsKey(contact.getFirstName())) {
-			view = this.createView(contact);
-			this.all.put(contact.getFirstName(), view);
-		} else if (contact != null) {
-			view = this.all.get(contact.getFirstName());
-		}
-		return view;
-	}
+    private void updateContactList(final ContactTableView view, final ObservableList<Contact> list) {
+        // add chunk of contact list to contact
+        view.getContact().getContacts().addAll(list);
+        view.updateMaxValue();
+    }
 
-	private ContactTableView createView(final Contact contact) {
-		final ContactTableView view = new ContactTableView();
-		view.createInitialTableViewLayout(contact);
-		view.getContactTableView().setRowFactory(this.createRowCallback());
-		return view;
-	}
+    private ContactTableView getView(final Contact contact) {
+        ContactTableView view = null;
+        if (contact == null) {
+            view = this.createView(null);
+        } else if (!this.all.containsKey(contact.getFirstName())) {
+            view = this.createView(contact);
+            this.all.put(contact.getFirstName(), view);
+        } else if (contact != null) {
+            view = this.all.get(contact.getFirstName());
+        }
+        return view;
+    }
 
-	private void showDialogIfEmpty(final Contact contact) {
-		// show popup to ask how many contacts to create
-		final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
-				"Contact Demo Pane",
-				"Currently are no contact in this category available. Do you want to create "
-						+ Util.MAX + " contacts?");
-		dialog.setDefaultButton(JACPDialogButton.NO);
-		dialog.setDefaultCloseButtonVisible(true);
+    private ContactTableView createView(final Contact contact) {
+        final ContactTableView view = new ContactTableView();
+        view.createInitialTableViewLayout(contact);
+        view.getContactTableView().setRowFactory(this.createRowCallback());
+        return view;
+    }
 
-		dialog.setOnYesAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				contact.setAmount(Util.MAX);
-				contact.setEmpty(false);
-				// redirect contact to coordinator callback to create
-				// contacts
-				final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTableViewComponent.this
-						.getActionListener("id01.id004", contact);
-				listener.performAction(arg0);
-			}
-		});
+    private void showDialogIfEmpty(final Contact contact) {
+        // show popup to ask how many contacts to create
+        final JACPOptionPane dialog = JACPDialogUtil.createOptionPane("Contact Demo Pane", "Currently are no contact in this category available. Do you want to create " + Util.MAX + " contacts?");
+        dialog.setDefaultButton(JACPDialogButton.NO);
+        dialog.setDefaultCloseButtonVisible(true);
 
-		dialog.setOnNoAction(new EventHandler<ActionEvent>() {
+        dialog.setOnYesAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                contact.setAmount(Util.MAX);
+                contact.setEmpty(false);
+                // redirect contact to coordinator callback to create
+                // contacts
+                final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTableViewComponent.this.getActionListener("id01.id004", contact);
+                listener.performAction(arg0);
+            }
+        });
 
-			@Override
-			public void handle(final ActionEvent arg0) {
+        dialog.setOnNoAction(new EventHandler<ActionEvent>() {
 
-			}
-		});
-		JACPModalDialog.getInstance().showModalMessage(dialog);
+            @Override
+            public void handle(final ActionEvent arg0) {
 
-	}
+            }
+        });
+        JACPModalDialog.getInstance().showModalMessage(dialog);
+
+    }
 
 }

@@ -23,6 +23,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
@@ -35,55 +36,53 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
-@CallbackComponent(id = "id004", name = "coordinatorCallback", active = false)
+@CallbackComponent(id = GlobalConstants.CallbackConstants.CALLBACK_COORDINATOR, name = "coordinatorCallback", active = false)
 public class CoordinatorCallback extends AStatelessCallbackComponent {
 
-	@Override
-	public Object handleAction(final IAction<Event, Object> action) {
-		if (action.getLastMessage() instanceof Contact) {
-			final Contact contact = (Contact) action.getLastMessage();
-			if (contact.getContacts().isEmpty()) {
-				if (contact.getAmount() > Util.PARTITION_SIZE) {
-					int amount = contact.getAmount();
-					while (amount > Util.PARTITION_SIZE) {
-						this.waitAmount(100);
-						this.createAmountAndSend(contact.getFirstName(),
-								Util.PARTITION_SIZE);
-						amount = amount - Util.PARTITION_SIZE;
-					}
-					this.createAmountAndSend(contact.getFirstName(), amount);
-				} else {
-					this.createAmountAndSend(contact.getFirstName(),
-							contact.getAmount());
-				}
-			}
-		}
-		return null;
-	}
+    @Override
+    public Object handleAction(final IAction<Event, Object> action) {
+        if (action.getLastMessage() instanceof Contact) {
+            final Contact contact = (Contact) action.getLastMessage();
+            if (contact.getContacts().isEmpty()) {
+                if (contact.getAmount() > Util.PARTITION_SIZE) {
+                    int amount = contact.getAmount();
+                    while (amount > Util.PARTITION_SIZE) {
+                        this.waitAmount(100);
+                        this.createAmountAndSend(contact.getFirstName(), Util.PARTITION_SIZE);
+                        amount = amount - Util.PARTITION_SIZE;
+                    }
+                    this.createAmountAndSend(contact.getFirstName(), amount);
+                } else {
+                    this.createAmountAndSend(contact.getFirstName(), contact.getAmount());
+                }
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * for demo purposes
-	 */
-	private void waitAmount(final int amount) {
-		try {
-			Thread.sleep(amount);
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * for demo purposes
+     */
+    private void waitAmount(final int amount) {
+        try {
+            Thread.sleep(amount);
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * create a contact dto with parent name and amount of contacts to create,
-	 * send dto to creator callback
-	 * 
-	 * @param name
-	 * @param amount
-	 */
-	private void createAmountAndSend(final String name, final int amount) {
-		final ContactDTO dto = new ContactDTO(name, amount);
-		final IActionListener<EventHandler<Event>, Event, Object> listener = this
-				.getActionListener("id01.id005", dto);
-		listener.performAction(null);
-	}
+    /**
+     * create a contact dto with parent name and amount of contacts to create,
+     * send dto to creator callback
+     * 
+     * @param name
+     * @param amount
+     */
+    private void createAmountAndSend(final String name, final int amount) {
+        final ContactDTO dto = new ContactDTO(name, amount);
+        final IActionListener<EventHandler<Event>, Event, Object> listener = this.getActionListener(
+                GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.CallbackConstants.CALLBACK_CREATOR), dto);
+        listener.performAction(null);
+    }
 
 }

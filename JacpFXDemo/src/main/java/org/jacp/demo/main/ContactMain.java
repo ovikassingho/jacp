@@ -35,31 +35,28 @@ import org.jacp.project.launcher.AFXSpringLauncher;
  */
 public class ContactMain extends AFXSpringLauncher {
 
-	private Scene scene;
+    private Scene scene;
 
-	public ContactMain() {
-		super("main.xml");
-	}
+    public ContactMain() {
+        super("main.xml");
+    }
 
-	/**
-	 * @param args
-	 */
-	public static void main(final String[] args) {
-		Application.launch(args);
-	}
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
 
-	@Override
-	public void postInit(final Stage stage) {
-		this.scene = stage.getScene();
+    @Override
+    public void postInit(final Stage stage) {
+        this.scene = stage.getScene();
 
-		stage.getIcons().add(
-				new Image("images/icons/JACP_512_512.png"));
-		// add style sheet
-		this.scene.getStylesheets().addAll(
-				ContactMain.class.getResource("/styles/main.css")
-						.toExternalForm(),
-				ContactMain.class.getResource("/styles/windowbuttons.css")
-						.toExternalForm());
+        stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
+        // add style sheet
+        this.scene.getStylesheets().addAll(ContactMain.class.getResource("/styles/main.css").toExternalForm(), ContactMain.class.getResource("/styles/windowbuttons.css").toExternalForm());
 
-	}
+//        ScenicView.show(stage.getScene());
+
+    }
 }

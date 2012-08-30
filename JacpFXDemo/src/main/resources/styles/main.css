@@ -455,7 +455,7 @@
 
 .female {
     -fx-background-image: url("../images/female.png");
-   -fx-background-repeat: no-repeat;   
+    -fx-background-repeat: no-repeat;   
     -fx-background-size: 120 120;
     -fx-background-position: center center;
 }

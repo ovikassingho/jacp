@@ -49,6 +49,8 @@ import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 
+import com.javafx.experiments.scenicview.ScenicView;
+
 /**
  * Workbench for contact demo with JacpFX (JavaFX2 and Spring). The workbench is
  * the root node of your JacpFX application.
@@ -58,104 +60,97 @@ import org.jacp.javafx.rcp.workbench.AFXWorkbench;
  */
 public class ContactWorkbench extends AFXWorkbench {
 
-	private final String projectURL = "http://code.google.com/p/jacp/wiki/Documentation";
-	private final String message = "JacpFX is a Framework to create Rich Clients in MVC style with JavaFX 2, Spring and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. More Info see: ";
+    private final String projectURL = "http://code.google.com/p/jacp/wiki/Documentation";
+    private final String message = "JacpFX is a Framework to create Rich Clients in MVC style with JavaFX 2, Spring and an Actor like component approach. It provides a simple API to create a workspace, perspectives, components and to compose your Client application easily. More Info see: ";
 
-	@Override
-	public void handleInitialLayout(final IAction<Event, Object> action,
-			final IWorkbenchLayout<Node> layout, final Stage stage) {
-		layout.setWorkbenchXYSize(1024, 768);
-		layout.registerToolBar(ToolbarPosition.NORTH);
-		layout.setStyle(StageStyle.UNDECORATED);
-		layout.setMenuEnabled(true);
-	}
+    @Override
+    public void handleInitialLayout(final IAction<Event, Object> action, final IWorkbenchLayout<Node> layout, final Stage stage) {
+        layout.setWorkbenchXYSize(1024, 768);
+        layout.registerToolBar(ToolbarPosition.NORTH);
+        layout.setStyle(StageStyle.UNDECORATED);
+        layout.setMenuEnabled(true);
+    }
 
-	@Override
-	public void postHandle(final FXComponentLayout layout) {
-		final JACPMenuBar menu = layout.getMenu();
-		final Menu menuFile = new Menu("File");
-		menuFile.getItems().addAll(this.createExitEntry(),
-				this.createInfoEntry());
-		menu.getMenus().addAll(menuFile);
-		
-		menu.registerWindowButtons();
+    @Override
+    public void postHandle(final FXComponentLayout layout) {
+        final JACPMenuBar menu = layout.getMenu();
+        final Menu menuFile = new Menu("File");
+        menuFile.getItems().addAll(this.createExitEntry(), this.createInfoEntry());
+        menu.getMenus().addAll(menuFile);
+        menu.registerWindowButtons();
+    }
 
-	}
+    private MenuItem createInfoEntry() {
+        final MenuItem info = new MenuItem("Info");
+        info.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                final VBox box = new VBox();
+                box.setId("HelpDialog");
+                box.setMaxSize(500, Region.USE_PREF_SIZE);
 
-	private MenuItem createInfoEntry() {
-		final MenuItem info = new MenuItem("Info");
-		info.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				final VBox box = new VBox();
-				box.setId("HelpDialog");
-				box.setMaxSize(500, Region.USE_PREF_SIZE);
+                final Button ok = new Button("OK");
+                HBox.setMargin(ok, new Insets(6, 5, 4, 2));
+                final HBox hboxButtons = new HBox();
+                hboxButtons.setAlignment(Pos.CENTER_RIGHT);
+                ok.setOnAction(new EventHandler<ActionEvent>() {
 
-				final Button ok = new Button("OK");
-				HBox.setMargin(ok, new Insets(6, 5, 4, 2));
-				final HBox hboxButtons = new HBox();
-				hboxButtons.setAlignment(Pos.CENTER_RIGHT);
-				ok.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent actionEvent) {
+                        JACPModalDialog.getInstance().hideModalMessage();
+                    }
+                });
 
-					@Override
-					public void handle(final ActionEvent actionEvent) {
-						JACPModalDialog.getInstance().hideModalMessage();
-					}
-				});
+                hboxButtons.getChildren().addAll(ok);
+                box.getChildren().addAll(ContactWorkbench.this.createTitle(), ContactWorkbench.this.createInfoText(), ContactWorkbench.this.createProjectLink(), hboxButtons);
+                JACPModalDialog.getInstance().showModalMessage(box);
 
-				hboxButtons.getChildren().addAll(ok);
-				box.getChildren().addAll(ContactWorkbench.this.createTitle(),
-						ContactWorkbench.this.createInfoText(),
-						ContactWorkbench.this.createProjectLink(), hboxButtons);
-				JACPModalDialog.getInstance().showModalMessage(box);
+            }
+        });
+        return info;
+    }
 
-			}
-		});
-		return info;
-	}
+    private MenuItem createExitEntry() {
+        final MenuItem itemExit = new MenuItem("Exit");
+        itemExit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                System.exit(0);
 
-	private MenuItem createExitEntry() {
-		final MenuItem itemExit = new MenuItem("Exit");
-		itemExit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				System.exit(0);
+            }
+        });
+        return itemExit;
+    }
 
-			}
-		});
-		return itemExit;
-	}
+    private Label createTitle() {
+        final Label title = new Label("JacpFX project demo");
+        title.setId("jacp-custom-title");
+        VBox.setMargin(title, new Insets(2, 2, 10, 2));
+        return title;
+    }
 
-	private Label createTitle() {
-		final Label title = new Label("JacpFX project demo");
-		title.setId("jacp-custom-title");
-		VBox.setMargin(title, new Insets(2, 2, 10, 2));
-		return title;
-	}
+    private Text createInfoText() {
+        return TextBuilder.create().layoutY(100).textOrigin(VPos.TOP).textAlignment(TextAlignment.JUSTIFY).wrappingWidth(400).text(this.message).fill(Color.WHITE).build();
+    }
 
-	private Text createInfoText() {
-		return TextBuilder.create().layoutY(100).textOrigin(VPos.TOP)
-				.textAlignment(TextAlignment.JUSTIFY).wrappingWidth(400)
-				.text(this.message).fill(Color.WHITE).build();
-	}
+    private Hyperlink createProjectLink() {
+        final Hyperlink link = new Hyperlink();
+        link.setText(this.projectURL);
+        link.setStyle("-fx-text-fill: white;");
+        link.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent event) {
+                final WebView wv = new WebView();
+                wv.getEngine().load(ContactWorkbench.this.projectURL);
+                final Scene scene = new Scene(wv, 1024, 768);
+                final Stage stage = new Stage();
+                stage.setTitle("JacpFX documentation");
+                stage.setScene(scene);
+                stage.show();
 
-	private Hyperlink createProjectLink() {
-		final Hyperlink link = new Hyperlink();
-		link.setText(this.projectURL);
-		link.setStyle("-fx-text-fill: white;");
-		link.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent event) {
-				final WebView wv = new WebView();
-				wv.getEngine().load(ContactWorkbench.this.projectURL);
-				final Scene scene = new Scene(wv, 1024, 768);
-				final Stage stage = new Stage();
-				stage.setTitle("JacpFX documentation");
-				stage.setScene(scene);
-				stage.show();
-			}
-		});
-		return link;
-	}
+            }
+        });
+        return link;
+    }
 
 }
