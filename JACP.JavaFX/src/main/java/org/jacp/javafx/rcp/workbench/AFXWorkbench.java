@@ -73,13 +73,14 @@ import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.CSSUtil;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.OSUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
  * components;
  * 
- * @author Andy Moncsek
+ * @author Andy Moncsek, Patrick Symmangk
  */
 public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Event>, Event, Object>, IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 
@@ -115,9 +116,8 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
                 // ((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
                 // ((FX2ComponentDelegator)componentDelegator).interrupt();
                 // ((FX2MessageDelegator)messageDelegator).interrupt();
-            	ShutdownThreadsHandler.shutdowAll();
-                Platform.exit();   
-             
+                ShutdownThreadsHandler.shutdowAll();
+                Platform.exit();
 
             }
         });
@@ -317,15 +317,20 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
      * @param stage
      *            javafx.stage.Stage
      */
-    
+
     // TODO: handle the custom decorator
     private void setBasicLayout(final Stage stage) {
         // the top most pane is a Stackpane
         this.absoluteRoot = new StackPane();
         this.baseLayoutPane = new BorderPane();
         this.stage = stage;
-        
-        stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
+
+        if (OSUtil.isMacOSX()) {
+            // OSX will always be DECORATED due to fullscreen option!
+            stage.initStyle(StageStyle.DECORATED);
+        } else {
+            stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
+        }
 
         this.initBaseLayout();
         this.initMenuLayout();
@@ -337,9 +342,6 @@ public abstract class AFXWorkbench implements IWorkbench<Node, EventHandler<Even
         // fetch current workbenchsize
         final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
         final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
-
-        this.initMenuLayout();
-        this.initToolbarLayout();
 
         this.absoluteRoot.getChildren().add(this.baseLayoutPane);
         this.absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);

@@ -22,6 +22,9 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
+
 public class CSSUtil {
 
     public class CSSConstants {
@@ -38,4 +41,9 @@ public class CSSUtil {
         public static final String ID_ROOT = "root";
         public static final String ID_ROOT_PANE = "root-pane";
     }
+
+    public static void setBackgroundColor(Node node, String color) {
+        node.setStyle("-fx-background-color:" + color);
+    }
+
 }
