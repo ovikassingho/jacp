@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [JACPOptionPaneBuilder.java]
+ * [JACPToolBar.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -97,6 +97,21 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
 
     }
+
+    /**
+     * Removes the.
+     *
+     * @param node the node
+     */
+    public void remove(final Node node) {
+        if (this.getOrientation() == Orientation.HORIZONTAL) {
+            this.leftButtons.getChildren().remove(node);
+            this.rightButtons.getChildren().remove(node);
+        } else {
+            this.topButtons.getChildren().remove(node);
+            this.bottomButtons.getChildren().remove(node);
+        }
+    }        
 
     /**
      * Adds the on end.
