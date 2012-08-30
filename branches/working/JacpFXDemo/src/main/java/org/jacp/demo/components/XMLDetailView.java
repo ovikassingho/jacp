@@ -17,11 +17,13 @@ import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.demo.common.GenderType;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
-@DeclarativeComponent(defaultExecutionTarget = "PdetailComponent", id = "id007", name = "XMlDetailView", active = true, viewLocation = "/fxml/UserDetail.fxml", resourceBundleLocation = "bundles.languageBundle", localeID="en_US")
+@DeclarativeComponent(defaultExecutionTarget = "PdetailComponent", id = GlobalConstants.ComponentConstants.COMPONENT_DETAIL_VIEW, name = "XMlDetailView", active = true, viewLocation = "/fxml/UserDetail.fxml", resourceBundleLocation = "bundles.languageBundle")
+// , localeID="en_US")
 public class XMLDetailView extends AFXComponent {
 	private final static Log LOGGER = LogFactory
 			.getLog(XMLDetailView.class);

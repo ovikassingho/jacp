@@ -17,12 +17,11 @@
  */
 package org.jacp.demo.callbacks;
 
-
-
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 
@@ -32,29 +31,29 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
-@CallbackComponent(id = "id005", name = "creatorCallback", active = false)
+@CallbackComponent(id = GlobalConstants.CallbackConstants.CALLBACK_CREATOR, name = "creatorCallback", active = false)
 public class CreatorCallback extends AStatelessCallbackComponent {
 
-	@Override
-	public Object handleAction(final IAction<Event, Object> action) {
-		if (action.getLastMessage() instanceof ContactDTO) {
-			// return all values to defined target
-			this.setHandleTarget("id01.id002");
-			waitAmount(100);
-			return ContentGenerator.createEntries((ContactDTO) action.getLastMessage());
-		}
-		return null;
-	}
-	/**
-	 * for demo purposes
-	 */
-	private void waitAmount(final int amount) {
-		try {
-			Thread.sleep(amount);
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
+    @Override
+    public Object handleAction(final IAction<Event, Object> action) {
+        if (action.getLastMessage() instanceof ContactDTO) {
+            // return all values to defined target
+            this.setHandleTarget(GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW));
+            waitAmount(100);
+            return ContentGenerator.createEntries((ContactDTO) action.getLastMessage());
+        }
+        return null;
+    }
+
+    /**
+     * for demo purposes
+     */
+    private void waitAmount(final int amount) {
+        try {
+            Thread.sleep(amount);
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

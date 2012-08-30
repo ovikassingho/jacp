@@ -36,71 +36,74 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import org.jacp.api.action.IActionListener;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.springframework.util.StringUtils;
+
 /**
  * Creates the "add new contact" dialog
  * @author Andy Moncsek
  *
  */
 public class ContactAddDialog {
-	final ContactTreeViewComponent parent;
-	public ContactAddDialog(final ContactTreeViewComponent parent) {
-		this.parent = parent;
-		createAddContactDialog();
-	}
-	private  void createAddContactDialog() {
-		final VBox box = new VBox();
-		box.setId("ProxyDialog");
-		box.setMaxSize(300, Region.USE_PREF_SIZE);
-		// the title
-		final Label title = new Label("Add new category");
-		title.setId("jacp-custom-title");
-		VBox.setMargin(title, new Insets(2, 2, 10, 2));
+    final ContactTreeViewComponent parent;
 
-		final HBox hboxInput = new HBox();
-		final Label nameLabel = new Label("category name:");
-		HBox.setMargin(nameLabel, new Insets(2));
-		final TextField nameInput = new TextField();
-		HBox.setMargin(nameInput, new Insets(0, 0, 0, 5));
-		HBox.setHgrow(nameInput, Priority.ALWAYS);
-		hboxInput.getChildren().addAll(nameLabel, nameInput);
+    public ContactAddDialog(final ContactTreeViewComponent parent) {
+        this.parent = parent;
+        createAddContactDialog();
+    }
 
-		final HBox hboxButtons = new HBox();
-		hboxButtons.setAlignment(Pos.CENTER_RIGHT);
-		final Button ok = new Button("OK");
-		HBox.setMargin(ok, new Insets(6, 5, 4, 2));
-		final Button cancel = new Button("Cancel");
-		HBox.setMargin(cancel, new Insets(6, 2, 4, 5));
-		cancel.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				JACPModalDialog.getInstance().hideModalMessage();
-			}
-		});
-		ok.setDefaultButton(true);
+    private void createAddContactDialog() {
+        final VBox box = new VBox();
+        box.setId("ProxyDialog");
+        box.setMaxSize(300, Region.USE_PREF_SIZE);
+        // the title
+        final Label title = new Label("Add new category");
+        title.setId(GlobalConstants.CSSConstants.ID_JACP_CUSTOM_TITLE);
+        VBox.setMargin(title, new Insets(2, 2, 10, 2));
 
-		ok.setOnAction(new EventHandler<ActionEvent>() {
+        final HBox hboxInput = new HBox();
+        final Label nameLabel = new Label("category name:");
+        HBox.setMargin(nameLabel, new Insets(2));
+        final TextField nameInput = new TextField();
+        HBox.setMargin(nameInput, new Insets(0, 0, 0, 5));
+        HBox.setHgrow(nameInput, Priority.ALWAYS);
+        hboxInput.getChildren().addAll(nameLabel, nameInput);
 
-			@Override
-			public void handle(final ActionEvent actionEvent) {
-				final String catName = nameInput.getText();
-				if (catName != null && StringUtils.hasText(catName)) {
-					// contacts
-					final Contact contact = new Contact();
-					contact.setFirstName(catName);
-					final IActionListener<EventHandler<Event>, Event, Object> listener = parent
-							.getActionListener(contact);
-					listener.performAction(actionEvent);
-					JACPModalDialog.getInstance().hideModalMessage();
-				}
-			}
-		});
-		hboxButtons.getChildren().addAll(ok, cancel);
+        final HBox hboxButtons = new HBox();
+        hboxButtons.setAlignment(Pos.CENTER_RIGHT);
+        final Button ok = new Button("OK");
+        HBox.setMargin(ok, new Insets(6, 5, 4, 2));
+        final Button cancel = new Button("Cancel");
+        HBox.setMargin(cancel, new Insets(6, 2, 4, 5));
+        cancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                JACPModalDialog.getInstance().hideModalMessage();
+            }
+        });
 
-		box.getChildren().addAll(title, hboxInput, hboxButtons);
-		JACPModalDialog.getInstance().showModalMessage(box);
-	}
+        ok.setDefaultButton(true);
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(final ActionEvent actionEvent) {
+                final String catName = nameInput.getText();
+                if (catName != null && StringUtils.hasText(catName)) {
+                    // contacts
+                    final Contact contact = new Contact();
+                    contact.setFirstName(catName);
+                    final IActionListener<EventHandler<Event>, Event, Object> listener = parent.getActionListener(contact);
+                    listener.performAction(actionEvent);
+                    JACPModalDialog.getInstance().hideModalMessage();
+                }
+            }
+        });
+
+        hboxButtons.getChildren().addAll(ok, cancel);
+        box.getChildren().addAll(title, hboxInput, hboxButtons);
+        JACPModalDialog.getInstance().showModalMessage(box);
+    }
 
 }

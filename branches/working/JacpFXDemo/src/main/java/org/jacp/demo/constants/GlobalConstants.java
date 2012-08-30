@@ -24,16 +24,40 @@ package org.jacp.demo.constants;
 
 public class GlobalConstants {
 
-	class perspectiveConstants {
-		public static final String DEMO_PERSPECTIVE = "id01";
-	}
+    public class PerspectiveConstants {
+        public static final String DEMO_PERSPECTIVE = "id01";
+    }
 
-	class ComponentConstants {
-		public static final String COMPONENT_TABLE_VIEW = "id002";
-	}
+    public class ComponentConstants {
+        public static final String COMPONENT_TREE_VIEW = "id001";
+        public static final String COMPONENT_TABLE_VIEW = "id002";
+        public static final String COMPONENT_CHART_VIEW = "id003";
+        public static final String COMPONENT_DETAIL_VIEW = "id007";
+    }
 
-	class CSSConstants {
-		public static final String CLASS_DARK_BORDER = "dark-border";
-	}
+    public class CallbackConstants {
+        public static final String CALLBACK_COORDINATOR = "id004";
+        public static final String CALLBACK_CREATOR = "id005";
+        public static final String CALLBACK_ANALYTICS = "id006";
+    }
+
+    public class CSSConstants {
+        // CLASSES
+        public static final String CLASS_DARK_BORDER = "dark-border";
+
+        // IDs
+        public static final String ID_JACP_CUSTOM_TITLE = "jacp-custom-title";
+    }
+
+    public static String cascade(String... ids) {
+        StringBuilder builder = new StringBuilder();
+        for (final String id : ids) {
+            if (builder.length() != 0) {
+                builder.append(".");
+            }
+            builder.append(id);
+        }
+        return builder.toString();
+    }
 
 }

@@ -23,83 +23,87 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
+/**
+ * @author Andy Moncsek, Patrick Symmangk
+ *
+ */
 public class ContactDTO {
-	private String parentName;
-	private int amount;
-	private ObservableList<Contact> contacts = FXCollections
-			.observableArrayList();
-	private List<XYChart.Data<String, Number>> seriesOneData;
-	private List<XYChart.Data<String, Number>> seriesTwoData;
-	private List<XYChart.Data<String, Number>> seriesThreeData;
-	private List<XYChart.Data<String, Number>> seriesFourData;
+    private String parentName;
+    private int amount;
+    private ObservableList<Contact> contacts = FXCollections.observableArrayList();
+    private List<XYChart.Data<String, Number>> seriesOneData;
+    private List<XYChart.Data<String, Number>> seriesTwoData;
+    private List<XYChart.Data<String, Number>> seriesThreeData;
+    private List<XYChart.Data<String, Number>> seriesFourData;
 
-	public ContactDTO(final String parentName, final int amount) {
-		this.parentName = parentName;
-		this.amount = amount;
-	}
+    public ContactDTO(final String parentName, final int amount) {
+        this.parentName = parentName;
+        this.amount = amount;
+    }
 
-	public ContactDTO() {
-		// TODO Auto-generated constructor stub
-	}
+    public ContactDTO() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public int getAmount() {
-		return this.amount;
-	}
+    public int getAmount() {
+        return this.amount;
+    }
 
-	public void setAmount(final int amount) {
-		this.amount = amount;
-	}
+    public void setAmount(final int amount) {
+        this.amount = amount;
+    }
 
-	public String getParentName() {
-		return this.parentName;
-	}
+    public String getParentName() {
+        return this.parentName;
+    }
 
-	public void setParentName(final String parentName) {
-		this.parentName = parentName;
-	}
+    public void setParentName(final String parentName) {
+        this.parentName = parentName;
+    }
 
-	public ObservableList<Contact> getContacts() {
-		return this.contacts;
-	}
+    public ObservableList<Contact> getContacts() {
+        return this.contacts;
+    }
 
-	public void setContacts(final ObservableList<Contact> contacts) {
-		this.contacts = contacts;
-	}
+    public void setContacts(final ObservableList<Contact> contacts) {
+        this.contacts = contacts;
+    }
 
-	public List<XYChart.Data<String, Number>> getSeriesOneData() {
-		return this.seriesOneData;
-	}
+    public List<XYChart.Data<String, Number>> getSeriesOneData() {
+        return this.seriesOneData;
+    }
 
-	public void setSeriesOneData(
-			final List<XYChart.Data<String, Number>> seriesOneData) {
-		this.seriesOneData = seriesOneData;
-	}
+    public void setSeriesOneData(final List<XYChart.Data<String, Number>> seriesOneData) {
+        this.seriesOneData = seriesOneData;
+    }
 
-	public List<XYChart.Data<String, Number>> getSeriesTwoData() {
-		return this.seriesTwoData;
-	}
+    public List<XYChart.Data<String, Number>> getSeriesTwoData() {
+        return this.seriesTwoData;
+    }
 
-	public void setSeriesTwoData(
-			final List<XYChart.Data<String, Number>> seriesTwoData) {
-		this.seriesTwoData = seriesTwoData;
-	}
+    public void setSeriesTwoData(final List<XYChart.Data<String, Number>> seriesTwoData) {
+        this.seriesTwoData = seriesTwoData;
+    }
 
-	public List<XYChart.Data<String, Number>> getSeriesThreeData() {
-		return this.seriesThreeData;
-	}
+    public List<XYChart.Data<String, Number>> getSeriesThreeData() {
+        return this.seriesThreeData;
+    }
 
-	public void setSeriesThreeData(
-			final List<XYChart.Data<String, Number>> seriesThreeData) {
-		this.seriesThreeData = seriesThreeData;
-	}
+    public void setSeriesThreeData(final List<XYChart.Data<String, Number>> seriesThreeData) {
+        this.seriesThreeData = seriesThreeData;
+    }
 
-	public List<XYChart.Data<String, Number>> getSeriesFourData() {
-		return this.seriesFourData;
-	}
+    public List<XYChart.Data<String, Number>> getSeriesFourData() {
+        return this.seriesFourData;
+    }
 
-	public void setSeriesFourData(
-			final List<XYChart.Data<String, Number>> seriesFourData) {
-		this.seriesFourData = seriesFourData;
-	}
+    public void setSeriesFourData(final List<XYChart.Data<String, Number>> seriesFourData) {
+        this.seriesFourData = seriesFourData;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactDTO [getAmount()=" + getAmount() + ", getParentName()=" + getParentName() + "]";
+    }
 
 }
