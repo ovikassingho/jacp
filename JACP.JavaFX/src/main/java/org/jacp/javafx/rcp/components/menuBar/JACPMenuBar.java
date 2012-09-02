@@ -38,8 +38,8 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import org.jacp.api.util.OS;
 import org.jacp.javafx.rcp.util.CSSUtil;
-import org.jacp.javafx.rcp.util.OSUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
@@ -92,7 +92,7 @@ public class JACPMenuBar extends HBox {
         this.rightBar = new ToolBar();
         this.mainBar = new MenuBar();
 
-        if (OSUtil.isMacOSX()) {
+        if (OS.MAC.equals(OS.getOS())) {
             mainBar.setUseSystemMenuBar(true);
             this.getChildren().addAll(mainBar);
         } else {

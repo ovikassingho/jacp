@@ -49,13 +49,11 @@ import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 
-import com.javafx.experiments.scenicview.ScenicView;
-
 /**
  * Workbench for contact demo with JacpFX (JavaFX2 and Spring). The workbench is
  * the root node of your JacpFX application.
  * 
- * @author Andy Moncsek
+ * @author Andy Moncsek, Patrick Symmangk
  * 
  */
 public class ContactWorkbench extends AFXWorkbench {
