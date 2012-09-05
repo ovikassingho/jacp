@@ -1,25 +1,30 @@
 #labels Documentation,JACP,JacpFXJavaFX2,Spring
+= JacpFX  documentation UNDER CONSTRUCTION (5. Sep. 2012) =
 
-= JacpFX  documentation =
-
-The JacpFX2 Project is an API to create *Rich Clients* in *MVC* style with *JavaFX 2*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; their handle() methods is always executed in a *separate thread*, so developers should have less effort on threading topics or be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. It is possible to inject “normal” spring beans to your components and to use the complete Spring stack in your JACP Application.
+The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component handle() method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
 
 <wiki:toc max_depth="3" />
 
 = The Application Launcher =
 
-The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX 2 and JACP  is started. The {{{postInit(Stage stage)}}} method gives you the ability to make custom changes on the JavaFX2 Stage instance. You have to define a {{{main}}} method on your own and start the JavaFX2 context by using the default {{{JavaFX2 Application}}} class.
+The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX and JacpFX  is started. The {{{postInit(Stage stage)}}} method gives you the ability to make custom changes on the JavaFX Stage instance. You have to define a {{{main}}} method on your own and start the JavaFX2 context by using the default {{{JavaFX2 Application}}} class.
 
 *Example Application Lauchner*
 {{{
-public class WorkbenchMain extends AFX2SpringLauncher {
-	public TestOneWorkbenchMain() {
+public class ApplicationLauncher extends AFXSpringLauncher {
+	public ApplicationLauncher() {
 		// define the spring xml
 		super("main.xml");
 	}
 
 	@Override
 	public void postInit(Stage stage) {
+               //add application icons
+               stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
+	       // add style sheet
+	       scene.getStylesheets().addAll(
+				ApplicationLauncher.class.getResource("/styles/style.css")
+						.toExternalForm());
 	}
 
 	/**
@@ -46,7 +51,7 @@ Below you find an example xml of a simple JACP project:
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-	<bean id="workbench" class="org.jacp.javafx2.rcp.workbench.Workbench">
+	<bean id="workbench" class="org.jacp.javafx.rcp.workbench.Workbench">
 		<property name="perspectives">
 			<list>
 				<ref bean="perspectiveOne" />
@@ -54,10 +59,7 @@ Below you find an example xml of a simple JACP project:
 		</property>
 	</bean>
 
-	<bean id="perspectiveOne" class="org.jacp.javafx2.rcp.perspectives.PerspectiveOne">
-		<property name="name" value="perspectiveOne" />
-		<property name="id" value="id01" />
-		<property name="active" value="true" />
+	<bean id="perspectiveOne" class="org.jacp.javafx.rcp.perspectives.PerspectiveOne">
 		<property name="subcomponents">
 			<list>
 				<ref bean="demoFX2ComponentOne" />
@@ -66,22 +68,15 @@ Below you find an example xml of a simple JACP project:
 		</property>
 	</bean>
 
-	<bean id="demoFX2ComponentOne" class="org.jacp.javafx2.rcp.components.DemoFX2ComponentOne">
-		<property name="name" value="demoFX2ComponentOne" />
-		<property name="active" value="true" />
-		<property name="id" value="id001" />
-		<property name="executionTarget" value="P0" />
-	</bean>
-	<bean id="demoFX2ComponentTwo" class="org.jacp.javafx2.rcp.components.DemoFX2ComponentTwo">
-		<property name="name" value="demoFX2ComponentTwo" />
-		<property name="active" value="false" />
-		<property name="id" value="id002" />
-		<property name="executionTarget" value="P1" />
-	</bean>
+	<bean id="demoFX2ComponentOne" class="org.jacp.javafx.rcp.components.DemoFX2ComponentOne"/>
+
+	<bean id="demoFX2ComponentTwo" class="org.jacp.javafx.rcp.components.DemoFX2ComponentTwo"/>
+
 
 </beans>
 }}}
-It is planned to move all meta-data configurations like {{{"id"}}}, {{{"name"}}},{{{"executionTarget"}}} and {{{"active"}}} to annotations in a later version. The references workbench->perspectives->components is likely to retain as xml configuration.
+
+All meta-data configurations like {{{"id"}}}, {{{"name"}}},{{{"executionTarget"}}} and so on are defined by annotations directly in the component.
 
 =Workbench=
 The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get access to the JavaFX2 “Stage” to define a custom window decorator and other things you like. Furthermore it groups all the defined perspectives in the spring - xml (one-to-many relation).  It consists of two methods you have to implement, the *{{{handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout,Stage stage)}}}* and *{{{postHandle(FX2ComponentLayout layout)}}}*. The {{{action}}}-object will always contain the default initialization message {{{“init”}}}, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  *{{{IWorkbenchLayout<Node> layout}}}* reference is your entry to configure following thinks on your application:
