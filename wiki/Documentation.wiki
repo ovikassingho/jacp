@@ -89,11 +89,11 @@ The *{{{postHandle(FXComponentLayout layout)}}}* method is executed when finishi
  * {{{JACPMenuBar menu = layout.getMenu()}}} will give you the reference to the main menu instance
  * {{{JACPToolBar toolbarNorth = layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}} returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
 
-A workbench can handle many perspectives, but only one can be displayed simultaneously. The current active perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided in the background, so a perspective provides the typical layout of your application, not the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic layout settings like declaring toolbars and a menu.
+A workbench can handle many perspectives, but only one can be displayed simultaneously (window mode is planned in later versions). The current active perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided to background. A perspective provides the typical layout of your application, *not* the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic settings like declaring toolbars and a menu and initial application size.
 
 *Example workbench*:
 {{{
-public class Workbench extends AFX2Workbench {
+public class Workbench extends AFXWorkbench {
 
 	@Override
 	public void handleInitialLayout(final IAction<Event, Object> action,
