@@ -24,7 +24,7 @@ package org.jacp.javafx.rcp.component;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.Semaphore;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -45,7 +45,7 @@ public abstract class ASubComponent extends AComponent implements
 
 	private volatile String parentId;
 
-	private volatile AtomicBoolean blocked = new AtomicBoolean(false);
+	private final Semaphore lock = new Semaphore(1); 
 
 	protected volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
@@ -98,7 +98,16 @@ public abstract class ASubComponent extends AComponent implements
 
 	@Override
 	public final boolean isBlocked() {
-		return this.blocked.get();
+		return lock.availablePermits()==0;
+	}
+	@Override
+	public final void  lock(){
+		lock.acquireUninterruptibly();
+	}
+	
+	@Override
+	public final void  release(){
+		lock.release();
 	}
 
 	@Override

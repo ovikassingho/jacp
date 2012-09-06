@@ -23,15 +23,12 @@
 package org.jacp.javafx.rcp.worker;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
-import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * Component worker to run instances of a stateless component in a worker
@@ -56,18 +53,19 @@ public class StateLessComponentRunWorker
 			throws Exception {
 		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(true));
-			while (comp.hasIncomingMessage()) {
-				final IAction<Event, Object> myAction = comp
-						.getNextIncomingMessage();
-				comp.setHandleTarget(myAction.getSourceId());
-				final Object value = comp.handle(myAction);
-				final String targetId = comp.getHandleTargetAndClear();
-				this.delegateReturnValue(comp, targetId, value, myAction);
+			comp.lock();
+			try {
+				while (comp.hasIncomingMessage()) {
+					final IAction<Event, Object> myAction = comp
+							.getNextIncomingMessage();
+					comp.setHandleTarget(myAction.getSourceId());
+					final Object value = comp.handle(myAction);
+					final String targetId = comp.getHandleTargetAndClear();
+					this.delegateReturnValue(comp, targetId, value, myAction);
+				}
+			} finally{
+				comp.release();
 			}
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		}
 		return comp;
 	}
@@ -84,11 +82,7 @@ public class StateLessComponentRunWorker
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if messages in
 			// queue
-		} finally {
-			// release lock
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
-		}
+		} 
 
 	}
 }
