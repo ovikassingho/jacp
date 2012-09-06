@@ -83,6 +83,16 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 	 * @return blocked state
 	 */
 	boolean isBlocked();
+	
+	/**
+	 * Lock Component for execution in thread.
+	 */
+	void lock();
+	
+	/**
+	 * Release lock after execution in thread.
+	 */
+	void release();
 
 	/**
 	 * returns the id of parent component
