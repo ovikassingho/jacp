@@ -95,7 +95,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 							this.targetComponents, this.layout,
 							handleReturnValue, previousContainer, currentTaget);
 
-					this.waitOnAppThreadLockRelease();
+					this.lock();
 
 				}
 			} catch (final IllegalStateException e) {
@@ -137,7 +137,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 							component, layout);
 				}
 				// release lock
-				FXComponentReplaceWorker.this.appThreadlock.add(true);
+				FXComponentReplaceWorker.this.release();
 			}
 		});
 	}

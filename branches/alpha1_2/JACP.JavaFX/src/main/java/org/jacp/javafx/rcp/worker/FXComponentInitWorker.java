@@ -121,7 +121,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			this.addComonent(validContainer, handleReturnValue,
 					this.component, this.action);
 
-			this.waitOnAppThreadLockRelease();
+			this.lock();
 
 			this.log("3.4.4.2.4: subcomponent handle init END: " + this.component.getName());
 			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
@@ -212,7 +212,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			public void run() {
 				FXComponentInitWorker.this.executeComponentViewPostHandle(handleReturnValue, myComponent, myAction);
 				FXComponentInitWorker.this.addComponentByType(validContainer, myComponent);
-				FXComponentInitWorker.this.appThreadlock.add(true);
+				FXComponentInitWorker.this.release();
 			}
 		});
 

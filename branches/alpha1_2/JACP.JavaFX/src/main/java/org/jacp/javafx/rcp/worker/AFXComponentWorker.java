@@ -315,12 +315,16 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		}
 	}
 	
-	protected void waitOnAppThreadLockRelease() {
+	protected void lock() {
 		try {
 			this.appThreadlock.take();
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected void release() {
+		this.appThreadlock.add(true);
 	}
 	public String getComponentName() {
 		return componentName;
