@@ -23,13 +23,13 @@
 package org.jacp.javafx.rcp.worker;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -41,7 +41,6 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
@@ -105,27 +104,32 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	@Override
 	protected AFXComponent call() throws Exception {
 		synchronized (this.component) {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
-					new AtomicBoolean(true));
-			this.log("3.4.4.2.1: subcomponent handle init START: " + this.component.getName());
+			this.component.lock();
+			try {
+				this.log("3.4.4.2.1: subcomponent handle init START: "
+						+ this.component.getName());
+				final Node handleReturnValue = this.prepareAndRunHandleMethod(
+						this.component, this.action);
+				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
+						+ this.component.getName());
+				// expect always local target id
+				this.component.setExecutionTarget(FXUtil
+						.getTargetComponentId(this.component
+								.getExecutionTarget()));
+				final Node validContainer = this.getValidContainerById(
+						this.targetComponents,
+						this.component.getExecutionTarget());
+				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
+						+ this.component.getName());
+				this.addComonent(validContainer, handleReturnValue,
+						this.component, this.action);
+				this.lock();
+				this.log("3.4.4.2.4: subcomponent handle init END: "
+						+ this.component.getName());
+			}finally{
+				this.component.release();
+			}
 
-			final Node handleReturnValue = this.prepareAndRunHandleMethod(this.component, this.action);
-
-			this.log("3.4.4.2.2: subcomponent handle init get valid container: " + this.component.getName());
-			// expect always local target id
-			this.component.setExecutionTarget(FXUtil.getTargetComponentId(this.component.getExecutionTarget()));
-			final Node validContainer = this.getValidContainerById(this.targetComponents,
-					this.component.getExecutionTarget());
-			this.log("3.4.4.2.3: subcomponent handle init add component by type: " + this.component.getName());
-			
-			this.addComonent(validContainer, handleReturnValue,
-					this.component, this.action);
-
-			this.lock();
-
-			this.log("3.4.4.2.4: subcomponent handle init END: " + this.component.getName());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
-					new AtomicBoolean(false));
 			return this.component;
 		}
 	}
@@ -244,10 +248,10 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 				// messages in
 				// queue
 				e.printStackTrace();
+			} finally{
+				FXUtil.setPrivateMemberValue(Checkable.class, this.component, FXUtil.ACOMPONENT_STARTED, true);
 			}
-			FXUtil.setPrivateMemberValue(Checkable.class, this.component, FXUtil.ACOMPONENT_STARTED, true);
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component, FXUtil.ACOMPONENT_BLOCKED,
-					new AtomicBoolean(false));
+			
 		}
 	}
 

@@ -23,7 +23,6 @@
 package org.jacp.javafx.rcp.worker;
 
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,7 +53,8 @@ import org.jacp.javafx.rcp.util.FXUtil;
  */
 public abstract class AFXComponentWorker<T> extends Task<T> {
 	
-	protected volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(1);
+
+	private final Object lock = new Object();
 	
 	private final String componentName;
 	
@@ -315,16 +315,16 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		}
 	}
 	
-	protected void lock() {
-		try {
-			this.appThreadlock.take();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
+	protected void lock() throws InterruptedException {
+		synchronized (lock) {
+			lock.wait();
 		}
 	}
 	
 	protected void release() {
-		this.appThreadlock.add(true);
+		synchronized (lock) {
+			lock.notify();
+		}
 	}
 	public String getComponentName() {
 		return componentName;
