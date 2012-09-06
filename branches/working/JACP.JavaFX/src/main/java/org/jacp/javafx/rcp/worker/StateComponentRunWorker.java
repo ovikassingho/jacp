@@ -24,7 +24,6 @@ package org.jacp.javafx.rcp.worker;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -32,8 +31,6 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * this class handles running stateful background components
@@ -60,20 +57,21 @@ public class StateComponentRunWorker
 			throws Exception {
 		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
 		synchronized (comp) {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(true));
-			while (comp.hasIncomingMessage()) {
-				final IAction<Event, Object> myAction = comp
-						.getNextIncomingMessage();
-				comp.setHandleTarget(myAction.getSourceId());
-				final String targetCurrent = comp.getExecutionTarget();
-				final Object value = comp.handle(myAction);
-				final String targetId = comp.getHandleTargetAndClear();
-				this.delegateReturnValue(comp, targetId, value, myAction);
-				this.checkAndHandleTargetChange(comp, targetCurrent);
+			comp.lock();
+			try {
+				while (comp.hasIncomingMessage()) {
+					final IAction<Event, Object> myAction = comp
+							.getNextIncomingMessage();
+					comp.setHandleTarget(myAction.getSourceId());
+					final String targetCurrent = comp.getExecutionTarget();
+					final Object value = comp.handle(myAction);
+					final String targetId = comp.getHandleTargetAndClear();
+					this.delegateReturnValue(comp, targetId, value, myAction);
+					this.checkAndHandleTargetChange(comp, targetCurrent);
+				}
+			} finally{
+				comp.release();
 			}
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
 		}
 		return comp;
 	}
@@ -103,10 +101,6 @@ public class StateComponentRunWorker
 		} catch (final ExecutionException e) {
 			// FIXME: Handle Exceptions the right way
 			 e.printStackTrace();
-		} finally {
-			// release lock
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
-		}
+		} 
 	}
 }

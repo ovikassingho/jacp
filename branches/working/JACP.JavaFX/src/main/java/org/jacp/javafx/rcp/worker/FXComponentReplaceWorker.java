@@ -25,7 +25,6 @@ package org.jacp.javafx.rcp.worker;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -36,7 +35,6 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil;
 
@@ -71,9 +69,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 	protected AFXComponent call() throws Exception {
 		synchronized (this.component) {
 			try {
-				FXUtil.setPrivateMemberValue(ASubComponent.class,
-						this.component, FXUtil.ACOMPONENT_BLOCKED,
-						new AtomicBoolean(true));
+				this.component.lock();
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
@@ -95,7 +91,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 							this.targetComponents, this.layout,
 							handleReturnValue, previousContainer, currentTaget);
 
-					this.waitOnAppThreadLockRelease();
+					this.lock();
 
 				}
 			} catch (final IllegalStateException e) {
@@ -104,9 +100,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread");
 				}
 			} finally {
-				FXUtil.setPrivateMemberValue(ASubComponent.class,
-						this.component, FXUtil.ACOMPONENT_BLOCKED,
-						new AtomicBoolean(false));
+				this.component.release();
 			}
 
 		}
@@ -124,20 +118,26 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
-				if (component.isActive()) {
-					FXComponentReplaceWorker.this.publishComponentValue(
-							component, myAction, targetComponents, layout,
-							handleReturnValue, previousContainer, currentTaget);
-				} else {
-					// unregister component
-					FXComponentReplaceWorker.this.removeComponentValue(
-							component, previousContainer, layout);
-					// run teardown
-					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
-							component, layout);
+				try {
+					if (component.isActive()) {
+						FXComponentReplaceWorker.this.publishComponentValue(
+								component, myAction, targetComponents, layout,
+								handleReturnValue, previousContainer, currentTaget);
+					} else {
+						// unregister component
+						FXComponentReplaceWorker.this.removeComponentValue(
+								component, previousContainer, layout);
+						// run teardown
+						FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+								component, layout);
+					}
+					// release lock
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally{
+					FXComponentReplaceWorker.this.release();
 				}
-				// release lock
-				FXComponentReplaceWorker.this.appThreadlock.add(true);
+				
 			}
 		});
 	}
@@ -224,9 +224,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 	@Override
 	protected final void done() {
 		try {
-			final AFXComponent component = this.get();
-			FXUtil.setPrivateMemberValue(ASubComponent.class, component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
+			this.get();
 		} catch (final InterruptedException e) {
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if
@@ -244,10 +242,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			// TODO add to error queue and restart thread if
 			// messages in
 			// queue
-		} finally {
-			FXUtil.setPrivateMemberValue(ASubComponent.class, this.component,
-					FXUtil.ACOMPONENT_BLOCKED, new AtomicBoolean(false));
-		}
+		} 
 
 	}
 

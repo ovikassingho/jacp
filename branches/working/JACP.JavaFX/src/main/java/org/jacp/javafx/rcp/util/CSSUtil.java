@@ -23,7 +23,6 @@
 package org.jacp.javafx.rcp.util;
 
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
 
 public class CSSUtil {
 
