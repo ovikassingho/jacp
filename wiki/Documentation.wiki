@@ -76,18 +76,18 @@ Below you find an example xml of a simple JACP project:
 </beans>
 }}}
 
-All meta-data configurations like *{{{"id"}}}, {{{"name"}}},{{{"executionTarget"}}}* and so on are defined by *annotations* directly in the component.
+All meta-data configurations like *{{{"id"}}}, {{{"name"}}},{{{"executionTarget"}}}* and so on are defined by *annotations* directly in the component (see annotations overview).
 
 =Workbench=
-The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX “Stage”. Furthermore a workbench groups all defined perspectives in the spring - xml (one-to-many relation).  He consists of two methods you have to implement, the *{{{handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout, Stage stage)}}}* and *{{{postHandle(FXComponentLayout layout)}}}*. The {{{action}}}-object will always contain the default initialization message {{{“init”}}}, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  *{{{IWorkbenchLayout<Node> layout}}}* reference is your entry to configure following thinks on your application:
+The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX “Stage”. Furthermore a workbench groups all defined perspectives in the spring - xml (one-to-many relation).  He consists of two methods you have to implement, the *{{{handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout, Stage stage)}}}* and *{{{postHandle(FXComponentLayout layout)}}}*. The {{{action}}}-object in handleInitialLayout will always contain the default initialization message {{{“init”}}}, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  *{{{IWorkbenchLayout<Node> layout}}}* reference is your entry to configure following thinks on your application:
  * *{{{WorkbenchXYSize(x,y):}}}* defines the initial workbench size
- * *{{{MenuEnabled(boolean):}}}* enable main menu if needed, the entries are defined later; here you only declare if a menu is activated
+ * *{{{MenuEnabled(boolean):}}}* enable the main menu if needed, the entries are defined later
  * *{{{Style(StageStyle):}}}* here you define the default {{{StageStyle}}} (decorated/undecorated), on OSX only decorated is available
  * *{{{registerToolBar(ToolbarPosition):}}}* enable tool bars in NORTH,SOUTH, EAST, WEST; those registered toolbars are accessible in all perspective and components, but you are free to define custom toolbars in your component which are not accessible for all others.
 
-The *{{{postHandle(FXComponentLayout layout)}}}* method is executed when finishing “handleInitialLayout” and gives you access to the initialized menu and tool bars (if you defined them). 
- * {{{JACPMenuBar menu = layout.getMenu()}}} will give you the reference to the main menu instance
- * {{{JACPToolBar toolbarNorth = layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}} returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
+The *{{{postHandle(FXComponentLayout layout)}}}* method is executed when “handleInitialLayout” execution is finished and gives you access to the initialized menu and tool bars (if you defined them). 
+ * *{{{JACPMenuBar menu = layout.getMenu()}}}* will give you the reference to the main menu instance
+ * *{{{JACPToolBar toolbarNorth = layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}}* returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
 
 A workbench can handle many perspectives, but only one can be displayed simultaneously (window mode is planned in later versions). The current active perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hided to background. A perspective provides the typical layout of your application, *not* the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic settings like declaring toolbars and a menu and initial application size.
 
@@ -401,3 +401,7 @@ JACPModalDialog.getInstance().hideModalMessage();
 
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Custom_OptionPane.PNG"/>
+
+= JACPToolBar and JACPMenuBar =
+
+= Annotations overview =
