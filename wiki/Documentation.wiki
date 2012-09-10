@@ -149,21 +149,20 @@ Since JacpFX 1.1 you can declare Perspectives declarative (with FXML) and pragma
 
 === Pragmatic Perspectives ===
 This type is defined by the {{{@Perspective}}} annotation with following attributes:
- * id, the Perspective id
- * name, the Perspective name
- * resourceBundleLocation, the bundle location for localisation
- * localeID, the default locale
+ * *id*, the Perspective id
+ * *name*, the Perspective name
+ * *resourceBundleLocation*, the bundle location for localisation (optional)
+ * *localeID*, the default locale (optional)
 
 
 *Example Perspective*
 {{{
-@Perspective(id = "id001", name = "perspectiveOne", resourceBundleLocation = "bundles.languageBundle")
+@Perspective(id = "id001", name = "perspectiveOne", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class PerspectiveOne extends AFXPerspective {
-
  
         @Override
         public void handlePerspective(IAction<Event, Object> action,
-                        FX2PerspectiveLayout perspectiveLayout) {
+                        PerspectiveLayout perspectiveLayout) {
 			// declare the root
 			SplitPane root = new SplitPane();
 		
@@ -182,9 +181,107 @@ public class PerspectiveOne extends AFXPerspective {
 
 		} 
 
+        @OnStart
+	public void onStartPerspective(final FXComponentLayout layout,
+			final ResourceBundle resourceBundle) {
+		// define toolbars and menu entries
+	}
+
+	@OnTearDown
+	public void onTearDownPerspective(final FXComponentLayout arg0) {
+		// remove toolbars and menu entries when close perspective
+
+	}
+
 }
 
 }}}
+
+=== Declerative Perspectives ===
+This type is also defined by the {{{@Perspective}}} annotation and extends the default perspective annotation attributes with:
+ * *viewLocation*, the URI to the FXML file
+
+
+
+*Example (Declarative) Perspective*
+{{{
+@Perspective(id = "id02", name = "perspectiveOne", viewLocation = "/fxml/perspectiveOne.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+public class PerspectiveOne extends AFXPerspective { 
+        @FXML
+	private GridPane gridPaneLeft;
+	@FXML
+	private GridPane gridPaneRight;
+
+	@Override
+	public void handlePerspective(final IAction<Event, Object> action,
+			final PerspectiveLayout perspectiveLayout) {
+		if (action.getLastMessage().equals(MessageUtil.INIT)) {
+			// register left panel
+			perspectiveLayout.registerTargetLayoutComponent("Pleft",
+					this.gridPaneLeft);
+			// register main panel
+			perspectiveLayout.registerTargetLayoutComponent("PMain",
+					this.gridPaneRight);
+		}
+
+	}
+
+	@OnStart
+	public void onStartPerspective(final FXComponentLayout layout,
+			final ResourceBundle resourceBundle) {
+		// define toolbars and menu entries
+	}
+
+	@OnTearDown
+	public void onTearDownPerspective(final FXComponentLayout arg0) {
+		// remove toolbars and menu entries when close perspective
+
+	}
+
+}
+
+}}}
+
+* Example FXML *
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.perspective.AFXPerspective">
+  <center>
+    <SplitPane id="splitPaneHorizontal1" cache="true" dividerPositions="0.20" minHeight="100.0" minWidth="200.0" styleClass="hsplitpane">
+      <items>
+        <GridPane fx:id="gridPaneLeft">
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+          <GridPane fx:id="gridPaneRight">
+	      <columnConstraints>
+	          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+	      </columnConstraints>
+	      <rowConstraints>
+	        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+	      </rowConstraints>
+	  </GridPane>
+      </items>
+    </SplitPane>
+  </center>
+</BorderPane>
+
+}}}
+
+=== the fx:controller declaration ===
+TODO
+
 
 = Components = 
 Components are the place where you put all the complex UI code, service calls and long running tasks in. All components have an input and an output. The input is always an {{{Action}}}-object and the output is either a view (in case you use an UI component) or any type of object. Currently you can use three types of components: {{{AFX2Components}}} are UI components, {{{ACallback- and AStatelessCallbackComponents}}} are non-UI components. All components in common is, that they have a {{{“handle”}}} method that is *not running on FX application thread*, so the execution of this block of code will not stop the execution of the rest of your UI. Also all component types can be activated and disabled.
@@ -407,3 +504,5 @@ JACPModalDialog.getInstance().hideModalMessage();
 = JACPToolBar and JACPMenuBar =
 
 = Annotations overview =
+
+= localisation and internationalization =
