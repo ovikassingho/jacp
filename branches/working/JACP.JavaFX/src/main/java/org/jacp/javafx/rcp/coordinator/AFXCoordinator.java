@@ -22,7 +22,6 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
@@ -65,14 +64,12 @@ public abstract class AFXCoordinator extends Thread implements
 				logger.info("queue in AFXCoordinator interrupted");
 				break;
 			}
-			final Map<String, Object> myMessages = action.getMessageList();
-			for (final String targetId : myMessages.keySet()) {
-				this.log(" handle message to: " + targetId);
-				try {
-					this.handleMessage(targetId, action);
-				} catch (UnsupportedOperationException e) {
-					e.printStackTrace();
-				}
+			this.log(" handle message to: " + action.getTargetId());
+			try {
+				this.handleMessage(action.getTargetId(), action);
+			} catch (UnsupportedOperationException e) {
+				logger.info("UnsupportedOperationException in AFXCoordinator");
+				e.printStackTrace();
 			}
 			this.log(" observer thread DONE");
 		}

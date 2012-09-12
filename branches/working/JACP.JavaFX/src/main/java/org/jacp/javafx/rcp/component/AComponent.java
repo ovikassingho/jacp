@@ -60,7 +60,7 @@ public class AComponent extends Checkable implements
 	@Override
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
 			final String targetId, final Object message) {
-		return new FXActionListener(new FXAction(this.id, targetId, message),
+		return new FXActionListener(new FXAction(this.id, targetId, message, null),
 				this.globalMessageQueue);
 	}
 

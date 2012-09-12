@@ -174,7 +174,7 @@ public abstract class AFXWorkbench
 					public final void run() {
 						AFXWorkbench.this.componentHandler.initComponent(
 								new FXAction(perspective.getId(), perspective
-										.getId(), "init"), perspective);
+										.getId(), "init", null), perspective);
 					}
 				}); // FX2 UTILS END
 			}
@@ -346,7 +346,7 @@ public abstract class AFXWorkbench
 	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
 			final String targetId, final Object message) {
 		return new FXActionListener(
-				new FXAction("workbench", targetId, message),
+				new FXAction("workbench", targetId, message, null),
 				this.perspectiveCoordinator.getMessageQueue());
 	}
 

@@ -70,7 +70,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 	 * @param rootNode
 	 *            the root node
 	 */
-	public static void initDialog(final Node rootNode) {
+	public synchronized static void initDialog(final Node rootNode) {
 		if (JACPModalDialog.instance == null) {
 			JACPModalDialog.root = rootNode;
 			JACPModalDialog.instance = new JACPModalDialog();

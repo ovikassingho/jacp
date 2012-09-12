@@ -96,9 +96,7 @@ public class FXMessageDelegator extends Thread implements
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
-			final IAction<Event, Object> actionClone = FXUtil.getValidAction(
-					action, target, action.getMessageList().get(target));
-			this.handleComponentHit(target, actionClone, perspective);
+			this.handleComponentHit(target, action, perspective);
 		} // End if
 		else {
 			// try to find correct perspective by searching in all perspectives;

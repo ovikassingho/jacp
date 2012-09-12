@@ -58,9 +58,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
-			final IAction<Event, Object> actionClone = FXUtil.getValidAction(
-					action, target, action.getMessageList().get(target));
-			this.handleComponentHit(target, actionClone, perspective);
+			this.handleComponentHit(target, action, perspective);
 		} // End if
 		else {
 			// TODO implement missing perspective handling!!
