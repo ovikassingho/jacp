@@ -97,7 +97,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			} catch (final IllegalStateException e) {
 				if (e.getMessage().contains("Not on FX application thread")) {
 					throw new UnsupportedOperationException(
-							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread");
+							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",e);
 				}
 			} finally {
 				this.component.release();
