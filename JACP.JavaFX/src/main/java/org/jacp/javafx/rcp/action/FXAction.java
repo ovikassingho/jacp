@@ -22,9 +22,6 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.action;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
@@ -37,40 +34,45 @@ import org.jacp.api.action.IAction;
  */
 public final class FXAction implements IAction<Event, Object> {
 
-	private final Map<String, Object> messages = new HashMap<String, Object>();
 	private Object message;
 	private final String sourceId;
-	private Event event;
+	private final Event event;
 	private String target;
 
 	public FXAction(final String sourceId) {
 		this.sourceId = sourceId;
+		this.event = null;
+	}
+	
+	public FXAction(final String sourceId,final Event event) {
+		this.sourceId = sourceId;
+		this.event = event;
 	}
 
 	public FXAction(final String sourceId, final Object message) {
 		this.sourceId = sourceId;
 		this.setMessage(message);
+		this.event = null;
 	}
 
 	public FXAction(final String sourceId, final String targetId,
-			final Object message) {
+			final Object message,final Event event) {
 		this.sourceId = sourceId;
 		this.target = targetId;
+		this.event = event;
 		this.setMessage(message);
 	}
-
+	
 	@Override
 	public void setMessage(final Object message) {
 		this.message = message;
 		this.target = this.target != null ? this.target : this.getSourceId();
-		this.getMessageList().put(this.target, message);
 	}
 
 	@Override
 	public void addMessage(final String targetId, final Object message) {
 		this.target = targetId;
 		this.message = message;
-		this.getMessageList().put(this.target, message);
 	}
 
 	@Override
@@ -79,18 +81,8 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
 	@Override
-	public Map<String, Object> getMessageList() {
-		return this.messages;
-	}
-
-	@Override
 	public String getSourceId() {
 		return this.sourceId;
-	}
-
-	@Override
-	public void setActionEvent(final Event event) {
-		this.event = event;
 	}
 
 	@Override
@@ -100,9 +92,7 @@ public final class FXAction implements IAction<Event, Object> {
 
 	@Override
 	public IAction<Event, Object> clone() {
-		final IAction<Event, Object> clone = new FXAction(this.sourceId);
-		clone.setActionEvent(this.event);
-		return clone;
+		return new FXAction(this.sourceId,this.target, this.message, this.event);
 	}
 
 	@Override

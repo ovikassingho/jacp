@@ -194,8 +194,12 @@ public class FXUtil {
 	}
 	
 	private static Object findByClass(Class<?> key, Object[] values) {
+		if(key==null) return null;
 		for(Object val:values) {
-			if(val!=null && val.getClass().getGenericSuperclass().equals(key) || val.getClass().equals(key)) return val;
+			if(val==null) return null;
+			final Class<?> clazz = val.getClass();
+			if(clazz==null) return null;
+			if(clazz.getGenericSuperclass().equals(key) || clazz.equals(key)) return val;
 		}
 		return null;
 	}

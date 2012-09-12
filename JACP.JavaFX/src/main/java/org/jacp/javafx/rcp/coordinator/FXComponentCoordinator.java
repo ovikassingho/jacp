@@ -97,17 +97,15 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	private void handleComponentHit(final String targetId,
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final IAction<Event, Object> actionClone = FXUtil.getValidAction(
-				action, targetId, action.getMessageList().get(targetId));
 		if (component.isActive()) {
 			this.log(" //1.1.1.1// component HIT handle ACTIVE: "
 					+ action.getTargetId());
-			this.handleActive(component, actionClone);
+			this.handleActive(component, action);
 		} // End if
 		else {
 			this.log(" //1.1.1.1// component HIT handle IN-ACTIVE: "
 					+ action.getTargetId());
-			this.handleInActive(component, actionClone);
+			this.handleInActive(component, action);
 		} // End else
 	}
 

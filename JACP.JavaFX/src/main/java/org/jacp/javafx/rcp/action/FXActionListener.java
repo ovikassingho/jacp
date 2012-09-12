@@ -39,7 +39,7 @@ import org.jacp.api.action.IActionListener;
  */
 public class FXActionListener implements EventHandler<Event>,
 		IActionListener<EventHandler<Event>, Event, Object> {
-	private IAction<Event, Object> action;
+	private final IAction<Event, Object> action;
 	private final BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
 	public FXActionListener(final IAction<Event, Object> action,
@@ -51,11 +51,6 @@ public class FXActionListener implements EventHandler<Event>,
 	@Override
 	public void notifyComponents(final IAction<Event, Object> action) {
 		this.globalMessageQueue.add(action);
-	}
-
-	@Override
-	public void setAction(final IAction<Event, Object> action) {
-		this.action = action;
 	}
 
 	@Override
@@ -71,8 +66,7 @@ public class FXActionListener implements EventHandler<Event>,
 
 	@Override
 	public void handle(final Event t) {
-		this.action.setActionEvent(t);
-		this.notifyComponents(this.action);
+		this.notifyComponents(new FXAction(action.getSourceId(), action.getTargetId(), action.getLastMessage(), t));
 	}
 
 	@Override

@@ -265,7 +265,7 @@ public abstract class AFXPerspective extends AComponent implements
 				this.log("3.4.4.2: subcomponent init with default action");
 				this.componentHandler.initComponent(
 						new FXAction(component.getId(), component.getId(),
-								"init"), component);
+								"init", null), component);
 			} // if END
 
 		} // for END
