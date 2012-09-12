@@ -25,6 +25,7 @@ package org.jacp.javafx.rcp.util;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Logger;
 
 /**
  * Util class to register all Thread and executors in JACPFX, needed to shutdown all Threads and Executors on application close.
@@ -34,7 +35,7 @@ import java.util.concurrent.ExecutorService;
 public final class ShutdownThreadsHandler{
 	private static  List<Thread> registeredThreads = new CopyOnWriteArrayList<Thread>();
 	private static  List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<ExecutorService>();
-	
+	private static final Logger logger = Logger.getLogger("ShutdownThreadsHandler");
 	/**
 	 * Register a Thread.
 	 * @param t
@@ -53,7 +54,8 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown all registered Threads.
 	 */
 	public static final void shutdownThreads() {
-		for(Thread t:registeredThreads) {
+		for(final Thread t:registeredThreads) {
+			logger.info("shutdown thread: "+t);
 			t.interrupt();
 		}
 	}
@@ -61,7 +63,7 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown all registered Executors.
 	 */
 	public static final void shutDownExecutors() {
-		for(ExecutorService e: registeredExecutors) {
+		for(final ExecutorService e: registeredExecutors) {
 			e.shutdown();
 		}
 	}
@@ -70,7 +72,8 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown registered Threads and Executors.
 	 */
 	public static final void shutdowAll() {
-		for(Thread t:registeredThreads) {
+		for(final Thread t:registeredThreads) {
+			logger.info("shutdown thread: "+t);
 			t.interrupt();
 		}
 		for(ExecutorService e: registeredExecutors) {
