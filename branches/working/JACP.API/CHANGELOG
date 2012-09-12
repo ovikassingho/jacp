@@ -1,3 +1,4 @@
+12. Sep. 2012 - amo - Reduced IAction interface to ensure thread safety
 26. Jun. 2012 - amo - update getActionListener to support target id and message
 30. Mai. 2012 - amo - added resourceBundle and locale interfaces to declarative components
 30. Mai. 2012 - amo - remove IDeclarative view, add UIType enum

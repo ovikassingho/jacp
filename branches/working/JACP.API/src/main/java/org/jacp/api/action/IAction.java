@@ -23,7 +23,6 @@
 
 package org.jacp.api.action;
 
-import java.util.Map;
 
 /**
  * Represents an action used by specific listener. An Action targets a component
@@ -60,12 +59,6 @@ public interface IAction<A, M> extends Cloneable {
 	 */
 	M getLastMessage();
 
-	/**
-	 * Returns the message list with target id's.
-	 * 
-	 * @return a map where key is the target id and M the message
-	 */
-	Map<String, M> getMessageList();
 
 	/**
 	 * Get the caller id.
@@ -73,13 +66,6 @@ public interface IAction<A, M> extends Cloneable {
 	 * @return the sorce id
 	 */
 	String getSourceId();
-
-	/**
-	 * Set implementation specific event.
-	 * 
-	 * @param event , the fired event initialize the action
-	 */
-	void setActionEvent(final A event);
 
 	/**
 	 * Get implementation specific action event.

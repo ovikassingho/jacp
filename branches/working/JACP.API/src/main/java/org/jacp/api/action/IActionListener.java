@@ -44,13 +44,6 @@ public interface IActionListener<L, A, M> {
 	void notifyComponents(final IAction<A, M> action);
 
 	/**
-	 * Set Action to listener.
-	 * 
-	 * @param action ;  the action fired by components
-	 */
-	void setAction(final IAction<A, M> action);
-
-	/**
 	 * Returns the action.
 	 * 
 	 * @return an action instance
