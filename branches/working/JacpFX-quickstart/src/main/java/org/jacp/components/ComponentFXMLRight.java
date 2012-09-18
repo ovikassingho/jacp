@@ -44,7 +44,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 /**
  * A simple JacpFX FXML UI component
  * 
- * @author Andy Moncsek
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 
  */
 @DeclarativeComponent(defaultExecutionTarget = "PMain", id = "id002", name = "componentRight", active = true, viewLocation = "/fxml/ComponentRightFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
@@ -101,6 +101,7 @@ public class ComponentFXMLRight extends AFXComponent {
 	/**
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
+	 * @param resourceBundle
 	 */
 	public void onStartComponent(final FXComponentLayout arg0,
 			final ResourceBundle resourceBundle) {

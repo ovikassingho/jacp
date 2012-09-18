@@ -29,9 +29,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBuilder;
 import javafx.scene.control.Label;
+import javafx.scene.control.LabelBuilder;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFieldBuilder;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.AnchorPaneBuilder;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -44,6 +48,11 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 @Component(defaultExecutionTarget = "PTop", id = "id006", name = "componentTop", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+/**
+ * Programmatic TopComponent
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
+ *
+ */
 public class ComponentTop extends AFXComponent {
 	private AnchorPane pane;
 	private TextField textField;
@@ -102,32 +111,28 @@ public class ComponentTop extends AFXComponent {
 	 * @return
 	 */
 	private Node createUI() {
-		final AnchorPane anchor = new AnchorPane();
-		anchor.getStyleClass().add("roundedAnchorPaneFX");
-		final Label heading = new Label(this.getResourceBundle().getString(
-				"javafxCompTop"));
-		heading.setAlignment(Pos.CENTER);
-		heading.getStyleClass().add("propLabel");
-		anchor.getChildren().add(heading);
+		final AnchorPane anchor = AnchorPaneBuilder.create()
+				.styleClass("roundedAnchorPaneFX").build();
+		final Label heading = LabelBuilder.create()
+				.text(this.getResourceBundle().getString("javafxCompTop"))
+				.alignment(Pos.CENTER).styleClass("propLabel").build();
+		final Button top = ButtonBuilder.create()
+				.text(this.getResourceBundle().getString("send")).layoutX(120)
+				.onMouseClicked(this.getMessage()).alignment(Pos.CENTER)
+				.build();
+		this.textField = TextFieldBuilder.create().text("")
+				.styleClass("propTextField").alignment(Pos.CENTER).build();
+
+		AnchorPane.setTopAnchor(top, 230.0);
+		AnchorPane.setRightAnchor(top, 25.0);
 
 		AnchorPane.setRightAnchor(heading, 50.0);
 		AnchorPane.setTopAnchor(heading, 10.0);
 
-		final Button top = new Button(this.getResourceBundle()
-				.getString("send"));
-		top.setLayoutY(120);
-		top.setOnMouseClicked(this.getMessage());
-		top.setAlignment(Pos.CENTER);
-		anchor.getChildren().add(top);
-		AnchorPane.setTopAnchor(top, 280.0);
-		AnchorPane.setRightAnchor(top, 25.0);
-
-		this.textField = new TextField("");
-		this.textField.getStyleClass().add("synopsisField");
-		this.textField.setAlignment(Pos.CENTER);
-		anchor.getChildren().add(this.textField);
 		AnchorPane.setTopAnchor(this.textField, 50.0);
 		AnchorPane.setRightAnchor(this.textField, 25.0);
+
+		anchor.getChildren().addAll(heading,top,this.textField);
 
 		GridPane.setHgrow(anchor, Priority.ALWAYS);
 		GridPane.setVgrow(anchor, Priority.ALWAYS);

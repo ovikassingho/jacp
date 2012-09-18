@@ -51,7 +51,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 /**
  * A simple perspective defining a split pane
  * 
- * @author Andy Moncsek
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 
  */
 @Perspective(id = "id01", name = "perspectiveOne", viewLocation = "/fxml/perspectiveOne.fxml", resourceBundleLocation = "bundles.languageBundle")

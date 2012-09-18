@@ -33,7 +33,7 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 @CallbackComponent(id = "id003", name = "statefulCallback", active = false)
 /**
  * a stateful JacpFX component
- * @author Andy Moncsek
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  *
  */
 public class StatefulCallback extends AStatefulCallbackComponent {

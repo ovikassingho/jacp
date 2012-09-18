@@ -14,39 +14,31 @@
   <center>
     <AnchorPane fx:id="details" styleClass="roundedAnchorPaneFX">
       <children>
-        <AnchorPane fx:id="descriptionArea"  minWidth="385.0" prefHeight="223.5" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="344.5" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="121.0">
-          <children>
-            <Label id="descriptionLabel" layoutX="10.0" layoutY="8.0" styleClass="propLabel" text="%description" />
-            <TextArea fx:id="descriptionValue" minHeight="118.0" minWidth="374.19" prefHeight="127.0" prefWidth="374.19" styleClass="descriptionValue" text="TextArea" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="12.81" AnchorPane.topAnchor="20.0" />
-          </children>
-        </AnchorPane>
-        <AnchorPane id="propertyArea" minHeight="158.0" minWidth="156.0" prefHeight="228" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="344.5"  AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="121.0">
-          <children>
-            <TextField id="creationTimeValue" fx:id="countryTextField" layoutX="13.0" layoutY="169.0" minWidth="-Infinity" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" />
-            <Label id="creationTimeLabel" contentDisplay="TOP" layoutY="146.0" styleClass="propLabel" text="%country" AnchorPane.leftAnchor="12.0" />
-            <Line id="Line" endX="60.0" layoutX="101.0" layoutY="137.0" startX="-100.0" styleClass="dividerLines">
-              <stroke>
-                <Color blue="0.400" green="0.400" red="0.400" fx:id="x1" />
-              </stroke>
-            </Line>
-            <TextField id="statusValue" fx:id="streetTextField" layoutY="98.0" minWidth="-Infinity" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="13.0" />
-            <Label id="statusLabel" layoutY="75.0" styleClass="propLabel" text="%street" AnchorPane.leftAnchor="12.0" />
-            <Line id="Line" endX="60.0" layoutX="101.0" layoutY="66.0" startX="-100.0" stroke="$x1" styleClass="dividerLines" />
-            <TextField id="priorityValue" fx:id="nameTextField" layoutY="30.0" minWidth="-Infinity" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="13.0" />
-            <Label id="priorityLabel" layoutY="12.0" styleClass="propLabel" text="%name" AnchorPane.leftAnchor="11.0" />
-          </children>
-        </AnchorPane>
-        <TextField id="synopsis" fx:id="message" minWidth="573.0" prefHeight="38.0" prefWidth="573.0" styleClass="synopsisField" text="messages" AnchorPane.leftAnchor="19.5" AnchorPane.rightAnchor="20.5" AnchorPane.topAnchor="77.0" />
-        <AnchorPane fx:id="titleLine" layoutY="32.0" minHeight="38.0" minWidth="310.0" prefHeight="38.0" prefWidth="310.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+        <AnchorPane fx:id="titleLine" layoutY="32.0" prefHeight="38.0" prefWidth="310.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" >
           <children>
             <Label id="Label" layoutX="11.0" layoutY="9.0" styleClass="propLabel" text="%fxmlComp" />
           </children>
         </AnchorPane>
-        <AnchorPane id="buttonAnchorPane" fx:id="buttonAnchor" layoutX="20.0" layoutY="394.0" minHeight="-Infinity" minWidth="310.0" prefWidth="-Infinity"  AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="200">
+        <TextField id="synopsis" fx:id="message" prefHeight="38.0" prefWidth="573.0" styleClass="descriptionValue" text="messages" AnchorPane.leftAnchor="21" AnchorPane.rightAnchor="20.5" AnchorPane.bottomAnchor="440" />
+        <AnchorPane fx:id="descriptionArea"  prefHeight="323.5" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="100" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="20.0" >
           <children>
-            <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" text="%send" AnchorPane.rightAnchor="1" onAction="#handleSend"/>
+            <Label id="descriptionLabel" layoutX="10.0" layoutY="8.0" styleClass="propLabel" text="%description" />
+            <TextArea fx:id="descriptionValue" prefHeight="127.0" prefWidth="374.19" styleClass="descriptionValue" text="TextArea" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="24.0" />
           </children>
         </AnchorPane>
+        <AnchorPane id="propertyArea" prefHeight="328" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="100"  AnchorPane.leftAnchor="21.0" >
+          <children>
+            <TextField id="creationTimeValue" fx:id="countryTextField" layoutY="169.0" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="165.0"/>
+            <Label id="creationTimeLabel" contentDisplay="TOP" layoutY="146.0" styleClass="propLabel" text="%country" AnchorPane.leftAnchor="12.0" />
+            <Line id="Line" endX="60.0" layoutX="101.0" layoutY="137.0" startX="-100.0" styleClass="dividerLines"/>
+            <TextField id="statusValue" fx:id="streetTextField" layoutY="98.0" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="95.0"/>
+            <Label id="statusLabel" layoutY="75.0" styleClass="propLabel" text="%street" AnchorPane.leftAnchor="12.0" />
+            <Line id="Line" endX="60.0" layoutX="101.0" layoutY="66.0" startX="-100.0" stroke="$x1" styleClass="dividerLines" />
+            <TextField id="priorityValue" fx:id="nameTextField" layoutY="30.0" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label id="priorityLabel" layoutY="12.0" styleClass="propLabel" text="%name" AnchorPane.leftAnchor="11.0" />
+          </children>
+        </AnchorPane>
+        <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" text="%send" AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="50" onAction="#handleSend"/>
       </children>
     </AnchorPane>
   </center>

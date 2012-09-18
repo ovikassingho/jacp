@@ -28,7 +28,9 @@ import javafx.event.Event;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.SplitPaneBuilder;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.GridPaneBuilder;
 import javafx.scene.layout.Priority;
 
 import org.jacp.api.action.IAction;
@@ -43,7 +45,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 /**
  * A simple perspective defining a split pane
  * 
- * @author Andy Moncsek
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 
  */
 @Perspective(id = "id02", name = "perspectiveTwo", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
@@ -53,28 +55,27 @@ public class PerspectiveTwo extends AFXPerspective {
 	public void handlePerspective(final IAction<Event, Object> action,
 			final PerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
-			final SplitPane mainLayout = new SplitPane();
-			mainLayout.setOrientation(Orientation.VERTICAL);
-			mainLayout.setPrefHeight(600);
-			mainLayout.setPrefWidth(800);
-			mainLayout.setMinHeight(100);
-			mainLayout.setMinWidth(200);
+			final SplitPane mainLayout = SplitPaneBuilder.create()
+					.styleClass("hsplitpane").orientation(Orientation.VERTICAL)
+					.prefHeight(600).prefWidth(800).build();
+
 			mainLayout.setDividerPosition(0, 0.55f);
 
 			// create left button menu
-			final GridPane top = new GridPane();
-			top.setAlignment(Pos.TOP_CENTER);
+			final GridPane top = GridPaneBuilder.create()
+					.alignment(Pos.TOP_CENTER).build();
 			GridPane.setHgrow(top, Priority.ALWAYS);
 			GridPane.setVgrow(top, Priority.ALWAYS);
 
 			// create main content Top
-			final GridPane bottom = new GridPane();
+			final GridPane bottom = GridPaneBuilder.create()
+					.alignment(Pos.BOTTOM_CENTER).build();
 			GridPane.setHgrow(bottom, Priority.ALWAYS);
 			GridPane.setVgrow(bottom, Priority.ALWAYS);
-			bottom.setAlignment(Pos.BOTTOM_CENTER);
 
 			GridPane.setVgrow(mainLayout, Priority.ALWAYS);
 			GridPane.setHgrow(mainLayout, Priority.ALWAYS);
+
 			mainLayout.getItems().addAll(top, bottom);
 			// Register root component
 			perspectiveLayout.registerRootComponent(mainLayout);

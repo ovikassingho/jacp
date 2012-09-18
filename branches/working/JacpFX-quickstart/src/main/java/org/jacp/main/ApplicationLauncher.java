@@ -32,7 +32,7 @@ import org.jacp.project.launcher.AFXSpringLauncher;
 /**
  * The application launcher containing the main method
  * 
- * @author Andy Moncsek
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 
  */
 public class ApplicationLauncher extends AFXSpringLauncher {

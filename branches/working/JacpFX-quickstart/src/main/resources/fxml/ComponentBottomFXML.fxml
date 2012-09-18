@@ -14,9 +14,9 @@
   <center>
     <AnchorPane fx:id="details" styleClass="roundedAnchorPaneFX">
       <children>
-        <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" layoutY="120" onAction="#handleSend" text="%send" AnchorPane.rightAnchor="25" AnchorPane.topAnchor="210"  />
+        <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" layoutY="120" onAction="#handleSend" text="%send" AnchorPane.rightAnchor="25" AnchorPane.topAnchor="180"  />
         <Label id="Label" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="10" styleClass="propLabel" text="%fxmlCompBottom" />
-        <TextField id="synopsis" fx:id="textField"  styleClass="synopsisField" text=""  AnchorPane.rightAnchor="25" AnchorPane.topAnchor="50" />
+        <TextField id="synopsis" fx:id="textField"  styleClass="propTextField" text=""  AnchorPane.rightAnchor="25" AnchorPane.topAnchor="50" />
       </children>
     </AnchorPane>
   </center>

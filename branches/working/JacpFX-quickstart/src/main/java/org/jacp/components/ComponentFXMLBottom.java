@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacp.components;
 
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -39,6 +40,11 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 @DeclarativeComponent(defaultExecutionTarget = "PBottom", id = "id005", name = "componentBottom", active = true, viewLocation = "/fxml/ComponentBottomFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+/**
+ * A simple FXML component
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
+ *
+ */
 public class ComponentFXMLBottom extends AFXComponent {
 	@FXML
 	private TextField textField;
@@ -72,8 +78,10 @@ public class ComponentFXMLBottom extends AFXComponent {
 	/**
 	 * The @OnStart annotation labels methods executed when the component switch from inactive to active state
 	 * @param arg0
+	 * @param resourceBundle
 	 */
-	public void onStartComponent(final FXComponentLayout arg0) {
+	public void onStartComponent(final FXComponentLayout arg0,
+			final ResourceBundle resourceBundle) {
 		this.log.info("run on start of ComponentFXMLBottom ");
 
 	}
@@ -87,7 +95,7 @@ public class ComponentFXMLBottom extends AFXComponent {
 		this.log.info("run on tear down of ComponentFXMLBottom ");
 
 	}
- 
+
 	@FXML
 	private void handleSend(final ActionEvent event) {
 		this.getActionListener("id01.id004", "hello stateless component")
