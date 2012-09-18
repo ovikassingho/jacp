@@ -48,7 +48,7 @@ import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 /**
  * A simple JacpFX workbench
  * 
- * @author Andy Moncsek
+ * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 
  */
 public class Workbench extends AFXWorkbench {
@@ -56,7 +56,7 @@ public class Workbench extends AFXWorkbench {
 	@Override
 	public void handleInitialLayout(final IAction<Event, Object> action,
 			final IWorkbenchLayout<Node> layout, final Stage stage) {
-		layout.setWorkbenchXYSize(1024, 768);
+		layout.setWorkbenchXYSize(1024, 600);
 		layout.registerToolBar(ToolbarPosition.NORTH);
 		layout.setStyle(StageStyle.DECORATED);
 		layout.setMenuEnabled(true);

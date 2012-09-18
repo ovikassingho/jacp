@@ -1,145 +1,63 @@
 .root {
     -fx-font-family: "System";
     -fx-font-size: 12.703703703703704px;
-    -fx-base: #8EBDD0;
-    -fx-background: #B4B4B4;
-    -fx-focus-color: #0093FF;
+    -fx-base: #D0D0D0;
+    -fx-background: #F4F4F4;
+    -fx-focus-color: #AAAAAA;
     -fx-control-inner-background: #FFFFFF;
-    -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,74.0%) 0%, derive(-fx-color,36.400000000000006%) 100%);
-    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
 }
-.button, .toggle-button, .choice-box {
-    -fx-background-radius: 5, 5, 4, 3;
-    -fx-padding: 3px 10px 3px 10px;
-}
-.menu-button {
-    -fx-background-radius: 5, 5, 4, 3;
-}
-.menu-button .label {
-    -fx-padding: 3px 18px 3px 10px;
-}
-.menu-button .arrow-button {
-    -fx-padding: 3px 6px 3px 0px;
-}
-.choice-box {
-    -fx-padding: 0 6px 0 0;
-}
-.choice-box .label {
-    -fx-padding: 3px 4px 3px 6px;
-}
-.choice-box .open-button {
-    -fx-padding: 1 0 0 8px;
-}
-.combo-box-base:editable .text-field, .combo-box-base .arrow-button, .combo-box .list-cell {
-    -fx-padding: 3px 6px 3px 6px;
-}
-.check-box .box {
-    -fx-padding: 0.25em;
-}
-.radio-button .radio {
-    -fx-padding: 0.333333em;
-}
-.label, .check-box, .radio-button {
-    -fx-text-fill: -fx-text-background-color;
-}
-.button, .toggle-button, .check-box .box, .radio-button .radio, .choice-box, .menu-button, .tab, .combo-box-base {
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
-}
-.button:focused, .toggle-button:focused, .check-box:focused .box, .radio-button:focused .radio, .choice-box:focused, .menu-button:focused, .combo-box-base:focused {
-    -fx-background-insets: -1.4, 0, 1, 2;
-}
-.combo-box-base .arrow-button {
-    -fx-background-insets: 0, 1, 2;
-}
-.choice-box .label { /* Workaround for RT-20015 */
-    -fx-text-fill: -fx-text-base-color;
-}
-.menu-button .label { /* Workaround for RT-20015 */
-    -fx-text-fill: -fx-text-base-color;
-}
+
 
 /* Description textArea */
 
 
 .descriptionValue {
     -fx-background-color: white;
-    -fx-font: 1.166666em "Arial";
+    -fx-font: 1.166666em "System";
+    -fx-background-color: #F0F0F0;
+    -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
  }
 
 .descriptionValue:focused {
-    -fx-background-color: -fx-focus-color, transparent, white;
+    -fx-background-color: -fx-focus-color, transparent, #F0F0F0;
+     -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
 } 
 
 .descriptionValue:hover {
-    -fx-background-color: -fx-focus-color, -fx-text-box-border, white;
+    -fx-background-color: -fx-focus-color, -fx-text-box-border, #EEEEEE;
 }
-
-
-
-/* Synopsis TextField */
-
-
-.synopsisField {
-    -fx-background-color: white;
-    -fx-font: 1.5em "Arial";
-}
-
-.synopsisField:hover {
-    -fx-background-color: -fx-focus-color, -fx-text-box-border, white;
-}
-
-.synopsisField:focused {
-    -fx-background-color: -fx-focus-color, transparent, white;
-} 
-
 
 
 /* Anchor Pane, Label and Textfield in Properties area */
 
 
 .propLabel{
-	-fx-text-fill: #AAAAAA;
-	-fx-font: 0.833333em "Arial";
+	-fx-text-fill: #777777;
+	-fx-font: 0.833333em "System";
 }
 
 .propTextField {
 
-    -fx-font: 1em "Arial";
+    -fx-font: 1em "System";
     -fx-padding: 0;
-    -fx-background-color: white;
+    -fx-background-color: #F0F0F0;
+    -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
 }
 
 .propTextField:hover {
-    -fx-background-color: -fx-focus-color, -fx-text-box-border, white;
+    -fx-background-color: -fx-focus-color, -fx-text-box-border, #EEEEEE;
+     
 }
 
 .propTextField:focused {
-    -fx-background-color: -fx-focus-color, transparent, white;
+    -fx-background-color: -fx-focus-color, transparent, #F0F0F0;
+    -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
 } 
 
 .dividerLines {
 	-fx-stroke-width: 0.9;
 	-fx-stroke:#d6d6d6;
 }
-
-.topRoundedAnchorPane {
-    -fx-border-radius:10 10 0 0;
-    -fx-border-color: #d6d6d6;
-    -fx-border-width: 0.083333em;	
-}
-
-.statusAnchorPane {
-    -fx-border-color: #d6d6d6;	
-    -fx-border-width: 0.083333em;
-}
-
-.bottomRoundedAnchorPane {
-    -fx-border-radius:0 0 10 10;
-    -fx-border-color: #d6d6d6;	
-    -fx-border-width: 0.083333em;
-} 
-
-
 
 /* A rounded AnchorPane */
 
@@ -158,44 +76,13 @@
 }
 
 
-/* Bugs table rules */
-
-
-.bugsTable .table-row-cell {
-    -fx-font: 1em "Arial";
-    -fx-background-insets: 0;
-}
-
-.bugsTable .column-header{
-    -fx-font: 1em "Arial";
-}
-
-
-
-/* Projects list */
-
-
-.blackList {
-    -fx-background-color:#333333;
-}
-
-. blackList .list-cell {
-    -fx-padding: 6 0 0 13;
-    -fx-background-color: #333333;
-    -fx-text-fill: lightgrey;
-}
-
-. blackList .list-cell:focused {
-    -fx-text-fill: white;
-}
-
 
 /* ToolBar buttons background and font*/
 
 
 .roundedButton {
 	-fx-background-radius: 12;
-	-fx-font: 1em "Arial";
+	-fx-font: 1em "System";
 	-fx-padding: 0 0 0 0;	
 	-fx-shadow-highlight-color: f0f0f0;
 	-fx-body-color: linear-gradient(from 0em 0em to 0em 2.083333em, white, #D7D7D7, white);
@@ -217,6 +104,8 @@
 .vsplitpane {
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
+    -fx-background-image: url("../images/texture.jpeg"); 
+    -fx-background-position: center center;
 }
 
 .vsplitpane:horizontal > * > .split-pane-divider {
@@ -240,9 +129,10 @@
 }
 
 .hsplitpane {
-
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
+    -fx-background-image: url("../images/texture.jpeg"); 
+    -fx-background-position: center center;
 }
 
 .hsplitpane:vertical > * > .split-pane-divider {
