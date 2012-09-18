@@ -55,7 +55,10 @@ public class PerspectiveTwo extends AFXPerspective {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			final SplitPane mainLayout = new SplitPane();
 			mainLayout.setOrientation(Orientation.VERTICAL);
-			mainLayout.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			mainLayout.setPrefHeight(600);
+			mainLayout.setPrefWidth(800);
+			mainLayout.setMinHeight(100);
+			mainLayout.setMinWidth(200);
 			mainLayout.setDividerPosition(0, 0.55f);
 
 			// create left button menu
