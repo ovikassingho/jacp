@@ -112,7 +112,7 @@ public class PerspectiveOne extends AFXPerspective {
 
 	@OnTearDown
 	public void onTearDownPerspective(final FXComponentLayout arg0) {
-		// define toolbars and menu entries when close perspective
+		// remove toolbars and menu entries when close perspective
 
 	}
 
