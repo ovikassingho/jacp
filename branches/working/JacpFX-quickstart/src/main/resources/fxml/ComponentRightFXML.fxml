@@ -16,7 +16,7 @@
       <children>
         <AnchorPane fx:id="titleLine" layoutY="32.0" prefHeight="38.0" prefWidth="310.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" >
           <children>
-            <Label id="Label" layoutX="11.0" layoutY="9.0" styleClass="myLabel" text="%fxmlComp" />
+            <Label id="Label" layoutX="11.0" layoutY="9.0" styleClass="propLabel" text="%fxmlComp" AnchorPane.topAnchor="13.0"/>
           </children>
         </AnchorPane>
         <TextField id="synopsis" fx:id="message" prefHeight="38.0" prefWidth="573.0" styleClass="descriptionValue" text="messages" AnchorPane.leftAnchor="21" AnchorPane.rightAnchor="20.5" AnchorPane.bottomAnchor="410" />
