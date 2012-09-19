@@ -1,7 +1,7 @@
 .root {
     -fx-font-family: "System";
     -fx-font-size: 12.703703703703704px;
-    -fx-base: #D0D0D0;
+    -fx-base: #555555;
     -fx-background: #F4F4F4;
     -fx-focus-color: #AAAAAA;
     -fx-control-inner-background: #FFFFFF;
@@ -97,15 +97,12 @@
 /* Splitpane styling */
 
 
-.vSplitPaneLeft {
-    -fx-background-color:#444444;
-}
 
 .vsplitpane {
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
-    -fx-background-image: url("../images/light_wool.png");
-    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
+    -fx-background-image: url("../images/texture1.png");
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.4) , 80, 0.0 , 0 , 0 );
 }
 
 .vsplitpane:vertical > * > .split-pane-divider {
@@ -127,15 +124,16 @@
 .hsplitpane {
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
-    -fx-background-image: url("../images/light_wool.png");
-    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
+    -fx-background-image: url("../images/texture1.png");
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.4) , 80, 0.0 , 0 , 0 );
 }
-
 .hsplitpane:horizontal > * > .split-pane-divider {
 -fx-border-color: transparent;
 -fx-background-color: transparent;
 -fx-background-insets: 0, 0 1 0 1;
 }
+
+
 
 .hsplitpane  *.vertical-grabber {
     -fx-background-color:black;

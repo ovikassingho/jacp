@@ -56,7 +56,7 @@ public class PerspectiveTwo extends AFXPerspective {
 			final PerspectiveLayout perspectiveLayout) {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			final SplitPane mainLayout = SplitPaneBuilder.create()
-					.styleClass("hsplitpane").orientation(Orientation.VERTICAL)
+					.styleClass("vsplitpane").orientation(Orientation.VERTICAL)
 					.prefHeight(600).prefWidth(800).build();
 
 			mainLayout.setDividerPosition(0, 0.55f);
