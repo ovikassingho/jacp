@@ -2,9 +2,11 @@
     -fx-font-family: "System";
     -fx-font-size: 12.703703703703704px;
     -fx-base: #555555;
-    -fx-background: #F4F4F4;
+    -fx-background: #F0F0F0;
     -fx-focus-color: #AAAAAA;
     -fx-control-inner-background: #FFFFFF;
+
+
 }
 
 
@@ -31,10 +33,11 @@
 /* Anchor Pane, Label and Textfield in Properties area */
 
 
-.propLabel{
-	-fx-text-fill: #777777;
+.propLabel {
+	-fx-text-fill: #F0F0F0;
 	-fx-font: 0.833333em "System";
 }
+
 
 .propTextField {
 
@@ -56,7 +59,7 @@
 
 .dividerLines {
 	-fx-stroke-width: 0.9;
-	-fx-stroke:#d6d6d6;
+	-fx-stroke:#F0F0F0;
 }
 
 /* A rounded AnchorPane */
@@ -64,16 +67,10 @@
 
 .roundedAnchorPane {
     -fx-border-radius:10 10 10 10;
-    -fx-border-color: #d6d6d6;
+    -fx-border-color: #F0F0F0;
     -fx-border-width: 0.083333em;
 }
 
-.roundedAnchorPaneFX {
-    -fx-border-insets: 10 10 10 10;
-    -fx-border-radius:10 10 10 10;
-    -fx-border-color: #d6d6d6;
-    -fx-border-width: 0.083333em;
-}
 
 
 
@@ -84,7 +81,7 @@
 	-fx-background-radius: 12;
 	-fx-font: 1em "System";
 	-fx-padding: 0 0 0 0;	
-	-fx-shadow-highlight-color: f0f0f0;
+	-fx-shadow-highlight-color: #F0F0F0;
 	-fx-body-color: linear-gradient(from 0em 0em to 0em 2.083333em, white, #D7D7D7, white);
 }
 
@@ -145,6 +142,52 @@
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
 
-.scrollPaneStyle {
-    -fx-background-color:white;
+.button, .toggle-button, .choice-box {
+    -fx-background-radius: 20, 20, 19, 18;
+    -fx-padding: 3px 10px 3px 10px;
+}
+.menu-button {
+    -fx-background-radius: 20, 20, 19, 18;
+}
+.menu-button .label {
+    -fx-padding: 3px 18px 3px 10px;
+}
+.menu-button .arrow-button {
+    -fx-padding: 3px 6px 3px 0px;
+}
+.choice-box {
+    -fx-padding: 0 6px 0 0;
+}
+.choice-box .label {
+    -fx-padding: 3px 4px 3px 6px;
+}
+.choice-box .open-button {
+    -fx-padding: 1 0 0 8px;
+}
+.combo-box-base:editable .text-field, .combo-box-base .arrow-button, .combo-box .list-cell {
+    -fx-padding: 3px 6px 3px 6px;
+}
+.check-box .box {
+    -fx-padding: 0.25em;
+}
+.radio-button .radio {
+    -fx-padding: 0.333333em;
+}
+.label, .check-box, .radio-button {
+    -fx-text-fill: -fx-text-background-color;
+}
+.button, .toggle-button, .check-box .box, .radio-button .radio, .choice-box, .menu-button, .tab, .combo-box-base {
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+}
+.button:focused, .toggle-button:focused, .check-box:focused .box, .radio-button:focused .radio, .choice-box:focused, .menu-button:focused, .combo-box-base:focused {
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+.combo-box-base .arrow-button {
+    -fx-background-insets: 0, 1, 2;
+}
+.choice-box .label { /* Workaround for RT-20015 */
+    -fx-text-fill: -fx-text-base-color;
+}
+.menu-button .label { /* Workaround for RT-20015 */
+    -fx-text-fill: -fx-text-base-color;
 }
