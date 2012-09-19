@@ -71,16 +71,27 @@ public class Workbench extends AFXWorkbench {
 	public void postHandle(final FXComponentLayout layout) {
 		final JACPMenuBar menu = layout.getMenu();
 		final Menu menuFile = new Menu("File");
+		final Menu menuStyles = new Menu("Styles");
 		menuFile.getItems().add(getHelpItem());
-		for(int i=0; i<ApplicationLauncher.STYLES.length; i++) {
-			menuFile.getItems().add(getStyle(i));
-		}
 		
-		menu.getMenus().addAll(menuFile);
+		for (int i = 0; i < ApplicationLauncher.STYLES.length; i++) {
+			menuStyles.getItems().add(getStyle(i));
+		}
+
+		menu.getMenus().addAll(menuFile, menuStyles);
 
 		// define toolbars and menu entries
 		final JACPToolBar toolbar = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
+
+		toolbar.add(getFXMLPerspectiveButton());
+		toolbar.add(getPerspectiveButton());
+
+		// show windowButtons
+		menu.registerWindowButtons();
+	}
+
+	private Button getFXMLPerspectiveButton() {
 		final Button perspectiveOne = new Button("FXMLPerspective");
 		perspectiveOne.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -90,7 +101,10 @@ public class Workbench extends AFXWorkbench {
 
 			}
 		});
-		toolbar.add(perspectiveOne);
+		return perspectiveOne;
+	}
+
+	private Button getPerspectiveButton() {
 		final Button perspectiveTwo = new Button("Perspective");
 		perspectiveTwo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -100,14 +114,11 @@ public class Workbench extends AFXWorkbench {
 
 			}
 		});
-		toolbar.add(perspectiveTwo);
-
-		// show windowButtons
-		menu.registerWindowButtons();
+		return perspectiveTwo;
 	}
-	
+
 	private MenuItem getStyle(final int count) {
-		final MenuItem itemHelp = new MenuItem("Style_"+count);
+		final MenuItem itemHelp = new MenuItem(count == 0 ? "Light" : "Dark");
 		itemHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent arg0) {
@@ -115,14 +126,15 @@ public class Workbench extends AFXWorkbench {
 				// index 0 is always the default JACP style
 				scene.getStylesheets().remove(1);
 				scene.getStylesheets().add(
-						ApplicationLauncher.class.getResource(ApplicationLauncher.STYLES[count])
+						ApplicationLauncher.class.getResource(
+								ApplicationLauncher.STYLES[count])
 								.toExternalForm());
 
 			}
 		});
 		return itemHelp;
 	}
-	
+
 	private MenuItem getHelpItem() {
 		final MenuItem itemHelp = new MenuItem("Help");
 		itemHelp.setOnAction(new EventHandler<ActionEvent>() {

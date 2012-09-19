@@ -4,7 +4,9 @@
     -fx-base: #555555;
     -fx-background: #F0F0F0;
     -fx-focus-color: #AAAAAA;
+    -fx-text-base-color:#F0F0F0;
     -fx-control-inner-background: #FFFFFF;
+    
 
 
 }
@@ -144,7 +146,10 @@
 
 .button, .toggle-button, .choice-box {
     -fx-background-radius: 20, 20, 19, 18;
-    -fx-padding: 3px 10px 3px 10px;
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-control-inner-background: -fx-background;
+    -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,35.0%) 0%, derive(-fx-color,-6.0%) 100%);
+    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
 }
 .menu-button {
     -fx-background-radius: 20, 20, 19, 18;
@@ -173,11 +178,11 @@
 .radio-button .radio {
     -fx-padding: 0.333333em;
 }
-.label, .check-box, .radio-button {
+.check-box, .radio-button {
     -fx-text-fill: -fx-text-background-color;
 }
 .button, .toggle-button, .check-box .box, .radio-button .radio, .choice-box, .menu-button, .tab, .combo-box-base {
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-insets: -1.4, 0, 1, 2;
 }
 .button:focused, .toggle-button:focused, .check-box:focused .box, .radio-button:focused .radio, .choice-box:focused, .menu-button:focused, .combo-box-base:focused {
     -fx-background-insets: -1.4, 0, 1, 2;
@@ -185,9 +190,9 @@
 .combo-box-base .arrow-button {
     -fx-background-insets: 0, 1, 2;
 }
-.choice-box .label { /* Workaround for RT-20015 */
+.choice-box  { /* Workaround for RT-20015 */
     -fx-text-fill: -fx-text-base-color;
 }
-.menu-button .label { /* Workaround for RT-20015 */
+.menu-button { /* Workaround for RT-20015 */
     -fx-text-fill: -fx-text-base-color;
 }
