@@ -19,6 +19,18 @@
 			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
 		</repository>
 	</repositories>
+	<developers>
+		<developer>
+			<id>amo</id>
+			<name>Andy Moncsek</name>
+			<email>amo.ahcp@gmail.com</email>
+		</developer>
+		<developer>
+			<id>pete</id>
+			<name>Patrick Symmangk</name>
+			<email>pete.ahcp@gmail.com</email>
+		</developer>
+	</developers>
 	<build>
 		<plugins>
 			<plugin>
@@ -39,10 +51,11 @@
 						<id>copy-dependencies</id>
 						<phase>package</phase>
 						<configuration>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						    <excludeArtifactIds>javafx</excludeArtifactIds>
+							<includeScope>runtime</includeScope>
+			                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+			                <overWriteReleases>false</overWriteReleases>
+			                <overWriteSnapshots>true</overWriteSnapshots>
+			                <overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
 						<goals>
 							<goal>copy-dependencies</goal>
@@ -51,85 +64,83 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<JavaFX-Version>${javafx.version}+</JavaFX-Version>
-							<Main-Class>org.jacp.main.ApplicationLauncher</Main-Class>
-							<implementation-version>1.0</implementation-version>
-							<JavaFX-Application-Class>org.jacp.main.ApplicationLauncher</JavaFX-Application-Class>
-							<JavaFX-Class-Path>
-								aopalliance-1.0.jar commons-logging-1.1.1.jar
-								JACP.API-${jacp.version}.jar JACP.JavaFX-${jacp.version}.jar
-								JACP.JavaFXControls-${jacp.version}.jar
-								JACP.JavaFXSpring-${jacp.version}.jar
-								spring-aop-${spring.version}.jar
-								spring-asm-${spring.version}.jar
-								spring-beans-${spring.version}.jar
-								spring-context-${spring.version}.jar
-								spring-core-${spring.version}.jar
-								spring-expression-${spring.version}.jar
-							</JavaFX-Class-Path>
-							<Class-Path>javafx-${javafx.version}.jar</Class-Path>
-						</manifestEntries>
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.6</version>
+				<version>1.7</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
-						<configuration>
-							<target>
+						<phase>install</phase>
+						 <configuration>
+			                <target xmlns:fx="javafx:com.sun.javafx.tools.ant">
+			                    <property name="applet.width" value="1024"/>
+			                    <property name="applet.height" value="600"/>
+			                    <property name="application.title" value="JacpFX-Quickstart"/>
+			                    <property name="application.vendor" value="JacpFX"/>
+			                    <manifestclasspath property="manifest.classpath"
+                                       jarfile="${project.build.directory}/${build.finalName}">
+			                        <classpath>
+			                            <path id="build.classpath">
+			                                <fileset dir="${project.build.directory}/lib">
+			                                    <include name="*.jar"/>
+			                                </fileset>
+			                            </path>
+			                        </classpath>
+			                    </manifestclasspath>
+			                    
+                   				<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+                             		uri="javafx:com.sun.javafx.tools.ant" classpathref="maven.plugin.classpath" />
 
-								<taskdef name="jfxdeploy" classname="com.sun.javafx.tools.ant.DeployFXTask"
-									classpathref="maven.plugin.classpath" />
+								<fx:application id="${project.name}" name="${project.name}" mainClass="org.jacp.main.ApplicationLauncher" />
+                             		
+                             	<fx:jar destfile="${project.build.directory}/${build.finalName}.jar">
+			                        <fx:application refid="${project.name}"/>
+			
+			                        <manifest>
+			                            <attribute name="Class-Path" value="${manifest.classpath}"/>
+			                        </manifest>
+			
+			                        <!-- The target/classes folder which contains all resources and class files -->
+			                        <fileset dir="${project.build.outputDirectory}"/>
+			                    </fx:jar>	
+			                    
+			                    <fx:resources id="appRes">
+			                        <fx:fileset dir="${project.build.directory}" includes="*.jar"/>
+			                        <fx:fileset dir="${project.build.directory}" includes="lib/*.jar"/>
+			                    </fx:resources>
+			                    
+			                    <!-- 
+			                    
+			                    <signjar keyStore="${basedir}\keystore.jks"
+			                             destdir="${project.build.directory}"
+			                             alias="..." storePass="..." keyPass="...">
+			                        <fileset dir="${project.build.directory}" includes="*.jar"/>
+			                        <fileset dir="${project.build.directory}" includes="lib/*.jar"/>
+			                    </signjar>
+								-->
+								<fx:csstobin outdir="${project.build.directory}/classes/styles">
+								    <fileset dir="${project.build.directory}/classes/styles" includes="**/*.css"/>
+								</fx:csstobin>
+								
+							    <fx:deploy width="${applet.width}" height="${applet.height}"
+			                               outdir="${project.build.directory}/deploy" embedJNLP="true"
+			                               outfile="${application.title}" nativeBundles="all">
 
-								<taskdef name="jfxsignjar" classname="com.sun.javafx.tools.ant.FXSignJarTask"
-									classpathref="maven.plugin.classpath" />
+			                        <fx:application refId="${project.name}"/>
+			
+			                        <fx:resources refid="appRes"/>
+			                        <fx:platform javafx="${javafx.version}+">
+										<fx:jvmarg value="-Xms512m" />
+										<fx:jvmarg value="-Xmx1024m" />
+									</fx:platform>
+			                        <fx:info title="${application.title}"
+			                                 vendor="${application.vendor}"/>
+			
+			                        <!-- Request elevated permissions -->
+			                        <fx:permissions elevated="true"/>
+			                    </fx:deploy>
 
-								<taskdef name="csstobin" classname="com.sun.javafx.tools.ant.CSSToBinTask"
-									classpathref="maven.plugin.classpath" />
-
-								<csstobin outdir="${project.build.directory}/deploy">
-									<fileset dir="${project.build.directory}/classes/styles"
-										includes="**/*.css" />
-								</csstobin>
-
-								<jfxdeploy width="1024" height="768"
-									outdir="${project.build.directory}/deploy" outfile="${build.finalName}"
-									nativeBundles="all">
-									<info title="${project.name}" />
-									<application name="${project.name}" mainClass="com.javafx.main.Main" />
-									<resources>
-										<fileset dir="${project.build.directory}" includes="*.jar" />
-										<fileset dir="${project.build.directory}/dependency"
-											includes="*.jar" />
-									</resources>
-									<platform javafx="${javafx.version}+">
-										<jvmarg value="-Xms512m" />
-										<jvmarg value="-Xmx1024m" />
-									</platform>
-								</jfxdeploy>
-
-
-								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html 
-								<jfxsignjar destdir="${project.build.directory}/deploy"
-									keyStore="fxstore" storePass="yourStorPass" alias="yourSign"
-									keyPass="yourPass">
-									<fileset dir="${project.build.directory}/deploy"
-										includes="*.jar" />
-								</jfxsignjar>-->
 							</target>
 						</configuration>
 						<goals>
