@@ -27,6 +27,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -44,6 +45,7 @@ import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+import org.jacp.main.ApplicationLauncher;
 
 /**
  * A simple JacpFX workbench
@@ -52,6 +54,7 @@ import org.jacp.javafx.rcp.workbench.AFXWorkbench;
  * 
  */
 public class Workbench extends AFXWorkbench {
+	private Stage stage;
 
 	@Override
 	public void handleInitialLayout(final IAction<Event, Object> action,
@@ -60,6 +63,7 @@ public class Workbench extends AFXWorkbench {
 		layout.registerToolBar(ToolbarPosition.NORTH);
 		layout.setStyle(StageStyle.DECORATED);
 		layout.setMenuEnabled(true);
+		this.stage = stage;
 
 	}
 
@@ -67,27 +71,11 @@ public class Workbench extends AFXWorkbench {
 	public void postHandle(final FXComponentLayout layout) {
 		final JACPMenuBar menu = layout.getMenu();
 		final Menu menuFile = new Menu("File");
-		final MenuItem itemHelp = new MenuItem("Help");
-		itemHelp.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(final ActionEvent arg0) {
-				// create a modal dialog
-				final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
-						"Help", "Add some help text ");
-				dialog.setDefaultButton(JACPDialogButton.NO);
-				dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
-				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(final ActionEvent arg0) {
-						JACPModalDialog.getInstance().hideModalMessage();
-					}
-				});
-				JACPModalDialog.getInstance().showModalMessage(dialog);
-
-			}
-		});
-		menuFile.getItems().add(itemHelp);
+		menuFile.getItems().add(getHelpItem());
+		for(int i=0; i<ApplicationLauncher.STYLES.length; i++) {
+			menuFile.getItems().add(getStyle(i));
+		}
+		
 		menu.getMenus().addAll(menuFile);
 
 		// define toolbars and menu entries
@@ -116,6 +104,47 @@ public class Workbench extends AFXWorkbench {
 
 		// show windowButtons
 		menu.registerWindowButtons();
+	}
+	
+	private MenuItem getStyle(final int count) {
+		final MenuItem itemHelp = new MenuItem("Style_"+count);
+		itemHelp.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent arg0) {
+				Scene scene = Workbench.this.stage.getScene();
+				// index 0 is always the default JACP style
+				scene.getStylesheets().remove(1);
+				scene.getStylesheets().add(
+						ApplicationLauncher.class.getResource(ApplicationLauncher.STYLES[count])
+								.toExternalForm());
+
+			}
+		});
+		return itemHelp;
+	}
+	
+	private MenuItem getHelpItem() {
+		final MenuItem itemHelp = new MenuItem("Help");
+		itemHelp.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(final ActionEvent arg0) {
+				// create a modal dialog
+				final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
+						"Help", "Add some help text ");
+				dialog.setDefaultButton(JACPDialogButton.NO);
+				dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
+				dialog.setOnYesAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(final ActionEvent arg0) {
+						JACPModalDialog.getInstance().hideModalMessage();
+					}
+				});
+				JACPModalDialog.getInstance().showModalMessage(dialog);
+
+			}
+		});
+		return itemHelp;
 	}
 
 }

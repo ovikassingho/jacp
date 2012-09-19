@@ -36,6 +36,7 @@ import org.jacp.project.launcher.AFXSpringLauncher;
  * 
  */
 public class ApplicationLauncher extends AFXSpringLauncher {
+	public static final String[] STYLES={"/styles/style.css","/styles/style_1.css"};
 
 	public ApplicationLauncher() {
 		super("main.xml");
@@ -50,11 +51,13 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 
 	@Override
 	public void postInit(final Stage stage) {
+		stage.setMinHeight(580);
+		stage.setMinWidth(800);
 		final Scene scene = stage.getScene();
 		stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
 		// add style sheet
-		scene.getStylesheets().addAll(
-				ApplicationLauncher.class.getResource("/styles/style.css")
+		scene.getStylesheets().add(
+				ApplicationLauncher.class.getResource(STYLES[0])
 						.toExternalForm());
 	}
 
