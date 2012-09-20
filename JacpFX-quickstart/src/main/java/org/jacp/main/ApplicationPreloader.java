@@ -1,10 +1,14 @@
 package org.jacp.main;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Preloader;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 /**
  * The application Preloader. It is just a simple splash screen on application init. The preloader shows up only when execute the package.
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
@@ -13,9 +17,10 @@ import javafx.stage.Stage;
 public class ApplicationPreloader extends Preloader {
     private ProgressBar bar;
     private Stage stage; 
-   
+    private boolean isEmbedded = false;
     
     public void start(Stage stage) throws Exception {
+        isEmbedded = (stage.getWidth() > 0);
         this.stage = stage;
         stage.setScene(createPreloaderScene());        
         stage.show();
@@ -29,7 +34,23 @@ public class ApplicationPreloader extends Preloader {
     @Override
     public void handleStateChangeNotification(StateChangeNotification evt) {
         if (evt.getType() == StateChangeNotification.Type.BEFORE_START) {
-            stage.hide();
+            if (isEmbedded && stage.isShowing()) {
+                //fade out, hide stage at the end of animation
+                final FadeTransition ft = new FadeTransition(
+                    Duration.millis(1000), stage.getScene().getRoot());
+                    ft.setFromValue(1.0);
+                    ft.setToValue(0.0);
+                    final Stage s = stage;
+                    final EventHandler<ActionEvent> eh = new EventHandler<ActionEvent>() {
+                        public void handle(ActionEvent t) {
+                            s.hide();
+                        }
+                    };
+                    ft.setOnFinished(eh);
+                    ft.play();
+            } else {
+                stage.hide();
+            }
         }
     }    
     
