@@ -2,10 +2,10 @@
     -fx-font-family: "System";
     -fx-font-size: 12.703703703703704px;
     -fx-base: #F0F0F0;
-    -fx-background: #F0F0F0;
-    -fx-focus-color: #AAAAAA;
+    -fx-background:#F0F0F0;
+    -fx-focus-color: #d6d6d6;
     -fx-text-base-color:#555555;
-    -fx-control-inner-background: #555555;
+    -fx-control-inner-background: #F0F0F0;
 }
 
 
@@ -13,20 +13,19 @@
 
 
 .descriptionValue {
-    -fx-background-color: white;
     -fx-font: 1.166666em "System";
-    -fx-background-color: #F0F0F0;
-    -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
+    -fx-background-color: -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
     -fx-text-fill: -fx-text-base-color;
  }
 
 .descriptionValue:focused {
-    -fx-background-color: -fx-focus-color, transparent, #F0F0F0;
-     -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
+    -fx-background-color: -fx-focus-color, transparent, -fx-base;
+     -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
 } 
 
 .descriptionValue:hover {
-    -fx-background-color: -fx-focus-color, -fx-text-box-border, #EEEEEE;
+    -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;
 }
 
 
@@ -34,7 +33,7 @@
 
 
 .propLabel{
-	-fx-text-fill: #555555;
+	-fx-text-fill: -fx-text-base-color;
 	-fx-font: 0.833333em "System";
 }
 
@@ -42,24 +41,24 @@
 
     -fx-font: 1em "System";
     -fx-padding: 0;
-    -fx-background-color: #F0F0F0;
-    -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
+    -fx-background-color: -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
     -fx-text-fill: -fx-text-base-color;
 }
 
 .propTextField:hover {
-    -fx-background-color: -fx-focus-color, -fx-text-box-border, #d6d6d6;
+    -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-base;
      
 }
 
 .propTextField:focused {
-    -fx-background-color: -fx-focus-color, transparent, #F0F0F0;
-    -fx-effect: innershadow(three-pass-box, gray, 0 , 0.5, 1, 1);
+    -fx-background-color: -fx-focus-color, transparent, -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
 } 
 
 .dividerLines {
 	-fx-stroke-width: 0.9;
-	-fx-stroke:#d6d6d6;
+	-fx-stroke:-fx-focus-color;
 }
 
 /* A rounded AnchorPane */
@@ -67,28 +66,9 @@
 
 .roundedAnchorPane {
     -fx-border-radius:10 10 10 10;
-    -fx-border-color: #d6d6d6;
+    -fx-border-color: -fx-focus-color;
     -fx-border-width: 0.083333em;
 }
-
-.roundedAnchorPaneFX {
-    -fx-border-insets: 10 10 10 10;
-    -fx-border-radius:10 10 10 10;
-    -fx-border-color: #d6d6d6;
-    -fx-border-width: 0.083333em;
-}
-
-
-
-/* ToolBar buttons background and font*/
-
-
-
-
-.topBarBackground {
-	-fx-background-color: linear-gradient(to bottom, #f8f8f8, #b5b5b5);
-}
-
 
 
 /* Splitpane styling */
@@ -146,6 +126,24 @@
     -fx-control-inner-background: -fx-background;
     -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,35.0%) 0%, derive(-fx-color,-6.0%) 100%);
     -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.menu .label
+{
+   -fx-text-fill: -fx-text-base-color;
+}
+
+.menu-bar
+{
+    -fx-background-color: linear-gradient( to bottom, derive(-fx-background, 35.0%) 0%, derive(-fx-background, -6.0%) 100%);
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.tool-bar
+{
+    -fx-background-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
+    -fx-text-fill: -fx-text-base-color;
 }
 .menu-button {
     -fx-background-radius: 20, 20, 19, 18;
@@ -175,7 +173,7 @@
     -fx-padding: 0.333333em;
 }
 .check-box, .radio-button {
-    -fx-text-fill: -fx-text-background-color;
+    -fx-text-fill: -fx-text-base-color;
 }
 .button, .toggle-button, .check-box .box, .radio-button .radio, .choice-box, .menu-button, .tab, .combo-box-base {
     -fx-background-insets: -1.4, 0, 1, 2;
@@ -189,6 +187,7 @@
 .choice-box  { /* Workaround for RT-20015 */
     -fx-text-fill: -fx-text-base-color;
 }
-.menu-button { /* Workaround for RT-20015 */
+.menu-button  { /* Workaround for RT-20015 */
     -fx-text-fill: -fx-text-base-color;
+    -fx-background-radius: 1, 1, 1, 1;
 }

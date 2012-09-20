@@ -36,7 +36,7 @@ import org.jacp.project.launcher.AFXSpringLauncher;
  * 
  */
 public class ApplicationLauncher extends AFXSpringLauncher {
-	public static final String[] STYLES={"/styles/style.css","/styles/style_1.css"};
+	public static final String[] STYLES={"/styles/style_light.css","/styles/style_dark.css"};
 
 	public ApplicationLauncher() {
 		super("main.xml");
