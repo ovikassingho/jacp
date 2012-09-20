@@ -37,6 +37,12 @@
 	-fx-font: 0.833333em "System";
 }
 
+.propLabelBig{
+	-fx-text-fill: -fx-text-base-color;
+	-fx-font: 1.2em "System";
+	-fx-font-weigh: bold;
+}
+
 .propTextField {
 
     -fx-font: 1em "System";
@@ -47,8 +53,7 @@
 }
 
 .propTextField:hover {
-    -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-base;
-     
+   -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;     
 }
 
 .propTextField:focused {

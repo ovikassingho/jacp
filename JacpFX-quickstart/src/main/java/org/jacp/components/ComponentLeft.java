@@ -117,7 +117,7 @@ public class ComponentLeft extends AFXComponent {
 				.styleClass("roundedAnchorPaneFX").build();
 		final Label heading = LabelBuilder.create()
 				.text(this.getResourceBundle().getString("javafxComp"))
-				.alignment(Pos.CENTER).styleClass("propLabel").build();
+				.alignment(Pos.CENTER_RIGHT).styleClass("propLabelBig").build();
 
 		final Button left = ButtonBuilder.create()
 				.text(this.getResourceBundle().getString("send")).layoutX(120)
@@ -127,8 +127,8 @@ public class ComponentLeft extends AFXComponent {
 		this.textField = TextFieldBuilder.create().text("")
 				.styleClass("propTextField").alignment(Pos.CENTER).build();
 
-		AnchorPane.setRightAnchor(heading, 50.0);
-		AnchorPane.setTopAnchor(heading, 10.0);
+		AnchorPane.setRightAnchor(heading, 25.0);
+		AnchorPane.setTopAnchor(heading, 15.0);
 
 		AnchorPane.setTopAnchor(left, 80.0);
 		AnchorPane.setRightAnchor(left, 25.0);

@@ -56,6 +56,7 @@
 			                <overWriteReleases>false</overWriteReleases>
 			                <overWriteSnapshots>true</overWriteSnapshots>
 			                <overWriteIfNewer>true</overWriteIfNewer>
+			                <excludeArtifactIds>javafx,log4j</excludeArtifactIds>
 						</configuration>
 						<goals>
 							<goal>copy-dependencies</goal>
@@ -93,15 +94,16 @@
                              		uri="javafx:com.sun.javafx.tools.ant" classpathref="maven.plugin.classpath" />
 
 								<fx:application id="${project.name}" name="${project.name}" mainClass="org.jacp.main.ApplicationLauncher" />
-                             		
+								<!-- shrink css to binary -->
+                             	<fx:csstobin outdir="${project.build.directory}/classes/styles">
+								    <fileset dir="${project.build.directory}/classes/styles" includes="**/*.css"/>
+								</fx:csstobin>
+								<!-- create jar file -->
                              	<fx:jar destfile="${project.build.directory}/${build.finalName}.jar">
-			                        <fx:application refid="${project.name}"/>
-			
+			                        <fx:application refid="${project.name}"/>			
 			                        <manifest>
 			                            <attribute name="Class-Path" value="${manifest.classpath}"/>
 			                        </manifest>
-			
-			                        <!-- The target/classes folder which contains all resources and class files -->
 			                        <fileset dir="${project.build.outputDirectory}"/>
 			                    </fx:jar>	
 			                    
@@ -110,7 +112,7 @@
 			                        <fx:fileset dir="${project.build.directory}" includes="lib/*.jar"/>
 			                    </fx:resources>
 			                    
-			                    <!-- 
+			                    <!-- sign jar
 			                    
 			                    <signjar keyStore="${basedir}\keystore.jks"
 			                             destdir="${project.build.directory}"
@@ -119,24 +121,20 @@
 			                        <fileset dir="${project.build.directory}" includes="lib/*.jar"/>
 			                    </signjar>
 								-->
-								<fx:csstobin outdir="${project.build.directory}/classes/styles">
-								    <fileset dir="${project.build.directory}/classes/styles" includes="**/*.css"/>
-								</fx:csstobin>
-								
+
+								<!-- create executeables -->
 							    <fx:deploy width="${applet.width}" height="${applet.height}"
 			                               outdir="${project.build.directory}/deploy" embedJNLP="true"
 			                               outfile="${application.title}" nativeBundles="all">
 
-			                        <fx:application refId="${project.name}"/>
-			
+			                        <fx:application refId="${project.name}"/>			
 			                        <fx:resources refid="appRes"/>
 			                        <fx:platform javafx="${javafx.version}+">
-										<fx:jvmarg value="-Xms512m" />
-										<fx:jvmarg value="-Xmx1024m" />
+										<fx:jvmarg value="-Xms128m" />
+										<fx:jvmarg value="-Xmx256m" />
 									</fx:platform>
 			                        <fx:info title="${application.title}"
-			                                 vendor="${application.vendor}"/>
-			
+			                                 vendor="${application.vendor}"/>			
 			                        <!-- Request elevated permissions -->
 			                        <fx:permissions elevated="true"/>
 			                    </fx:deploy>
@@ -254,6 +252,11 @@
 			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
 		</dependency>
 	</dependencies>
 </project>

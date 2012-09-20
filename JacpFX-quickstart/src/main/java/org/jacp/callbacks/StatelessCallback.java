@@ -31,7 +31,7 @@ import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 
 /**
- * A stateless JacpFX component
+ * A stateless JacpFX component.
  * 
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 

@@ -122,13 +122,10 @@ public class Workbench extends AFXWorkbench {
 		itemHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent arg0) {
-				Scene scene = Workbench.this.stage.getScene();
+				final Scene scene = Workbench.this.stage.getScene();
 				// index 0 is always the default JACP style
 				scene.getStylesheets().remove(1);
-				scene.getStylesheets().add(
-						ApplicationLauncher.class.getResource(
-								ApplicationLauncher.STYLES[count])
-								.toExternalForm());
+				scene.getStylesheets().add(ApplicationLauncher.STYLES[count]);
 
 			}
 		});
