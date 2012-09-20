@@ -77,7 +77,7 @@
 .vsplitpane {
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
-    -fx-background-image: url("../images/light_wool.png");
+    -fx-background-image: url("../images/texture_light.png");
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
 }
 
@@ -100,7 +100,7 @@
 .hsplitpane {
     -fx-padding: -1 -1 -2 -2 ;
     -fx-background-insets: 1; /* remov left right line of splitPane*/
-    -fx-background-image: url("../images/light_wool.png");
+    -fx-background-image: url("../images/texture_light.png");
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
 }
 
