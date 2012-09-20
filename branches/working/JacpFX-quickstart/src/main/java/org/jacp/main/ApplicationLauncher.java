@@ -22,11 +22,15 @@
  ************************************************************************/
 package org.jacp.main;
 
+import java.net.URL;
+import java.util.logging.Logger;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import org.jacp.callbacks.StatefulCallback;
 import org.jacp.project.launcher.AFXSpringLauncher;
 
 /**
@@ -36,7 +40,12 @@ import org.jacp.project.launcher.AFXSpringLauncher;
  * 
  */
 public class ApplicationLauncher extends AFXSpringLauncher {
-	public static final String[] STYLES={"/styles/style_light.css","/styles/style_dark.css"};
+	private static final Logger log = Logger.getLogger(ApplicationLauncher.class
+			.getName());
+	public static final String[] STYLES= new String[2];
+	private static final String[] STYLE_FILES={"/styles/style_light.css","/styles/style_dark.css"};
+	/// binary style sheets created while deployment
+	private static final String[] BINARY_FILES={"/styles/style_light.bss","/styles/style_dark.bss"};
 
 	public ApplicationLauncher() {
 		super("main.xml");
@@ -51,14 +60,26 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 
 	@Override
 	public void postInit(final Stage stage) {
+		initStyles();
 		stage.setMinHeight(580);
 		stage.setMinWidth(800);
 		final Scene scene = stage.getScene();
 		stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
 		// add style sheet
-		scene.getStylesheets().add(
-				ApplicationLauncher.class.getResource(STYLES[0])
-						.toExternalForm());
+		scene.getStylesheets().add(STYLES[0]);
 	}
+	
+	private static void initStyles() {
+		for(int i=0;i<2;i++) {
+			URL res = ApplicationLauncher.class.getResource(BINARY_FILES[i]);
+			if(res==null)
+				res = ApplicationLauncher.class.getResource(STYLE_FILES[i]);			
+			STYLES[i] = res.toExternalForm();
+			log.info("found: "+ STYLES[i]+" stylesheet");
+		}
+		
+	}
+	
+	
 
 }
