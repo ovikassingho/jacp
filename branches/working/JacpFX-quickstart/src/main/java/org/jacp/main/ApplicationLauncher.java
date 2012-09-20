@@ -30,7 +30,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import org.jacp.callbacks.StatefulCallback;
 import org.jacp.project.launcher.AFXSpringLauncher;
 
 /**
