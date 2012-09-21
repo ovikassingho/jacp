@@ -50,8 +50,8 @@ public interface IComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
 	 * avoid long running tasks. Use it only to create or update your ui
 	 * components.
 	 * 
-	 * @param node
-	 * @param action
+	 * @param node , the ui node
+	 * @param action ,  the trigger action
 	 * @return an ui component
 	 */
 	C postHandle(final C node, final IAction<A, M> action);
