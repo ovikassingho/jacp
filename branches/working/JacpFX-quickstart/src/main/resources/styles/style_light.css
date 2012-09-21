@@ -83,24 +83,22 @@
 
 .vsplitpane {
     -fx-padding: -1 -1 -2 -2 ;
-    -fx-background-insets: 1; /* remov left right line of splitPane*/
     -fx-background-image: url("../images/texture_light.png");
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
 }
 
 .vsplitpane:vertical > * > .split-pane-divider {
--fx-border-color: transparent;
+-fx-border-color:  -fx-base transparent -fx-base transparent ;
 -fx-background-color: transparent;
--fx-background-insets: 0, 0 1 0 1;
 }
 
 .vsplitpane  *.vertical-grabber {
-    -fx-background-color:black;
+    -fx-background-color:-fx-base;
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
  
 .vsplitpane  *.horizontal-grabber {
-    -fx-background-color:black;
+    -fx-background-color:-fx-base;
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
 
@@ -112,18 +110,18 @@
 }
 
 .hsplitpane:horizontal > * > .split-pane-divider {
--fx-border-color: transparent;
+-fx-border-color: transparent -fx-base transparent -fx-base;
 -fx-background-color: transparent;
 -fx-background-insets: 0, 0 1 0 1;
 }
 
 .hsplitpane  *.vertical-grabber {
-    -fx-background-color:black;
+    -fx-background-color:-fx-base;
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
 
 .hsplitpane  *.horizontal-grabber {
-    -fx-background-color:black;
+    -fx-background-color:-fx-base;
     -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
 }
 

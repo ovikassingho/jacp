@@ -25,6 +25,7 @@ package org.jacp.perspectives;
 import java.util.ResourceBundle;
 
 import javafx.event.Event;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.SplitPane;
@@ -59,7 +60,7 @@ public class PerspectiveTwo extends AFXPerspective {
 					.styleClass("vsplitpane").orientation(Orientation.VERTICAL)
 					.prefHeight(600).prefWidth(800).build();
 
-			mainLayout.setDividerPosition(0, 0.55f);
+			mainLayout.setDividerPosition(0, 0.50f);
 
 			// create left button menu
 			final GridPane top = GridPaneBuilder.create()

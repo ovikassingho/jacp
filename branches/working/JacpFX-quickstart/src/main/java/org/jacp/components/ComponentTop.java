@@ -123,7 +123,7 @@ public class ComponentTop extends AFXComponent {
 		this.textField = TextFieldBuilder.create().text("")
 				.styleClass("propTextField").alignment(Pos.CENTER).build();
 
-		AnchorPane.setTopAnchor(top, 230.0);
+		AnchorPane.setBottomAnchor(top, 25.0);
 		AnchorPane.setRightAnchor(top, 25.0);
 
 		AnchorPane.setRightAnchor(heading, 50.0);
