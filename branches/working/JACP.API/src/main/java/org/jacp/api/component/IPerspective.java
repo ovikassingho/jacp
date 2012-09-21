@@ -61,7 +61,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 
 	/**
 	 * post init method to set correct component handler and to initialize
-	 * components depending on objects created in startUp sequence
+	 * components depending on objects created in startUp sequence.
 	 * 
 	 * @param componentHandler
 	 */

@@ -43,7 +43,7 @@ public interface IDeclarative {
 	/**
 	 * Set the viewLocation location on component start.
 	 * 
-	 * @param documentURL
+	 * @param documentURL , the url of the FXML document
 	 */
 	void setViewLocation(String documentURL);
 
@@ -68,13 +68,13 @@ public interface IDeclarative {
 	UIType getType();
 	
 	/**
-	 * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
-	 * @return
+	 * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+	 * @return the locale id
 	 */
 	String getLocaleID();
 	/**
 	 * Represents the location of your resource bundle file.
-	 * @return
+	 * @return the url of resource bundle
 	 */
 	String getResourceBundleLocation();
 }
