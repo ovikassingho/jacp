@@ -2,8 +2,10 @@
     -fx-font-family: "System";
     -fx-font-size: 12.703703703703704px;
     -fx-base: #555555;
+    -fx-hover-base: #555555;
     -fx-background:#555555;
     -fx-focus-color: #AAAAAA;
+    -fx-text-box-border: #AAAAAA;
     -fx-text-base-color:#F0F0F0;
     -fx-control-inner-background: #555555;
     
@@ -196,6 +198,24 @@
     -fx-text-fill: -fx-text-base-color;
 }
 .menu-button  { /* Workaround for RT-20015 */
+	
     -fx-text-fill: -fx-text-base-color;
     -fx-background-radius: 1, 1, 1, 1;
 }
+
+.menu-item {
+ 	-fx-text-fill: -fx-text-base-color;
+    -fx-background-radius: 1, 1, 1, 1;
+ }
+
+.menu-button:hover  { /* Workaround for RT-20015 */
+     -fx-background-color: linear-gradient( to bottom, derive(-fx-focus-color, 35.0%) 0%, derive(-fx-focus-color, -6.0%) 100%);
+}
+
+.menu-button:showing  { /* Workaround for RT-20015 */
+   -fx-background-color: linear-gradient( to bottom, derive(-fx-focus-color, 35.0%) 0%, derive(-fx-focus-color, -6.0%) 100%);
+}
+
+.menu-item:hover {
+ 	 -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;
+ }
