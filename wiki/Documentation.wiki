@@ -39,7 +39,7 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 }
 }}}
 
-The structure of a JACP/Spring application looks like this:
+The structure of a JacpFX application looks like this:
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Overview_v1.png"/>
 
 Below you find an example xml of a simple JACP project:
