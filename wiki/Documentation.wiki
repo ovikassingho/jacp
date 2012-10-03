@@ -1,5 +1,5 @@
 #labels Documentation,JACP,JacpFX,Spring,JavaFX
-= JacpFX  documentation UNDER CONSTRUCTION (10. Sep. 2012) =
+= JacpFX  documentation UNDER CONSTRUCTION (03. Oct. 2012) =
 
 The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component {{{handle()}}} method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
 
@@ -26,10 +26,7 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 				ApplicationLauncher.class.getResource("/styles/style.css")
 						.toExternalForm());
 	}
-
-	/**
-	 * @param args
-	 */
+ 
 	public static void main(String[] args) {
 	    // start the JavaFX2 context
 		Application.launch(args);
@@ -42,7 +39,7 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 The structure of a JacpFX application looks like this:
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Overview_v1.png"/>
 
-Below you find an example xml of a simple JACP project:
+Below you find an example xml of a simple JacpFX project:
 
 {{{
 <?xml version="1.0" encoding="UTF-8"?>
@@ -121,7 +118,7 @@ public class Workbench extends AFXWorkbench {
 =Perspective=
 A perspective is a (UI-) container like all other components (it’s children) and behave quite similar to components. It has a handle (handlePerspective) method and can be triggered by messages from other perspectives and components. Different to components is, that a perspective will *always run on {{{FX Application thread}}}*, so this is NOT the place where you put some complex code or long running tasks. The *real task* of a perspective is to define the *layout* of your current view. The ability to trigger perspectives by messages gives you the freedom to change the layout at runtime and to adopt the view for your current needs.<br/> 
 A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component tree are your user-nodes containing {{{Buttons}}}, {{{TextFields}}} and so on.
-The root node in JACP is provided by the workbench; a perspective represents your (complex) UI tree and defines place-holders for your components (see picture 1). So, for a typical business application you can create a {{{SplitPane}}} in your perspective, which is the root node (or the root of this subtree), place a {{{GridPane}}} on the left and on the right and register those {{{GridPanes}}} as “Targets” for your components. 
+The root node in JacpFX is provided by the workbench; a perspective represents your (complex) UI tree and defines place-holders for your components (see picture 1). So, for a typical business application you can create a {{{SplitPane}}} in your perspective, which is the root node (or the root of this subtree), place a {{{GridPane}}} on the left and on the right and register those {{{GridPanes}}} as “Targets” for your components. 
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_NodeTree_View.png"/>
 
@@ -138,13 +135,13 @@ The purpose of {{{“@OnStart”}}} annotation is, to allow initialization code 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Perspective_Lifecycle.png"/>
 
 == Perspective types ==
-Since JacpFX 1.1 you can declare Perspectives declarative (with FXML) and pragmatic (plain Java/JavaFX). For both types you create a Perspective class (*{{{AFXPerspective}}}*) and declare the targets inside. The type of a Perspective is controlled by annotations.
+Since JacpFX 1.1 you can define declarative (with FXML) and programmatic (plain Java/JavaFX) Perspectives. For both types you create a Perspective class (*{{{AFXPerspective}}}*) and declare the targets inside. The type of a Perspective is controlled by annotations.
 
-=== Pragmatic Perspectives ===
+=== Programmatic Perspectives ===
 This type is defined by the {{{@Perspective}}} annotation with following attributes:
  * *id*, the Perspective id
  * *name*, the Perspective name
- * *resourceBundleLocation*, the bundle location for localisation (optional)
+ * *resourceBundleLocation*, the bundle location for localization (optional)
  * *localeID*, the default locale (optional)
 
 
@@ -273,7 +270,7 @@ public class PerspectiveOne extends AFXPerspective {
 }}}
 
 === the fx:controller declaration ===
-TODO
+Since the fx:controller attribute is mandatory in combination with JavaFX controllers you simply define the abstract perspective class (org.jacp.javafx.rcp.perspective.AFXPerspective) or the concrete perspective where this FXML is associated. Generally you should prefer the abstract declaration, so you can reuse the FXML in other perspectives. 
 
 
 = Components = 
@@ -368,7 +365,7 @@ public class DemoFX2ComponentOne extends AFX2Component {
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
-An {{{ACallbackComponent}}} is a stateful non UI component. Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. This type of component is a controller component that can be used to handle long running tasks and service calls. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
+An {{{ACallbackComponent}}} is a stateful non UI component. Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. This type of component is a controller component that can be used to handle long running tasks and service calls. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
  *  *{{{Object handleAction(IAction<Event, Object> action)}}}*: The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{ACallbackComponent}}} is any kind of object that will be returned to the calling component (request/response semantic). You are free to redirect the return value to any component you want.
 
 Some methods defined by the interface are used to modify the control flow of your component:
@@ -395,7 +392,7 @@ public class StatefulComponent extends ACallbackComponent{
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
 == {{{AStatelessCallbackComponents}}} == 
-An {{{AStatelessCallbackComponents}}} is a stateless non UI component.  Like all JACP components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{ACallbackComponent}}} it is a controller component, but in contrast it can have more than one running instance. The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}} `handle` method and JACP creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponents}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{ACallbackComponent}}} (request/response). 
+An {{{AStatelessCallbackComponents}}} is a stateless non UI component.  Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{ACallbackComponent}}} it is a controller component, but in contrast it can have more than one running instance. The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}} `handle` method and JacpFX creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponents}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{ACallbackComponent}}} (request/response). 
 
 *Example {{{AStatelessCallbackComponents}}}*
 
@@ -421,20 +418,20 @@ public class StatelessComponentOne extends AStatelessCallbackComponent{
 ===* {{{AStatelessCallbackComponents}}} life cycle *===
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
 
-= JACP Messaging = 
-The JACP Framework is all about messaging. While you are free to use the default {{{JavaFX2 EventHandler}}} concepts in your {{{View/UI}}}, you can use the JACP listeners to trigger messages to other JACP components. Messaging is the basic concept to change the state of an JACP component (and perspective too) and to exchange data between components. All messages to a JACP component are handled in a separate threads so you outsource complex computations from the *{{{FX application thread}}}* to a *worker thread*. The JACP listener concept fits well to the default {{{JavaFX 2 EventHandler}}} (a JACP listener implements an {{{JavaFX 2 EventHandler}}}) so you can add an JACP listener to any JavaFX2 Node to handle it's mouse-, keyboard- and other events. The JACP listener encapsulates the {{{JavaFX 2}}} event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component handle method. Each JACP Component has it's own message queue (postbox) containing all messages to this component, the scheduler providing the messages to the component handle method.  
+= JacpFX Messaging = 
+The JacpFX Framework is all about messaging. While you are free to use the default {{{JavaFX2 EventHandler}}} concepts in your {{{View/UI}}}, you can use the JacpFX listeners to trigger messages to other JacpFX components. Messaging is the basic concept to change the state of an JacpFX component (and perspective too) and to exchange data between components. All messages to a JacpFX component are handled in a separate threads so you outsource complex computations from the *{{{FX application thread}}}* to a *worker thread*. The JacpFX listener concept fits well to the default {{{JavaFX 2 EventHandler}}} (a JacpFX listener implements an {{{JavaFX 2 EventHandler}}}) so you can add an JacpFX listener to any JavaFX2 Node to handle it's mouse-, keyboard- and other events. The JacpFX listener encapsulates the {{{JavaFX 2}}} event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component handle method. Each JacpFX Component has it's own message queue (postbox) containing all messages to this component, the scheduler providing the messages to the component handle method.  
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_ComponentMessage_View.png"/>
 
 The {{{getActionListener}}} interface defines two methods; {{{getActionListener(Object)}}} is used for *local messages* where the calling component is also the target component. The {{{getActionListener(string, object)}}} providing an interface to send *global messages*, the method takes a string as message target-id and an object representing a message. 
 
-== *Add JACP local listener to {{{JavaFX2}}} Node* ==
+== *Add JacpFX local listener to {{{JavaFX2}}} Node* ==
 {{{
 IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener("hello");
 Button button = new Button("click me");
 button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
 }}}
 
-== *Add JACP listener to {{{JavaFX2}}} Node* ==
+== *Add JacpFX listener to {{{JavaFX2}}} Node* ==
 {{{
 IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener("id01.id001", "hello");
 Button button = new Button("click me");
@@ -445,9 +442,9 @@ You can trigger messages without involving a JavaFX2 Event by invoking the liste
 
 = Modal Messages =
 
-== JACP {{{OptionPane}}} ==
+== JacpFX {{{OptionPane}}} ==
 
-The JACP Framework provides a default optionpane. 
+The JacpFX Framework provides a default optionpane. 
 The JACPOptionPane holds a title, a message and four types of buttons - OK, Cancel, Yes and No. 
 
 You can use the JACPDialogUtil to create a JACPOptionPane.
@@ -475,7 +472,7 @@ pane.showDialog();
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Std_OptionPane.PNG"/>
 
-== JACP Custom {{{Dialog}}} ==
+== JacpFX Custom {{{Dialog}}} ==
 
 You can use the JACPModalDialog to show and hide your custom dialogs. 
 
