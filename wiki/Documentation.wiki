@@ -1,13 +1,13 @@
 #labels Documentation,JACP,JacpFXJavaFX2,Spring
 = JacpFX  documentation UNDER CONSTRUCTION (10. Sep. 2012) =
 
-The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component handle() method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
+The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component {{{handle()}}} method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
 
 <wiki:toc max_depth="3" />
 
 = The Application Launcher =
 
-The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX and JacpFX  is started. The {{{postInit(Stage stage)}}} method gives you the ability to make custom changes on the JavaFX Stage instance. You have to define a {{{main}}} method on your own and start the JavaFX2 context by using the default {{{JavaFX2 Application}}} class.
+The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX and JacpFX  is started. The {{{postInit(Stage stage)}}} method gives you the ability to make custom changes on the JavaFX Stage instance. You have to define a {{{main}}} method on your own and start the JavaFX context by using the default {{{JavaFX Application}}} class.
 
 *Example Application Lauchner*
 {{{
@@ -50,7 +50,6 @@ Below you find an example xml of a simple JACP project:
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
 	<bean id="workbench" class="org.jacp.javafx.rcp.workbench.Workbench">
 		<property name="perspectives">
 			<list>
@@ -79,7 +78,7 @@ Below you find an example xml of a simple JACP project:
 All meta-data configurations like *{{{"id"}}}, {{{"name"}}},{{{"executionTarget"}}}* and so on are defined by *annotations* directly in the component (see annotations overview).
 
 =Workbench=
-The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX “Stage”. Furthermore a workbench groups all defined perspectives in the spring - xml (one-to-many relation).  He consists of two methods you have to implement, the *{{{handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout, Stage stage)}}}* and *{{{postHandle(FXComponentLayout layout)}}}*. The {{{action}}}-object in handleInitialLayout will always contain the default initialization message {{{“init”}}}, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  *{{{IWorkbenchLayout<Node> layout}}}* reference is your entry to configure following thinks on your application:
+The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX “Stage”. Furthermore a workbench logically groups all perspectives defined in the spring - xml (one-to-many relation).  He consists of two methods you have to implement, the *{{{handleInitialLayout(IAction<Event, Object> action, IWorkbenchLayout<Node> layout, Stage stage)}}}* and *{{{postHandle(FXComponentLayout layout)}}}*. The {{{action}}}-object in handleInitialLayout will always contain the default initialization message {{{“init”}}}, this message is default for all components on application start up. The Stage reference will give you the reference to the JavaFX Stage, here you can place some custom settings for your application. The  *{{{IWorkbenchLayout<Node> layout}}}* reference is your entry to configure following thinks on your application:
  * *{{{WorkbenchXYSize(x,y):}}}* defines the initial workbench size
  * *{{{MenuEnabled(boolean):}}}* enable the main menu if needed, the entries are defined later
  * *{{{Style(StageStyle):}}}* here you define the default {{{StageStyle}}} (decorated/undecorated), on OSX only decorated is available
@@ -100,25 +99,19 @@ public class Workbench extends AFXWorkbench {
 			final IWorkbenchLayout<Node> layout, final Stage stage) {
 		layout.setWorkbenchXYSize(1024, 768);
 		layout.registerToolBar(ToolbarPosition.NORTH);
-		layout.registerToolBar(ToolbarPosition.SOUTH);
 		layout.setStyle(StageStyle.DECORATED);
 		layout.setMenuEnabled(true);
 	}
 
 	@Override
-	public void postHandle(FX2ComponentLayout layout) {
-		final ToolBar topBar = layout
+	public void postHandle(FXComponentLayout layout) {
+                final JACPMenuBar menu = layout.getMenu();
+		final JACPToolBar topBar = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
 		Button close = new Button("close");
-		close.setOnMouseClicked(new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event arg0) {
-				System.exit(0);
-
-			}
-		});
 		topBar.getItems().add(close);
+		final Menu menuFile = new Menu("File");
+                menu.getMenus().addAll(menuFile);
 	}
 
 }
