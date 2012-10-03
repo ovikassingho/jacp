@@ -25,7 +25,6 @@ package org.jacp.perspectives;
 import java.util.ResourceBundle;
 
 import javafx.event.Event;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.SplitPane;

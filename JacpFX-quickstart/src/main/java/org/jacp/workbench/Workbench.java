@@ -48,7 +48,8 @@ import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.main.ApplicationLauncher;
 
 /**
- * A simple JacpFX workbench
+ * A simple JacpFX workbench. Define basic UI settings like size, menus and
+ * toolbars here.
  * 
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  * 
@@ -73,7 +74,7 @@ public class Workbench extends AFXWorkbench {
 		final Menu menuFile = new Menu("File");
 		final Menu menuStyles = new Menu("Styles");
 		menuFile.getItems().add(getHelpItem());
-		
+		// add style selection
 		for (int i = 0; i < ApplicationLauncher.STYLES.length; i++) {
 			menuStyles.getItems().add(getStyle(i));
 		}
