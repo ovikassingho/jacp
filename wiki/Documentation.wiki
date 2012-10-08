@@ -287,12 +287,13 @@ Some methods defined by the interface are used to modify the control flow of you
   * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId.targetId".
 
 *Method level annotations TODO* 
- * *{{{@OnStart:}}}* define {{{Menu-}}} , {{{ToolBar-entries}}} and custom Node elements on component {{{start-up}}}. If the current component has {{{Menu-}}} or {{{ToolBar-entries}}} define them here; the {{{FX2ComponentLayout}}} contains the reference to main {{{ToolBars}}} and {{{Menu}}}.
- * *{{{@OnTearDown:}}}* remove {{{Menu-}}} and {{{ToolBar-entries}}}; if you defined any entries remove them from main {{{ToolBar}}} and {{{Menu}}}. This method is for cleaning purposes.
-   
-*Example UI component*
+ * *{{{@OnStart:}}}* methods annotated with {{{OnStart}}} will be executed on activation. This can either be on application startup or when the component is re-/activated. The method signature can have no parameters, the {{{FXComponentLayout layout}}} parameter and/or the reference to the {{{ResourceBundle resourceBundle}}}. With the {{{FXComponentLayout layout}}} reference you can define {{{Menu-}}} and {{{ToolBar-entries}}} in your component. 
+ * *{{{@OnTearDown:}}}* methods annotated with {{{OnTearDown}}} will be executed on application shutdown or when the component is deactivated. It has the same method signature like {{{OnStart}}}.
+ 
+*Example JavaFX UI component*
 {{{
-public class DemoFX2ComponentOne extends AFX2Component {
+@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentOne", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+public class DemoFXComponentOne extends AFXComponent {
 
 	private GridPane grid;
 	private Text category;
@@ -323,43 +324,28 @@ public class DemoFX2ComponentOne extends AFX2Component {
 		}
 		return this.grid;
 	}
-
-	@Override
-	public void onStartComponent(final FX2ComponentLayout layout) {		
-		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-		MenuBar menu = layout.getMenu();
+	
+	@OnStart
+	public void onStart(final FXComponentLayout layout,
+			final ResourceBundle resourceBundle) {	
+		JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
+		JACPMenuBar menu = layout.getMenu();
 		// create button in tool bar
 		button= new Button("Button 1");
 		north.getItems().add(button);	
 
-		ObservableList<Menu> menuList = menu.getMenus();
-		Iterator<Menu> it = menuList.iterator();
-		while(it.hasNext()) {
-			Menu m = it.next();
-			if(m.getText().equals("File")){
-				// add menu item
-				item = new MenuItem("Hello");
-				m.getItems().add(item);
-			}
-		}		
+		/// add menu entries
 	}
-
-	@Override
-	public void onTearDownComponent(final FX2ComponentLayout layout) {
-		ToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-		MenuBar menu = layout.getMenu();
+	
+	@OnTearDown
+	public void onTearDownComponent(final FXComponentLayout layout) {
+		JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
+		JACPMenuBar menu = layout.getMenu();
 		
 		//remove button from tool bar
 		north.getItems().remove(button);
 		
-		ObservableList<Menu> menuList = menu.getMenus();
-		Iterator<Menu> it = menuList.iterator();
-		while(it.hasNext()) {
-			Menu m = it.next();
-			if(m.getText().equals("File")){
-				m.getItems().remove(item);
-			}
-		}		
+		/// remove menu entries
 	}
 }
 }}}
