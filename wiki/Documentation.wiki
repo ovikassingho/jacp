@@ -302,7 +302,8 @@ public class DemoFXComponentOne extends AFXComponent {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {		
-		if (action.getLastMessage().equals("init")) {
+		if (action.getLastMessage().equals(MessageUtil.INIT)) {
+		    // create UI Nodes on component start
 			this.grid = new GridPane();
 			this.grid.setHgap(10);
 			this.grid.setVgap(10);
@@ -318,7 +319,8 @@ public class DemoFXComponentOne extends AFXComponent {
 	
 	@Override
 	public Node postHandleAction(Node node, IAction<Event, Object> action) {
-		if (!action.getLastMessage().equals("init")) {
+		if (!action.getLastMessage().equals(MessageUtil.INIT)) {
+			// update UI tree on message
 			this.category = new Text("World:");
 			this.category.setFont(Font.font("Tahoma", FontWeight.BOLD, 20));
 		}
