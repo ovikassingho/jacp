@@ -129,8 +129,7 @@ Component</y:NodeLabel>
               <y:Geometry height="44.0" width="104.0" x="513.8040596799108" y="587.0"/>
               <y:Fill color="#99CC00" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="41.6875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="94.4921875" x="4.75390625" y="1.15625">JavaFX
-Component</y:NodeLabel>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="22.84375" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="94.4921875" x="4.75390625" y="10.578125">Component</y:NodeLabel>
             </y:GenericNode>
           </data>
         </node>
@@ -193,8 +192,7 @@ Component</y:NodeLabel>
           <y:Geometry height="44.0" width="104.0" x="305.70374708217935" y="587.0"/>
           <y:Fill color="#99CC00" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="41.6875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="94.4921875" x="4.75390625" y="1.15625">JavaFX
-Component</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="22.84375" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="94.4921875" x="4.75390625" y="10.578125">Component</y:NodeLabel>
         </y:GenericNode>
       </data>
     </node>
@@ -216,6 +214,17 @@ Component</y:NodeLabel>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="41.78125" x="4.711248541089674" y="7.43359375">Target</y:NodeLabel>
         </y:GenericNode>
+      </data>
+    </node>
+    <node id="n6">
+      <data key="d6">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0" x="-196.5" y="786.5"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" borderDistance="0.0" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.310546875" modelName="internal" modelPosition="c" textColor="#000000" visible="true" width="20.4404296875" x="4.77978515625" y="5.3447265625">15</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
       </data>
     </node>
     <edge id="e0" source="n4" target="n1">
