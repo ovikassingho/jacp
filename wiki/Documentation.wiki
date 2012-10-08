@@ -286,7 +286,7 @@ Some methods defined by the interface are used to modify the control flow of you
   * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
   * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId.targetId".
 
-*Method level annotations TODO* 
+*Method level annotations* 
  * *{{{@OnStart:}}}* methods annotated with {{{OnStart}}} will be executed on activation. This can either be on application startup or when the component is re-/activated. The method signature can have no parameters, the {{{FXComponentLayout layout}}} parameter and/or the reference to the {{{ResourceBundle resourceBundle}}}. With the {{{FXComponentLayout layout}}} reference you can define {{{Menu-}}} and {{{ToolBar-entries}}} in your component. 
  * *{{{@OnTearDown:}}}* methods annotated with {{{OnTearDown}}} will be executed on application shutdown or when the component is deactivated. It has the same method signature like {{{OnStart}}}.
  
@@ -351,7 +351,11 @@ public class DemoFXComponentOne extends AFXComponent {
 	}
 }
 }}}
-===* {{{AFX2Component}}} life cycle *===
+
+*Example FXML component*
+
+
+===* {{{AFXComponent}}} life cycle *===
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{ACallbackComponent}}} == 
