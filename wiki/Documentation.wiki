@@ -445,7 +445,7 @@ public class DemoFXMLComponentOne extends AFXComponent {
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
 
 == {{{AStatefulCallbackComponent}}} == 
-An {{{AStatefulCallbackComponent}}} is a stateful non UI component. In terms of JEE it is more an singleton component, because only one instance of each {{{AStatefulCallbackComponent}}} exists at runtime. While JEE singletons must be synchronized (Container- or Bean- managed concurrency), JacpFX components never accessed directly (only trough messages) and must not be synchronized. The container queues all messages and is aware of correct message delivering (similar to a MDB running on one thread). Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Use this type of component to handle long running tasks or service calls and when you need a conversational state. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
+An {{{AStatefulCallbackComponent}}} is a stateful non UI component. In terms of JEE it is more an singleton component, because only one instance of each {{{AStatefulCallbackComponent}}} exists at runtime. While JEE singletons must be synchronized (Container- or Bean- managed concurrency), JacpFX components never accessed directly (only trough messages) and must not be synchronized. The container queues all messages and is aware of correct message delivering (similar to a MDB running on one thread). Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *(Worker Thread)*. Use this type of component to handle long running tasks or service calls and when you need a *conversational state*. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
  *  *{{{Object handleAction(IAction<Event, Object> action)}}}*: The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{AStatefulCallbackComponent}}} can be any kind of object that will be delivered back to the calling component (request/response semantic). You are free to redirect the return value to any component you want.
 
 Some methods defined by the interface are used to modify the control flow of your component:
@@ -467,12 +467,14 @@ public class StatefulComponent extends AStatefulCallbackComponent{
 }
 }}}
 
-===* {{{ACallbackComponent}}} life cycle *===
+===* {{{AStatefulCallbackComponent}}} life cycle *===
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
-== {{{AStatelessCallbackComponents}}} == 
-An {{{AStatelessCallbackComponents}}} is a stateless non UI component.  Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{ACallbackComponent}}} it is a controller component, but in contrast it can have more than one running instance. The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}} `handle` method and JacpFX creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponents}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{ACallbackComponent}}} (request/response). 
+== {{{AStatelessCallbackComponent}}} == 
+An {{{AStatelessCallbackComponent}}} is a stateless non UI component.  Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{AStatefulCallbackComponent}}} it is a callback component, but in contrast it can have more than one running instance (*no conversational state*). The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}}´s `handle` method and JacpFX creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponent}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{AStatefulCallbackComponent}}} (request/response). 
+
+* The {{{@CallbackComponent}}} annotation*
 
 *Example {{{AStatelessCallbackComponents}}}*
 
