@@ -292,7 +292,8 @@ Some methods defined by the interface are used to modify the control flow of you
  * *{{{@OnStart:}}}* methods annotated with {{{OnStart}}} will be executed on activation. This can either be on application startup or when the component is re-/activated. The method signature can have no parameters, the {{{FXComponentLayout layout}}} parameter and/or the reference to the {{{ResourceBundle resourceBundle}}}. With the {{{FXComponentLayout layout}}} reference you can define {{{Menu-}}} and {{{ToolBar-entries}}} in your component. 
  * *{{{@OnTearDown:}}}* methods annotated with {{{OnTearDown}}} will be executed on application shutdown or when the component is deactivated. It has the same method signature like {{{OnStart}}}.
  
-*Example JavaFX UI component*
+
+=== {{{Example JavaFX UI component}}} === 
 {{{
 @Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentOne", 
 	active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
@@ -355,7 +356,7 @@ public class DemoFXComponentOne extends AFXComponent {
 }
 }}}
 
-*Example FXML component*
+=== {{{Example FXML component}}} ===
 {{{
 @DeclarativeComponent(defaultExecutionTarget = "PBottom", id = "id005", name = "componentBottom", active = true, 
 	viewLocation = "/fxml/DemoFXMLComponentOneFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
