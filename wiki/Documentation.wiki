@@ -58,15 +58,15 @@ Below you find an example xml of a simple JacpFX project:
 	<bean id="perspectiveOne" class="org.jacp.javafx.rcp.perspectives.PerspectiveOne">
 		<property name="subcomponents">
 			<list>
-				<ref bean="demoFX2ComponentOne" />
-				<ref bean="demoFX2ComponentTwo" />
+				<ref bean="demoFXComponentOne" />
+				<ref bean="demoFXMLComponentOne" />
 			</list>
 		</property>
 	</bean>
 
-	<bean id="demoFX2ComponentOne" class="org.jacp.javafx.rcp.components.DemoFX2ComponentOne"/>
+	<bean id="demoFXComponentOne" class="org.jacp.javafx.rcp.components.DemoFXComponentOne"/>
 
-	<bean id="demoFX2ComponentTwo" class="org.jacp.javafx.rcp.components.DemoFX2ComponentTwo"/>
+	<bean id="demoFXMLComponentOne" class="org.jacp.javafx.rcp.components.DemoFXMLComponentOne"/>
 
 
 </beans>
@@ -195,7 +195,8 @@ This type is also defined by the {{{@Perspective}}} annotation and extends the d
 
 *Example (Declarative) Perspective*
 {{{
-@Perspective(id = "id02", name = "perspectiveOne", viewLocation = "/fxml/perspectiveOne.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Perspective(id = "id02", name = "perspectiveOne", viewLocation = "/fxml/perspectiveOne.fxml", 
+	resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class PerspectiveOne extends AFXPerspective { 
         @FXML
 	private GridPane gridPaneLeft;
@@ -292,7 +293,8 @@ Some methods defined by the interface are used to modify the control flow of you
  
 *Example JavaFX UI component*
 {{{
-@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentOne", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentOne", 
+	active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class DemoFXComponentOne extends AFXComponent {
 
 	private GridPane grid;
@@ -353,7 +355,48 @@ public class DemoFXComponentOne extends AFXComponent {
 }}}
 
 *Example FXML component*
+{{{
+@DeclarativeComponent(defaultExecutionTarget = "PBottom", id = "id005", name = "componentBottom", active = true, 
+	viewLocation = "/fxml/DemoFXMLComponentOneFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+public class DemoFXMLComponentOne extends AFXComponent {
+	@FXML
+	private TextField textField;
 
+
+	@Override
+	public Node handleAction(final IAction<Event, Object> action) {
+		// runs in worker thread
+		return null;
+	}
+
+	@Override
+	public Node postHandleAction(final Node arg0,
+			final IAction<Event, Object> action) {
+		// runs in FX application thread
+		if (!action.getLastMessage().equals(MessageUtil.INIT)) {
+			this.textField.setText(action.getLastMessage().toString());
+		}
+		return null;
+	}
+
+	@OnStart
+	public void onStartComponent(final FXComponentLayout arg0,
+			final ResourceBundle resourceBundle) {
+	}
+
+	@OnTearDown
+	public void onTearDownComponent(final FXComponentLayout arg0) {
+	}
+
+	@FXML
+	private void handleSend(final ActionEvent event) {
+		this.getActionListener("id01.id004", "hello component")
+				.performAction(event);
+	}
+
+}
+
+}}}
 
 ===* {{{AFXComponent}}} life cycle *===
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
