@@ -1,5 +1,5 @@
 #labels Documentation,JACP,JacpFX,Spring,JavaFX
-= JacpFX  documentation UNDER CONSTRUCTION (08. Oct. 2012) =
+= JacpFX  documentation UNDER CONSTRUCTION (10. Oct. 2012) =
 
 The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component {{{handle()}}} method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
 
@@ -9,7 +9,7 @@ The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaF
 
 The “Application Launcher” is the entry point where you define the spring xml and where the complete stack of Spring, JavaFX and JacpFX  is started. The {{{postInit(Stage stage)}}} method gives you the ability to make custom changes on the JavaFX Stage instance. You have to define a {{{main}}} method on your own and start the JavaFX context by using the default {{{JavaFX Application}}} class.
 
-*Example Application Lauchner*
+*Example Application Launcher*
 {{{
 public class ApplicationLauncher extends AFXSpringLauncher {
 	public ApplicationLauncher() {
@@ -79,11 +79,11 @@ The workbench is the root node of your client project, providing simple interfac
  * *{{{WorkbenchXYSize(x,y):}}}* defines the initial workbench size
  * *{{{MenuEnabled(boolean):}}}* enable the main menu if needed, the entries are defined later
  * *{{{Style(StageStyle):}}}* here you define the default {{{StageStyle}}} (decorated/undecorated), on OSX only decorated is available
- * *{{{registerToolBar(ToolbarPosition):}}}* enable tool bars in NORTH,SOUTH, EAST, WEST; those registered toolbars are accessible in all perspective and components, but you are free to define custom toolbars in your component which are not accessible for all others.
+ * *{{{registerToolBar(ToolbarPosition):}}}* enable tool bars in NORTH,SOUTH, EAST, WEST; those registered {{{ToolBars}}} are accessible in all perspective and components, but you are free to define custom toolbars in your component which are not accessible for all others.
 
 The *{{{postHandle(FXComponentLayout layout)}}}* method is executed when “handleInitialLayout” execution is finished and gives you access to the initialized menu and tool bars (if you defined them). 
  * *{{{JACPMenuBar menu = layout.getMenu()}}}* will give you the reference to the main menu instance
- * *{{{JACPToolBar toolbarNorth = layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}}* returns the reference to the “north” toolbar if defined in “handleInitialLayout” before 
+ * *{{{JACPToolBar toolbarNorth = layout.getRegisteredToolBar(ToolbarPosition.NORTH)}}}* returns the reference to the “north” {{{ToolBar}}} if defined in “handleInitialLayout” before 
 
 A workbench can handle many perspectives, but only one can be displayed at once (window mode is planned in later versions). The current active perspective is always the one where the last message appear (or a component of this perspective). All other running perspectives are hidden in background. A perspective provides the typical layout of your application, *not* the workbench. You can consider the workbench as a container for perspectives (micro applications) who coordinates all children and gives you the ability to define some basic settings like declaring toolbars and a menu and initial application size.
 
@@ -281,7 +281,7 @@ Components are basically distinguished in UI- and NonUI-Components; UIComponents
 == {{{AFXComponent}}} == 
 This type of component is used to create UI parts in {{{JavaFX}}} or FXML (similar to views or editors in other RCP frameworks). While you created your basic layout on perspective level, {{{AFXComponent}}}´s are used to fill your UI with elements and components like {{{Forms}}}, {{{Tables}}} and so on. *{{{AFXComponent}}}´s* are *controller* classes. While {{{JavaFX}}} components returning a *View-element* (Node) to the parent perspective, the XML-document of a FXML component is representing the view. The created *View-element* ({{{JavaFX}}} or FXML) will be integrated at a defined target of your perspective. 
 The interface of AFXComponent defines following two methods to implement:
- * *{{{Node handleAction(IAction<Event, Object> action):}}}* Handle any complex operations like DB access, service calls or create new UI components. Unless you are not modify existing UI elements, you are free to create any new UI-components. This method will be executed in a separate Thread *(Worker Thread)* and will not block the FX application thread from execution. You can use the handle method to create initially a large and complex UI tree, but you should avoid modifications of existing trees (it will throw an {{{UnsupportedOperationException}}} exception). You are also free to return a null value and to create the View-element in the postHanle method. On component start-up the action contains an "init" message like all other components, later the "action" parameter contains the specific message to this component.
+ * *{{{Node handleAction(IAction<Event, Object> action):}}}* Handle any complex operations like DB access, service calls or create new UI components. Unless you are not modify existing UI elements, you are free to create any new UI-components. This method will be executed in a separate Thread *(Worker Thread)* and will not block the FX application thread from execution. You can use the handle method to create initially a large and complex UI tree, but you should avoid modifications of existing trees (it will throw an {{{UnsupportedOperationException}}} exception). You are also free to return a null value and to create the View-element in the postHandle method. On component start-up the action contains an "init" message like all other components, later the "action" parameter contains the specific message to this component.
  * *{{{Node postHandleAction(Node node, IAction<Event, Object> action):}}}* This method is the place where you create and *modify* the UI View-element. The Node parameter is the object you created and passed in your *handle* method before. In case of {{{JavaFX}}} components the return value (a Node element) will be submitted to the defined target in perspective. In case of FXML components you should not return any Node (in will throw an {{{UnsupportedOperationException}}}), here the associated FXML document is the Node that is passed to the target in corresponding perspective.
 
 Some methods defined by the interface are used to modify the control flow of your component:
@@ -292,7 +292,7 @@ Some methods defined by the interface are used to modify the control flow of you
  * *{{{@OnStart:}}}* methods annotated with {{{OnStart}}} will be executed on activation. This can either be on application startup or when the component is re-/activated. The method signature can have no parameters, the {{{FXComponentLayout layout}}} parameter and/or the reference to the {{{ResourceBundle resourceBundle}}}. With the {{{FXComponentLayout layout}}} reference you can define {{{Menu-}}} and {{{ToolBar-entries}}} in your component. 
  * *{{{@OnTearDown:}}}* methods annotated with {{{OnTearDown}}} will be executed on application shutdown or when the component is deactivated. It has the same method signature like {{{OnStart}}}.
  
-=== {{{The {{{@Component}}} class level annotation}}} ===
+=== The {{{@Component}}} class level annotation ===
 {{{@Component}}} contains all meta data related to the component 
   * {{{defaultExecutionTarget (mandatory)}}}: defines an execution target provided by the perspective
   * {{{id (mandatory)}}}: the component id
@@ -301,8 +301,8 @@ Some methods defined by the interface are used to modify the control flow of you
   * {{{resourceBundleLocation}}}: the name of your resource bundle
   * {{{localeID}}}: the default localeId ({{{http://www.oracle.com/technetwork/java/javase/locales-137662.html}}}), if not set the system default will be used
 
-=== {{{The {{{@DeclarativeComponent}}} class level annotation}}} === 
-Declarative components are also {{{AFXComponents}}} but annotated with {{{@DeclarativeComponent}}}. The annotation one additional attribute compared to {{{@Component}}}:
+=== The {{{@DeclarativeComponent}}} class level annotation === 
+Declarative components are also {{{AFXComponents}}} but annotated with {{{@DeclarativeComponent}}}. This annotation has one additional attribute compared to {{{@Component}}}:
   * {{{viewLocation (mandatory)}}}: defines the location of the FXML document describing the components layout
 Declarative components using the same interface like programmatic (JavaFX) components and behave quite similar with one exception: You {{{postHandleAction}}} method should not return any "Node", because the FXML document referenced in the {{{viewLocation}}} attribute is already defining the components view.
 
