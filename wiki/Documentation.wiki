@@ -187,7 +187,7 @@ public class PerspectiveOne extends AFXPerspective {
 
 }}}
 
-=== Declerative Perspectives ===
+=== Declarative Perspectives ===
 This type is also defined by the {{{@Perspective}}} annotation and extends the default perspective annotation attributes with:
  * *viewLocation*, the URI to the FXML file
 
@@ -292,8 +292,22 @@ Some methods defined by the interface are used to modify the control flow of you
  * *{{{@OnStart:}}}* methods annotated with {{{OnStart}}} will be executed on activation. This can either be on application startup or when the component is re-/activated. The method signature can have no parameters, the {{{FXComponentLayout layout}}} parameter and/or the reference to the {{{ResourceBundle resourceBundle}}}. With the {{{FXComponentLayout layout}}} reference you can define {{{Menu-}}} and {{{ToolBar-entries}}} in your component. 
  * *{{{@OnTearDown:}}}* methods annotated with {{{OnTearDown}}} will be executed on application shutdown or when the component is deactivated. It has the same method signature like {{{OnStart}}}.
  
+=== {{{The {{{@Component}}} class level annotation}}} ===
+{{{@Component}}} contains all meta data related to the component 
+  * {{{defaultExecutionTarget (mandatory)}}}: defines an execution target provided by the perspective
+  * {{{id (mandatory)}}}: the component id
+  * {{{name (mandatory)}}}: the component name
+  * {{{active}}}: the default active state on application startup, the default is "true"; when a component is set to false it will not be activated by the applications "init" message but by any other message
+  * {{{resourceBundleLocation}}}: the name of your resource bundle
+  * {{{localeID}}}: the default localeId ({{{http://www.oracle.com/technetwork/java/javase/locales-137662.html}}}), if not set the system default will be used
 
-=== {{{Example JavaFX UI component}}} === 
+=== {{{The {{{@DeclarativeComponent}}} class level annotation}}} === 
+Declarative components are also {{{AFXComponents}}} but annotated with {{{@DeclarativeComponent}}}. The annotation one additional attribute compared to {{{@Component}}}:
+  * {{{viewLocation (mandatory)}}}: defines the location of the FXML document describing the components layout
+Declarative components using the same interface like programmatic (JavaFX) components and behave quite similar with one exception: You {{{postHandleAction}}} method should not return any "Node", because the FXML document referenced in the {{{viewLocation}}} attribute is already defining the components view.
+
+ 
+=== {{{Example Programmatic component}}} === 
 {{{
 @Component(defaultExecutionTarget = "Pleft", id = "id001", name = "componentOne", 
 	active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
@@ -356,7 +370,8 @@ public class DemoFXComponentOne extends AFXComponent {
 }
 }}}
 
-=== {{{Example FXML component}}} ===
+
+=== {{{Example Declarative component}}} ===
 {{{
 @DeclarativeComponent(defaultExecutionTarget = "PBottom", id = "id005", name = "componentBottom", active = true, 
 	viewLocation = "/fxml/DemoFXMLComponentOneFXML.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
@@ -423,6 +438,8 @@ public class DemoFXMLComponentOne extends AFXComponent {
   </center>
 </BorderPane>
 }}}
+
+
 
 ===* {{{AFXComponent}}} life cycle *===
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_UI-Component_Lifecycle.png"/>
