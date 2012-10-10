@@ -270,6 +270,7 @@ public class PerspectiveOne extends AFXPerspective {
 
 }}}
 
+
 === the fx:controller declaration ===
 Since the fx:controller attribute is mandatory in combination with JavaFX controllers you simply define the abstract perspective class (org.jacp.javafx.rcp.perspective.AFXPerspective) or the concrete perspective where this FXML is associated. Generally you should prefer the abstract declaration, so you can reuse the FXML in other perspectives. 
 
@@ -362,7 +363,6 @@ public class DemoFXMLComponentOne extends AFXComponent {
 	@FXML
 	private TextField textField;
 
-
 	@Override
 	public Node handleAction(final IAction<Event, Object> action) {
 		// runs in worker thread
@@ -381,12 +381,10 @@ public class DemoFXMLComponentOne extends AFXComponent {
 
 	@OnStart
 	public void onStartComponent(final FXComponentLayout arg0,
-			final ResourceBundle resourceBundle) {
-	}
+			final ResourceBundle resourceBundle) {	}
 
 	@OnTearDown
-	public void onTearDownComponent(final FXComponentLayout arg0) {
-	}
+	public void onTearDownComponent(final FXComponentLayout arg0) {	}
 
 	@FXML
 	private void handleSend(final ActionEvent event) {
@@ -396,6 +394,33 @@ public class DemoFXMLComponentOne extends AFXComponent {
 
 }
 
+}}}
+
+* The FXML view *
+{{{
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent">
+  <center>
+    <AnchorPane fx:id="details">
+      <children>
+        <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" layoutY="120" onAction="#handleSend" text="%send"  />
+        <Label id="Label" styleClass="propLabel" text="%fxmlCompBottom" />
+        <TextField id="synopsis" fx:id="textField"  styleClass="propTextField" text="" />
+      </children>
+    </AnchorPane>
+  </center>
+</BorderPane>
 }}}
 
 ===* {{{AFXComponent}}} life cycle *===
