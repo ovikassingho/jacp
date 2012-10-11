@@ -271,7 +271,7 @@ public class PerspectiveOne extends AFXPerspective {
 }}}
 
 
-=== the fx:controller declaration ===
+=== The fx:controller declaration ===
 Since the fx:controller attribute is mandatory in combination with JavaFX controllers you simply define the abstract perspective class (org.jacp.javafx.rcp.perspective.AFXPerspective) or the concrete perspective where this FXML is associated. Generally you should prefer the abstract declaration, so you can reuse the FXML in other perspectives. 
 
 
@@ -607,3 +607,8 @@ JACPModalDialog.getInstance().hideModalMessage();
 = localisation and internationalization =
 
 = The usage of Spring-framework = 
+JacpFX uses Spring for dependency injection, this includes that the complete Spring stack is usable in JacpFX context. By default Spring annotations are not activated, JacpFX components wired declarative. To active annotation configuration add to global JacpFX-spring file (located in src/main/resources/main.xml):
+ {{{
+ <context:component-scan base-package="my.beans"/>
+ <context:annotation-config/>
+    }}}  
