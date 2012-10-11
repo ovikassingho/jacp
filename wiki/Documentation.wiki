@@ -448,7 +448,7 @@ public class DemoFXMLComponentOne extends AFXComponent {
 An {{{AStatefulCallbackComponent}}} is a stateful non UI component. In terms of JEE it is more an singleton component, because only one instance of each {{{AStatefulCallbackComponent}}} exists at runtime. While JEE singletons must be synchronized (Container- or Bean- managed concurrency), JacpFX components never accessed directly (only trough messages) and must not be synchronized. The container queues all messages and is aware of correct message delivering (similar to a MDB running on one thread). Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *(Worker Thread)*. Use this type of component to handle long running tasks or service calls and when you need a *conversational state*. The result of your task will be send to the message caller by default. This type of component has one method you have to implement:
  *  *{{{Object handleAction(IAction<Event, Object> action)}}}*: The input parameter "action" contains the specific message to this component. You can modify the state of your component by checking the content of your action message. The output (return value) of an {{{AStatefulCallbackComponent}}} can be any kind of object that will be delivered back to the calling component (request/response semantic). You are free to redirect the return value to any component you want.
 
-Some methods defined by the interface are used to modify the control flow of your component:
+Some methods defined by the interface modify the control flow of your component:
   * *{{{setActive(boolean active):}}}* active / disable the current component. You can modify the value in the {{{handle}}} and {{{postHandle}}} method
   * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId". The {{{executionTarget}}} in this context means "the runtime perspective". You can move the component to any perspective you want. Moving a component to a specific perspective can speed up the message calls in one perspective context. Locale message calls are executed faster.  
   * *{{{setHandleTarget(String targetId):}}}*  modify the target of the return value; by default the return value is always send to the caller component but you can "redirect" it to any component you want.
@@ -516,21 +516,24 @@ The {{{getActionListener}}} interface defines two methods; {{{getActionListener(
 
 == *Add JacpFX local listener to {{{JavaFX2}}} Node* ==
 {{{
-IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener("hello");
 Button button = new Button("click me");
-button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
+button.setOnMouseClicked(getActionListener("hello").getListener());
 }}}
 
 == *Add JacpFX listener to {{{JavaFX2}}} Node* ==
 {{{
-IActionListener<EventHandler<Event>, Event, Object> listener = getActionListener("id01.id001", "hello");
 Button button = new Button("click me");
-button.setOnMouseClicked((EventHandler<? super MouseEvent>) listener);
+button.setOnMouseClicked(getActionListener("id01.id001", "hello").getListener());
+}}}
+
+== *Fire message event manually* ==
+{{{
+getActionListener("id01.id001", "hello").performAction(null); // or any event instead of null
 }}}
 
 You can trigger messages without involving a JavaFX2 Event by invoking the listeners {{{listener.performAction(event)}}} method. The address scheme is pretty simple, it is based on the Java package naming convention. Components are always located in a perspective so "id01" in the current example is the id of a perspective and "id001" the id of the target component. So by typing "id01.id001" you address the component "id001" in perspective "id01". You can also use simple naming like "id001" (without dots), this would mean that the target is either a perspective or a component inside the current perspective. The framework will try to resolve the correct target for you.
 
-= Modal Messages =
+= Modal Dialogs =
 
 == JacpFX {{{OptionPane}}} ==
 
@@ -581,7 +584,14 @@ JACPModalDialog.getInstance().hideModalMessage();
 
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Custom_OptionPane.PNG"/>
 
+
+== Styling the JacpFX {{{OptionPane}}} ==
+
 = JACPToolBar and JACPMenuBar =
+
+== usage ==
+
+== styling ==
 
 = Annotations overview =
 
