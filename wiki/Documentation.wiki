@@ -454,6 +454,7 @@ Some methods defined by the interface are used to modify the control flow of you
   * *{{{setHandleTarget(String targetId):}}}*  modify the target of the return value; by default the return value is always send to the caller component but you can "redirect" it to any component you want.
 
 * The {{{@CallbackComponent}}} class level annotation*
+
 The {{{@CallbackComponent}}} defines the components meta-data:
   * {{{id (mandatory)}}}: the component id
   * {{{name (mandatory)}}}: the component name
@@ -461,7 +462,8 @@ The {{{@CallbackComponent}}} defines the components meta-data:
 
 *Example {{{AStatefulCallbackComponent}}}*
 {{{
-public class StatefulComponent extends AStatefulCallbackComponent{
+@CallbackComponent(id = "id003", name = "statefulCallback", active = false)
+public class StatefulCallback extends AStatefulCallbackComponent{
 	private int c = 0;
 	@Override
 	public Object handleAction(IAction<Event, Object> action) {
@@ -478,15 +480,15 @@ public class StatefulComponent extends AStatefulCallbackComponent{
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateful-Component.png"/>
 
 == {{{AStatelessCallbackComponent}}} == 
-An {{{AStatelessCallbackComponent}}} is a stateless non UI component.  Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{AStatefulCallbackComponent}}} it is a callback component, but in contrast it can have more than one running instance (*no conversational state*). The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}}´s `handle` method and JacpFX creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponent}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{AStatefulCallbackComponent}}} (request/response). 
+An {{{AStatelessCallbackComponent}}} is a stateless non UI component.  Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{AStatefulCallbackComponent}}} it is a callback component, but in contrast it can have more than one running instance (*no conversational state*). The purpose of this component is to scale workload on different instances and threads. When many messages are send to an {{{AStatelessCallbackComponent}}} the scheduler creates a defined amount (based on CPU count) of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{AStatefulCallbackComponent}}} (request/response). 
 
-
+This component type has the same method signature like an {{{AStatefulCallbackComponent}}} also the {{{@CallbackComponent}}} annotation is the same.
 
 *Example {{{AStatelessCallbackComponent}}}*
 
 {{{
-public class StatelessComponentOne extends AStatelessCallbackComponent{
-
+@CallbackComponent(id = "id004", name = "statelessCallback", active = false)
+public class StatelessCallback extends AStatelessCallbackComponent{
 	@Override
 	public Object handleAction(IAction<Event, Object> action) {
 		if(action.getLastMessage() instanceof File){
