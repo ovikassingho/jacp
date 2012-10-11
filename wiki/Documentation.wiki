@@ -509,7 +509,9 @@ public class StatelessCallback extends AStatelessCallbackComponent{
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
 
 = JacpFX Messaging = 
-The JacpFX Framework is all about messaging. While you are free to use the default {{{JavaFX EventHandler}}} concepts in your {{{View/UI}}}, you can use the JacpFX listeners to trigger messages to other JacpFX components or to the calling component itself. Messaging is the basic concept to change the state of an JacpFX component (and perspective too) and to exchange data between components. When a component receives a message it will execute the {{{handle(...) method}}}, which is executed in a separate thread and will not block the *{{{FX application thread}}}*. The JacpFX listener concept fits well to the default {{{JavaFX EventHandler}}} (a JacpFX listener implements an {{{JavaFX  EventHandler}}}) so you can add an JacpFX listener to any JavaFX Node to handle it's mouse-, keyboard- and other events. The JacpFX listener encapsulates the {{{JavaFX }}} source-event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component {{{handle(...) method}}}. Each JacpFX Component has it's own message queue (postbox) containing all messages to this component, the scheduler providing the messages to the component handle method.  
+The JacpFX Framework is all about messaging. While you are free to use the default {{{JavaFX EventHandler}}} concepts in your {{{View/UI}}}, you can use the JacpFX listeners to trigger messages to other JacpFX components or to the calling component itself. 
+Messaging is the basic concept to change the state of an JacpFX component (and perspective too) and to exchange data between components. When a component receives a message it will execute the {{{handle(...) method}}}, which is executed in a separate thread and will not block the *{{{FX application thread}}}*. 
+The JacpFX listener concept fits well to the default {{{JavaFX EventHandler}}} (a JacpFX listener implements an {{{JavaFX  EventHandler}}}) so you can add an JacpFX listener to any JavaFX Node to handle it's mouse-, keyboard- and other events. An JacpFX listener encapsulates the {{{JavaFX }}} source-event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component {{{handle(...) method}}}. Each JacpFX Component has it's own message queue (postbox) containing all messages to this component, the scheduler providing the messages to the component handle method.  
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_ComponentMessage_View.png"/>
 
 The {{{getActionListener}}} interface defines two methods: 
@@ -534,7 +536,11 @@ You can also fire messages directly from your component. Simply call the {{{perf
 getActionListener("id01.id001", "hello").performAction(null); // or any event instead of null
 }}}
 
-You can trigger messages without involving a JavaFX2 Event by invoking the listeners {{{listener.performAction(event)}}} method. The address scheme is pretty simple, it is based on the Java package naming convention. Components are always located in a perspective so "id01" in the current example is the id of a perspective and "id001" the id of the target component. So by typing "id01.id001" you address the component "id001" in perspective "id01". You can also use simple naming like "id001" (without dots), this would mean that the target is either a perspective or a component inside the current perspective. The framework will try to resolve the correct target for you.
+== *The message address scheme* ==
+
+The address scheme is pretty simple, it is based on the Java package naming convention. 
+Components are always located in a perspective so "id01" in the current example is the id of a perspective and "id001" the id of the target component. So by typing "id01.id001" you address the component "id001" in perspective "id01". 
+You can also use simple naming like "id001" (without dots), this would mean that the target is either a perspective or a component inside the current perspective. The framework will try to resolve the correct target for you.
 
 = Modal Dialogs =
 
