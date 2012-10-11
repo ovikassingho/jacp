@@ -509,24 +509,27 @@ public class StatelessCallback extends AStatelessCallbackComponent{
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_Stateless-Component.png"/>
 
 = JacpFX Messaging = 
-The JacpFX Framework is all about messaging. While you are free to use the default {{{JavaFX2 EventHandler}}} concepts in your {{{View/UI}}}, you can use the JacpFX listeners to trigger messages to other JacpFX components. Messaging is the basic concept to change the state of an JacpFX component (and perspective too) and to exchange data between components. All messages to a JacpFX component are handled in a separate threads so you outsource complex computations from the *{{{FX application thread}}}* to a *worker thread*. The JacpFX listener concept fits well to the default {{{JavaFX 2 EventHandler}}} (a JacpFX listener implements an {{{JavaFX 2 EventHandler}}}) so you can add an JacpFX listener to any JavaFX2 Node to handle it's mouse-, keyboard- and other events. The JacpFX listener encapsulates the {{{JavaFX 2}}} event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component handle method. Each JacpFX Component has it's own message queue (postbox) containing all messages to this component, the scheduler providing the messages to the component handle method.  
+The JacpFX Framework is all about messaging. While you are free to use the default {{{JavaFX EventHandler}}} concepts in your {{{View/UI}}}, you can use the JacpFX listeners to trigger messages to other JacpFX components or to the calling component itself. Messaging is the basic concept to change the state of an JacpFX component (and perspective too) and to exchange data between components. When a component receives a message it will execute the {{{handle(...) method}}}, which is executed in a separate thread and will not block the *{{{FX application thread}}}*. The JacpFX listener concept fits well to the default {{{JavaFX EventHandler}}} (a JacpFX listener implements an {{{JavaFX  EventHandler}}}) so you can add an JacpFX listener to any JavaFX Node to handle it's mouse-, keyboard- and other events. The JacpFX listener encapsulates the {{{JavaFX }}} source-event, the message and the target component-id in an {{{Action}}} object. This atomic {{{Action}}} will be send to the receiver and can be handled by message-content or event-type in the target-component {{{handle(...) method}}}. Each JacpFX Component has it's own message queue (postbox) containing all messages to this component, the scheduler providing the messages to the component handle method.  
 <img src="http://jacp.googlecode.com/svn/wiki/JACP_ComponentMessage_View.png"/>
 
-The {{{getActionListener}}} interface defines two methods; {{{getActionListener(Object)}}} is used for *local messages* where the calling component is also the target component. The {{{getActionListener(string, object)}}} providing an interface to send *global messages*, the method takes a string as message target-id and an object representing a message. 
+The {{{getActionListener}}} interface defines two methods: 
 
-== *Add JacpFX local listener to {{{JavaFX2}}} Node* ==
+== *JacpFX local messages* ==
+{{{getActionListener(Object)}}} fires a *local messages* where the calling component is also the target component.
 {{{
 Button button = new Button("click me");
 button.setOnMouseClicked(getActionListener("hello").getListener());
 }}}
 
-== *Add JacpFX listener to {{{JavaFX2}}} Node* ==
+== *JacpFX global messages* ==
+The {{{getActionListener(string, object)}}} providing an interface to send *global messages*, the method has a (string) targetId and an object representing a message. The targetId signature is: {{{perspectiveId.componentId}}} or simply {{{componentId}}} when the target is in the same perspective.
 {{{
 Button button = new Button("click me");
 button.setOnMouseClicked(getActionListener("id01.id001", "hello").getListener());
 }}}
 
 == *Fire message event manually* ==
+You can also fire messages directly from your component. Simply call the {{{performAction(null)}}} method and the message will be send.
 {{{
 getActionListener("id01.id001", "hello").performAction(null); // or any event instead of null
 }}}
@@ -596,3 +599,5 @@ JACPModalDialog.getInstance().hideModalMessage();
 = Annotations overview =
 
 = localisation and internationalization =
+
+= The usage of Spring-framework = 
