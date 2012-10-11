@@ -453,6 +453,12 @@ Some methods defined by the interface are used to modify the control flow of you
   * *{{{setExecutionTarget(String targetId):}}}* modify the {{{executionTarget}}} of your component. You can change the target at runtime, the notation is "perspectiveId". The {{{executionTarget}}} in this context means "the runtime perspective". You can move the component to any perspective you want. Moving a component to a specific perspective can speed up the message calls in one perspective context. Locale message calls are executed faster.  
   * *{{{setHandleTarget(String targetId):}}}*  modify the target of the return value; by default the return value is always send to the caller component but you can "redirect" it to any component you want.
 
+* The {{{@CallbackComponent}}} class level annotation*
+The {{{@CallbackComponent}}} defines the components meta-data:
+  * {{{id (mandatory)}}}: the component id
+  * {{{name (mandatory)}}}: the component name
+  * {{{active}}}: the component active state on startup (default is true)
+
 *Example {{{AStatefulCallbackComponent}}}*
 {{{
 public class StatefulComponent extends AStatefulCallbackComponent{
@@ -474,9 +480,9 @@ public class StatefulComponent extends AStatefulCallbackComponent{
 == {{{AStatelessCallbackComponent}}} == 
 An {{{AStatelessCallbackComponent}}} is a stateless non UI component.  Like all JacpFX components it has a {{{handle}}} method that is executed in a separate Thread *( Worker Thread)*. Similar to an {{{AStatefulCallbackComponent}}} it is a callback component, but in contrast it can have more than one running instance (*no conversational state*). The purpose of this component is to scale workload on different instances and threads. You can place some complex and long running tasks in the {{{AStatelessCallbackComponents}}}´s `handle` method and JacpFX creates as many instances and threads as needed (depending on your CPU count). For example you can place some code to read a file from your file system or to get some rows from your table. When many messages are send to an {{{AStatelessCallbackComponent}}} the scheduler creates a defined amount of instances and threads to work off all the messages in parallel. The result will be send to message caller exactly like an {{{AStatefulCallbackComponent}}} (request/response). 
 
-* The {{{@CallbackComponent}}} annotation*
 
-*Example {{{AStatelessCallbackComponents}}}*
+
+*Example {{{AStatelessCallbackComponent}}}*
 
 {{{
 public class StatelessComponentOne extends AStatelessCallbackComponent{
