@@ -26,7 +26,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -119,10 +118,14 @@ public class ComponentLeft extends AFXComponent {
 				.text(this.getResourceBundle().getString("javafxComp"))
 				.alignment(Pos.CENTER_RIGHT).styleClass("propLabelBig").build();
 
-		final Button left = ButtonBuilder.create()
-				.text(this.getResourceBundle().getString("send")).layoutX(120)
-				.onMouseClicked(this.getMessage()).alignment(Pos.CENTER)
-				.build();
+		final Button left = ButtonBuilder
+				.create()
+				.text(this.getResourceBundle().getString("send"))
+				.layoutX(120)
+				.onMouseClicked(
+						this.getActionListener("id01.id003",
+								"hello stateful component").getListener())
+				.alignment(Pos.CENTER).build();
 
 		this.textField = TextFieldBuilder.create().text("")
 				.styleClass("propTextField").alignment(Pos.CENTER).build();
@@ -143,21 +146,6 @@ public class ComponentLeft extends AFXComponent {
 		GridPane.setVgrow(anchor, Priority.ALWAYS);
 
 		return anchor;
-	}
-
-	/**
-	 * create a message when event is fired
-	 * 
-	 * @return
-	 */
-	private EventHandler<Event> getMessage() {
-		return new EventHandler<Event>() {
-			@Override
-			public void handle(final Event arg0) {
-				ComponentLeft.this.getActionListener("id01.id003",
-						"hello stateful component").performAction(arg0);
-			}
-		};
 	}
 
 }
