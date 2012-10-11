@@ -118,7 +118,7 @@ public class ComponentTop extends AFXComponent {
 				.alignment(Pos.CENTER).styleClass("propLabel").build();
 		final Button top = ButtonBuilder.create()
 				.text(this.getResourceBundle().getString("send")).layoutX(120)
-				.onMouseClicked(this.getMessage()).alignment(Pos.CENTER)
+				.onMouseClicked(this.getEventHandler()).alignment(Pos.CENTER)
 				.build();
 		this.textField = TextFieldBuilder.create().text("")
 				.styleClass("propTextField").alignment(Pos.CENTER).build();
@@ -132,7 +132,7 @@ public class ComponentTop extends AFXComponent {
 		AnchorPane.setTopAnchor(this.textField, 50.0);
 		AnchorPane.setRightAnchor(this.textField, 25.0);
 
-		anchor.getChildren().addAll(heading,top,this.textField);
+		anchor.getChildren().addAll(heading, top, this.textField);
 
 		GridPane.setHgrow(anchor, Priority.ALWAYS);
 		GridPane.setVgrow(anchor, Priority.ALWAYS);
@@ -140,10 +140,13 @@ public class ComponentTop extends AFXComponent {
 		return anchor;
 	}
 
-	private EventHandler<Event> getMessage() {
+	private EventHandler<Event> getEventHandler() {
 		return new EventHandler<Event>() {
 			@Override
 			public void handle(final Event arg0) {
+				// fire component event "manually" with performAction(null) or
+				// set event handler direct to component
+				// onMouseClicked(getActionListener("id01.id003","hello stateful component").getListener())
 				ComponentTop.this.getActionListener("id01.id003",
 						"hello stateful component").performAction(arg0);
 			}
