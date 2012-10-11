@@ -29,6 +29,9 @@ import javafx.event.Event;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
+import org.jacp.spring.services.SimpleSpringBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @CallbackComponent(id = "id003", name = "statefulCallback", active = false)
 /**
@@ -39,11 +42,14 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 public class StatefulCallback extends AStatefulCallbackComponent {
 	private final Logger log = Logger.getLogger(StatefulCallback.class
 			.getName());
+	@Autowired
+	@Qualifier(value="simpleSpringBean")
+	private SimpleSpringBean simpleSpringBean;
 
 	@Override
 	public Object handleAction(final IAction<Event, Object> arg0) {
 		this.log.info(arg0.getLastMessage().toString());
-		return "StatefulCallback - hello";
+		return "StatefulCallback - "+simpleSpringBean.sayHello();
 	}
 
 }
