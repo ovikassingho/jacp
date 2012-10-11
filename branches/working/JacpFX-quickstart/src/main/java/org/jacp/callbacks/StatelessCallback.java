@@ -29,6 +29,9 @@ import javafx.event.Event;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.spring.services.SimpleSpringBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * A stateless JacpFX component.
@@ -40,11 +43,14 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 public class StatelessCallback extends AStatelessCallbackComponent {
 	private final Logger log = Logger.getLogger(StatelessCallback.class
 			.getName());
-
+	@Autowired
+	@Qualifier(value="simpleSpringBean")
+	private SimpleSpringBean simpleSpringBean;
+	
 	@Override
 	public Object handleAction(final IAction<Event, Object> arg0) {
 		this.log.info(arg0.getLastMessage().toString());
-		return "StatelessCallback - hello";
+		return "StatelessCallback - "+simpleSpringBean.sayHello();
 	}
 
 }
