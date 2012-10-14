@@ -82,6 +82,11 @@ public class PerspectiveOne extends AFXPerspective {
 	}
 
 	@OnStart
+	/**
+	 * @OnStart annotated method will be executed when component is activated.
+	 * @param layout
+	 * @param resourceBundle
+	 */
 	public void onStartPerspective(final FXComponentLayout layout,
 			final ResourceBundle resourceBundle) {
 		// define toolbars and menu entries
@@ -111,6 +116,10 @@ public class PerspectiveOne extends AFXPerspective {
 	}
 
 	@OnTearDown
+	/**
+	 * @OnTearDown annotated method will be executed when component is deactivated.
+	 * @param arg0
+	 */
 	public void onTearDownPerspective(final FXComponentLayout arg0) {
 		// remove toolbars and menu entries when close perspective
 

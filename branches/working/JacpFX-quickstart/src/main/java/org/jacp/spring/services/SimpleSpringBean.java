@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
  *
  */
 public class SimpleSpringBean {
+	/**
+	 * A simple service method.
+	 * @return String
+	 */
 	public String sayHello() {
 		return "hello";
 	}
