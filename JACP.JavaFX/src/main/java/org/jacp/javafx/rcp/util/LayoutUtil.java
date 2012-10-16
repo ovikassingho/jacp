@@ -11,14 +11,16 @@ import javafx.scene.layout.Priority;
 public class LayoutUtil {
 
     public static class GridPaneUtil {
-        
+
         public static void setFullGrow(Priority priority, Node... nodes) {
             for (Node node : nodes) {
-                GridPane.setVgrow(node, priority);
-                GridPane.setHgrow(node, priority);
+                if (node != null) {
+                    GridPane.setVgrow(node, priority);
+                    GridPane.setHgrow(node, priority);
+                }
             }
         }
-        
+
     }
 
 }

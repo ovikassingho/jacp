@@ -56,7 +56,7 @@ public class ContactAddDialog {
 
     private void createAddContactDialog() {
         final VBox box = new VBox();
-        box.setId("ProxyDialog");
+        box.getStyleClass().add("jacp-option-pane");
         box.setMaxSize(300, Region.USE_PREF_SIZE);
         // the title
         final Label title = new Label("Add new category");
