@@ -109,7 +109,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	 */
 	private void initDialog() {
 		this.buttons = new ArrayList<Button>();
-		this.setId("ProxyDialog");
+		this.getStyleClass().add("jacp-option-pane");
 		this.setSpacing(10);
 		this.setMaxSize(430, Region.USE_PREF_SIZE);
 		// block mouse clicks
@@ -146,7 +146,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		// create title
 		this.titleLabel = new Label(this.title);
 		this.titleLabel.getStyleClass().add("jacp-option-pane-title");
-		this.titleLabel.setId("title");
 		this.titleLabel.setMinHeight(30);
 		this.titleLabel.setMaxHeight(Double.MAX_VALUE);
 		this.titleLabel.setPrefHeight(22);
@@ -159,7 +158,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		this.bottomBar.setAlignment(Pos.BASELINE_RIGHT);
 
 		VBox.setMargin(this.bottomBar, new Insets(20, 5, 5, 5));
-		this.getStyleClass().add("proxy-pane");
 		this.setEffect(new DropShadow());
 		this.getChildren().addAll(explPane, this.bottomBar);
 	}
