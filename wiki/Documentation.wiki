@@ -639,18 +639,34 @@ Defines perspectives and their meta-data:
 
 == Method-level annotation ==
 === {{{@OnStart}}} ===
-Life cycle annotation, method marked with this are executed on component startup (also when component is reactivated). Is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception.
+Lifecycle annotation, method marked with this are executed on component startup (also when component is reactivated). It ss applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception.
 Following method signature is applicable:
  * method with no parameters
  * with FXComponentLayout layout
  * with FXComponentLayout layout, URL url (in case of FXML components)
  * with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle 
  
-=== {{{@Perspective}}} ===  
+=== {{{@OnTearDown}}} ===  
+Lifecycle annotation, method marked with this are executed on component shutdown. It is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception.
+Following method signature is applicable:
+ * method with no parameters
+ * with FXComponentLayout layout
+ * with FXComponentLayout layout, URL url (in case of FXML components)
+ * with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle 
+ 
 = localisation and internationalization =
-
-
+{{{@Component}}}, {{{@DeclarativeComponent}}} and {{{@Perspective}}} annotation allows declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like {{{"bundles.languageBundle"}}} and create in resources/bundles a file {{{languageBundle_en.properties}}} for further informations on resource bundles see: {{{http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html}}}.
+== Get access to defines resource bundle: ==
+ * a.) use the {{{@OnStart}}} annotation and creates a method with a ResourceBundle resourceBundle parameter.
+ * b.) this.getResourceBundle()
 = resources = 
+The default project layout provides following structure for resources: 
+
+src/main/resources:
+ * bundles: resource bundle files
+ * fxml: all fxml files
+ * images: application images
+ * styles: css files 
 
 = The usage of Spring-framework = 
 JacpFX uses Spring for dependency injection, this includes that the complete Spring stack is usable in JacpFX context. By default Spring annotations are not activated, JacpFX components wired declarative. To active annotation configuration add to global JacpFX-spring file (located in src/main/resources/main.xml):
