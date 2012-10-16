@@ -217,3 +217,31 @@
 .menu-item:hover {
  	 -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;
  }
+ 
+ 
+ /**************************
+ * 
+ *   OPTIONPANE
+ * 
+ **************************/
+
+
+#error-dimmer{
+	-fx-background-color: rgba(0,0,0,0.5);
+}
+
+.jacp-option-pane-explanation{
+	-fx-fill: white;
+}
+	
+#ProxyDialog {
+ 	-fx-background-image: url("../images/texture_dark.png");
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 15;
+    -fx-effect: dropshadow( three-pass-box , black , 20, 0 , 0 , 0 );
+}
+#ProxyDialog #title {
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #CCCCCC;
+}
