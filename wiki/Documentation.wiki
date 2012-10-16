@@ -1,5 +1,5 @@
 #labels Documentation,JACP,JacpFX,Spring,JavaFX
-= JacpFX  documentation UNDER CONSTRUCTION (10. Oct. 2012) =
+= JacpFX  documentation UNDER CONSTRUCTION (16. Oct. 2012) =
 
 The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component {{{handle()}}} method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
 
@@ -139,10 +139,10 @@ Since JacpFX 1.1 you can define declarative (with FXML) and programmatic (plain 
 
 === Programmatic Perspectives ===
 This type is defined by the {{{@Perspective}}} annotation with following attributes:
- * *id*, the Perspective id
- * *name*, the Perspective name
- * *resourceBundleLocation*, the bundle location for localization (optional)
- * *localeID*, the default locale (optional)
+ * {{{id (mandatory)}}}, the Perspective id
+ * {{{name (mandatory)}}}, the Perspective name
+ * {{{resourceBundleLocation}}}, the bundle location for localization 
+ * {{{localeID}}}, the default locale
 
 
 *Example Perspective*
@@ -604,7 +604,53 @@ JACPModalDialog.getInstance().hideModalMessage();
 
 = Annotations overview =
 
+== Class-level annotation ==
+=== {{{@Component}}} ===
+Defines UI components and their meta-data. Possible attributes:
+  * {{{defaultExecutionTarget (mandatory)}}}: defines an execution target provided by the perspective
+  * {{{id (mandatory)}}}: the component id
+  * {{{name (mandatory)}}}: the component name
+  * {{{active}}}: the default active state on application startup, the default is "true"; when a component is set to false it will not be activated by the applications "init" message but by any other message
+  * {{{resourceBundleLocation}}}: the name of your resource bundle
+  * {{{localeID}}}: the default localeId ({{{http://www.oracle.com/technetwork/java/javase/locales-137662.html}}}), if not set the system default will be used
+ 
+=== {{{@DeclarativeComponent}}} === 
+Defines FXMLcomponents and their meta-data. Possible attributes:
+  * {{{defaultExecutionTarget (mandatory)}}}: defines an execution target provided by the perspective
+  * {{{id (mandatory)}}}: the component id
+  * {{{name (mandatory)}}}: the component name
+  * {{{active}}}: the default active state on application startup, the default is "true"; when a component is set to false it will not be activated by the applications "init" message but by any other message
+  * {{{resourceBundleLocation}}}: the name of your resource bundle
+  * {{{localeID}}}: the default localeId ({{{http://www.oracle.com/technetwork/java/javase/locales-137662.html}}}), if not set the system default will be used
+  * {{{viewLocation (mandatory)}}}: defines the location of the FXML document describing the components layout
+
+=== {{{@CallbackComponent}}} === 
+Defines non UI service components and their meta-data:
+  * {{{id (mandatory)}}}: the component id
+  * {{{name (mandatory)}}}: the component name
+  * {{{active}}}: the component active state on startup (default is true)
+
+=== {{{@Perspective}}} === 
+Defines perspectives and their meta-data:
+ * {{{id (mandatory)}}}, the Perspective id
+ * {{{name (mandatory)}}}, the Perspective name
+ * {{{resourceBundleLocation}}}, the bundle location for localization 
+ * {{{localeID}}}, the default locale
+
+== Method-level annotation ==
+=== {{{@OnStart}}} ===
+Life cycle annotation, method marked with this are executed on component startup (also when component is reactivated). Is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception.
+Following method signature is applicable:
+ * method with no parameters
+ * with FXComponentLayout layout
+ * with FXComponentLayout layout, URL url (in case of FXML components)
+ * with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle 
+ 
+=== {{{@Perspective}}} ===  
 = localisation and internationalization =
+
+
+= resources = 
 
 = The usage of Spring-framework = 
 JacpFX uses Spring for dependency injection, this includes that the complete Spring stack is usable in JacpFX context. By default Spring annotations are not activated, JacpFX components wired declarative. To active annotation configuration add to global JacpFX-spring file (located in src/main/resources/main.xml):
