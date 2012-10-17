@@ -122,7 +122,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 		this.explanation = new Text(this.message);
 		this.explanation.setWrappingWidth(400);
-		this.explanation.getStyleClass().add("jacp-option-pane-explanation");
+		this.explanation.getStyleClass().add("jacp-option-pane-message");
 
 		final BorderPane explPane = new BorderPane();
 		VBox.setMargin(explPane, new Insets(5, 5, 5, 5));
@@ -135,7 +135,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		final Button defaultClose = new Button("x");
 		 defaultClose.setOnMouseClicked(this);
 		this.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
-		defaultClose.setId("jacp-option-pane-close");
+		defaultClose.getStyleClass().add("jacp-option-pane-close");
 		this.setDefaultCloseButtonVisible(false);
 
 		this.topBox.getChildren().add(defaultClose);
