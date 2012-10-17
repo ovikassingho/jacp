@@ -225,7 +225,7 @@
 }
 
 	
-#ProxyDialog {
+.jacp-option-pane {
  	-fx-background-image: url("../images/texture_light.png");
     -fx-background-insets: 0, 1, 2;
     -fx-blend-mode: src-atop;
