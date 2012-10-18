@@ -231,7 +231,7 @@
 }
 
 .jacp-option-pane-message{
- -fx-fill: white;
+ -fx-text-fill: white;
 }
 	
 .jacp-option-pane {
