@@ -1,12 +1,13 @@
 #install and usage tutorial for JacpFX.
 
-*currently for JacpFX beta 1.1*
+* This Tutorial will give you a short introduction how to start development with JacpFX *
 
 = Prerequirements =
   * OS: windows >= xp, OSX (lion), any Linux
-  * Java 7 update 6 (only dev. preview available)... download here: http://jdk7.java.net/download.html
-  * set JAVA_HOME
+  * Java 7 update >6 
   * maven installed
+  * set JAVA_HOME, M2_HOME
+
 
 if you want to create native executables yo need:
 
