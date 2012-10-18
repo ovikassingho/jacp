@@ -230,8 +230,8 @@
 	-fx-background-color: rgba(0,0,0,0.5);
 }
 
-.jacp-option-pane-explanation{
-	-fx-fill: white;
+.jacp-option-pane-message{
+ -fx-text-fill: white;
 }
 	
 .jacp-option-pane {
