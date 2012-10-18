@@ -316,7 +316,7 @@ public class FXWorkbenchHandler implements
 	 * 
 	 * @param layout
 	 * @param dimension
-	 * @return
+	 * @return the root Node
 	 */
 	private Node getLayoutComponentFromPerspectiveLayout(final IPerspectiveLayout<? extends Node, Node> layout) {
 		final Node comp = layout.getRootComponent();

@@ -37,41 +37,41 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Perspective {
 	/**
-	 * The component name.
+	 * The perspective name.
 	 * 
-	 * @return
+	 * @return The perspective name.
 	 */
 	String name();
 
 	/**
-	 * The component id.
+	 * The perspective id.
 	 * 
-	 * @return
+	 * @return The perspective Id
 	 */
 	String id();
 
 	/**
 	 * The active state at start time.
 	 * 
-	 * @return
+	 * @return boolean
 	 */
 	boolean active() default true;
 
 	/**
 	 * Represents the location (URI) of the declarative UI.
 	 * 
-	 * @return
+	 * @return The view location (like bundle.messages)
 	 */
 	String viewLocation() default "";
 	
 	/**
 	 * Represents the location of your resource bundle file.
-	 * @return
+	 * @return The default resource bundle location (like bundle.messages)
 	 */
 	String resourceBundleLocation() default "";
 	/**
 	 * Represents the Locale ID. see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
-	 * @return
+	 * @return The default locale Id
 	 */
 	String localeID() default "";
 }
