@@ -1,0 +1,174 @@
+/************************************************************************
+ * 
+ * Copyright (C) 2010 - 2012
+ *
+ * [FX2ComponentDelegator.java]
+ * AHCP Project (http://jacp.googlecode.com)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ *
+ *
+ ************************************************************************/
+package org.jacp.javafx2.rcp.coordinator;
+
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javafx.application.Platform;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.ISubComponent;
+import org.jacp.api.coordinator.IComponentDelegator;
+import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.perspective.IPerspective;
+import org.jacp.javafx2.rcp.action.FX2Action;
+import org.jacp.javafx2.rcp.util.FX2Util;
+/**
+ * The component delegator handles a component target change, find the correct perspective an add component to correct perspective
+ * @author Andy Moncsek
+ *
+ */
+public class FX2ComponentDelegator extends Thread implements
+		IComponentDelegator<EventHandler<Event>, Event, Object> {
+	private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<ISubComponent<EventHandler<Event>,Event,Object>>(100);
+	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
+
+	@Override
+	public final void run() {
+		while (!Thread.interrupted()) {
+			try {
+				final ISubComponent<EventHandler<Event>, Event, Object> component = componentDelegateQueue
+						.take();
+				final String targetId = component.getExecutionTarget();
+
+				delegateTargetChange(targetId, component);
+
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	private void delegateTargetChange(final String target,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		// find responsible perspective
+		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = FX2Util
+				.getObserveableById(FX2Util.getTargetPerspectiveId(target),
+						this.perspectives);
+		// find correct target in perspective
+		if (responsiblePerspective != null) {
+			final String parentId = component.getParentId();
+			// unregister component from previous parent
+			if (!parentId.equals(responsiblePerspective.getId())) {
+				final IPerspective<EventHandler<Event>, Event, Object> currentParent = FX2Util
+						.getObserveableById(
+								FX2Util.getTargetPerspectiveId(parentId),
+								this.perspectives);
+				currentParent.unregisterComponent(component);
+			}
+			this.handleTargetHit(responsiblePerspective, component);
+
+		} // End if
+		else {
+			this.handleTargetMiss();
+		} // End else
+	}
+
+	/**
+	 * handle component delegate when target was found
+	 * 
+	 * @param responsiblePerspective
+	 * @param component
+	 */
+	private void handleTargetHit(
+			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		if (!responsiblePerspective.isActive()) {
+			// 1. init perspective (do not register component before perspective
+			// is active, otherwise component will be handled once again)
+			this.handleInActivePerspective(responsiblePerspective,
+					new FX2Action(responsiblePerspective.getId(),
+							responsiblePerspective.getId(), "init"));
+		} // End if
+		responsiblePerspective.registerComponent(component);
+		responsiblePerspective.getComponentHandler().initComponent(
+				new FX2Action(component.getId(), component.getId(), "init"),
+				component);
+	}
+
+	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
+			final P component, final IAction<Event, Object> action) {
+		component.setActive(true);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				FX2ComponentDelegator.this.componentHandler
+						.initComponent(
+								action,
+								(IPerspective<EventHandler<Event>, Event, Object>) component);
+			}
+		});
+	}
+
+	/**
+	 * handle component delegate when no target found
+	 */
+	private void handleTargetMiss() {
+		throw new UnsupportedOperationException(
+				"No responsible perspective found. Handling not implemented yet.");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
+			IComponentHandler<P, IAction<Event, Object>> handler) {
+		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+
+	}
+
+	@Override
+	public BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
+		return componentDelegateQueue;
+	}
+
+
+	@Override
+	public void delegateComponent(
+			ISubComponent<EventHandler<Event>, Event, Object> component) {
+		getComponentDelegateQueue().add(component);
+
+	}
+
+	@Override
+	public void addPerspective(
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		this.perspectives.add(perspective);
+
+	}
+
+	@Override
+	public void removePerspective(
+			IPerspective<EventHandler<Event>, Event, Object> perspective) {
+		this.perspectives.remove(perspective);
+
+	}
+
+}
