@@ -21,6 +21,14 @@ if you want to create native executables yo need:
 Add a groupId (like com.my.company), an artifactId (which will be the project name  ... MyFirstJacpFXProject) and press enter for the rest (or change version number and package name ).
 
  
+= JacpFX development =
+  * The quickstart-archetype genaretes an example project including two perspectives (pure JavaFX and FXML ), two (pure) JavaFX components, two FXML components, a stateful- and a stateless-component and one simple spring bean. It includes all ressources and configurations to start real life project from scratch. the resource folder contains following folders:
 
-= JacpFX development=
-  * the archetype genaretes an example project including a JavaFX perspective, a FXML perspective, two JavaFX components, two FXML components, astateful- and a stateless-component
+ * bundles : contains the message.properties
+ * fxml: contains the fxml files
+ * images: all application images
+ * css: all style sheets
+
+The pom.xml includes all Ant-Tasks from Oracle to create native executables, create binary css, executeable jar´s and jnlp files. For web deployment you should uncomment the jar signing and add you keys there. 
+
+== build the project ==
