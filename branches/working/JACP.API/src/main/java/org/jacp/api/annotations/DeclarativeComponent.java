@@ -39,45 +39,45 @@ public @interface DeclarativeComponent {
 	/**
 	 * The components name.
 	 * 
-	 * @return
+	 * @return The component name
 	 */
 	String name();
 
 	/**
 	 * The component id.
 	 * 
-	 * @return
+	 * @return The component Id
 	 */
 	String id();
 
 	/**
 	 * The active state at start time.
 	 * 
-	 * @return
+	 * @return default True
 	 */
 	boolean active() default true;
 
 	/**
 	 * The execution target at start time.
 	 * 
-	 * @return
+	 * @return The default execution target defined by perspective
 	 */
 	String defaultExecutionTarget();
 	
 	/**
 	 * Represents the location (URI) of the declarative UI.
-	 * @return
-	 */
+	 * @return The view location (like bundle.messages)
+	 */ 
 	String viewLocation();
 	
 	/**
 	 * Represents the location of your resource bundle file.
-	 * @return
+	 * @return The default resource bundle location (like bundle.messages)
 	 */
 	String resourceBundleLocation() default "";
 	/**
 	 * Represents the Locale ID. see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
-	 * @return
+	 * @return The default locale Id
 	 */
 	String localeID() default "";
 }

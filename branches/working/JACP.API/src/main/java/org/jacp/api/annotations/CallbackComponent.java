@@ -17,21 +17,21 @@ public @interface CallbackComponent {
 	/**
 	 * The components name.
 	 * 
-	 * @return
+	 * @return The component name.
 	 */
 	String name();
 
 	/**
 	 * The component id.
 	 * 
-	 * @return
+	 * @return The component Id.
 	 */
 	String id();
 
 	/**
 	 * The active state at start time.
 	 * 
-	 * @return
+	 * @return True
 	 */
 	boolean active() default true;
 }

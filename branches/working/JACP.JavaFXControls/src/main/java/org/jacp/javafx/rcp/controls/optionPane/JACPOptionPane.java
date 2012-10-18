@@ -95,8 +95,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	 *            the title
 	 * @param message
 	 *            the message
-	 * @param defaultButton
-	 *            the default button
 	 */
 	public JACPOptionPane(final String title, final String message) {
 		this.message = message;
