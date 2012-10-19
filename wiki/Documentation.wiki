@@ -645,7 +645,7 @@ Added nodes on the toolbar, can be removed by using the {{{remove}}} method.
 
 == styling ==
 
-Due to the fact that the *{{{JACPToolbar}}}* only uses two style classes, where one of them is only for special styling needs, the styling is pretty easy.
+Due to the fact that the *{{{JACPToolbar}}}* only uses two style classes, where one of them is only for very special styling needs, the styling is pretty easy.
 
 The two classes for styling are:
  * *{{{.jacp-tool-bar}}}*
