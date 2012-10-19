@@ -634,7 +634,41 @@ With a custom stylesheet, using the mentioned classes, you’re able to style th
 
 == usage ==
 
+JacpFX uses an extended Toolbar, which allows to add Buttons to either end. 
+
+You can apply Nodes to the *{{{JACPToolbar}}}* by using the methods:
+ * {{{add(Node node)}}}
+ * {{{addOnEnd(Node node)}}}
+
+The end portion of a toolbar will be the right hand side, if the toolbar has a horizontal orientation or the bottom end, if the toolbar is oriented vertically. 
+
+Added nodes on the toolbar, can be removed by using the {{{remove}}} method. 
+
+<img src="http://jacp.googlecode.com/svn/wiki/toolbar/JACP_Std_Toolbar.JPG"/>
+
 == styling ==
+
+Due to the fact that the *{{{JACPToolbar}}}* only uses two style classes, where one of them is only for special styling needs, the styling is pretty easy.
+
+The two classes for styling are:
+ * *{{{.jacp-tool-bar}}}*
+ * *{{{.jacp-button-bars}}}* (defines the container for the added nodes on either end)
+
+<img src="http://jacp.googlecode.com/svn/wiki/toolbar/JACP-ToolBar.png"/>
+
+Every Node, you will add, has to be styled separately.
+
+After styling the *{{{JACPToolbar}}}* and the added nodes (buttons in this case) the Toolbar could look like this:
+
+<img src="http://jacp.googlecode.com/svn/wiki/toolbar/JACP_Styled_Toolbar.JPG"/>
+
+
+
+
+
+
+
+
 
 = Annotations overview =
 
