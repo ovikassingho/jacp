@@ -113,9 +113,9 @@
 }
 
 .hsplitpane:horizontal > * > .split-pane-divider {
--fx-border-color: transparent -fx-base transparent -fx-base;
--fx-background-color: transparent;
--fx-background-insets: 0, 0 1 0 1;
+	-fx-border-color: transparent -fx-base transparent -fx-base;
+	-fx-background-color: transparent;
+	-fx-background-insets: 0, 0 1 0 1;
 }
 
 .hsplitpane  *.vertical-grabber {
@@ -231,7 +231,7 @@
 }
 
 .jacp-option-pane-message{
- -fx-text-fill: white;
+ 	-fx-fill: white;
 }
 	
 .jacp-option-pane {
