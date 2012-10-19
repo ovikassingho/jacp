@@ -554,9 +554,6 @@ The optionpane holds
 *four buttons (Ok, Canel, Yes, No)
 *closeButton
 
-<img src="http://jacp.googlecode.com/svn/wiki/option-pane/JACP_Std_OptionPane.PNG"/>
-
-
 To create an optionpane, you can use the *{{{createOptionPane}}}* method of the *{{{JACPDialogUtil}}}*.
 While the title and the message will be taken as parameter of the create method, you can set the Eventhandlers for all four buttons individually. Every button has its own “setOnAction” method.
 
@@ -594,7 +591,7 @@ pane.setDefaultCloseButtonVisible(true);
 pane.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 	}}}	
 
-
+<img src="http://jacp.googlecode.com/svn/wiki/option-pane/JACP_Std_OptionPane.PNG"/>
 
 Showing and hiding the optionpane is managed by the *{{{JACPModalDialog}}}*.
 
