@@ -1,5 +1,5 @@
 #labels Documentation,JACP,JacpFX,Spring,JavaFX
-= JacpFX  documentation UNDER CONSTRUCTION (16. Oct. 2012) =
+= JacpFX  documentation UNDER CONSTRUCTION (19. Oct. 2012) =
 
 The JacpFX Project is an API to create *Rich Clients* in *MVC* style with *JavaFX*, *Spring* (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by *messages* and have a defined life cycle; a component {{{handle()}}} method is always executed in a *separate thread*, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.
 
@@ -546,13 +546,36 @@ You can also use simple naming like "id001" (without dots), this would mean that
 
 == JacpFX {{{OptionPane}}} ==
 
-The JacpFX Framework provides a default optionpane. 
-The JACPOptionPane holds a title, a message and four types of buttons - OK, Cancel, Yes and No. 
+JacpFX provides a default optionpane, which can be displayed as a modal dialog. 
 
-You can use the JACPDialogUtil to create a JACPOptionPane.
-To show up the optionpane, simply call showDialog(). 
+The optionpane holds
+*a title
+*a message 
+*four buttons (Ok, Canel, Yes, No)
+*closeButton
 
-The dialog will hide after an action was called. 
+<img src="http://jacp.googlecode.com/svn/wiki/option-pane/JACP_Std_OptionPane.PNG"/>
+
+
+To create an optionpane, you can use the *{{{createOptionPane}}}* method of the *{{{JACPDialogUtil}}}*.
+While the title and the message will be taken as parameter of the create method, you can set the Eventhandlers for all four buttons individually. Every button has its own “setOnAction” method.
+
+ * {{{setOnOkAction(final EventHandler<ActionEvent> onOk)}}}
+ * {{{setOnCancelAction(final EventHandler<ActionEvent> onCancel)}}}
+ * {{{setOnYesAction(final EventHandler<ActionEvent> onYes)}}}
+ * {{{setOnNoAction(final EventHandler<ActionEvent> onNo)}}}
+
+By calling one of those four, the corresponding button will be added to the pane. There is no other way to add buttons to the default optionpane. One of your buttons can be choosen as default button. The default-button will have the focus, after the optionpane shows up. 
+
+If the same “setOnAction” method will be called several times, only the last Eventhandler will be used. After clicking a button, the optionpane will hide automatically.
+
+Beside of the four buttons, there is also an option to show a close-button on the optionpane. 
+That button will simply close the optionpane without triggering any other event or Eventhandler. 
+
+The options for the close-button are:
+ * orientation
+ * visability
+
 
 {{{
 JACPOptionPane pane = JACPDialogUtil.createOptionPane("JACP OptionPane", "This is the default JACP OptionPane!");
@@ -569,14 +592,14 @@ pane.setOnCancelAction(new EventHandler<ActionEvent>() {
 pane.setDefaultButton(JACPDialogButton.CANCEL);´
 pane.setDefaultCloseButtonVisible(true);
 pane.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
-pane.showDialog();
 	}}}	
 
-<img src="http://jacp.googlecode.com/svn/wiki/JACP_Std_OptionPane.PNG"/>
 
-== JacpFX Custom {{{Dialog}}} ==
 
-You can use the JACPModalDialog to show and hide your custom dialogs. 
+Showing and hiding the optionpane is managed by the *{{{JACPModalDialog}}}*.
+
+To show a dialog you have to provide a Node, that should be displayed (e.g. *{{{JACPOptionPane}}}* or a Custom Node). 
+Call *{{{hideModalMessage()}}}* will hide the dialog, which is currently shown.
 
 {{{
 JACPModalDialog.getInstance().showModalMessage(new CustomOptionPane());
@@ -588,13 +611,24 @@ JACPModalDialog.getInstance().hideModalMessage();
 }}}
 
 
-
-
-
-<img src="http://jacp.googlecode.com/svn/wiki/JACP_Custom_OptionPane.PNG"/>
+<img src="http://jacp.googlecode.com/svn/wiki/option-pane/JACP_Custom_OptionPane.PNG"/>
 
 
 == Styling the JacpFX {{{OptionPane}}} ==
+
+The {{{JACPOptionPane}}} comes with a default theme, which can be overridden using a custom stylesheet. Every part of the pane has a corresponding css-class. 
+
+
+<img src="http://jacp.googlecode.com/svn/wiki/option-pane/JACP_CSS_OptionPane.png"/>
+
+*Attention:*
+The message part uses the JavaFX {{{Text}}} class. So ensure to use {{{-fx-fill}}} to apply a color to the message text. All other parts will use {{{-fx-text-fill}}}. 
+
+With a custom stylesheet, using the mentioned classes, you’re able to style the option pane to your specific needs.
+
+<img src="http://jacp.googlecode.com/svn/wiki/option-pane/JACP_Styled_OptionPane.JPG"/>
+
+
 
 = JACPToolBar and JACPMenuBar =
 
