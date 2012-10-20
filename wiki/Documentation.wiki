@@ -629,6 +629,7 @@ With a custom stylesheet, using the mentioned classes, you’re able to style th
 
 = JACPToolBar and JACPMenuBar =
 
+== JACPToolBar==
 == usage ==
 
 JacpFX uses an extended Toolbar, which allows to add Buttons to either end. 
@@ -659,10 +660,40 @@ After styling the *{{{JACPToolbar}}}* and the added nodes (buttons in this case)
 
 <img src="http://jacp.googlecode.com/svn/wiki/toolbar/JACP_Styled_Toolbar.JPG"/>
 
+== JACPMenuBar ==
 
+==usage==
 
+The *{{{JACPMenuBar}}}* is registered to the Workbench. It is an extended {{{MenuBar}}}, which will take custom nodes, windowbuttons, and (of course) {{{MenuItems}}}. Just setup your menu within the postHandle-method of your workspace. Basically the menubar will work, as known from the JavaFX *{{{menuBar}}}*, for adding {{{MenuItems}}}. 
+Windowbuttons (minimize, resize, close) have to be registered if needed. The Buttons will only show up, if the Stage is set to {{{UNDECORATED}}}. 
+For MAC OS X users: Hence to the option of using the system-menu on the very top of the screen, the stage will always be {{{DECORATED}}}, thus the buttons will never show up. 
 
+{{{ 
+public void postHandle(final FXComponentLayout layout) {
+        final JACPMenuBar menu = layout.getMenu();
+        final Menu menuFile = new Menu("File");
+        menuFile.getItems().addAll(this.createExitEntry(), this.createInfoEntry());
+        menu.getMenus().addAll(menuFile);
+        menu.registerWindowButtons();
+    }
+}}}
 
+<img src="http://jacp.googlecode.com/svn/wiki/menubar/JACP_Std_Menubar.JPG"/>
+
+Using the *{{{addNode(final JACPMenuBarButtonOrientation orientation, final Node... node) }}}* method, you can add custom nodes to the menubar, either on the left- or right hand side. 
+
+<img src="http://jacp.googlecode.com/svn/wiki/menubar/JACP_Std_Menubar_ext.JPG"/>
+
+==styling==
+
+Since the *{{{JACPMenuBar}}}*  uses a JavaFX *{{{MenuBar}}}* , for holding *{{{MenuItems}}}* , you can use the std. *{{{MenuBar}}}*  classes for styling. 
+The windowbuttons, are styled by using a set of classes and ids. 
+
+<img src="http://jacp.googlecode.com/svn/wiki/menubar/JACP_MenuBar.png"/>
+
+Styles Windowbuttons can look like this. 
+
+<img src="http://jacp.googlecode.com/svn/wiki/menubar/JACP_Styled_Menubar_ext.JPG"/>
 
 
 
