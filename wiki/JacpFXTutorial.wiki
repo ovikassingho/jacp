@@ -40,3 +40,54 @@ The pom.xml includes all Ant-Tasks from Oracle to create native executables, cre
 
 = Import to Eclipse/Netbeans/ =
 Maven projects can be imported directly to Eclipse, Netbeans and IDEA. If you want to create "native" projects simply execute in root folder *{{{mvn eclipse:eclipse, or mvn netbeans:netbeans or mvn idea:idea}}}*
+
+= integration into existing maven project =
+== The repository location: ==
+{{{
+	<repositories>
+                ...
+		<repository>
+			<id>jacp</id>
+			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
+		</repository>
+	</repositories>
+}}}
+
+== The JacpFX dependencies: ==
+
+{{{
+                <dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.API</artifactId>
+			<version>1.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFX</artifactId>
+			<version>1.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFXSpring</artifactId>
+			<version>1.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFXControls</artifactId>
+			<version>1.1</version>
+			<scope>compile</scope>
+		</dependency>
+}}}
+
+== The reference to JavaFX == 
+{{{
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>javafx</artifactId>
+			<version>2.2</version>
+			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+			<scope>system</scope>
+		</dependency>}}}
