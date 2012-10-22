@@ -1,5 +1,5 @@
 #labels Quickstart,Maven,Archetype,JacpFX
-#install and usage tutorial for JacpFX.
+#install and usage tutorial for JacpFX. 
 
 * This Tutorial will give you a short introduction how to start development with JacpFX *
 
