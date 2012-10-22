@@ -38,7 +38,7 @@ The pom.xml includes all Ant-Tasks from Oracle to create native executables, cre
  * To build the created archetype project as it is, simply go to the {{{$PROJECT_HOME}}} {{{MyFirstJacpFXProject}}} and type: *{{{mvn package}}}*
  * When the build process is finished you find the executeables in {{{$PROJECT_HOME}}}/target/deploy ; the native executeables you find in ../target/deploy/bundles ... depending on your platform simply execute the {{{*.exe, double click the *.dng, or type sudo dpkg -i *.deb}}}. To execute the {{{*.jar}}} located in deploy folder, simply type *{{{java -jar project-name.jar}}}*
 
-= Import to Eclipse/Netbeans/ =
+= Import to Eclipse/Netbeans/IDEA =
 Maven projects can be imported directly to Eclipse, Netbeans and IDEA. If you want to create "native" projects simply execute in root folder *{{{mvn eclipse:eclipse, or mvn netbeans:netbeans or mvn idea:idea}}}*
 
 = Integration into existing maven project =
