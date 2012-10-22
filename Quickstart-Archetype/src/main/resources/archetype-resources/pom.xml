@@ -92,10 +92,10 @@
                              		uri="javafx:com.sun.javafx.tools.ant" classpathref="maven.plugin.classpath" />
 
 								<fx:application id="${project.name}" name="${project.name}" mainClass="${groupId}.main.ApplicationLauncher" preloaderClass="${groupId}.main.ApplicationPreloader"/>
-								<!-- shrink css to binary -->
+								<!-- shrink css to binary; currently uncommented due to http://javafx-jira.kenai.com/browse/RT-21964
                              	<fx:csstobin outdir="${project.build.directory}/classes/styles">
 								    <fileset dir="${project.build.directory}/classes/styles" includes="**/*.css"/>
-								</fx:csstobin>
+								</fx:csstobin>--> 
 								<!-- create jar file -->
                              	<fx:jar destfile="${project.build.directory}/${project.build.finalName}.jar">
 			                        <fx:application refid="${project.name}"/>			
