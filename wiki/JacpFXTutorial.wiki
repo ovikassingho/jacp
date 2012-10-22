@@ -41,7 +41,7 @@ The pom.xml includes all Ant-Tasks from Oracle to create native executables, cre
 = Import to Eclipse/Netbeans/ =
 Maven projects can be imported directly to Eclipse, Netbeans and IDEA. If you want to create "native" projects simply execute in root folder *{{{mvn eclipse:eclipse, or mvn netbeans:netbeans or mvn idea:idea}}}*
 
-= integration into existing maven project =
+= Integration into existing maven project =
 == The repository location: ==
 {{{
 	<repositories>
@@ -90,4 +90,5 @@ Maven projects can be imported directly to Eclipse, Netbeans and IDEA. If you wa
 			<version>2.2</version>
 			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
 			<scope>system</scope>
-		</dependency>}}}
+		</dependency>
+}}}
