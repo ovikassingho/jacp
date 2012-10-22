@@ -3,6 +3,8 @@
 
 * This Tutorial will give you a short introduction how to start development with JacpFX *
 
+<wiki:toc max_depth="3" />
+
 = Prerequirements =
   * {{{OS: windows >= xp, OSX (lion), any Linux}}}
   * {{{Java 7 update >6}}} 
@@ -32,5 +34,6 @@ Add a groupId (like com.my.company), an artifactId (which will be the project na
 
 The pom.xml includes all Ant-Tasks from Oracle to create native executables, create binary css, executeable jar´s and jnlp files. For web deployment you should uncomment the jar signing and add you keys there. 
 
-== build the project ==
-To build the created archetype project as it is, simply go to the project root {{{MyFirstJacpFXProject}}} and type: {{{mvn package}}}
+== Build the project ==
+To build the created archetype project as it is, simply go to the {{{$PROJECT_HOME}}} {{{MyFirstJacpFXProject}}} and type: {{{mvn package}}}
+When pbuild process is finished you find the executeables in {{{$PROJECT_HOME}}}/target/deploy ; the native executeables you find in ../target/deploy/bundles ... depending on your platform simply execute the {{{*.exe, double click the *.dng, or type sudo dpkg -i *.deb}}}. To execute the {{{*.jar}}} located in deploy folder, simply type {{{java -jar project-name.jar}}}
