@@ -34,6 +34,9 @@ Add a groupId (like com.my.company), an artifactId (which will be the project na
 
 The pom.xml includes all Ant-Tasks from Oracle to create native executables, create binary css, executeable jar´s and jnlp files. For web deployment you should uncomment the jar signing and add you keys there. 
 
-== Build the project ==
-To build the created archetype project as it is, simply go to the {{{$PROJECT_HOME}}} {{{MyFirstJacpFXProject}}} and type: {{{mvn package}}}
-When pbuild process is finished you find the executeables in {{{$PROJECT_HOME}}}/target/deploy ; the native executeables you find in ../target/deploy/bundles ... depending on your platform simply execute the {{{*.exe, double click the *.dng, or type sudo dpkg -i *.deb}}}. To execute the {{{*.jar}}} located in deploy folder, simply type {{{java -jar project-name.jar}}}
+= Build the project =
+ * To build the created archetype project as it is, simply go to the {{{$PROJECT_HOME}}} {{{MyFirstJacpFXProject}}} and type: *{{{mvn package}}}*
+ * When the build process is finished you find the executeables in {{{$PROJECT_HOME}}}/target/deploy ; the native executeables you find in ../target/deploy/bundles ... depending on your platform simply execute the {{{*.exe, double click the *.dng, or type sudo dpkg -i *.deb}}}. To execute the {{{*.jar}}} located in deploy folder, simply type *{{{java -jar project-name.jar}}}*
+
+= Import to Eclipse/Netbeans =
+Maven projects can be imported directly to Eclipse and Netbeans.
