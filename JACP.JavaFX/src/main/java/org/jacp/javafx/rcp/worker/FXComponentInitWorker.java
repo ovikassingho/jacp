@@ -121,7 +121,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.component.getExecutionTarget());
 				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
 						+ this.component.getName());
-				this.addComonent(validContainer, handleReturnValue,
+				this.addComponent(validContainer, handleReturnValue,
 						this.component, this.action);
 				this.lock();
 				this.log("3.4.4.2.4: subcomponent handle init END: "
@@ -206,10 +206,13 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @throws InterruptedException
 	 * @throws InvocationTargetException
 	 */
-	private void addComonent(final Node validContainer, final Node handleReturnValue,
+	private void addComponent(final Node validContainer, final Node handleReturnValue,
 			final AFXComponent myComponent,
 			final IAction<Event, Object> myAction) throws InterruptedException {
-
+		if(validContainer==null || handleReturnValue==null) {
+			this.release();
+			return;
+		}
 		Platform.runLater(new Runnable() {
 
 			@Override
