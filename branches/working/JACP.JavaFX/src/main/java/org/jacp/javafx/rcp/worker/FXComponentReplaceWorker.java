@@ -193,31 +193,40 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 	 * add new component value to root node
 	 */
 	private void checkAndHandleTargetChange(final AFXComponent component,
-			final Node previousContainer, final String currentTaget,
+			final Node previousContainer, final String currentTarget,
 			final FXComponentLayout layout) {
 		final Node root = component.getRoot();
 		final Node parentNode = previousContainer.getParent();
-		if (!currentTaget.equals(component.getExecutionTarget())) {
-			final String validId = this.getValidTargetId(currentTaget,
-					component.getExecutionTarget());
-			final Node validContainer = this.getValidContainerById(
-					this.targetComponents, validId);
-			if (validContainer != null) {
-				this.handleLocalTargetChange(component, this.targetComponents,
-						validContainer);
-			} else {
-				this.handlePerspectiveChange(this.componentDelegateQueue,
-						component, layout);
-			}
+		if (!currentTarget.equals(component.getExecutionTarget())) {
+			executeTargetChange(component, currentTarget);
 		} else if (root != null && root != previousContainer) {
 			// add new view
 			this.log(" //1.1.1.1.4// handle new component insert: "
 					+ component.getName());
 			this.handleViewState(root, true);
 			this.handleNewComponentValue(this.componentDelegateQueue,
-					component, this.targetComponents, parentNode, currentTaget);
+					component, this.targetComponents, parentNode, currentTarget);
 		}
 
+	}
+	
+	/**
+	 * Performs target change of component or perspective
+	 * @param component
+	 * @param currentTarget
+	 */
+	private void executeTargetChange(final AFXComponent component,final String currentTarget) {
+		final String validId = this.getValidTargetId(currentTarget,
+				component.getExecutionTarget());
+		final Node validContainer = this.getValidContainerById(
+				this.targetComponents, validId);
+		if (validContainer != null) {
+			this.handleLocalTargetChange(component, this.targetComponents,
+					validContainer);
+		} else {
+			this.handlePerspectiveChange(this.componentDelegateQueue,
+					component, layout);
+		}
 	}
 
 	
