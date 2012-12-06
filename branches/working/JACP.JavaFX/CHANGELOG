@@ -1,3 +1,4 @@
+06. Dez. 2012 - amo -  Fixed StateComponentRunWorker, set component to "started" after init
 27. Nov. 2012 - amo -  Fixed nullpointer in FXComponentWorker when component does not return a valid component.
 12. Sep. 2012 - amo -  update FXAction to ensure thread safety
 06. Sep. 2012 - amo -  changed inner and outer locking of component in worker threads; inner locking replaced by wait/notify. At the end on nonJavaFX thread a wait starts... when JavaFX application Thread finishes he notifies so execution loop can proceed. Outer loop: semaphore replaces an atomic boolean lock
