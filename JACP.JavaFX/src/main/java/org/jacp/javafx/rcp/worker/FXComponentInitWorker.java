@@ -209,15 +209,15 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private void addComponent(final Node validContainer, final Node handleReturnValue,
 			final AFXComponent myComponent,
 			final IAction<Event, Object> myAction) throws InterruptedException {
-		if(validContainer==null || handleReturnValue==null) {
-			this.release();
-			return;
-		}
-		Platform.runLater(new Runnable() {
 
+		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
 				FXComponentInitWorker.this.executeComponentViewPostHandle(handleReturnValue, myComponent, myAction);
+				if(validContainer==null || myComponent.getRoot()==null) {
+					FXComponentInitWorker.this.release();
+					return;
+				}
 				FXComponentInitWorker.this.addComponentByType(validContainer, myComponent);
 				FXComponentInitWorker.this.release();
 			}

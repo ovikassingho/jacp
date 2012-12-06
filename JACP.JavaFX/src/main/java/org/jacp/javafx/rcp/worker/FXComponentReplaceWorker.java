@@ -97,7 +97,8 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			} catch (final IllegalStateException e) {
 				if (e.getMessage().contains("Not on FX application thread")) {
 					throw new UnsupportedOperationException(
-							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",e);
+							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
+							e);
 				}
 			} finally {
 				this.component.release();
@@ -119,25 +120,27 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			@Override
 			public void run() {
 				try {
+					// check if component was set to inactive, if so remove
 					if (component.isActive()) {
 						FXComponentReplaceWorker.this.publishComponentValue(
 								component, myAction, targetComponents, layout,
-								handleReturnValue, previousContainer, currentTaget);
+								handleReturnValue, previousContainer,
+								currentTaget);
 					} else {
 						// unregister component
 						FXComponentReplaceWorker.this.removeComponentValue(
 								component, previousContainer, layout);
 						// run teardown
-						FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
-								component, layout);
+						FXUtil.invokeHandleMethodsByAnnotation(
+								OnTearDown.class, component, layout);
 					}
 					// release lock
 				} catch (Exception e) {
 					e.printStackTrace();
-				} finally{
+				} finally {
 					FXComponentReplaceWorker.this.release();
 				}
-				
+
 			}
 		});
 	}
@@ -167,10 +170,21 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 		if (previousContainer != null) {
 			this.executeComponentViewPostHandle(handleReturnValue, component,
 					action);
-			this.removeOldComponentValue(component, previousContainer,
-					currentTaget);
-			this.checkAndHandleTargetChange(component, previousContainer,
-					currentTaget, layout);
+			// check again if component was set to inactive (in postHandle), if
+			// so remove
+			if (component.isActive()) {
+				this.removeOldComponentValue(component, previousContainer,
+						currentTaget);
+				this.checkAndHandleTargetChange(component, previousContainer,
+						currentTaget, layout);
+			} else {
+				// unregister component
+				this.removeComponentValue(component,
+						previousContainer, layout);
+				// run teardown
+				FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+						component, layout);
+			}
 
 		}
 	}
@@ -209,13 +223,15 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 		}
 
 	}
-	
+
 	/**
 	 * Performs target change of component or perspective
+	 * 
 	 * @param component
 	 * @param currentTarget
 	 */
-	private void executeTargetChange(final AFXComponent component,final String currentTarget) {
+	private void executeTargetChange(final AFXComponent component,
+			final String currentTarget) {
 		final String validId = this.getValidTargetId(currentTarget,
 				component.getExecutionTarget());
 		final Node validContainer = this.getValidContainerById(
@@ -229,7 +245,6 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 		}
 	}
 
-	
 	@Override
 	protected final void done() {
 		try {
@@ -251,7 +266,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			// TODO add to error queue and restart thread if
 			// messages in
 			// queue
-		} 
+		}
 
 	}
 
