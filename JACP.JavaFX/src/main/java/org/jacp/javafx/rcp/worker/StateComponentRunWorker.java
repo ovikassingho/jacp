@@ -31,6 +31,8 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.util.Checkable;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
  * this class handles running stateful background components
@@ -69,7 +71,7 @@ public class StateComponentRunWorker
 					this.delegateReturnValue(comp, targetId, value, myAction);
 					this.checkAndHandleTargetChange(comp, targetCurrent);
 				}
-			} finally{
+			} finally {
 				comp.release();
 			}
 		}
@@ -93,14 +95,19 @@ public class StateComponentRunWorker
 
 	@Override
 	protected final void done() {
-		try {
-			this.get();
-		} catch (final InterruptedException e) {
-			// FIXME: Handle Exceptions the right way
-			 e.printStackTrace();
-		} catch (final ExecutionException e) {
-			// FIXME: Handle Exceptions the right way
-			 e.printStackTrace();
-		} 
+		synchronized (this.component) {
+			try {
+				this.get();
+			} catch (final InterruptedException e) {
+				// FIXME: Handle Exceptions the right way
+				e.printStackTrace();
+			} catch (final ExecutionException e) {
+				// FIXME: Handle Exceptions the right way
+				e.printStackTrace();
+			} finally {
+				if(!this.component.isStarted())FXUtil.setPrivateMemberValue(Checkable.class, this.component,
+						FXUtil.ACOMPONENT_STARTED, true);
+			}
+		}
 	}
 }
