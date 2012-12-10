@@ -29,13 +29,15 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.OnStart;
+import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
- * this class handles running stateful background components
+ * This class handles running stateful background components
  * 
  * @author Andy Moncsek
  * 
@@ -57,25 +59,31 @@ public class StateComponentRunWorker
 	@Override
 	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
-		synchronized (comp) {
-			comp.lock();
+		synchronized (this.component) {
+			this.component.lock();
 			try {
-				while (comp.hasIncomingMessage()) {
-					final IAction<Event, Object> myAction = comp
+				if (!this.component.isStarted())
+					FXUtil.invokeHandleMethodsByAnnotation(OnStart.class,
+							component);
+				while (this.component.hasIncomingMessage()) {
+					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
-					comp.setHandleTarget(myAction.getSourceId());
-					final String targetCurrent = comp.getExecutionTarget();
-					final Object value = comp.handle(myAction);
-					final String targetId = comp.getHandleTargetAndClear();
-					this.delegateReturnValue(comp, targetId, value, myAction);
-					this.checkAndHandleTargetChange(comp, targetCurrent);
+					this.component.setHandleTarget(myAction.getSourceId());
+					final String targetCurrent = this.component
+							.getExecutionTarget();
+					final Object value = this.component.handle(myAction);
+					final String targetId = this.component
+							.getHandleTargetAndClear();
+					this.delegateReturnValue(this.component, targetId, value,
+							myAction);
+					this.checkAndHandleTargetChange(this.component,
+							targetCurrent);
 				}
 			} finally {
-				comp.release();
+				this.component.release();
 			}
 		}
-		return comp;
+		return this.component;
 	}
 
 	/**
@@ -89,6 +97,9 @@ public class StateComponentRunWorker
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
+			if (!component.isActive())
+				throw new UnsupportedOperationException(
+						"Component may be moved or set to inactive but not both");
 			this.changeComponentTarget(this.delegateQueue, comp);
 		}
 	}
@@ -105,9 +116,19 @@ public class StateComponentRunWorker
 				// FIXME: Handle Exceptions the right way
 				e.printStackTrace();
 			} finally {
-				if(!this.component.isStarted())FXUtil.setPrivateMemberValue(Checkable.class, this.component,
-						FXUtil.ACOMPONENT_STARTED, true);
+				if (!this.component.isStarted())
+					FXUtil.setPrivateMemberValue(Checkable.class,
+							this.component, FXUtil.ACOMPONENT_STARTED, true);
+				// turn off component
+				if (!component.isActive()) {
+					FXUtil.setPrivateMemberValue(Checkable.class,
+							this.component, FXUtil.ACOMPONENT_STARTED, false);
+					// run teardown
+					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+							component);
+				}
 			}
 		}
 	}
+
 }
