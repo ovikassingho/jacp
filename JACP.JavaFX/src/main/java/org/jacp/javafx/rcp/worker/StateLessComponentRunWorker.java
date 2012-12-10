@@ -51,23 +51,22 @@ public class StateLessComponentRunWorker
 	@Override
 	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		final ICallbackComponent<EventHandler<Event>, Event, Object> comp = this.component;
-		synchronized (comp) {
-			comp.lock();
+		synchronized (this.component) {
+			this.component.lock();
 			try {
-				while (comp.hasIncomingMessage()) {
-					final IAction<Event, Object> myAction = comp
+				while (this.component.hasIncomingMessage()) {
+					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
-					comp.setHandleTarget(myAction.getSourceId());
-					final Object value = comp.handle(myAction);
-					final String targetId = comp.getHandleTargetAndClear();
-					this.delegateReturnValue(comp, targetId, value, myAction);
+					this.component.setHandleTarget(myAction.getSourceId());
+					final Object value = this.component.handle(myAction);
+					final String targetId = this.component.getHandleTargetAndClear();
+					this.delegateReturnValue(this.component, targetId, value, myAction);
 				}
 			} finally{
-				comp.release();
+				this.component.release();
 			}
 		}
-		return comp;
+		return this.component;
 	}
 
 	@Override
