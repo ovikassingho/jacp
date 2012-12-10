@@ -1,3 +1,4 @@
+10. Dez. 2012 - amo -  Fixed in StateComponentRunWorker: OnStart and OnTeardown annotations activated
 06. Dez. 2012 - amo -  Fixed in FXComponentReplaceWorker, Active(false) was only evaluated in handle method but never in postHandle method
 06. Dez. 2012 - amo -  Fixed StateComponentRunWorker, set component to "started" after init
 27. Nov. 2012 - amo -  Fixed nullpointer in FXComponentWorker when component does not return a valid component.
