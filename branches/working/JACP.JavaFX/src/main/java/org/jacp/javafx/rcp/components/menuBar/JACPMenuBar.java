@@ -41,6 +41,7 @@ import javafx.stage.Stage;
 import org.jacp.api.util.OS;
 import org.jacp.javafx.rcp.util.CSSUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 
 /**
  * The Class JACPMenuBar.
@@ -270,6 +271,7 @@ public class JACPMenuBar extends HBox {
                 @Override
                 public void handle(ActionEvent arg0) {
                     ShutdownThreadsHandler.shutdowAll();
+                    TearDownHandler.handleGlobalTearDown();
                     Platform.exit();
                 }
             });
