@@ -75,6 +75,7 @@ import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.CSSUtil;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -111,15 +112,13 @@ public abstract class AFXWorkbench
 	 */
 	public final void start(final Stage stage) throws Exception {
 		this.stage = stage;
+		TearDownHandler.registerBase(this);
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
 			@Override
 			public void handle(final WindowEvent arg0) {
-				// TODO close all threads, use thread group to interrupt
-				// ((FX2PerspectiveCoordinator)perspectiveCoordinator).interrupt();
-				// ((FX2ComponentDelegator)componentDelegator).interrupt();
-				// ((FX2MessageDelegator)messageDelegator).interrupt();
 				ShutdownThreadsHandler.shutdowAll();
+				TearDownHandler.handleGlobalTearDown();
 				Platform.exit();
 
 			}
