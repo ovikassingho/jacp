@@ -28,6 +28,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.workbench.IBase;
@@ -62,6 +63,9 @@ public class TearDownHandler {
 			// TODO ... teardown perspective itself
 			final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective.getSubcomponents();
 			for(final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
+				if(component instanceof ICallbackComponent){
+					System.out.println("TODO call worker to handle teardown for:"+component.getName());
+				}
 				// run teardown
 				FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
 						component);
