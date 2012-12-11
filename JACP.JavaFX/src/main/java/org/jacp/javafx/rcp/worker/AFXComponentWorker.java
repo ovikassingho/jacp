@@ -36,6 +36,7 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.annotations.OnStart;
 import org.jacp.api.annotations.OnTearDown;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IComponentView;
@@ -45,6 +46,7 @@ import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
@@ -304,7 +306,41 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		} 
 	}
 	
+	/**
+	 * checks if component started, if so run OnStart annotations
+	 * @param component
+	 */
+	protected void runCallbackOnStartMethods(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())
+			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class,
+					component);
+	}
 	
+	/**
+	 * Check if component was not started yet an activate it.
+	 * @param component
+	 */
+	protected void runCallbackPostExecution(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())
+			FXUtil.setPrivateMemberValue(Checkable.class,
+					component, FXUtil.ACOMPONENT_STARTED, true);
+	}
+	
+	/**
+	 * checks if component was deactivated, if so run OnTeardown annotations. 
+	 * @param component
+	 */
+	protected void runCallbackOnTeardownMethods(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+
+		// turn off component
+		if (!component.isActive()) {
+			FXUtil.setPrivateMemberValue(Checkable.class,
+					component, FXUtil.ACOMPONENT_STARTED, false);
+			// run teardown
+			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+					component);
+		}
+	}
 
 
 	protected void log(final String message) {

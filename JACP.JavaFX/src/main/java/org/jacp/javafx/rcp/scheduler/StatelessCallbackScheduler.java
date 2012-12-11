@@ -46,7 +46,7 @@ public class StatelessCallbackScheduler implements
 	}
 
 	@Override
-	public void incomingMessage(
+	public final void incomingMessage(
 			final IAction<Event, Object> message,
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		synchronized (baseComponent) {
@@ -84,7 +84,7 @@ public class StatelessCallbackScheduler implements
 	 * @param comp
 	 * @param message
 	 */
-	private final void instanceRun(
+	private void instanceRun(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
 			final IAction<Event, Object> message) {
@@ -111,7 +111,7 @@ public class StatelessCallbackScheduler implements
 	}
 
 	@Override
-	public <T extends ICallbackComponent<EventHandler<Event>, Event, Object>> ICallbackComponent<EventHandler<Event>, Event, Object> getCloneBean(
+	public final <T extends ICallbackComponent<EventHandler<Event>, Event, Object>> ICallbackComponent<EventHandler<Event>, Event, Object> getCloneBean(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
 			final Class<T> clazz) {
 		return ((AStatelessCallbackComponent) baseComponent).init(this.launcher
@@ -123,7 +123,7 @@ public class StatelessCallbackScheduler implements
 	 * 
 	 * @return
 	 */
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> getActiveComponent(
+	private ICallbackComponent<EventHandler<Event>, Event, Object> getActiveComponent(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
 				.getInstances();
