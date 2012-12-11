@@ -62,9 +62,7 @@ public class StateComponentRunWorker
 		synchronized (this.component) {
 			this.component.lock();
 			try {
-				if (!this.component.isStarted())
-					FXUtil.invokeHandleMethodsByAnnotation(OnStart.class,
-							component);
+				runOnStart(this.component);
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
@@ -79,11 +77,39 @@ public class StateComponentRunWorker
 					this.checkAndHandleTargetChange(this.component,
 							targetCurrent);
 				}
+				postHandling(component);
 			} finally {
 				this.component.release();
 			}
 		}
 		return this.component;
+	}
+	
+	/**
+	 * checks if component started, if so run OnStart annotations
+	 * @param component
+	 */
+	private void runOnStart(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())
+			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class,
+					component);
+	}
+	/**
+	 * checks if component was deactivated, if so run OnTeardown annotations. If not set component activeted.
+	 * @param component
+	 */
+	private void postHandling(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())
+			FXUtil.setPrivateMemberValue(Checkable.class,
+					component, FXUtil.ACOMPONENT_STARTED, true);
+		// turn off component
+		if (!component.isActive()) {
+			FXUtil.setPrivateMemberValue(Checkable.class,
+					component, FXUtil.ACOMPONENT_STARTED, false);
+			// run teardown
+			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+					component);
+		}
 	}
 
 	/**
@@ -115,19 +141,7 @@ public class StateComponentRunWorker
 			} catch (final ExecutionException e) {
 				// FIXME: Handle Exceptions the right way
 				e.printStackTrace();
-			} finally {
-				if (!this.component.isStarted())
-					FXUtil.setPrivateMemberValue(Checkable.class,
-							this.component, FXUtil.ACOMPONENT_STARTED, true);
-				// turn off component
-				if (!component.isActive()) {
-					FXUtil.setPrivateMemberValue(Checkable.class,
-							this.component, FXUtil.ACOMPONENT_STARTED, false);
-					// run teardown
-					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
-							component);
-				}
-			}
+			} 
 		}
 	}
 

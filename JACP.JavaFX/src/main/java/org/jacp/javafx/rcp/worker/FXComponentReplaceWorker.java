@@ -90,7 +90,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 					this.publish(this.component, myAction,
 							this.targetComponents, this.layout,
 							handleReturnValue, previousContainer, currentTaget);
-
+					// wait for execution on application thread before continue
 					this.lock();
 
 				}
