@@ -54,6 +54,7 @@ public class StateLessComponentRunWorker
 		synchronized (this.component) {
 			this.component.lock();
 			try {
+				runCallbackOnStartMethods(this.component);
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
@@ -62,6 +63,7 @@ public class StateLessComponentRunWorker
 					final String targetId = this.component.getHandleTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value, myAction);
 				}
+				runCallbackPostExecution(this.component);
 			} finally{
 				this.component.release();
 			}
