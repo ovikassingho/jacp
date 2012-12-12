@@ -22,7 +22,16 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -32,6 +41,8 @@ import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.workbench.IBase;
+import org.jacp.javafx.rcp.worker.AFXComponentWorker;
+import org.jacp.javafx.rcp.worker.TearDownWorker;
 
 /**
  * Handles TearDown annotations on all components when application is closed.
@@ -41,6 +52,9 @@ import org.jacp.api.workbench.IBase;
  */
 public class TearDownHandler {
 	private static IBase<EventHandler<Event>, Event, Object> rootWorkbench;
+	private static final ExecutorService executor = Executors
+			.newCachedThreadPool(new HandlerThreadFactory(
+					"FXPerspectiveHandler:"));
 
 	/**
 	 * Register the parent workbench, from here all perspectives and component
@@ -48,28 +62,91 @@ public class TearDownHandler {
 	 * 
 	 * @param rootWorkbench
 	 */
-	public static void registerBase(
+	public final static void registerBase(
 			IBase<EventHandler<Event>, Event, Object> rootWorkbench) {
 		TearDownHandler.rootWorkbench = rootWorkbench;
 	}
+
 	/**
-	 * perform global teardown on all components. This method will cause all @TearDown annotated methods to be executed.
+	 * perform global teardown on all components. This method will cause all @TearDown
+	 * annotated methods to be executed.
 	 */
-	public static void handleGlobalTearDown() {
-		if(rootWorkbench==null)throw new UnsupportedOperationException(
-				"can't teardown workbench");
-		final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = rootWorkbench.getPerspectives();
-		for(final IPerspective<EventHandler<Event>, Event, Object> perspective : perspectives) {
+	public final static void handleGlobalTearDown() {
+		if (rootWorkbench == null)
+			throw new UnsupportedOperationException("can't teardown workbench");
+		final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = rootWorkbench
+				.getPerspectives();
+		for (final IPerspective<EventHandler<Event>, Event, Object> perspective : perspectives) {
 			// TODO ... teardown perspective itself
-			final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective.getSubcomponents();
-			for(final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
-				if(component instanceof ICallbackComponent){
-					System.out.println("TODO call worker to handle teardown for:"+component.getName());
+			final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective
+					.getSubcomponents();
+			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
+			for (final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
+				if (component instanceof ICallbackComponent) {
+					handleAsync
+							.add((ICallbackComponent<EventHandler<Event>, Event, Object>) component);
+				} else {
+					// run teardown in app thread
+					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+							component);
 				}
-				// run teardown
-				FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
-						component);
+
 			}
+			if (!handleAsync.isEmpty())
+				handleAsyncTearDown(handleAsync);
+
+		}
+		executor.shutdown();
+	}
+
+	/**
+	 * executes all methods in ICallbackComponent, annotated with @OnTeardown
+	 * outside application thread.
+	 * 
+	 * @param components
+	 */
+	public final static void handleAsyncTearDown(
+			ICallbackComponent<EventHandler<Event>, Event, Object>... components) {
+		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
+		for (final ICallbackComponent<EventHandler<Event>, Event, Object> component : components) {
+			handleAsync.add(component);
+		}
+
+		handleAsyncTearDown(handleAsync);
+	}
+
+	/**
+	 * executes all methods in ICallbackComponent, annotated with @OnTeardown
+	 * outside application thread.
+	 * 
+	 * @param components
+	 */
+	public final static void handleAsyncTearDown(
+			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> components) {
+		final Set<Future<Boolean>> set = new HashSet<Future<Boolean>>();
+		for (final ICallbackComponent<EventHandler<Event>, Event, Object> component : components) {
+			set.add(executor.submit(new TearDownWorker(component)));
+		}
+		// await termination
+		for (final Future<Boolean> future : set) {
+			try {
+				future.get();
+			} catch (InterruptedException e) {
+				log("error while handle TearDown");
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				log("error while handle TearDown");
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private static void log(final String message) {
+		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
+				Level.FINE)) {
+			Logger.getLogger(AFXComponentWorker.class.getName()).fine(
+					">> " + message);
 		}
 	}
 }

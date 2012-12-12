@@ -25,6 +25,7 @@ package org.jacp.javafx.rcp.component;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -41,11 +42,13 @@ import org.jacp.api.component.ISubComponent;
 public abstract class ASubComponent extends AComponent implements
 		ISubComponent<EventHandler<Event>, Event, Object> {
 
-	private volatile String executionTarget="";
+	private volatile String executionTarget = "";
 
 	private volatile String parentId;
 
-	private final Semaphore lock = new Semaphore(1); 
+	ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
+
+	private final Semaphore lock = new Semaphore(1);
 
 	protected volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
@@ -98,16 +101,32 @@ public abstract class ASubComponent extends AComponent implements
 
 	@Override
 	public final boolean isBlocked() {
-		return lock.availablePermits()==0;
+		try {
+			mutex.readLock().lock();
+			return lock.availablePermits() == 0;
+		} finally {
+			mutex.readLock().unlock();
+		}
 	}
+
 	@Override
-	public final void  lock(){
-		lock.acquireUninterruptibly();
+	public final void lock() {
+		try {
+			mutex.writeLock().lock();
+			lock.acquireUninterruptibly();
+		} finally {
+			mutex.writeLock().unlock();
+		}
 	}
-	
+
 	@Override
-	public final void  release(){
-		lock.release();
+	public final void release() {
+		try {
+			mutex.writeLock().lock();
+			lock.release();
+		} finally {
+			mutex.writeLock().unlock();
+		}
 	}
 
 	@Override

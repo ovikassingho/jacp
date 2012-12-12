@@ -1,3 +1,5 @@
+12. Dez. 2012 - amo -  ASubComponent, add mutex to synchronize lock handler of component
+12. Dez. 2012 - amo -  Add TearDownWorker to manage @OnTearDown outside application thread for Stete- and stateless components. Update TearDownHandler for use with TearDownWorker
 11. Dez. 2012 - amo -  StateLessComponentRunWorker handle OnStart annotation, set component to started after init.
 11. Dez. 2012 - amo -  StateComponentRunWorker create postHandle method for Teardown and moved execution to worker thread. OnStart and OnTeardown are now executed in worker.
 11. Dez. 2012 - amo -  FXComponentInitWorker: moved runPreInitMethods from constructor to call method, to prevent excecution outside appThread RunInvokeLater is used, this should avoid synchronisation twice AND the method will be called AFTER component lock was called
