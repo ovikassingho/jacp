@@ -56,7 +56,7 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 
 	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
 
-	private final ExecutorService executor = Executors
+	private volatile ExecutorService executor = Executors
 			.newCachedThreadPool(new HandlerThreadFactory("AStatelessCallbackComponent:"));
 	static {
 		final Runtime runtime = Runtime.getRuntime();
