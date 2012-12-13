@@ -90,7 +90,7 @@ public class StatelessCallbackScheduler implements
 			final IAction<Event, Object> message) {
 		comp.putIncomingMessage(message);
 		baseComponent.getExecutorService().submit(new StateLessComponentRunWorker(
-				comp));
+				comp,baseComponent));
 	}
 
 	/**

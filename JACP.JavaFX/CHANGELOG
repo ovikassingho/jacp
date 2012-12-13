@@ -1,3 +1,5 @@
+13. Dez. 2012 - amo -  StateLessComponentRunWorker, finished shutdown of stateless components.
+13. Dez. 2012 - amo -  AStatelessCallbackComponent, set Executor service to volatile
 12. Dez. 2012 - amo -  ASubComponent, add mutex to synchronize lock handler of component
 12. Dez. 2012 - amo -  Add TearDownWorker to manage @OnTearDown outside application thread for Stete- and stateless components. Update TearDownHandler for use with TearDownWorker
 11. Dez. 2012 - amo -  StateLessComponentRunWorker handle OnStart annotation, set component to started after init.
