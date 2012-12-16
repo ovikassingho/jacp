@@ -106,7 +106,6 @@ public class TearDownHandler {
 	 * 
 	 * @param components
 	 */
-	@SafeVarargs
 	public final static void handleAsyncTearDown(
 			ICallbackComponent<EventHandler<Event>, Event, Object>... components) {
 		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
