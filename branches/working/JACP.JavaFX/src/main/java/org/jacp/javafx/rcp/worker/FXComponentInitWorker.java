@@ -31,7 +31,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -81,34 +80,30 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * Run all methods that need to be invoked before worker thread start to
 	 * run. Programmatic components runs OnStart; declarative components init
 	 * the FXML and set the value to root node.
+	 * 
+	 * @throws InterruptedException
 	 */
-	private void runPreInitMethods() {
-		Platform.runLater(new Runnable() {
+	private void runPreInitMethods() throws InterruptedException {
+		this.invokeOnFXThreadAndWait(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					if (component.getType().equals(UIType.DECLARATIVE)) {
-						final URL url = getClass().getResource(
-								component.getViewLocation());
-						initLocalization(url, component);
-						FXUtil.setPrivateMemberValue(AFXComponent.class,
-								component, FXUtil.AFXCOMPONENT_ROOT,
-								loadFXMLandSetController(component, url));
-						runComponentOnStartupSequence(component, layout,
-								component.getDocumentURL(),
-								component.getResourceBundle());
-						return;
-
-					}
-					initLocalization(null, component);
+				if (component.getType().equals(UIType.DECLARATIVE)) {
+					final URL url = getClass().getResource(
+							component.getViewLocation());
+					initLocalization(url, component);
+					FXUtil.setPrivateMemberValue(AFXComponent.class, component,
+							FXUtil.AFXCOMPONENT_ROOT,
+							loadFXMLandSetController(component, url));
 					runComponentOnStartupSequence(component, layout,
+							component.getDocumentURL(),
 							component.getResourceBundle());
-					// release lock
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					FXComponentInitWorker.this.release();
+					return;
+
 				}
+				initLocalization(null, component);
+				runComponentOnStartupSequence(component, layout,
+						component.getResourceBundle());
+
 			}
 		});
 	}
@@ -118,7 +113,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 		synchronized (this.component) {
 			this.component.lock();
 			runPreInitMethods();
-			this.lock();
 			try {
 				this.log("3.4.4.2.1: subcomponent handle init START: "
 						+ this.component.getName());
@@ -137,7 +131,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						+ this.component.getName());
 				this.addComponent(validContainer, handleReturnValue,
 						this.component, this.action);
-				this.lock();
 				this.log("3.4.4.2.4: subcomponent handle init END: "
 						+ this.component.getName());
 			} finally {
@@ -228,22 +221,18 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private void addComponent(final Node validContainer,
 			final Node handleReturnValue, final AFXComponent myComponent,
 			final IAction<Event, Object> myAction) throws InterruptedException {
-
-		Platform.runLater(new Runnable() {
+		this.invokeOnFXThreadAndWait(new Runnable() {
 			@Override
 			public void run() {
 				FXComponentInitWorker.this.executeComponentViewPostHandle(
 						handleReturnValue, myComponent, myAction);
 				if (validContainer == null || myComponent.getRoot() == null) {
-					FXComponentInitWorker.this.release();
 					return;
 				}
 				FXComponentInitWorker.this.addComponentByType(validContainer,
 						myComponent);
-				FXComponentInitWorker.this.release();
 			}
 		});
-
 	}
 
 	@Override

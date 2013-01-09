@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -124,28 +125,32 @@ public class TearDownHandler {
 	 */
 	public final static void handleAsyncTearDown(
 			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> components) {
-		final Set<Future<Boolean>> set = new HashSet<Future<Boolean>>();
-		for (final ICallbackComponent<EventHandler<Event>, Event, Object> component : components) {
-			if(component instanceof IStatelessCallabackComponent){
-				final IStatelessCallabackComponent<EventHandler<Event>, Event, Object>tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
-				final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
-				for(final ICallbackComponent<EventHandler<Event>, Event, Object> instance : instances) {
-					set.add(executor.submit(new TearDownWorker(instance)));
+		try {
+			final Set<Future<Boolean>> set = new HashSet<Future<Boolean>>();
+			for (final ICallbackComponent<EventHandler<Event>, Event, Object> component : components) {
+				if(component instanceof IStatelessCallabackComponent){
+					final IStatelessCallabackComponent<EventHandler<Event>, Event, Object>tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
+					final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
+					for(final ICallbackComponent<EventHandler<Event>, Event, Object> instance : instances) {
+						set.add(executor.submit(new TearDownWorker(instance)));
+					}
+				}
+				set.add(executor.submit(new TearDownWorker(component)));
+			}
+			// await termination
+			for (final Future<Boolean> future : set) {
+				try {
+					future.get();
+				} catch (InterruptedException e) {
+					log("error while handle TearDown");
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					log("error while handle TearDown");
+					e.printStackTrace();
 				}
 			}
-			set.add(executor.submit(new TearDownWorker(component)));
-		}
-		// await termination
-		for (final Future<Boolean> future : set) {
-			try {
-				future.get();
-			} catch (InterruptedException e) {
-				log("error while handle TearDown");
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				log("error while handle TearDown");
-				e.printStackTrace();
-			}
+		} catch (RejectedExecutionException e) {
+			log("component teardown was not executed");
 		}
 
 	}

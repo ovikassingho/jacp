@@ -25,8 +25,8 @@ package org.jacp.javafx.rcp.worker;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 
-import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -53,6 +53,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 	private final AFXComponent component;
 	private final FXComponentLayout layout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
+	private static final Logger logger = Logger.getLogger("FXComponentReplaceWorker");
 
 	public FXComponentReplaceWorker(
 			final Map<String, Node> targetComponents,
@@ -67,83 +68,74 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
 	@Override
 	protected AFXComponent call() throws Exception {
-		synchronized (this.component) {
-			try {
-				this.component.lock();
-				while (this.component.hasIncomingMessage()) {
-					final IAction<Event, Object> myAction = this.component
-							.getNextIncomingMessage();
-					this.log(" //1.1.1.1.1// handle replace component BEGIN: "
-							+ this.component.getName());
+		// TODO handle locks to components write methods
+		try {
+			this.component.lock();
+			while (this.component.hasIncomingMessage()) {
+				final IAction<Event, Object> myAction = this.component
+						.getNextIncomingMessage();
+				this.log(" //1.1.1.1.1// handle replace component BEGIN: "
+						+ this.component.getName());
 
-					final Node previousContainer = this.component.getRoot();
-					final String currentTaget = this.component
-							.getExecutionTarget();
-					// run code
-					this.log(" //1.1.1.1.2// handle component: "
-							+ this.component.getName());
-					final Node handleReturnValue = this
-							.prepareAndRunHandleMethod(this.component, myAction);
-					this.log(" //1.1.1.1.3// publish component: "
-							+ this.component.getName());
+				final Node previousContainer = this.component.getRoot();
+				final String currentTaget = this.component.getExecutionTarget();
+				// run code
+				this.log(" //1.1.1.1.2// handle component: "
+						+ this.component.getName());
+				final Node handleReturnValue = this.prepareAndRunHandleMethod(
+						this.component, myAction);
+				this.log(" //1.1.1.1.3// publish component: "
+						+ this.component.getName());
 
-					this.publish(this.component, myAction,
-							this.targetComponents, this.layout,
-							handleReturnValue, previousContainer, currentTaget);
-					// wait for execution on application thread before continue
-					this.lock();
+				this.publish(this.component, myAction, this.targetComponents,
+						this.layout, handleReturnValue, previousContainer,
+						currentTaget);
 
-				}
-			} catch (final IllegalStateException e) {
-				if (e.getMessage().contains("Not on FX application thread")) {
-					throw new UnsupportedOperationException(
-							"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
-							e);
-				}
-			} finally {
-				this.component.release();
 			}
-
+		} catch (final IllegalStateException e) {
+			if (e.getMessage().contains("Not on FX application thread")) {
+				throw new UnsupportedOperationException(
+						"Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
+						e);
+			}
+		} finally {
+			this.component.release();
 		}
 		return this.component;
 	}
 
 	/**
 	 * publish handle result in application main thread
+	 * 
+	 * @throws InterruptedException
 	 */
 	private void publish(final AFXComponent component,
 			final IAction<Event, Object> myAction,
 			final Map<String, Node> targetComponents,
 			final FXComponentLayout layout, final Node handleReturnValue,
-			final Node previousContainer, final String currentTaget) {
-		Platform.runLater(new Runnable() {
+			final Node previousContainer, final String currentTaget)
+			throws InterruptedException {
+		this.invokeOnFXThreadAndWait(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					// check if component was set to inactive, if so remove
-					if (component.isActive()) {
-						FXComponentReplaceWorker.this.publishComponentValue(
-								component, myAction, targetComponents, layout,
-								handleReturnValue, previousContainer,
-								currentTaget);
-					} else {
-						// unregister component
-						FXComponentReplaceWorker.this.removeComponentValue(
-								component, previousContainer, layout);
-						// run teardown
-						FXUtil.invokeHandleMethodsByAnnotation(
-								OnTearDown.class, component, layout);
-					}
-					// release lock
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					FXComponentReplaceWorker.this.release();
+				// check if component was set to inactive, if so remove
+				if (component.isActive()) {
+					FXComponentReplaceWorker.this.publishComponentValue(
+							component, myAction, targetComponents, layout,
+							handleReturnValue, previousContainer, currentTaget);
+				} else {
+					// unregister component
+					FXComponentReplaceWorker.this.removeComponentValue(
+							component, previousContainer, layout);
+					// run teardown
+					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+							component, layout);
 				}
-
 			}
 		});
 	}
+
+	
 
 	private void removeComponentValue(final AFXComponent component,
 			final Node previousContainer, final FXComponentLayout layout) {
@@ -179,8 +171,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 						currentTaget, layout);
 			} else {
 				// unregister component
-				this.removeComponentValue(component,
-						previousContainer, layout);
+				this.removeComponentValue(component, previousContainer, layout);
 				// run teardown
 				FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
 						component, layout);
@@ -250,12 +241,14 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 		try {
 			this.get();
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
-			// TODO add to error queue and restart thread if
-			// messages in
-			// queue
-		} catch (final ExecutionException e) {
-			e.printStackTrace();
+			logger.info("execution interrupted for component: "+this.component.getName());
+		} catch (final ExecutionException e) {			
+			if(e.getCause() instanceof InterruptedException){
+				logger.info("execution interrupted for component: "+this.component.getName());
+			} else {
+				e.printStackTrace();
+			}
+				
 			// TODO add to error queue and restart thread if
 			// messages in
 			// queue

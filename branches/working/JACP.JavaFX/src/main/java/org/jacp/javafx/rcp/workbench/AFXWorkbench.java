@@ -120,7 +120,6 @@ public abstract class AFXWorkbench
 				ShutdownThreadsHandler.shutdowAll();
 				TearDownHandler.handleGlobalTearDown();
 				Platform.exit();
-
 			}
 		});
 		this.log("1: init workbench");
