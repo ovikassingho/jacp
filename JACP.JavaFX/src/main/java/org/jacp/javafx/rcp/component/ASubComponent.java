@@ -25,7 +25,7 @@ package org.jacp.javafx.rcp.component;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.logging.Logger;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -46,9 +46,9 @@ public abstract class ASubComponent extends AComponent implements
 
 	private volatile String parentId;
 
-	ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
-
 	private final Semaphore lock = new Semaphore(1);
+	
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 	protected volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
@@ -82,7 +82,7 @@ public abstract class ASubComponent extends AComponent implements
 		try {
 			this.incomingMessage.put(action);
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			logger.info("massage put failed:");
 		}
 
 	}
@@ -93,7 +93,7 @@ public abstract class ASubComponent extends AComponent implements
 			try {
 				return this.incomingMessage.take();
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				logger.info("massage take failed:");
 			}
 		}
 		return null;
@@ -101,32 +101,21 @@ public abstract class ASubComponent extends AComponent implements
 
 	@Override
 	public final boolean isBlocked() {
-		try {
-			mutex.readLock().lock();
-			return lock.availablePermits() == 0;
-		} finally {
-			mutex.readLock().unlock();
-		}
+		return lock.availablePermits() == 0;
 	}
 
 	@Override
 	public final void lock() {
 		try {
-			mutex.writeLock().lock();
-			lock.acquireUninterruptibly();
-		} finally {
-			mutex.writeLock().unlock();
+			lock.acquire();
+		} catch (InterruptedException e) {
+			logger.info("lock interrupted.");
 		}
 	}
 
 	@Override
 	public final void release() {
-		try {
-			mutex.writeLock().lock();
-			lock.release();
-		} finally {
-			mutex.writeLock().unlock();
-		}
+		lock.release();
 	}
 
 	@Override

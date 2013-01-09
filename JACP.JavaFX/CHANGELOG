@@ -1,3 +1,8 @@
+09. Jan. 2013 - amo -  ShutdownThreadsHandler: add APPLICATION_RUNNING flag
+09. Jan. 2013 - amo -  ASubComponent: mutex removed
+09. Jan. 2013 - amo -  FXComponentReplaceWorker: removed "synchronized" on component, removed global locking, use invokeOnFXThreadAndWait instead
+09. Jan. 2013 - amo -  FXComponentInitWorker: replaced all Platform.runLater call by invokeOnFXThreadAndWait, removed global lock, release calls
+09. Jan. 2013 - amo -  AFXComponentWorker: removed global lockQueue and add invokeOnFXThreadAndWait method, removed lock and release methods
 14. Dez. 2012 - amo -  TearDownHandler, update to support teardown of StatelessComponent instances
 13. Dez. 2012 - amo -  StateLessComponentRunWorker, finished shutdown of stateless components.
 13. Dez. 2012 - amo -  AStatelessCallbackComponent, set Executor service to volatile

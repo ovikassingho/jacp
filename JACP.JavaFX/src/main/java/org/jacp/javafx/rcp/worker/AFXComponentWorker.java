@@ -23,11 +23,16 @@
 package org.jacp.javafx.rcp.worker;
 
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.Event;
@@ -48,6 +53,7 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 /**
  * handles component methods in own thread;
@@ -55,15 +61,13 @@ import org.jacp.javafx.rcp.util.FXUtil;
  * @author Andy Moncsek
  */
 public abstract class AFXComponentWorker<T> extends Task<T> {
-	
-
-	protected volatile BlockingQueue<Boolean> appThreadlock = new ArrayBlockingQueue<Boolean>(1);
 
 	private final String componentName;
-	
+
 	public AFXComponentWorker(final String componentName) {
 		this.componentName = componentName;
 	}
+
 	/**
 	 * find valid target component in perspective
 	 * 
@@ -149,7 +153,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 				&& !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
 					.getActionListener(null);
-			listener.notifyComponents(new FXAction(comp.getId(), targetId, value, null));
+			listener.notifyComponents(new FXAction(comp.getId(), targetId,
+					value, null));
 		}
 	}
 
@@ -277,71 +282,78 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @return
 	 */
 	protected final Node prepareAndRunHandleMethod(
-			final UIComponent <Node, EventHandler<Event>, Event, Object> component,
+			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		return component.handle(action);
-		
-	}	
 
+	}
 
 	/**
-	 * Executes post handle method in application main thread. The result value of handle method (from worker thread) is Input for the postHandle Method. The return value or the handleReturnValue are the root node of this component.  
+	 * Executes post handle method in application main thread. The result value
+	 * of handle method (from worker thread) is Input for the postHandle Method.
+	 * The return value or the handleReturnValue are the root node of this
+	 * component.
 	 * 
 	 * @param component
 	 * @param action
 	 */
 	protected void executeComponentViewPostHandle(final Node handleReturnValue,
-			final AFXComponent component,
-			final IAction<Event, Object> action) {
-		Node potsHandleReturnValue = component.postHandle(handleReturnValue, action);
-		if(potsHandleReturnValue==null) {
+			final AFXComponent component, final IAction<Event, Object> action) {
+		Node potsHandleReturnValue = component.postHandle(handleReturnValue,
+				action);
+		if (potsHandleReturnValue == null) {
 			potsHandleReturnValue = handleReturnValue;
-		} else if(component.getType().equals(UIType.DECLARATIVE)) {
-			throw new UnsupportedOperationException("declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
+		} else if (component.getType().equals(UIType.DECLARATIVE)) {
+			throw new UnsupportedOperationException(
+					"declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
 		}
-		if (potsHandleReturnValue != null && component.getType().equals(UIType.PROGRAMMATIC)) {
+		if (potsHandleReturnValue != null
+				&& component.getType().equals(UIType.PROGRAMMATIC)) {
 			potsHandleReturnValue.setVisible(true);
 			FXUtil.setPrivateMemberValue(AFXComponent.class, component,
 					FXUtil.AFXCOMPONENT_ROOT, potsHandleReturnValue);
-		} 
-	}
-	
-	/**
-	 * checks if component started, if so run OnStart annotations
-	 * @param component
-	 */
-	protected void runCallbackOnStartMethods(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-		if (!component.isStarted())
-			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class,
-					component);
-	}
-	
-	/**
-	 * Check if component was not started yet an activate it.
-	 * @param component
-	 */
-	protected void runCallbackPostExecution(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-		if (!component.isStarted())
-			FXUtil.setPrivateMemberValue(Checkable.class,
-					component, FXUtil.ACOMPONENT_STARTED, true);
-	}
-	
-	/**
-	 * checks if component was deactivated, if so run OnTeardown annotations. 
-	 * @param component
-	 */
-	protected void runCallbackOnTeardownMethods(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-
-		// turn off component
-		if (!component.isActive()) {
-			FXUtil.setPrivateMemberValue(Checkable.class,
-					component, FXUtil.ACOMPONENT_STARTED, false);
-			// run teardown
-			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
-					component);
 		}
 	}
 
+	/**
+	 * checks if component started, if so run OnStart annotations
+	 * 
+	 * @param component
+	 */
+	protected void runCallbackOnStartMethods(
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())
+			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component);
+	}
+
+	/**
+	 * Check if component was not started yet an activate it.
+	 * 
+	 * @param component
+	 */
+	protected void runCallbackPostExecution(
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())
+			FXUtil.setPrivateMemberValue(Checkable.class, component,
+					FXUtil.ACOMPONENT_STARTED, true);
+	}
+
+	/**
+	 * checks if component was deactivated, if so run OnTeardown annotations.
+	 * 
+	 * @param component
+	 */
+	protected void runCallbackOnTeardownMethods(
+			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+
+		// turn off component
+		if (!component.isActive()) {
+			FXUtil.setPrivateMemberValue(Checkable.class, component,
+					FXUtil.ACOMPONENT_STARTED, false);
+			// run teardown
+			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component);
+		}
+	}
 
 	protected void log(final String message) {
 		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
@@ -350,18 +362,50 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 					">> " + message);
 		}
 	}
-	
-	protected void lock() throws InterruptedException {
+
+	/**
+	 * invokes a runnable on application thread and waits until execution is
+	 * finished
+	 * 
+	 * @param runnable
+	 * @throws InterruptedException
+	 */
+	protected void invokeOnFXThreadAndWait(final Runnable runnable)
+			throws InterruptedException {
+		final Lock lock = new ReentrantLock();
+		final Condition condition = lock.newCondition();
+		final AtomicBoolean conditionReady = new AtomicBoolean(false);
+		lock.lock();
 		try {
-			this.appThreadlock.take();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						lock.lock();
+						// prevent execution when application is closed
+						if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
+							runnable.run();
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						conditionReady.set(true);
+						condition.signal();
+						lock.unlock();
+					}
+
+				}
+			});
+			// wait until execution is finished and check if application is
+			// still running to prevent wait
+			while (!conditionReady.get()
+					&& ShutdownThreadsHandler.APPLICATION_RUNNING.get())
+				condition.await(ShutdownThreadsHandler.WAIT,
+						TimeUnit.MILLISECONDS);
+		} finally {
+			lock.unlock();
 		}
 	}
-	
-	protected void release() {
-		this.appThreadlock.add(true);
-	}
+
 	public String getComponentName() {
 		return componentName;
 	}

@@ -30,13 +30,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  */
 public class HandlerThreadFactory implements ThreadFactory {
+	public static String PREFIX="JacpFX-Worker-";
 	final String name;
 	private static final AtomicInteger counter = new AtomicInteger(0);
 	public HandlerThreadFactory(String name) {
 		this.name = name;
 	}
 	public Thread newThread(Runnable r) {
-		return new Thread(r,name.concat(Integer.toString(counter.incrementAndGet())));
+		return new Thread(r,PREFIX.concat(name.concat(Integer.toString(counter.incrementAndGet()))));
 	}
 
 }

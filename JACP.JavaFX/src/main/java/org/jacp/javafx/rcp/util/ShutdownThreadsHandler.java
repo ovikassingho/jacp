@@ -23,8 +23,10 @@
 package org.jacp.javafx.rcp.util;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**
@@ -36,6 +38,8 @@ public final class ShutdownThreadsHandler{
 	private static  List<Thread> registeredThreads = new CopyOnWriteArrayList<Thread>();
 	private static  List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<ExecutorService>();
 	private static final Logger logger = Logger.getLogger("ShutdownThreadsHandler");
+	public static volatile AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
+	public static Long WAIT = 1500L;
 	/**
 	 * Register a Thread.
 	 * @param t
@@ -54,6 +58,7 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown all registered Threads.
 	 */
 	public static final void shutdownThreads() {
+		APPLICATION_RUNNING.set(false);
 		for(final Thread t:registeredThreads) {
 			logger.info("shutdown thread: "+t);
 			t.interrupt();
@@ -72,12 +77,21 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown registered Threads and Executors.
 	 */
 	public static final void shutdowAll() {
+		APPLICATION_RUNNING.set(false);
 		for(final Thread t:registeredThreads) {
 			logger.info("shutdown thread: "+t);
 			t.interrupt();
 		}
-		for(ExecutorService e: registeredExecutors) {
+		for(final ExecutorService e: registeredExecutors) {
 			e.shutdown();
 		}
+		final Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+		// force to interrupt all threads in waiting condition
+		for(final Thread t: threadSet) {
+			if(t.getName().contains(HandlerThreadFactory.PREFIX) && !t.isInterrupted()) {
+				t.interrupt();
+			}
+		}
+		
 	}
 }
