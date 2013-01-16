@@ -35,9 +35,10 @@
  *   fixed Nullpointer when no subcomponents defined in perspective
  *   fixed bug with reassignment of components in perspective when switching between perspectives
 
-== Version 1.2 (Jan. 2013) ==
- * re-implement component scheduler to achieve  a mostly fair scheduling and system load awareness
+== Version 1.2 (April. 2013) ==
  * overall performance optimizations
+ * introduce managed dialogs, a managed dialog is a child of an UIComonent and has access to DI container
+ * introduce JACPContext and {{{@Ressource}}} annotation, this context object will contain access to DialogHandlers, menue and toolBars
 
 
 
