@@ -4,7 +4,7 @@
 	<groupId>org.jacp.demo</groupId>
 	<artifactId>JacpFXDemo</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>JacpFXDemo</name>
 	<url>http://code.google.com/p/jacp</url>
 	<developers>
@@ -22,7 +22,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javafx.version>2.2</javafx.version>
-		<jacp.version>1.05</jacp.version>
+		<jacp.version>1.1</jacp.version>
 		<spring.version>3.0.6.RELEASE</spring.version>
 	</properties>
 	<repositories>
@@ -170,12 +170,12 @@
 
 
 								<!-- you need to generate a key yourself, see here: http://download.oracle.com/javase/tutorial/security/toolsign/step3.html -->
-								<jfxsignjar destdir="${project.build.directory}/deploy"
+				<!-- 				<jfxsignjar destdir="${project.build.directory}/deploy"
 									keyStore="C:\Users\ady\fxstore" storePass="jacp11" alias="jacpSign"
 									keyPass="jacp11">
 									<fileset dir="${project.build.directory}/deploy"
 										includes="*.jar" />
-								</jfxsignjar>
+								</jfxsignjar> -->
 
 								<!-- add to create jnlp: <security> <all-permissions/> </security> -->
 
