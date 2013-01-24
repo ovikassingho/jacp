@@ -22,16 +22,22 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 
@@ -144,21 +150,22 @@ public class FXUtil {
 	 * @param value
 	 */
 	public final static void invokeHandleMethodsByAnnotation(
-			final Class annotation, final Object component, final Object ...value) {
+			final Class annotation, final Object component,
+			final Object... value) {
 		final Class<?> componentClass = component.getClass();
 		final Method[] methods = componentClass.getMethods();
 		for (final Method m : methods) {
 			if (m.isAnnotationPresent(annotation)) {
 				try {
 					final Class<?>[] types = m.getParameterTypes();
-					if(types.length==value.length){
+					if (types.length == value.length) {
 						m.invoke(component, value);
 						return;
-					}					
-					if(types.length>0){
+					}
+					if (types.length > 0) {
 						m.invoke(component, getValidParameterList(types, value));
 						return;
-					}				
+					}
 
 					m.invoke(component);
 					return;
@@ -178,30 +185,92 @@ public class FXUtil {
 			}
 		}
 	}
-	
-	private static Object[] getValidParameterList(final Class<?>[] types, Object ...value) {
-		final Object[] found=new Object[types.length];
-		int i=0;
+
+	private static Object[] getValidParameterList(final Class<?>[] types,
+			Object... value) {
+		final Object[] found = new Object[types.length];
+		int i = 0;
 		for (final Class<?> t : types) {
-			final Object result =findByClass(t, value);
-			if (result!=null) {
-				found[i]=result;
+			final Object result = findByClass(t, value);
+			if (result != null) {
+				found[i] = result;
 				i++;
 			}
 		}
-		
+
 		return found;
 	}
-	
+
 	private static Object findByClass(Class<?> key, Object[] values) {
-		if(key==null) return null;
-		for(Object val:values) {
-			if(val==null) return null;
+		if (key == null)
+			return null;
+		for (Object val : values) {
+			if (val == null)
+				return null;
 			final Class<?> clazz = val.getClass();
-			if(clazz==null) return null;
-			if(clazz.getGenericSuperclass().equals(key) || clazz.equals(key)) return val;
+			if (clazz == null)
+				return null;
+			if (clazz.getGenericSuperclass().equals(key) || clazz.equals(key))
+				return val;
 		}
 		return null;
+	}
+
+	public final static Locale getCorrectLocale(final String localeID) {
+		Locale locale = Locale.getDefault();
+		if (localeID != null && localeID.length() > 1) {
+			if (localeID.contains("_")) {
+				String[] loc = localeID.split("_");
+				locale = new Locale(loc[0], loc[1]);
+			} else {
+				locale = new Locale(localeID);
+			}
+
+		}
+		return locale;
+	}
+
+	/**
+	 * Returns the resourceBundle
+	 * 
+	 * @param resourceBundleLocation
+	 * @param localeID
+	 * @return
+	 */
+	public static ResourceBundle getBundle(String resourceBundleLocation,
+			final String localeID) {
+		if (resourceBundleLocation == null
+				|| resourceBundleLocation.length() <= 1)
+			return null;
+		return ResourceBundle.getBundle(resourceBundleLocation,
+				FXUtil.getCorrectLocale(localeID));
+	}
+
+	/**
+	 * Loads the FXML document provided by viewLocation-
+	 * 
+	 * @param fxmlComponent
+	 *            a FXML aware component
+	 * @param componentName
+	 *            the components name.
+	 * @return The components root Node.
+	 */
+	// TODO merge with loadFXMLandSetController in FXComponentInit
+	public static <T> Node loadFXMLandSetController(final T bean,
+			final ResourceBundle bundle, final URL url) {
+		final FXMLLoader fxmlLoader = new FXMLLoader();
+		if (bundle != null) {
+			fxmlLoader.setResources(bundle);
+		}
+		fxmlLoader.setLocation(url);
+		fxmlLoader.setController(bean);
+		try {
+			return (Node) fxmlLoader.load();
+		} catch (IOException e) {
+			throw new MissingResourceException(
+					"fxml file not found --  place in resource folder and reference like this: viewLocation = \"/myUIFile.fxml\"",
+					url.getPath(), "");
+		}
 	}
 
 	/**

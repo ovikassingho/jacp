@@ -25,7 +25,6 @@ package org.jacp.javafx.rcp.worker;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -34,7 +33,6 @@ import java.util.concurrent.ExecutionException;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnStart;
@@ -147,7 +145,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			return;
 		final String localeID = component.getLocaleID();
 		component.initialize(url, ResourceBundle.getBundle(bundleLocation,
-				getCorrectLocale(localeID)));
+				FXUtil.getCorrectLocale(localeID)));
 
 	}
 
@@ -172,19 +170,12 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private Node loadFXMLandSetController(final AFXComponent fxmlComponent,
 			final URL url) {
-		final FXMLLoader fxmlLoader = new FXMLLoader(url);
+		final FXMLLoader fxmlLoader = new FXMLLoader();
 		if (fxmlComponent.getResourceBundle() != null) {
 			fxmlLoader.setResources(fxmlComponent.getResourceBundle());
 		}
-
-		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
-			@Override
-			public Object call(Class<?> paramClass) {
-				log("set FXML controller" + fxmlComponent.getName());
-				return fxmlComponent;
-			}
-		});
-
+		fxmlLoader.setLocation(url);
+		fxmlLoader.setController(fxmlComponent);
 		try {
 			return (Node) fxmlLoader.load();
 		} catch (IOException e) {
@@ -194,19 +185,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 		}
 	}
 
-	private Locale getCorrectLocale(final String localeID) {
-		Locale locale = Locale.getDefault();
-		if (localeID != null && localeID.length() > 1) {
-			if (localeID.contains("_")) {
-				String[] loc = localeID.split("_");
-				locale = new Locale(loc[0], loc[1]);
-			} else {
-				locale = new Locale(localeID);
-			}
-
-		}
-		return locale;
-	}
+	
 
 	/**
 	 * Handles "component add" in EDT must be called outside EDT.

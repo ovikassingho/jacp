@@ -65,6 +65,7 @@ import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
+import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
@@ -148,7 +149,7 @@ public abstract class AFXWorkbench
 	// TODO init method also defined in perspective!!!!
 	public void init(final Launcher<?> launcher) {
 		this.launcher = launcher;
-
+		JACPManagedDialog.initManagedDialog(launcher);
 	}
 
 	@Override

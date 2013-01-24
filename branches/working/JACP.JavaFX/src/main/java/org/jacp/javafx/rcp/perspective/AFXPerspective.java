@@ -50,6 +50,7 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
+import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
@@ -114,7 +115,7 @@ public abstract class AFXPerspective extends AComponent implements
 	 * Handle perspective method to initialize the perspective and the layout.
 	 * 
 	 * @param action ; the action triggering the method
-	 * @param perspectiveLayout ,  the layout handler defining the pwerspective
+	 * @param perspectiveLayout ,  the layout handler defining the perspective
 	 */
 	public abstract void handlePerspective(IAction<Event, Object> action,
 			final PerspectiveLayout perspectiveLayout);
@@ -134,7 +135,7 @@ public abstract class AFXPerspective extends AComponent implements
 			this.log("register component: " + component.getId());
 			component.initEnv(this.getId(),
 					this.componentCoordinator.getMessageQueue());
-			this.componentCoordinator.addComponent(component);
+			ComponentRegistry.registerComponent(component);
 			if (!this.subcomponents.contains(component)) {
 				this.subcomponents.add(component);
 			}
@@ -239,7 +240,7 @@ public abstract class AFXPerspective extends AComponent implements
 		synchronized (lock) {
 			this.log("unregister component: " + component.getId());
 			component.initEnv(null, null);
-			this.componentCoordinator.removeComponent(component);
+			ComponentRegistry.removeComponent(component);
 			if (this.subcomponents.contains(component)) {
 				this.subcomponents.remove(component);
 			}

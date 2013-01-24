@@ -39,7 +39,6 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.util.Callback;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnStart;
@@ -237,7 +236,7 @@ public class FXWorkbenchHandler implements
 				initLocalization(url, (AFXPerspective) perspective);
 				FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
 						FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(
-				loadFXMLandSetController(url, (AFXPerspective) perspectiveView)));
+				loadFXMLandSetController((AFXPerspective) perspectiveView,url)));
 				FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, perspective, layout,
 						perspectiveView.getDocumentURL(), perspectiveView.getResourceBundle());
 			} else {
@@ -274,20 +273,14 @@ public class FXWorkbenchHandler implements
 		
 	}
 
-	private Node loadFXMLandSetController(final URL url,
-			final AFXPerspective perspectiveView) {
-		final FXMLLoader fxmlLoader = new FXMLLoader(url);
+	private Node loadFXMLandSetController(
+			final AFXPerspective perspectiveView,final URL url) {
+		final FXMLLoader fxmlLoader = new FXMLLoader();
 		if (perspectiveView.getResourceBundle() != null) {
 			fxmlLoader.setResources(perspectiveView.getResourceBundle());
 		}
-		fxmlLoader.setControllerFactory(new Callback<Class<?>, Object>() {
-			@Override
-			public Object call(Class<?> paramClass) {
-				log("set FXML controller" + perspectiveView.getName());
-				return perspectiveView;
-			}
-		});
-
+		fxmlLoader.setLocation(url);
+		fxmlLoader.setController(perspectiveView);
 		try {
 			return (Node) fxmlLoader.load();
 		} catch (IOException e) {

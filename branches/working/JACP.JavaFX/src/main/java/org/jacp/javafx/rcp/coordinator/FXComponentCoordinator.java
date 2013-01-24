@@ -22,9 +22,7 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -35,6 +33,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
+import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 /**
@@ -44,8 +43,6 @@ import org.jacp.javafx.rcp.util.FXUtil;
  */
 public class FXComponentCoordinator extends AFXCoordinator implements
 		IComponentCoordinator<EventHandler<Event>, Event, Object> {
-
-	private final List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
 	private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 	private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
 	private String parentId;
@@ -55,25 +52,10 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	}
 
 	@Override
-	public void addComponent(
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.components.add(component);
-	}
-
-	@Override
-	public void removeComponent(
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.components.remove(component);
-
-	}
-
-	@Override
 	public void handleMessage(final String targetId,
 			final IAction<Event, Object> action) {
 		synchronized (action) {
-			final ISubComponent<EventHandler<Event>, Event, Object> component = FXUtil
-					.getObserveableById(FXUtil.getTargetComponentId(targetId),
-							this.components);
+			final ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
 			this.log(" //1.1// component message to: " + action.getTargetId());
 			if (component != null) {
 				this.log(" //1.1.1// component HIT: " + action.getTargetId());
