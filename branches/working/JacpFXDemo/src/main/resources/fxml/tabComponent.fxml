@@ -5,5 +5,5 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane fx:id="stackPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent">
+<StackPane fx:id="stackPane" xmlns:fx="http://javafx.com/fxml">
 </StackPane>

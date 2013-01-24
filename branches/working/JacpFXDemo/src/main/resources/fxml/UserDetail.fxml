@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml">
   <children>
     <GridPane id="DetailView" fx:id="detailGridPane" prefHeight="200.0" prefWidth="600.0">
       <children>

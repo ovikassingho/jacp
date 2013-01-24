@@ -96,7 +96,6 @@ public class ContactTableViewComponent extends AFXComponent {
         } else if (action.getLastMessage().equals(MessageUtil.INIT)) {
             return this.getView(null).getTableViewLayout();
         }
-		LOGGER.debug("ContactTableViewComponent handleAction message: "+action.getLastMessage());
         return this.current.getTableViewLayout();
     }
 
