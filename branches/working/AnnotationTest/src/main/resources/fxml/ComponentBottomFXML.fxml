@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent">
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml">
   <center>
     <AnchorPane fx:id="details">
       <children>

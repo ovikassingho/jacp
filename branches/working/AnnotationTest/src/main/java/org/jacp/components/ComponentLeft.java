@@ -43,8 +43,12 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.OnStart;
 import org.jacp.api.annotations.OnTearDown;
+import org.jacp.dialogs.DemoDialog;
+import org.jacp.dialogs.DemoFXMLDialog;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
+import org.jacp.javafx.rcp.components.managedDialog.ManagedDialogHandler;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
@@ -58,6 +62,7 @@ public class ComponentLeft extends AFXComponent {
 	private AnchorPane pane;
 	private TextField textField;
 	private final Logger log = Logger.getLogger(ComponentLeft.class.getName());
+	ManagedDialogHandler<DemoDialog> handler;
 
 	@Override
 	/**
@@ -81,6 +86,8 @@ public class ComponentLeft extends AFXComponent {
 		if (action.getLastMessage().equals(MessageUtil.INIT)) {
 			this.pane = (AnchorPane) arg0;
 		} else {
+			handler.getController().sayHello();
+			ManagedDialogHandler<DemoFXMLDialog> handler1 = JACPManagedDialog.getInstance().getManagedDialog(DemoFXMLDialog.class);
 			this.textField.setText(action.getLastMessage().toString());
 		}
 		return this.pane;
@@ -139,8 +146,8 @@ public class ComponentLeft extends AFXComponent {
 		AnchorPane.setTopAnchor(this.textField, 50.0);
 		AnchorPane.setRightAnchor(this.textField, 25.0);
 		AnchorPane.setLeftAnchor(this.textField, 25.0);
-
-		anchor.getChildren().addAll(heading, left, this.textField);
+		handler = JACPManagedDialog.getInstance().getManagedDialog(DemoDialog.class);
+		anchor.getChildren().addAll(heading, left, this.textField, handler.getDialogNode());
 
 		GridPane.setHgrow(anchor, Priority.ALWAYS);
 		GridPane.setVgrow(anchor, Priority.ALWAYS);
