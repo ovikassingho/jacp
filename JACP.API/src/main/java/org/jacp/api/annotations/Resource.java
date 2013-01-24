@@ -28,32 +28,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the meta attributes for a callback component.
+ * The Resource annotation allows to inject different resources in dialogs an
+ * components like a parent component, resource bundles and session context.
  * 
  * @author Andy Moncsek
  * 
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CallbackComponent {
+public @interface Resource {
 	/**
-	 * The components name.
+	 * Id of desired parent component id.
 	 * 
-	 * @return The component name.
+	 * @return The component Id
 	 */
-	String name();
-
-	/**
-	 * The component id.
-	 * 
-	 * @return The component Id.
-	 */
-	String id();
-
-	/**
-	 * The active state at start time.
-	 * 
-	 * @return True
-	 */
-	boolean active() default true;
+	String parentId() default "";
 }

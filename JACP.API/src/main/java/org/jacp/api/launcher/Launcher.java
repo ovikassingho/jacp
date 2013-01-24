@@ -1,6 +1,6 @@
 /************************************************************************
  * 
- * Copyright (C) 2010 - 2012
+ * Copyright (C) 2010 - 2013
  *
  * [Launcher.java]
  * AHCP Project (http://jacp.googlecode.com)
@@ -21,6 +21,8 @@
  *
  ************************************************************************/
 package org.jacp.api.launcher;
+
+import org.jacp.api.dialog.Scope;
 
 /**
  * Defines an interface for launchers witch is an abstraction used DI containers
@@ -44,4 +46,12 @@ public interface Launcher<E> {
 	 * @return the bean
 	 */
 	<P> P getBean(final Class<P> clazz);
+
+	/**
+	 * Registers a Class in context and returns a managed bean.
+	 * 
+	 * @param type
+	 * @return
+	 */
+	<T> T registerAndGetBean(final Class<? extends T> type, final String id, final Scope scope);
 }

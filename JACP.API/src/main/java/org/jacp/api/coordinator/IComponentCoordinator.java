@@ -25,7 +25,6 @@ package org.jacp.api.coordinator;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IDelegateDTO;
-import org.jacp.api.component.ISubComponent;
 
 /**
  * Notifies the components included in perspective.
@@ -40,20 +39,6 @@ import org.jacp.api.component.ISubComponent;
  * @author Andy Moncsek
  */
 public interface IComponentCoordinator<L, A, M> extends ICoordinator<L, A, M> {
-
-	/**
-	 * Add the component to observe.
-	 * 
-	 * @param component
-	 */
-	void addComponent(final ISubComponent<L, A, M> component);
-
-	/**
-	 * Remove component; e.g. when component is deactivated.
-	 * 
-	 * @param component
-	 */
-	void removeComponent(final ISubComponent<L, A, M> component);
 
 	/**
 	 * set delegate queue

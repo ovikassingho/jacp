@@ -1,3 +1,5 @@
+24. Jan. 2013 - amo - changed version to 1.2 and update to java 7
+24. Jan. 2013 - amo - add new Annotations (@Dialog, @Resource); add new package and define Scope enum, add new method to Launcher (registerAndGetBean) to register beans dynamically
 12. Sep. 2012 - amo - Reduced IAction interface to ensure thread safety
 26. Jun. 2012 - amo - update getActionListener to support target id and message
 30. Mai. 2012 - amo - added resourceBundle and locale interfaces to declarative components
