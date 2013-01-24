@@ -1,6 +1,6 @@
 /************************************************************************
  * 
- * Copyright (C) 2010 - 2012
+ * Copyright (C) 2010 - 2013
  *
  * [JACPDialogUtil.java]
  * AHCP Project (http://jacp.googlecode.com)
@@ -23,12 +23,13 @@
 package org.jacp.javafx.rcp.controls.optionPane;
 
 /**
- * The Class JACPDialogUtil.
+ * The Class JACPDialogUtil, contains methods to create Options panes and
+ * managed dialogs.
  * 
- * @author Patrick Symmangk
+ * @author Patrick Symmangk, Andy Moncsek
  * 
  */
-public class JACPDialogUtil {
+public final class JACPDialogUtil {
 
 	/**
 	 * Creates the option pane.
