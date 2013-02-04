@@ -33,12 +33,6 @@ public class CSSUtil {
         static final String CLASS_JACP_TOOL_BAR             = "jacp-tool-bar";
         static final String CLASS_JACP_BUTTON_BAR           = "jacp-button-bars";
         
-        // BIS
-        static final String CLASS_BIS_IMAGE_SECTION         = "ic-bis-image-section";
-        static final String CLASS_BIS_PRODUCT_SECTION       = "ic-bis-product-section";
-        static final String CLASS_BIS_PRODUCT_ITEM          = "ic-bis-product-item";
-        static final String CLASS_BIS_IMAGE_TOOLBAR         = "ic-bis-image-toolbar";
-
         // IDS
         static final String ID_WINDOW_MIN                   = "window-min";
         static final String ID_WINDOW_MAX                   = "window-max";
