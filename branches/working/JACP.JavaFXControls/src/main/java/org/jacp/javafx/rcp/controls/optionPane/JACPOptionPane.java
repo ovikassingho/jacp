@@ -38,6 +38,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
@@ -239,7 +240,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		but.setId(button.getLabel().toLowerCase() + "Button");
 		but.setMinWidth(JACPOptionPane.BUTTON_SIZE);
 		but.setPrefWidth(JACPOptionPane.BUTTON_SIZE);
-		 but.setOnMouseClicked(this);
+		but.setOnMouseClicked(this);
 		HBox.setMargin(but, new Insets(0, 8, 0, 0));
 		if (this.defaultButton != null
 				&& button.getId() == this.defaultButton.getId()) {

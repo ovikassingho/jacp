@@ -201,7 +201,7 @@
 	-fx-background-color: rgba(255,0,0,0.5);
 }
 
-#jacp-option-pane-close{
+.jacp-option-pane-close{
 	-fx-border-radius: 10;
 }
 
@@ -356,7 +356,7 @@
 	-fx-background-color: rgba(0,0,0,0.5);
 }
 
-.jacp-option-pane-explanation{
+.jacp-option-pane-message{
 	-fx-fill: white;
 }
 	
@@ -428,7 +428,7 @@
  * 
  *********************/
 
-#jacp-option-pane-close {
+.jacp-option-pane-close {
     -fx-font-size: 1px;
     -fx-text-fill: transparent;
     -fx-background-color: null;
@@ -436,14 +436,14 @@
 }
 
 
-#jacp-option-pane-close {
+.jacp-option-pane-close {
 	-fx-background-image: url("images/op-close.png");
 }
 
-#jacp-option-pane-close:hover {
+.jacp-option-pane-close:hover {
     -fx-background-image: url("images/op-close-over.png");
 }
-#jacp-option-pane-close:armed {
+.jacp-option-pane-close:armed {
     -fx-background-image: url("images/op-close-armed.png");
 }
 
