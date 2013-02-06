@@ -159,9 +159,9 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 			final Map<String, Node> targetComponents,
 			final FXComponentLayout layout, final Node handleReturnValue,
 			final Node previousContainer, final String currentTaget) {
+		this.executeComponentViewPostHandle(handleReturnValue, component,
+				action);
 		if (previousContainer != null) {
-			this.executeComponentViewPostHandle(handleReturnValue, component,
-					action);
 			// check again if component was set to inactive (in postHandle), if
 			// so remove
 			if (component.isActive()) {
