@@ -27,6 +27,9 @@ import javafx.event.EventHandler;
 
 /**
  * The Class JACPOptionPaneBuilder.
+ * 
+ * @author Patrick Symmangk
+ *
  */
 public class JACPOptionPaneBuilder {
 
@@ -42,14 +45,17 @@ public class JACPOptionPaneBuilder {
 	/** The on no action. */
 	private EventHandler<ActionEvent> onNoAction;
 
+	/** The default button. */
+	private JACPDialogButton defaultButton;
+
 	/** The title. */
 	private String title;
 
 	/** The content. */
 	private String content;
+	
+	private boolean autoHide;
 
-	/** The default button. */
-	private JACPDialogButton defaultButton;
 
 	/**
 	 * Gets the on ok action.
@@ -203,29 +209,39 @@ public class JACPOptionPaneBuilder {
 		return this;
 	}
 
-	/**
-	 * Builds the.
-	 * 
-	 * @return the jACP option pane
-	 */
-	public JACPOptionPane build() {
-		// build OptionPane!
-		final JACPOptionPane pane = JACPDialogUtil.createOptionPane(
-				this.getTitle(), this.getContent());
-		if (this.getOnCancelAction() != null) {
-			pane.setOnCancelAction(this.getOnCancelAction());
-		}
-		if (this.getOnOkAction() != null) {
-			pane.setOnOkAction(this.getOnOkAction());
-		}
-		if (this.getOnYesAction() != null) {
-			pane.setOnYesAction(this.getOnYesAction());
-		}
-		if (this.getOnNoAction() != null) {
-			pane.setOnNoAction(this.getOnNoAction());
-		}
-		pane.setDefaultButton(this.getDefaultButton());
-		return pane;
-	}
 
+    private boolean isAutoHide() {
+        return autoHide;
+    }
+
+    public JACPOptionPaneBuilder setAutoHide(boolean autoHide) {
+        this.autoHide = autoHide;
+        return this;
+    }
+
+    /**
+     * Builds the.
+     * 
+     * @return the jACP option pane
+     */
+    public JACPOptionPane build() {
+        // build OptionPane!
+        final JACPOptionPane pane = JACPDialogUtil.createOptionPane(
+                this.getTitle(), this.getContent());
+        if (this.getOnCancelAction() != null) {
+            pane.setOnCancelAction(this.getOnCancelAction());
+        }
+        if (this.getOnOkAction() != null) {
+            pane.setOnOkAction(this.getOnOkAction());
+        }
+        if (this.getOnYesAction() != null) {
+            pane.setOnYesAction(this.getOnYesAction());
+        }
+        if (this.getOnNoAction() != null) {
+            pane.setOnNoAction(this.getOnNoAction());
+        }
+        pane.setDefaultButton(this.getDefaultButton());
+        pane.setAutoHide(this.isAutoHide());
+        return pane;
+    }
 }

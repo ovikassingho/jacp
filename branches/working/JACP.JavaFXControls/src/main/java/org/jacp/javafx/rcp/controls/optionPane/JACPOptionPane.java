@@ -1,6 +1,6 @@
 /************************************************************************
  * 
- * Copyright (C) 2010 - 2012
+ * Copyright (C) 2010 - 2013
  *
  * [JACPOptionPane.java]
  * AHCP Project (http://jacp.googlecode.com)
@@ -48,7 +48,7 @@ import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
  * 
  * @author Patrick Symmangk
  */
-public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
+public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 
 	/** Drag offsets for window dragging. */
 	private final String message;
@@ -88,6 +88,9 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 
 	/** The top box. */
 	private HBox topBox;
+	
+	/** The auto hide. */
+	private boolean autoHide = true;
 
 	/**
 	 * Instantiates a new jAC poption dialog v2.
@@ -102,6 +105,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		this.title = title;
 		this.initDialog();
 	}
+	
 
 	/**
 	 * Inits the dialog.
@@ -132,7 +136,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		// topBox.setAlignment(Pos.TOP_RIGHT);
 		this.topBox.setAlignment(Pos.TOP_LEFT);
 		final Button defaultClose = new Button("x");
-		 defaultClose.setOnMouseClicked(this);
+		defaultClose.setOnAction(this);
 		this.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
 		defaultClose.getStyleClass().add("jacp-option-pane-close");
 		this.setDefaultCloseButtonVisible(false);
@@ -224,7 +228,7 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	private void setAction(final Button button,
 			final EventHandler<ActionEvent> handler) {
 		if (button != null) {
-			button.setOnAction(handler);
+			button.addEventHandler(ActionEvent.ACTION, handler);
 		}
 	}
 
@@ -240,12 +244,16 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		but.setId(button.getLabel().toLowerCase() + "Button");
 		but.setMinWidth(JACPOptionPane.BUTTON_SIZE);
 		but.setPrefWidth(JACPOptionPane.BUTTON_SIZE);
-		but.setOnMouseClicked(this);
+		if(autoHide)
+		{
+		    but.addEventHandler(ActionEvent.ACTION, this);
+		}
 		HBox.setMargin(but, new Insets(0, 8, 0, 0));
 		if (this.defaultButton != null
-				&& button.getId() == this.defaultButton.getId()) {
+				&& button.getId() == this.defaultButton.getId()) 
+		{
 			but.setDefaultButton(true);
-			but.requestFocus();
+			but.requestFocus(); 
 		}
 		this.bottomBar.getChildren().add(but);
 		this.buttons.add(but);
@@ -259,7 +267,8 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	* @see javafx.event.EventHandler#handle(javafx.event.Event)
 	*/
 	@Override
-	public void handle(final MouseEvent arg0) {
+	public void handle(final ActionEvent actionEvent) {
+	    System.out.println("AUTO HIDE");
 		JACPModalDialog.getInstance().hideModalMessage();
 	}
 
@@ -276,7 +285,23 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 	public void setDefaultCloseButtonVisible(final boolean visible) {
 		this.topBox.setVisible(visible);
 	}
+	
+	/**
+	 * Sets the auto hide.
+	 * if autohide is set to true, the dialog will hide automatically if a button was pressed.
+	 *
+	 * @param autoHide the new auto hide
+	 */
+	public void setAutoHide(boolean autoHide) {
+	    this.autoHide = autoHide;
+	}
 
+	/**
+	 * Sets the default button.
+	 * The highlight button.
+	 *
+	 * @param defaultButton the new default button
+	 */
 	public void setDefaultButton(final JACPDialogButton defaultButton) {
 		this.defaultButton = defaultButton;
 		for (final Button but : this.buttons) {
@@ -290,4 +315,6 @@ public class JACPOptionPane extends VBox implements EventHandler<MouseEvent> {
 		}
 
 	}
+
+
 }
