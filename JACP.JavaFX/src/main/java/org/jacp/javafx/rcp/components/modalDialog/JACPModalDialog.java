@@ -22,9 +22,11 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.components.modalDialog;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.TimelineBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,105 +44,108 @@ import javafx.util.Duration;
  */
 public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
-	/** The maximum blur radius. */
-	private final double MAX_BLUR = 4.0;
+    /** The maximum blur radius. */
+    private final double MAX_BLUR = 4.0;
 
-	/** The root. */
-	private static Node root;
+    /** The root. */
+    private static Node root;
 
-	/** The instance. */
-	private static JACPModalDialog instance;
+    /** The instance. */
+    private static JACPModalDialog instance;
 
-	/**
-	 * Gets the single instance of JACPModalDialog.
-	 * 
-	 * @return single instance of JACPModalDialog
-	 */
-	public static JACPModalDialog getInstance() {
+    private Timeline hideTimeline;
+    private Timeline showTimeline;
 
-		if (JACPModalDialog.instance == null) {
-			throw new DialogNotInitializedException();
-		}
-		return JACPModalDialog.instance;
-	}
+    /**
+     * Gets the single instance of JACPModalDialog.
+     * 
+     * @return single instance of JACPModalDialog
+     */
+    public static JACPModalDialog getInstance() {
 
-	/**
-	 * Inits the dialog.
-	 * 
-	 * @param rootNode
-	 *            the root node
-	 */
-	public synchronized static void initDialog(final Node rootNode) {
-		if (JACPModalDialog.instance == null) {
-			JACPModalDialog.root = rootNode;
-			JACPModalDialog.instance = new JACPModalDialog();
-			JACPModalDialog.instance.setId("error-dimmer");
-			final Button test = new Button("close");
-			test.setOnAction(new EventHandler<ActionEvent>() {
+        if (JACPModalDialog.instance == null) {
+            throw new DialogNotInitializedException();
+        }
+        return JACPModalDialog.instance;
+    }
 
-				@Override
-				public void handle(final ActionEvent arg0) {
-					final GaussianBlur blur = (GaussianBlur) rootNode
-							.getEffect();
-					blur.setRadius(0.0);
-					JACPModalDialog.instance.setVisible(false);
-				}
+    /**
+     * Inits the dialog.
+     * 
+     * @param rootNode
+     *            the root node
+     */
+    public synchronized static void initDialog(final Node rootNode) {
+        if (JACPModalDialog.instance == null) {
+            JACPModalDialog.root = rootNode;
+            JACPModalDialog.instance = new JACPModalDialog();
+            JACPModalDialog.instance.setId("error-dimmer");
+            final Button test = new Button("close");
+            test.setOnAction(new EventHandler<ActionEvent>() {
 
-			});
-		}
+                @Override
+                public void handle(final ActionEvent arg0) {
+                    final GaussianBlur blur = (GaussianBlur) rootNode.getEffect();
+                    blur.setRadius(0.0);
+                    JACPModalDialog.instance.setVisible(false);
+                }
 
-	}
+            });
+        }
 
-	/**
-	 * Show modal message.
-	 * 
-	 * @param message
-	 *            the message
-	 */
-	public void showModalMessage(final Node message) {
-		this.getChildren().clear();
-		this.getChildren().add(message);
-		this.setOpacity(0);
-		this.setVisible(true);
-		this.setCache(true);
-		((GaussianBlur) JACPModalDialog.root.getEffect())
-				.setRadius(this.MAX_BLUR);
-		TimelineBuilder
-				.create()
-				.keyFrames(
-						new KeyFrame(Duration.millis(250),
-								new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(final ActionEvent t) {
-										JACPModalDialog.this.setCache(false);
-									}
-								}, new KeyValue(this.opacityProperty(), 1,
-										Interpolator.EASE_BOTH))).build()
-				.play();
-	}
+    }
 
-	/**
-	 * Hide any modal message that is shown.
-	 */
-	@Override
-	public void hideModalMessage() {
-		this.setCache(true);
-		TimelineBuilder
-				.create()
-				.keyFrames(
-						new KeyFrame(Duration.millis(250),
-								new EventHandler<ActionEvent>() {
-									@Override
-									public void handle(final ActionEvent t) {
-										JACPModalDialog.this.setCache(false);
-										JACPModalDialog.this.setVisible(false);
-										JACPModalDialog.this.getChildren()
-												.clear();
-									}
-								}, new KeyValue(this.opacityProperty(), 0,
-										Interpolator.EASE_BOTH))).build()
-				.play();
-		((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(0.0);
-	}
+    /**
+     * Show modal message.
+     * 
+     * @param message
+     *            the message
+     */
+    public void showModalMessage(final Node message) {
+        System.out.println("SHOW");
+        if (getHideTimeline().getStatus() == Status.RUNNING) {
+            getHideTimeline().stop();
+        }
+        this.getChildren().clear();
+        this.getChildren().add(message);
+        this.setOpacity(0);
+        this.setVisible(true);
+        this.setCache(true);
+        ((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(this.MAX_BLUR);
+
+        getShowTimeline().play();
+    }
+
+    /**
+     * Hide any modal message that is shown.
+     */
+    @Override
+    public void hideModalMessage() {
+        System.out.println("HIDE");
+        this.setCache(true);
+        getHideTimeline().play();
+        ((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(0.0);
+    }
+
+    private Timeline getHideTimeline() {
+        hideTimeline = (hideTimeline == null) ? TimelineBuilder.create().keyFrames(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent t) {
+                JACPModalDialog.this.setCache(false);
+                JACPModalDialog.this.setVisible(false);
+            }
+        }, new KeyValue(this.opacityProperty(), 0, Interpolator.EASE_BOTH))).build() : hideTimeline;
+        return hideTimeline;
+    }
+
+    private Timeline getShowTimeline() {
+        showTimeline = (showTimeline == null) ? TimelineBuilder.create().keyFrames(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent t) {
+                JACPModalDialog.this.setCache(false);
+            }
+        }, new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH))).build() : showTimeline;
+        return showTimeline;
+    }
 
 }
