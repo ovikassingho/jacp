@@ -122,7 +122,7 @@ public class FXPerspectiveHandler
 	 * @param layout
 	 * @param component
 	 */
-	private final void executeComponentReplaceThread(
+	private void executeComponentReplaceThread(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action, final FXComponentLayout layout) {
@@ -142,8 +142,7 @@ public class FXPerspectiveHandler
 			this.log("CREATE NEW THREAD:::" + component.getName());
 			this.runStateComponent(action,
 					((AStatefulCallbackComponent) component));
-			return;
-		} 
+        }
 		
 
 	}
@@ -222,8 +221,7 @@ public class FXPerspectiveHandler
 					+ component.getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
-			return;
-		}// else if END
+        }// else if END
 
 	}
 	
@@ -234,7 +232,7 @@ public class FXPerspectiveHandler
 	 * @param component
 	 * @param action
 	 */
-	private final void putMessageToQueue(
+	private void putMessageToQueue(
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action) {
 		component.putIncomingMessage(action);
