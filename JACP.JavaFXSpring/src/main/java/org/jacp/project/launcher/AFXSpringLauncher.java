@@ -21,8 +21,7 @@ import javafx.stage.Stage;
  * 
  */
 public abstract class AFXSpringLauncher extends Application {
-	private Launcher<ClassPathXmlApplicationContext> launcher = null;
-	private final String springXML;
+    private final String springXML;
 	private final String workbenchName;
 	/**
 	 * default constructor; add reference to valid spring.xml
@@ -41,12 +40,12 @@ public abstract class AFXSpringLauncher extends Application {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage stage) throws Exception {
-		this.launcher = new SpringLauncher(this.springXML);
-		final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench = (IWorkbench<Node, EventHandler<Event>, Event, Object>) this.launcher
+        Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(this.springXML);
+		final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench = (IWorkbench<Node, EventHandler<Event>, Event, Object>) launcher
 				.getContext().getBean(
 						this.workbenchName != null ? this.workbenchName
 								: "workbench");
-		workbench.init(this.launcher);
+		workbench.init(launcher);
 		((AFXWorkbench) workbench).start(stage);
 		postInit(stage);
 
