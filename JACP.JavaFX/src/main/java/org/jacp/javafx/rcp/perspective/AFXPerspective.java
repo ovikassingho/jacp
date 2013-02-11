@@ -171,8 +171,7 @@ public abstract class AFXPerspective extends AComponent implements
 					declarativeComponent.name());
 			handleDeclarativeComponentAnnotations(declarativeComponent, (AFXComponent) component);
 			this.log("register component with annotations : " + declarativeComponent.id());
-			return;
-		}
+        }
 
 	}
 	

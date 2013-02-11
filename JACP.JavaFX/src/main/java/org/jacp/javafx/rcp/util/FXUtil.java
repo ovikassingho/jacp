@@ -294,13 +294,10 @@ public class FXUtil {
 	 * @param targetId
 	 * @return
 	 */
-	private final static boolean isFullValidId(final String[] targetId) {
-		if (targetId != null && targetId.length == 2) {
-			return true;
-		}
+	private static boolean isFullValidId(final String[] targetId) {
+        return targetId != null && targetId.length == 2;
 
-		return false;
-	}
+    }
 
 	/**
 	 * returns the message target perspective id
