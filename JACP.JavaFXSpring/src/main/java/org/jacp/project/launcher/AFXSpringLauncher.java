@@ -27,7 +27,7 @@ public abstract class AFXSpringLauncher extends Application {
 	 * default constructor; add reference to valid spring.xml
 	 * @param springXML
 	 */
-	public AFXSpringLauncher(final String springXML) {
+    protected AFXSpringLauncher(final String springXML) {
 		this.springXML = springXML;
 		this.workbenchName = null;
 	}
@@ -51,6 +51,6 @@ public abstract class AFXSpringLauncher extends Application {
 
 	}
 
-	public abstract void postInit(Stage stage);
+	protected abstract void postInit(Stage stage);
 
 }
