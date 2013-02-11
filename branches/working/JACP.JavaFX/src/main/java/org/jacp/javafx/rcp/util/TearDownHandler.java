@@ -22,10 +22,7 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -110,10 +107,7 @@ public class TearDownHandler {
 	public final static void handleAsyncTearDown(
 			ICallbackComponent<EventHandler<Event>, Event, Object>... components) {
 		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
-		for (final ICallbackComponent<EventHandler<Event>, Event, Object> component : components) {
-			handleAsync.add(component);
-		}
-
+        Collections.addAll(handleAsync, components);
 		handleAsyncTearDown(handleAsync);
 	}
 

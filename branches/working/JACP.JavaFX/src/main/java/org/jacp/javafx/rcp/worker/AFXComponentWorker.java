@@ -75,8 +75,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param id
 	 * @return
 	 */
-	protected final Node getValidContainerById(
-			final Map<String, Node> targetComponents, final String id) {
+	final Node getValidContainerById(
+            final Map<String, Node> targetComponents, final String id) {
 		return targetComponents.get(id);
 	}
 
@@ -87,7 +87,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param layout
 	 * @param editor
 	 */
-	protected final void addComponentByType(
+	final void addComponentByType(
 			final Node validContainer,
 			final UIComponent<Node, EventHandler<Event>, Event, Object> component) {
 		this.handleAdd(validContainer, component.getRoot(), component.getName());
@@ -119,7 +119,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentContainer
 	 */
-	protected final void handleOldComponentRemove(final Node parent,
+	final void handleOldComponentRemove(final Node parent,
 			final Node currentContainer) {
 		this.handleViewState(currentContainer, false);
 		final ObservableList<Node> children = FXUtil.getChildren(parent);
@@ -132,7 +132,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param uiComponent
 	 * @param state
 	 */
-	protected final void handleViewState(final Node uiComponent,
+	final void handleViewState(final Node uiComponent,
 			final boolean state) {
 		uiComponent.setVisible(state);
 		uiComponent.setDisable(!state);
@@ -145,10 +145,10 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param targetId
 	 * @param value
 	 */
-	protected void delegateReturnValue(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
-			final String targetId, final Object value,
-			final IAction<Event, Object> myAction) {
+    void delegateReturnValue(
+            final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+            final String targetId, final Object value,
+            final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null
 				&& !myAction.getLastMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
@@ -206,10 +206,10 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param targetComponents
 	 */
-	protected void handleTargetChange(
-			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
-			final Map<String, Node> targetComponents, final String target) {
+    void handleTargetChange(
+            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+            final Map<String, Node> targetComponents, final String target) {
 		final Node validContainer = this.getValidContainerById(
 				targetComponents, target);
 		if (validContainer != null) {
@@ -244,10 +244,10 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param target
 	 * @param layout
 	 */
-	protected void handlePerspectiveChange(
-			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout) {
+    void handlePerspectiveChange(
+            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final FXComponentLayout layout) {
 		if (component instanceof AFXComponent) {
 			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component,
 					layout);
@@ -281,9 +281,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param action
 	 * @return
 	 */
-	protected final Node prepareAndRunHandleMethod(
-			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action) {
+	final Node prepareAndRunHandleMethod(
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final IAction<Event, Object> action) {
 		return component.handle(action);
 
 	}
@@ -320,8 +320,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected void runCallbackOnStartMethods(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+    void runCallbackOnStartMethods(
+            final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		if (!component.isStarted())
 			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component);
 	}
@@ -343,8 +343,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected void runCallbackOnTeardownMethods(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+    void runCallbackOnTeardownMethods(
+            final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 
 		// turn off component
 		if (!component.isActive()) {
@@ -370,7 +370,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param runnable
 	 * @throws InterruptedException
 	 */
-	protected void invokeOnFXThreadAndWait(final Runnable runnable)
+    void invokeOnFXThreadAndWait(final Runnable runnable)
 			throws InterruptedException {
 		final Lock lock = new ReentrantLock();
 		final Condition condition = lock.newCondition();

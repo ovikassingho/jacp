@@ -76,7 +76,7 @@ public abstract class AFXPerspective extends AComponent implements
 	private UIType type = UIType.PROGRAMMATIC;	
 	private String localeID="";	
 	private String resourceBundleLocation="";
-	private Object lock= new Object();
+	private final Object lock= new Object();
 
 	@Override
 	public final void init(
@@ -117,8 +117,8 @@ public abstract class AFXPerspective extends AComponent implements
 	 * @param action ; the action triggering the method
 	 * @param perspectiveLayout ,  the layout handler defining the perspective
 	 */
-	public abstract void handlePerspective(IAction<Event, Object> action,
-			final PerspectiveLayout perspectiveLayout);
+	protected abstract void handlePerspective(IAction<Event, Object> action,
+                                              final PerspectiveLayout perspectiveLayout);
 
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action) {

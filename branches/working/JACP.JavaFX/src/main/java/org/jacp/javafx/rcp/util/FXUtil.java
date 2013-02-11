@@ -76,7 +76,7 @@ public class FXUtil {
 	 * 
 	 */
 	public static class MessageUtil {
-		public static String INIT = "init";
+		public static final String INIT = "init";
 	}
 
 	/**

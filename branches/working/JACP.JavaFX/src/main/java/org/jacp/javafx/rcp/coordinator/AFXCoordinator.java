@@ -47,7 +47,7 @@ public abstract class AFXCoordinator extends Thread implements
 	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<IAction<Event, Object>>(
 			100000);
 
-	public AFXCoordinator(String name) {
+	AFXCoordinator(String name) {
 		super(name);
 		ShutdownThreadsHandler.registerThread(this);
 	}
@@ -57,7 +57,7 @@ public abstract class AFXCoordinator extends Thread implements
 		while (!Thread.interrupted()) {
 			this.log(" observer thread size" + this.messages.size());
 
-			IAction<Event, Object> action = null;
+			IAction<Event, Object> action;
 			try {
 				action = this.messages.take();
 			} catch (final InterruptedException e) {
@@ -93,7 +93,7 @@ public abstract class AFXCoordinator extends Thread implements
 		return this.messages;
 	}
 
-	protected void log(final String message) {
+	void log(final String message) {
 		this.logger.fine(message);
 	}
 }
