@@ -55,7 +55,7 @@ public class CSSUtil {
      * @param color the color
      */
     public static void setBackgroundColor(Node node, String color) {
-        node.setStyle("-fx-background-color:" + color);
+        node.setStyle("-fx-background-color:" + color +";");
     }
 
     /**
