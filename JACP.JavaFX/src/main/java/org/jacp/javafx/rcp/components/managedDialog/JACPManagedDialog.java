@@ -24,7 +24,9 @@ package org.jacp.javafx.rcp.components.managedDialog;
 
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -60,6 +62,10 @@ public class JACPManagedDialog {
 	 * The running instance.
 	 */
 	private static JACPManagedDialog instance;
+    /**
+     * the singleton scoped dialogs cache
+     */
+    private static Map<String,ManagedDialogHandler<?>> cache = new ConcurrentHashMap<>();
 
 	/**
 	 * initialize the JACPManaged dialog.
@@ -98,6 +104,8 @@ public class JACPManagedDialog {
 		if (dialogAnnotation == null)
 			throw new ManagedDialogAnnotationMissingException();
 		final String id = dialogAnnotation.id();
+        final ManagedDialogHandler<T> dialogFromCache = getDialogfromCache(id);
+        if(dialogFromCache!=null) return dialogFromCache;
 		final Scope scope = dialogAnnotation.scope();
 		final T bean = launcher.registerAndGetBean(type, id, scope);
 		final String resourceBundleLocation = dialogAnnotation
@@ -114,10 +122,36 @@ public class JACPManagedDialog {
 		if (bean instanceof Node)
 			return new ManagedDialogHandler<T>(bean, (Node) bean, id);
 
-		return createFXMLDialog(dialogAnnotation, id, scope, bean, bundle);
+		return putDialogToCache(id, scope, createFXMLDialog(dialogAnnotation, id, scope, bean, bundle));
 
 	}
+    private <T> ManagedDialogHandler<T> getDialogfromCache(final String id){
+         if(cache.containsKey(id))return (ManagedDialogHandler<T>)cache.get(id);
+        return null;
+    }
 
+    /**
+     * puts a singleton dialog instance to cache
+     * @param id
+     * @param scope
+     * @param handler
+     * @param <T>
+     */
+    private <T> ManagedDialogHandler<T> putDialogToCache(final String id, final Scope scope,final ManagedDialogHandler<T> handler ) {
+             if(scope.equals(Scope.SINGLETON) && !cache.containsKey(id)) cache.put(id, handler);
+        return handler;
+    }
+
+    /**
+     * create the root node from FXML
+     * @param dialogAnnotation
+     * @param id
+     * @param scope
+     * @param bean
+     * @param bundle
+     * @param <T>
+     * @return
+     */
 	private <T> ManagedDialogHandler<T> createFXMLDialog(
 			final Dialog dialogAnnotation, final String id, final Scope scope,
 			final T bean, final ResourceBundle bundle) {
@@ -129,6 +163,16 @@ public class JACPManagedDialog {
 				FXUtil.loadFXMLandSetController(bean, bundle, url), id);
 	}
 
+    /**
+     * checks and handles all annotations
+     * @param bean
+     * @param bundle
+     * @param callerClassName
+     * @param <T>
+     * @throws IllegalArgumentException
+     * @throws IllegalAccessException
+     * @throws ClassNotFoundException
+     */
 	private <T> void checkMemberAnnotations(final T bean,
 			final ResourceBundle bundle, final String callerClassName)
 			throws IllegalArgumentException, IllegalAccessException,

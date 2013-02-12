@@ -1,7 +1,8 @@
+12. Feb. 2013 - amo - JACPManagedDialog: add cache for singleton dialogs
 06. Feb. 2013 - amo -  FXComponentReplaceWorker: execute this.executeComponentViewPostHandle before parentComponentCheck
 24. Jan. 2013 - amo -  JACPManagedDialog: add managed dialog class to create managed, fxml/javafx components and have access to di container
 24. Jan. 2013 - amo -  FXComponentCoordinator: removed component list and replaced calls with calls to registry
-24. Jan. 2013 - amo -  Add ComponentRegestry to have a centrl repo to ret references to components
+24. Jan. 2013 - amo -  Add ComponentRegestry to have a central repo to ret references to components
 09. Jan. 2013 - amo -  ShutdownThreadsHandler: add APPLICATION_RUNNING flag
 09. Jan. 2013 - amo -  ASubComponent: mutex removed
 09. Jan. 2013 - amo -  FXComponentReplaceWorker: removed "synchronized" on component, removed global locking, use invokeOnFXThreadAndWait instead
