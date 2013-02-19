@@ -37,11 +37,13 @@
 
 == Version 1.2 (April. 2013) ==
  * overall performance optimizations
+
+=== Fixed Bugs ===
  * fix bug with incorrect {{{@OnStartup}}} and {{{@OnTearDown}}} in nun UI components -- DONE
  * fix bug with incorrect application close when messages in queue -- DONE
- * FXComponentReplaceWorker, Active(false) was only evaluated in handle method but never in postHandle method
- * TearDownHandler, update to support teardown of StatelessComponent instances
- *  AFXComponentWorker: removed global lockQueue and add invokeOnFXThreadAndWait method, removed lock and release methods
+ * {{{FXComponentReplaceWorker}}}, Active(false) was only evaluated in handle method but never in postHandle method
+ * {{{TearDownHandler}}}, update to support teardown of {{{StatelessComponent}}} instances
+ *  {{{AFXComponentWorker}}}: removed global lockQueue and add {{{invokeOnFXThreadAndWait}}} method, removed lock and release methods
 
 
 == Version 2 (September. 2013) ==
