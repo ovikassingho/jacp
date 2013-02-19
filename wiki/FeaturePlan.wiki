@@ -37,6 +37,7 @@
 
 == Version 1.2 (April. 2013) ==
  * overall performance optimizations
+ * {{{fx:controller}}} definition in fxml is obsolete now
 
 === Fixed Bugs ===
  * fix bug with incorrect {{{@OnStartup}}} and {{{@OnTearDown}}} in non UI components -- DONE
