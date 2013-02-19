@@ -4,7 +4,7 @@
 
   <groupId>org.jacp</groupId>
   <artifactId>JacpFX-quickstart-archetype</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <packaging>maven-archetype</packaging>
 
   <name>JacpFX-quickstart-archetype</name>
