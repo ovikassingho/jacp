@@ -31,6 +31,8 @@ import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.api.annotations.OnStart;
+import org.jacp.api.annotations.OnTearDown;
 import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import ${package}.spring.services.SimpleSpringBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,16 @@ public class StatefulCallback extends AStatefulCallbackComponent {
 	public Object handleAction(final IAction<Event, Object> arg0) {
 		this.log.info(arg0.getLastMessage().toString());
 		return "StatefulCallback - "+simpleSpringBean.sayHello();
+	}
+	
+	@OnStart
+	public void init() {
+		this.log.info("StatefulCallback start");
+	}
+	
+	@OnTearDown
+	public void cleanup(){
+		this.log.info("StatefulCallback stop");
 	}
 
 }

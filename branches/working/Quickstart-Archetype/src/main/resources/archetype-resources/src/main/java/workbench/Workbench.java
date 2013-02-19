@@ -48,6 +48,7 @@ import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+
 import ${package}.main.ApplicationLauncher;
 
 /**
