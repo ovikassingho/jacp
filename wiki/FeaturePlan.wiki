@@ -1,6 +1,6 @@
 #labels Featured,releaseplan
 #Features planned for a first alpha release
-
+<wiki:toc max_depth="3" />
 = Release/Feature plan =
 
 == Version 1.0 (Feb. 2012) ==
