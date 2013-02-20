@@ -23,7 +23,12 @@
 package org.jacp.javafx.rcp.util;
 
 import javafx.scene.Node;
-
+/**
+ * The Class CSSUtil.
+ *
+ * @author Patrick Symmangk
+ *
+ */
 public class CSSUtil {
 
     public interface CSSConstants {
@@ -62,7 +67,7 @@ public class CSSUtil {
      * Sets the background color to one ore more nodes.
      *
      * @param color the color
-     * @param node the node
+     * @param nodes the nodes
      */
     public static void setBackgroundColors(String color, Node... nodes) {
         for (final Node node : nodes) {

@@ -1,4 +1,3 @@
-24. 
 10. Apr. 2012 - amo -  OnStart annotation on Perspective level implemented... TODO: implement on Teardown in FXWorkbenchHandler !!
 10. Apr. 2012 - amo -  OnStart and OnTeardown annotations for Components implemented AFXComponent do not extend IEXtended component anymore (no need to implement onStart/OnTeardown) instead annotate methods 
 09. Apr. 2012 - amo -  add annotation handling in workbench for perspectives

@@ -93,7 +93,7 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	private boolean autoHide = true;
 
 	/**
-	 * Instantiates a new jAC poption dialog v2.
+	 * Instantiates a new JACP option dialog v2.
 	 * 
 	 * @param title
 	 *            the title
@@ -268,7 +268,6 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	*/
 	@Override
 	public void handle(final ActionEvent actionEvent) {
-	    System.out.println("AUTO HIDE");
 		JACPModalDialog.getInstance().hideModalMessage();
 	}
 

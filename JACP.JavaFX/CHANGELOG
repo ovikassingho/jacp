@@ -1,5 +1,7 @@
-12. Feb. 2013 - amo - JACPManagedDialog: add cache for singleton dialogs
+12. Feb. 2013 - amo -  JACPManagedDialog: add cache for singleton dialogs
+09. Feb  2013 - pete - JACPOptionPane: auto-hide not mandatory - available as option -> avoid disappearing dialogs, if they are chained
 06. Feb. 2013 - amo -  FXComponentReplaceWorker: execute this.executeComponentViewPostHandle before parentComponentCheck
+04. Feb. 2013 - pete - LayoutUtil: added some more util-functionalities to CSS- and LayoutUtil
 24. Jan. 2013 - amo -  JACPManagedDialog: add managed dialog class to create managed, fxml/javafx components and have access to di container
 24. Jan. 2013 - amo -  FXComponentCoordinator: removed component list and replaced calls with calls to registry
 24. Jan. 2013 - amo -  Add ComponentRegestry to have a central repo to ret references to components
