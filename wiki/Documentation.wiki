@@ -243,7 +243,7 @@ public class PerspectiveOne extends AFXPerspective {
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.perspective.AFXPerspective">
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml">
   <center>
     <SplitPane id="splitPaneHorizontal1" cache="true" dividerPositions="0.20" minHeight="100.0" minWidth="200.0" styleClass="hsplitpane">
       <items>
@@ -270,9 +270,6 @@ public class PerspectiveOne extends AFXPerspective {
 
 }}}
 
-
-=== The fx:controller declaration ===
-Since the fx:controller attribute is mandatory in combination with JavaFX controllers you simply define the abstract perspective class (org.jacp.javafx.rcp.perspective.AFXPerspective) or the concrete perspective where this FXML is associated. Generally you should prefer the abstract declaration, so you can reuse the FXML in other perspectives. 
 
 
 = Components = 
@@ -426,7 +423,7 @@ public class DemoFXMLComponentOne extends AFXComponent {
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" fx:controller="org.jacp.javafx.rcp.component.AFXComponent">
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml" >
   <center>
     <AnchorPane fx:id="details">
       <children>
