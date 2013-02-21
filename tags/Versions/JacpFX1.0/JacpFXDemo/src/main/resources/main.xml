@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="workbench" class="org.jacp.demo.workbench.ContactWorkbench">
+		<property name="perspectives">
+			<list>
+				<ref bean="contactPerspective" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="contactPerspective" class="org.jacp.demo.perspectives.ContactPerspective">
+		<property name="name" value="contactPerspective" />
+		<property name="id" value="id01" />
+		<property name="active" value="true" />
+		<property name="subcomponents">
+			<list>
+				<ref bean="contactTreeView" />
+				<ref bean="contactTableView" />
+				<ref bean="contactChartView" />
+				<ref bean="coordinatorCallback" />
+				<ref bean="creatorCallback" />
+				<ref bean="analyticsCallback" />
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent">
+		<property name="name" value="contactDemoTreeView" />
+		<property name="active" value="true" />
+		<property name="id" value="id001" />
+		<property name="executionTarget" value="PleftMenu" />
+	</bean>
+	<bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent">
+		<property name="name" value="contactDemoTableView" />
+		<property name="active" value="true" />
+		<property name="id" value="id002" />
+		<property name="executionTarget" value="PmainContentTop" />
+	</bean>
+	<bean id="contactChartView" class="org.jacp.demo.components.ContactChartViewComponent">
+		<property name="name" value="contactDemoChartView" />
+		<property name="active" value="true" />
+		<property name="id" value="id003" />
+		<property name="executionTarget" value="PmainContentBottom" />
+	</bean>
+	<bean id="coordinatorCallback" class="org.jacp.demo.callbacks.CoordinatorCallback" scope="prototype">
+		<property name="name" value="coordinatorCallback" />
+		<property name="active" value="true" />
+		<property name="id" value="id004" />
+	</bean>
+	<bean id="creatorCallback" class="org.jacp.demo.callbacks.CreatorCallback"
+		scope="prototype">
+		<property name="name" value="creatorCallback" />
+		<property name="active" value="true" />
+		<property name="id" value="id005" />
+	</bean>
+	<bean id="analyticsCallback" class="org.jacp.demo.callbacks.AnalyticsCallback">
+		<property name="name" value="analyticsCallback" />
+		<property name="active" value="true" />
+		<property name="id" value="id006" />
+	</bean>
+</beans>
