@@ -37,10 +37,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ToolBar;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -73,10 +70,7 @@ import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
 import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
-import org.jacp.javafx.rcp.util.CSSUtil;
-import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
-import org.jacp.javafx.rcp.util.TearDownHandler;
+import org.jacp.javafx.rcp.util.*;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -102,6 +96,7 @@ public abstract class AFXWorkbench
 	private GridPane root;
 	private BorderPane baseLayoutPane;
 	private StackPane absoluteRoot;
+	private GridPane base;
 	private Pane glassPane;
 	private JACPModalDialog dimmer;
 
@@ -257,7 +252,7 @@ public abstract class AFXWorkbench
 	/**
 	 * set meta attributes defined in annotations
 	 * 
-	 * @param component
+	 * @param perspective
 	 */
 	private void handleMetaAnnotation(
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
@@ -359,7 +354,8 @@ public abstract class AFXWorkbench
 	// TODO: handle the custom decorator
 	private void setBasicLayout(final Stage stage) {
 		// the top most pane is a Stackpane
-		this.absoluteRoot = new StackPane();
+        this.base           = new GridPane();
+		this.absoluteRoot   = new StackPane();
 		this.baseLayoutPane = new BorderPane();
 		this.stage = stage;
 
@@ -383,7 +379,9 @@ public abstract class AFXWorkbench
 
 		this.absoluteRoot.getChildren().add(this.baseLayoutPane);
 		this.absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);
-		this.stage.setScene(new Scene(this.absoluteRoot, x, y));
+        this.base.getChildren().add(absoluteRoot);
+        LayoutUtil.GridPaneUtil.setFullGrow(Priority.ALWAYS, this.absoluteRoot);
+		this.stage.setScene(new Scene(this.base, x, y));
 		this.initCSS(this.stage.getScene());
 
 		// new Layer for Menu Effects
@@ -475,11 +473,9 @@ public abstract class AFXWorkbench
 	/**
 	 * set toolBars to correct position
 	 * 
-	 * @param layout
+	 * @param position
 	 * @param bar
 	 * @param pane
-	 * @param x
-	 * @param y
 	 */
 	private void assignCorrectToolBarLayout(final ToolbarPosition position,
 			final ToolBar bar, final BorderPane pane) {
