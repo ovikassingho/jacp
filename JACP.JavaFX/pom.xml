@@ -37,8 +37,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -57,13 +57,6 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>javafx</artifactId>
-			<version>${javafx.version}</version>
-			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
-			<scope>system</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.jacp.project</groupId>
 			<artifactId>JACP.API</artifactId>
