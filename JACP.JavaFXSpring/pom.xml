@@ -29,7 +29,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javafx.version>2.2</javafx.version>
-		<spring.version>3.1.1.RELEASE</spring.version>
+		<spring.version>3.2.1.RELEASE</spring.version>
 	</properties>
 	<build>
 		<plugins>
