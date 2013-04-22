@@ -1,3 +1,4 @@
+21. Apr. 2013 - amo - TearDownWorker: check if component is still active before execute @OnTearDown.
 12. Feb. 2013 - amo -  JACPManagedDialog: add cache for singleton dialogs
 09. Feb  2013 - pete - JACPOptionPane: auto-hide not mandatory - available as option -> avoid disappearing dialogs, if they are chained
 06. Feb. 2013 - amo -  FXComponentReplaceWorker: execute this.executeComponentViewPostHandle before parentComponentCheck
