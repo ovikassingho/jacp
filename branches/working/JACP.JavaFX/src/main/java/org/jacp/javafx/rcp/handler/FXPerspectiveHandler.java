@@ -63,7 +63,6 @@ public class FXPerspectiveHandler
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	public static int MAX_INCTANCE_COUNT;
 	private final FXComponentLayout layout;
-	private final Launcher<?> launcher;
 	private final StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
@@ -77,10 +76,9 @@ public class FXPerspectiveHandler
 			final IPerspectiveLayout<Node, Node> perspectiveLayout,
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
 		this.layout = layout;
-		this.launcher = launcher;
 		this.perspectiveLayout = perspectiveLayout;
 		this.componentDelegateQueue = componentDelegateQueue;
-		this.scheduler = new StatelessCallbackScheduler(this.launcher);
+		this.scheduler = new StatelessCallbackScheduler(launcher);
 		ShutdownThreadsHandler.registerexecutor(executor);
 	}
 
@@ -173,7 +171,7 @@ public class FXPerspectiveHandler
 	private void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout) {		
+			final FXComponentLayout layout) {
 		this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
 				.getTargetLayoutComponents(), this.componentDelegateQueue,
 				((AFXComponent) component), layout));

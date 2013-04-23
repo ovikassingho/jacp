@@ -54,7 +54,7 @@ public class ContactMain extends AFXSpringLauncher {
 
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
-        this.scene.getStylesheets().addAll(ContactMain.class.getResource("/styles/main.css").toExternalForm(), ContactMain.class.getResource("/styles/windowbuttons.css").toExternalForm());
+       // this.scene.getStylesheets().addAll(ContactMain.class.getResource("/styles/main.css").toExternalForm(), ContactMain.class.getResource("/styles/windowbuttons.css").toExternalForm());
 
 //        ScenicView.show(stage.getScene());
 

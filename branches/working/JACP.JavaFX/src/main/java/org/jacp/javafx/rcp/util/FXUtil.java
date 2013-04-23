@@ -249,10 +249,12 @@ public class FXUtil {
 	/**
 	 * Loads the FXML document provided by viewLocation-
 	 * 
-	 * @param fxmlComponent
-	 *            a FXML aware component
-	 * @param componentName
-	 *            the components name.
+	 * @param bean
+	 *            the controller
+	 * @param bundle
+	 *            the ressource bundle
+     * @param url
+     *            the fxml url
 	 * @return The components root Node.
 	 */
 	// TODO merge with loadFXMLandSetController in FXComponentInit
@@ -347,22 +349,27 @@ public class FXUtil {
 		return messageId.split("\\.");
 	}
 
+    /**
+     * Returns a component by id from a provided component list
+     * @param id
+     * @param components
+     * @param <P>
+     * @return
+     */
 	public static final <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
 			final String id, final List<P> components) {
-		synchronized (components) {
 			for (int i = 0; i < components.size(); i++) {
 				final P p = components.get(i);
 				if (p.getId().equals(id)) {
 					return p;
 				}
 			}
-		}
 		return null;
 	}
 
 	/**
 	 * find the parent perspective to id; should be only used when no
-	 * responsible component was found
+	 * responsible component was found , TODO migrate to Java 8
 	 * 
 	 * @param id
 	 * @param perspectives
@@ -371,7 +378,6 @@ public class FXUtil {
 	public static final IPerspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
 			final String id,
 			final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
-		synchronized (perspectives) {
 			for (int i = 0; i < perspectives.size(); i++) {
 				final IPerspective<EventHandler<Event>, Event, Object> p = perspectives
 						.get(i);
@@ -386,7 +392,7 @@ public class FXUtil {
 				}
 
 			}
-		}
+
 		return null;
 	}
 

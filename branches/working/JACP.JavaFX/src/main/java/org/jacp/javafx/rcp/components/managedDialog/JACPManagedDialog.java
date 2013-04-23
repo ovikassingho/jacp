@@ -181,8 +181,7 @@ public class JACPManagedDialog {
 			final Resource resource = field.getAnnotation(Resource.class);
 			if (resource == null)
 				continue;
-			if (bundle!=null && field.getType().isAssignableFrom(bundle.getClass())
-					&& bundle != null) {
+			if (bundle!=null && field.getType().isAssignableFrom(bundle.getClass())) {
 				field.setAccessible(true);
 				field.set(bean, bundle);
 			} else if (ASubComponent.class.isAssignableFrom(field.getType())

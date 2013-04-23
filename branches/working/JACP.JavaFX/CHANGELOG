@@ -1,4 +1,7 @@
-21. Apr. 2013 - amo - TearDownWorker: check if component is still active before execute @OnTearDown.
+23. Apr. 2013 - amo -  FXUtil: findRootByObserveableId,getObserveableById  remove unused synchronisation
+23. Apr. 2013 - amo -  FXComponentCoordinator: removed unused synchronisation in   handleMessage
+23. Apr. 2013 - amo -  AStatelessCallbackComponent: remove unused init synchronisation
+21. Apr. 2013 - amo -  TearDownWorker: check if component is still active before execute @OnTearDown.
 12. Feb. 2013 - amo -  JACPManagedDialog: add cache for singleton dialogs
 09. Feb  2013 - pete - JACPOptionPane: auto-hide not mandatory - available as option -> avoid disappearing dialogs, if they are chained
 06. Feb. 2013 - amo -  FXComponentReplaceWorker: execute this.executeComponentViewPostHandle before parentComponentCheck

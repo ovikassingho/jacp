@@ -121,6 +121,7 @@ public class FXWorkbenchHandler implements
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout, final Node componentOld) {
 		this.root.setCacheHint(CacheHint.SPEED);
 		final Node componentNew = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
+        componentNew.setCache(true);
 		this.reassignChild(componentOld.getParent(), componentOld, componentNew);
 		// set already active editors to new component
 		this.reassignSubcomponents(perspective, perspectiveLayout);
@@ -162,8 +163,8 @@ public class FXWorkbenchHandler implements
 	/**
 	 * find valid target and add type specific new ui component
 	 * 
+	 * @param component
 	 * @param layout
-	 * @param editor
 	 */
 	private void addComponentByType(final IComponentView<Node, EventHandler<Event>, Event, Object> component,
 			final IPerspectiveLayout<? extends Node, Node> layout) {
@@ -215,6 +216,7 @@ public class FXWorkbenchHandler implements
 		final Node comp = perspectiveLayout.getRootComponent();
 		if (comp!=null) {
 			comp.setVisible(true);
+            comp.setCache(true);
 			final ObservableList<Node> children = this.root.getChildren();
 			this.hideChildren(children);
 			GridPane.setConstraints(comp, 0, 0);
@@ -308,7 +310,6 @@ public class FXWorkbenchHandler implements
 	 * get perspectives ui root container
 	 * 
 	 * @param layout
-	 * @param dimension
 	 * @return the root Node
 	 */
 	private Node getLayoutComponentFromPerspectiveLayout(final IPerspectiveLayout<? extends Node, Node> layout) {
