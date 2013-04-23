@@ -84,8 +84,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * find valid target and add type specific new component. Handles Container,
 	 * ScrollPanes, Menus and Bar Entries from user
 	 * 
-	 * @param layout
-	 * @param editor
+	 * @param validContainer
+	 * @param component
 	 */
 	final void addComponentByType(
 			final Node validContainer,
@@ -136,6 +136,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 			final boolean state) {
 		uiComponent.setVisible(state);
 		uiComponent.setDisable(!state);
+        uiComponent.setManaged(state);
 	}
 
 	/**
@@ -239,9 +240,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * found in current perspective, move to an other perspective and run
 	 * teardown.
 	 * 
+	 * @param delegateQueue
 	 * @param component
-	 * @param targetComponents
-	 * @param target
 	 * @param layout
 	 */
     void handlePerspectiveChange(

@@ -54,7 +54,6 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 	@Override
 	public void handleMessage(final String targetId,
 			final IAction<Event, Object> action) {
-		synchronized (action) {
 			final ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
 			this.log(" //1.1// component message to: " + action.getTargetId());
 			if (component != null) {
@@ -66,7 +65,6 @@ public class FXComponentCoordinator extends AFXCoordinator implements
 				this.log(" //1.1.1// component MISS: " + action.getTargetId());
 				this.handleComponentMiss(targetId, action);
 			} // End else
-		} // End synchronized
 	}
 
 	/**

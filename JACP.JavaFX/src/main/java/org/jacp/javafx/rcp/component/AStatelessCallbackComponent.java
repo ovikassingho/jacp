@@ -114,7 +114,7 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	 * @param comp
 	 * @return
 	 */
-	public final synchronized ICallbackComponent<EventHandler<Event>, Event, Object> init(
+	public final ICallbackComponent<EventHandler<Event>, Event, Object> init(
 			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
 		FXUtil.setPrivateMemberValue(AComponent.class, comp,
 				FXUtil.ACOMPONENT_ID, this.getId());
