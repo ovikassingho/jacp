@@ -171,6 +171,7 @@ public class FXWorkbenchHandler implements
 		final Node validContainer = layout.getTargetLayoutComponents().get(component.getExecutionTarget());
 		final ObservableList<Node> children = FXUtil.getChildren(validContainer);
 		final Node root = component.getRoot();
+        if(children==null || root==null) return;
 		if (!children.contains(root)) {
 			GridPane.setHgrow(root, Priority.ALWAYS);
 			GridPane.setVgrow(root, Priority.ALWAYS);
