@@ -67,6 +67,18 @@ public class JACPManagedDialog {
      */
     private static Map<String,ManagedDialogHandler<?>> cache = new ConcurrentHashMap<>();
 
+    /**
+     * A custom security manager that exposes the getClassContext() information
+     */
+    static class CustomSecurityManager extends SecurityManager {
+        public String getCallerClassName(int callStackDepth) {
+            return getClassContext()[callStackDepth].getName();
+        }
+    }
+
+    private final static CustomSecurityManager customSecurityManager =
+            new CustomSecurityManager();
+
 	/**
 	 * initialize the JACPManaged dialog.
 	 * 
@@ -97,9 +109,7 @@ public class JACPManagedDialog {
 	 * @return a managed dialog handler see {@link ManagedDialogHandler}
 	 */
 	public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type) {
-		@SuppressWarnings("restriction")
-		String callerClassName = sun.reflect.Reflection.getCallerClass(2)
-				.getName();
+		final String callerClassName = customSecurityManager.getCallerClassName(2);
 		final Dialog dialogAnnotation = type.getAnnotation(Dialog.class);
 		if (dialogAnnotation == null)
 			throw new ManagedDialogAnnotationMissingException();

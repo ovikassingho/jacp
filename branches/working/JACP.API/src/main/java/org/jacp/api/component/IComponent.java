@@ -37,7 +37,7 @@ import org.jacp.api.action.IActionListener;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponent<L, A, M> {
+public interface IComponent<L, A, M> extends Comparable<String>{
 
 	/**
 	 * Returns an action listener (for local use). Message will be send to

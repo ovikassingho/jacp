@@ -27,10 +27,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.List;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,6 +65,7 @@ public class FXUtil {
 	public static final String IDECLARATIVECOMPONENT_LOCALE = "localeID";
 	public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
 	public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
+    //private static Comparator<String> COMPARE_IGNORE = (String s1, String s2) -> s1.compareToIgnoreCase(s2);
 
 	/**
 	 * contains constant values
@@ -358,14 +356,16 @@ public class FXUtil {
      */
 	public static final <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
 			final String id, final List<P> components) {
-			for (int i = 0; i < components.size(); i++) {
-				final P p = components.get(i);
-				if (p.getId().equals(id)) {
-					return p;
-				}
-			}
-		return null;
+        for (int i = 0; i < components.size(); i++) {
+            final P p = components.get(i);
+            if (p.getId().equals(id)) {
+                return p;
+            }
+        }
+        return null;
 	}
+
+
 
 	/**
 	 * find the parent perspective to id; should be only used when no
@@ -383,14 +383,13 @@ public class FXUtil {
 						.get(i);
 				final List<ISubComponent<EventHandler<Event>, Event, Object>> subComponents = p
 						.getSubcomponents();
-				for (int j = 0; j < subComponents.size(); j++) {
-					final ISubComponent<EventHandler<Event>, Event, Object> component = subComponents
-							.get(j);
-					if (component.getId().equals(id)) {
-						return p;
-					}
-				}
-
+                for (int j = 0; j < subComponents.size(); j++) {
+                    final ISubComponent<EventHandler<Event>, Event, Object> component = subComponents
+                            .get(j);
+                    if (component.getId().equals(id)) {
+                        return p;
+                    }
+                }
 			}
 
 		return null;

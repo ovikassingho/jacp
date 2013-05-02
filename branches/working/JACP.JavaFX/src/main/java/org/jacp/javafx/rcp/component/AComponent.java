@@ -114,4 +114,9 @@ public class AComponent extends Checkable implements
 		this.name = name;
 	}
 
+
+    @Override
+    public int compareTo(String o) {
+        return this.getId().compareTo(o);
+    }
 }
