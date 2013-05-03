@@ -118,11 +118,11 @@ public class FXComponentDelegator extends Thread implements
 			// is active, otherwise component will be handled once again)
 			this.handleInActivePerspective(responsiblePerspective,
 					new FXAction(responsiblePerspective.getId(),
-							responsiblePerspective.getId(), "init", null));
+							responsiblePerspective.getId(), FXUtil.MessageUtil.INIT, null));
 		} // End if
 		responsiblePerspective.registerComponent(component);
 		responsiblePerspective.getComponentHandler().initComponent(
-				new FXAction(component.getId(), component.getId(), "init", null),
+				new FXAction(component.getId(), component.getId(), FXUtil.MessageUtil.INIT, null),
 				component);
 	}
 
