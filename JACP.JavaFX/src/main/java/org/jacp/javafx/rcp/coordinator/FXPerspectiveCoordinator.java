@@ -92,7 +92,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	 * handle message to active perspective; check if target is perspective or
 	 * component
 	 * 
-	 * @param target
+	 * @param targetId
 	 * @param action
 	 * @param perspective
 	 */

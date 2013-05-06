@@ -36,7 +36,7 @@ import org.jacp.javafx.rcp.util.Checkable;
  */
 public abstract class PerspectiveLayout extends Checkable implements IPerspectiveLayout<Node, Node> {
 	protected Node rootComponent;
-	protected final Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();
+	protected volatile  Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();
 	
 	public PerspectiveLayout() {
 		

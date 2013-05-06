@@ -1,3 +1,4 @@
+06. May  2013 - amo -  FXComponentCoordinator: fixed bug with local/global messages
 02. May  2013 - amo -  FXWorkbenchHandler: fixed bug with empty perspectives
 23. Apr. 2013 - amo -  FXUtil: findRootByObserveableId,getObserveableById  remove unused synchronisation
 23. Apr. 2013 - amo -  FXComponentCoordinator: removed unused synchronisation in   handleMessage
