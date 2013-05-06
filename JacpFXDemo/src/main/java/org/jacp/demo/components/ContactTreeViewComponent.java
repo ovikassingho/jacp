@@ -57,10 +57,10 @@ public class ContactTreeViewComponent extends AFXComponent {
 	 */
 	public Node handleAction(final IAction<Event, Object> action) {
 		// on initial message create the layout outside the FXApplication thread
-		if (action.getLastMessage().equals(MessageUtil.INIT)) {
+		if (action.getMessage().equals(MessageUtil.INIT)) {
 			return this.createInitialLayout();
 		}
-		LOGGER.debug("ContactTreeViewComponent handleAction message: "+action.getLastMessage());
+		LOGGER.debug("ContactTreeViewComponent handleAction message: "+action.getMessage());
 		return null;
 	}
 
@@ -71,8 +71,8 @@ public class ContactTreeViewComponent extends AFXComponent {
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
 		// add a new contact in FXApplication thread
-		if (action.getLastMessage() instanceof Contact) {
-			final Contact contact = (Contact) action.getLastMessage();
+		if (action.getMessage() instanceof Contact) {
+			final Contact contact = (Contact) action.getMessage();
 			this.addNewContact(contact);
 		}
 		return this.pane;

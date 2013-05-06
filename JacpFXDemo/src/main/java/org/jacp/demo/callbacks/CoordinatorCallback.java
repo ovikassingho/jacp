@@ -41,8 +41,8 @@ public class CoordinatorCallback extends AStatelessCallbackComponent {
 
     @Override
     public Object handleAction(final IAction<Event, Object> action) {
-        if (action.getLastMessage() instanceof Contact) {
-            final Contact contact = (Contact) action.getLastMessage();
+        if (action.getMessage() instanceof Contact) {
+            final Contact contact = (Contact) action.getMessage();
             if (contact.getContacts().isEmpty()) {
                 if (contact.getAmount() > Util.PARTITION_SIZE) {
                     int amount = contact.getAmount();

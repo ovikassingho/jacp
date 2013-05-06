@@ -48,7 +48,7 @@ public class XMLDetailView extends AFXComponent {
 
 	@Override
 	public Node handleAction(IAction<Event, Object> action) {
-		LOGGER.debug("XMLDetailView handleAction message: "+action.getLastMessage());
+		LOGGER.debug("XMLDetailView handleAction message: "+action.getMessage());
 		return null;
 	}
 
@@ -67,9 +67,9 @@ public class XMLDetailView extends AFXComponent {
 	@Override
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
-		if (action.getLastMessage() instanceof Contact) {
+		if (action.getMessage() instanceof Contact) {
 			// contact selected
-			final Contact contact = (Contact) action.getLastMessage();
+			final Contact contact = (Contact) action.getMessage();
 			if (contact != null) {
 				fillView(contact);
 			}

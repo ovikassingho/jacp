@@ -67,24 +67,24 @@ public class ContactChartViewComponent extends AFXComponent {
 
 	@Override
 	public Node handleAction(final IAction<Event, Object> action) {
-		if (action.getLastMessage().equals(MessageUtil.INIT)) {
+		if (action.getMessage().equals(MessageUtil.INIT)) {
 			this.root = this.createRoot();
 			this.root.getChildren().add(this.createChart());
 		}
-		LOGGER.debug("ContactChartViewComponent handleAction message: "+action.getLastMessage());
+		LOGGER.debug("ContactChartViewComponent handleAction message: "+action.getMessage());
 		return null;
 	}
 
 	@Override
 	public Node postHandleAction(final Node node,
 			final IAction<Event, Object> action) {
-		if (action.getLastMessage() instanceof BarChartAction) {
-			if (BarChartAction.RESET.equals(action.getLastMessage())) {
+		if (action.getMessage() instanceof BarChartAction) {
+			if (BarChartAction.RESET.equals(action.getMessage())) {
 				this.clearChartPane();
 			}
 		}
-		if (action.getLastMessage() instanceof Contact) {
-			final Contact contact = (Contact) action.getLastMessage();
+		if (action.getMessage() instanceof Contact) {
+			final Contact contact = (Contact) action.getMessage();
 			this.refreshChartPane(contact);
 			final List<Data<String, Number>> data = contact.getDto()
 					.getSeriesOneData();

@@ -46,8 +46,8 @@ public class AnalyticsCallback extends AStatefulCallbackComponent {
 
     @Override
     public Object handleAction(final IAction<Event, Object> action) {
-        if (action.getLastMessage() instanceof Contact) {
-            final Contact contact = (Contact) action.getLastMessage();
+        if (action.getMessage() instanceof Contact) {
+            final Contact contact = (Contact) action.getMessage();
             this.creatAndSendData(contact);
         }
         return null;

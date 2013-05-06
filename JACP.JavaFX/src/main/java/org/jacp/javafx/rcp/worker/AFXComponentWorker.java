@@ -151,7 +151,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             final String targetId, final Object value,
             final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null
-				&& !myAction.getLastMessage().equals("init")) {
+				&& !myAction.getMessage().equals("init")) {
 			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
 					.getActionListener(null);
 			listener.notifyComponents(new FXAction(comp.getId(), targetId,

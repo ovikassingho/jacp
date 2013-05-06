@@ -66,7 +66,7 @@ public class FXActionListener implements EventHandler<Event>,
 
 	@Override
 	public void handle(final Event t) {
-		this.notifyComponents(new FXAction(action.getSourceId(), action.getTargetId(), action.getLastMessage(), t));
+		this.notifyComponents(new FXAction(action.getSourceId(), action.getTargetId(), action.getMessage(), t));
 	}
 
 	@Override

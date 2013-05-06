@@ -36,11 +36,11 @@ public class CreatorCallback extends AStatelessCallbackComponent {
 
     @Override
     public Object handleAction(final IAction<Event, Object> action) {
-        if (action.getLastMessage() instanceof ContactDTO) {
+        if (action.getMessage() instanceof ContactDTO) {
             // return all values to defined target
             this.setHandleTarget(GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW));
             waitAmount(100);
-            return ContentGenerator.createEntries((ContactDTO) action.getLastMessage());
+            return ContentGenerator.createEntries((ContactDTO) action.getMessage());
         }
         return null;
     }

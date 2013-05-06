@@ -57,7 +57,7 @@ public interface IAction<A, M> extends Cloneable {
 	 * 
 	 * @return M
 	 */
-	M getLastMessage();
+	M getMessage();
 
 
 	/**
@@ -68,11 +68,11 @@ public interface IAction<A, M> extends Cloneable {
 	String getSourceId();
 
 	/**
-	 * Get implementation specific action event.
+	 * Get source of this action event.
 	 * 
 	 * @return the event
 	 */
-	A getActionEvent();
+	A getSourceEvent();
 
 	/**
 	 * Clone action and containing event.
@@ -87,5 +87,28 @@ public interface IAction<A, M> extends Cloneable {
 	 * @return the target id
 	 */
 	String getTargetId();
+
+    /**
+     * Checks if message is type of a given class.
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    <T> boolean isMessageTypeOf(final Class<T> clazz);
+
+    /**
+     * Returns a typed message, if applicable.
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    <T> T getTypedMessage(final Class<T> clazz);
+
+    /**
+     * Check if message equals given input.
+     * @param object
+     * @return
+     */
+    boolean messageEquals(final Object object);
 
 }
