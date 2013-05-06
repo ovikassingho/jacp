@@ -105,15 +105,15 @@ public class ContactPerspective extends AFXPerspective {
 	@Override
 	public void handlePerspective(final IAction<Event, Object> action,
 			final PerspectiveLayout perspectiveLayout) {
-		if (action.getLastMessage().equals(MessageUtil.INIT)) {
+		if (action.getMessage().equals(MessageUtil.INIT)) {
 			this.createPerspectiveLayout(perspectiveLayout);
-		} else if (action.getLastMessage().equals("switch")) {
+		} else if (action.getMessage().equals("switch")) {
 			final String tmp = this.topId;
 			this.topId = this.bottomId;
 			this.bottomId = tmp;
 			this.createPerspectiveLayout(perspectiveLayout);
 		}
-		LOGGER.debug("handlePerspective message: "+action.getLastMessage());
+		LOGGER.debug("handlePerspective message: "+action.getMessage());
 	}
 
 	private void createPerspectiveLayout(

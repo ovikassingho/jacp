@@ -1,3 +1,4 @@
+06. May  2013 - amo -  FXAction, changes due to changes in Action interface
 06. May  2013 - amo -  FXComponentCoordinator: fixed bug with local/global messages
 02. May  2013 - amo -  FXWorkbenchHandler: fixed bug with empty perspectives
 23. Apr. 2013 - amo -  FXUtil: findRootByObserveableId,getObserveableById  remove unused synchronisation

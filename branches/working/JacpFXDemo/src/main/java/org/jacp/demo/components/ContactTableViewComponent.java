@@ -72,17 +72,17 @@ public class ContactTableViewComponent extends AFXComponent {
      * run postHandle in FX application Thread, use this method to update UI code
      */
     public Node postHandleAction(final Node node, final IAction<Event, Object> action) {
-        if (action.getLastMessage() instanceof Contact) {
+        if (action.getMessage() instanceof Contact) {
             // contact selected
-            final Contact contact = (Contact) action.getLastMessage();
+            final Contact contact = (Contact) action.getMessage();
             if (contact.isEmpty()) {
                 this.showDialogIfEmpty(contact);
             }
             this.current = this.getView(contact);
 
-        } else if (action.getLastMessage() instanceof ContactDTO) {
+        } else if (action.getMessage() instanceof ContactDTO) {
             // contact data received
-            final ContactDTO dto = (ContactDTO) action.getLastMessage();
+            final ContactDTO dto = (ContactDTO) action.getMessage();
             final ContactTableView view = this.all.get(dto.getParentName());
             // add first 1000 entries directly to table
             if (view.getContactTableView().getItems().size() < Util.PARTITION_SIZE) {
@@ -93,7 +93,7 @@ public class ContactTableViewComponent extends AFXComponent {
             }
             view.updatePositionLabel();
 
-        } else if (action.getLastMessage().equals(MessageUtil.INIT)) {
+        } else if (action.getMessage().equals(MessageUtil.INIT)) {
             return this.getView(null).getTableViewLayout();
         }
         return this.current.getTableViewLayout();

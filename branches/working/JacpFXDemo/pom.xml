@@ -149,12 +149,12 @@
 								</csstobin>
 
 
-
+                                            <!--  nativeBundles="all"-->
 								<jfxdeploy width="1024" height="768"
 									outdir="${project.build.directory}/deploy" outfile="${build.finalName}"
-									nativeBundles="all">
+                                    nativeBundles="all" >
 									<info title="${project.name}" />
-									<application name="${project.name}" mainClass="com.javafx.main.Main" />
+									<application name="${project.name}" mainClass="org.jacp.demo.main.ContactMain" />
 									<resources>
 										<fileset dir="${project.build.directory}" includes="*.jar" />
 										<fileset dir="${project.build.directory}/dependency"
