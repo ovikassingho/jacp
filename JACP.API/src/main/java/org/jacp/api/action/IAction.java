@@ -94,7 +94,7 @@ public interface IAction<A, M> extends Cloneable {
      * @param <T>
      * @return
      */
-    <T> boolean isMessageTypeOf(final Class<T> clazz);
+    <T> boolean isMessageType(final Class<T> clazz);
 
     /**
      * Returns a typed message, if applicable.
@@ -109,6 +109,6 @@ public interface IAction<A, M> extends Cloneable {
      * @param object
      * @return
      */
-    boolean messageEquals(final Object object);
+    boolean isMessage(final Object object);
 
 }
