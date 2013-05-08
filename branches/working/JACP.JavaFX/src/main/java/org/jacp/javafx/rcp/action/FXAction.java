@@ -101,7 +101,7 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
     @Override
-    public <T> boolean isMessageTypeOf(final Class<T> clazz) {
+    public <T> boolean isMessageType(final Class<T> clazz) {
         return clazz.isAssignableFrom(this.message.getClass());
     }
     @Override
@@ -109,7 +109,7 @@ public final class FXAction implements IAction<Event, Object> {
         return clazz.cast(this.message);
     }
     @Override
-    public boolean messageEquals(Object object) {
+    public boolean isMessage(Object object) {
         return object.equals(this.message);
     }
 
