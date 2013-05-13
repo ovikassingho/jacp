@@ -94,7 +94,7 @@ public class ContactPerspective extends AFXPerspective {
 
 			}
 		});
-		north.addOnEnd(custom);
+		north.addOnEnd(this.getId(), custom);
 	}
 
 	@OnTearDown

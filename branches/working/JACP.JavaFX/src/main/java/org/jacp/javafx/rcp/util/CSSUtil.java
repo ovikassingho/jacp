@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2013
  *
  * [CSSUtil.java]
@@ -37,7 +37,10 @@ public class CSSUtil {
         static final String CLASS_WINDOW_BUTTONS            = "window-buttons";
         static final String CLASS_JACP_TOOL_BAR             = "jacp-tool-bar";
         static final String CLASS_JACP_BUTTON_BAR           = "jacp-button-bars";
-        
+        static final String CLASS_JACP_BREAD_CUMB           = "jacp-bread-crumb";
+        static final String CLASS_JACP_BREAD_CRUMB_ITEM     = "jacp-bread-crumb-item";
+
+
         // IDS
         static final String ID_WINDOW_MIN                   = "window-min";
         static final String ID_WINDOW_MAX                   = "window-max";
@@ -45,12 +48,12 @@ public class CSSUtil {
         static final String ID_ROOT                         = "root";
         static final String ID_ROOT_PANE                    = "root-pane";
     }
-    
-    
+
+
     public interface GlobalValues {
-        
+
         public static final double SINGLE_PADDING = 20;
-        
+
     }
 
     /**
