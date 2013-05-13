@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2012
  *
  * [JACPToolBar.java]
@@ -36,13 +36,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * The Class JACPToolBar.
- * 
+ *
  * @author Patrick Symmangk
- * 
+ *
  */
 public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>, ListChangeListener<Node> {
+
+    private Map<String, List<Node>> nodeMap = new HashMap<>();
 
     /** The left buttons. */
     private HBox leftButtons;
@@ -82,11 +89,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     /**
      * Adds the.
-     * 
+     *
      * @param node
      *            the node
      */
-    public void add(final Node node) {
+    public void add(String id, final Node node) {
 
         if (this.getOrientation() == Orientation.HORIZONTAL) {
             HBox.setMargin(node, new Insets(0, 2, 0, 2));
@@ -95,7 +102,15 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
             VBox.setMargin(node, new Insets(2, 0, 2, 0));
             this.topButtons.getChildren().add(node);
         }
+        getNodes(id).add(node);
 
+    }
+
+
+    public void removeForId(String id){
+        for(Node node : getNodes(id)){
+            remove(node);
+        }
     }
 
     /**
@@ -111,15 +126,29 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
             this.topButtons.getChildren().remove(node);
             this.bottomButtons.getChildren().remove(node);
         }
-    }        
+    }
+
+
+    public void addAll(String id, Node... nodes){
+        for(final Node node : nodes){
+            add(id, node);
+        }
+    }
+
+
+    public void addAllOnEnd(String id, Node... nodes){
+        for(final Node node : nodes){
+            addOnEnd(id, node);
+        }
+    }
 
     /**
      * Adds the on end.
-     * 
+     *
      * @param node
      *            the node
      */
-    public void addOnEnd(final Node node) {
+    public void addOnEnd(String id, final Node node) {
         if (this.getOrientation() == Orientation.HORIZONTAL) {
             HBox.setMargin(node, new Insets(0, 2, 0, 2));
             this.rightButtons.getChildren().add(node);
@@ -127,6 +156,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
             VBox.setMargin(node, new Insets(2, 0, 2, 0));
             this.bottomButtons.getChildren().add(node);
         }
+
+        getNodes(id).add(node);
+
         this.bind();
     }
 
@@ -265,5 +297,17 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
             }
         }
     }
+
+    public List<Node> getNodes(String id){
+        if(nodeMap.containsKey(id)){
+            return nodeMap.get(id);
+        }
+        List<Node> currentList = new ArrayList<>();
+        nodeMap.put(id, currentList);
+
+        return currentList;
+    }
+
+
 
 }

@@ -98,7 +98,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 			}
 
 		});
-		north.add(add);
+		north.add(this.getId(), add);
 	}
 
 	private ContactTreeView createInitialLayout() {
