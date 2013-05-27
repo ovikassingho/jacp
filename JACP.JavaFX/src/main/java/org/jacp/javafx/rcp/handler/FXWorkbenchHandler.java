@@ -122,7 +122,7 @@ public class FXWorkbenchHandler implements
 		this.root.setCacheHint(CacheHint.SPEED);
 		final Node componentNew = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
         componentNew.setCache(true);
-		this.reassignChild(componentOld.getParent(), componentOld, componentNew);
+		this.reassignChild(componentOld, componentNew);
 		// set already active editors to new component
 		this.reassignSubcomponents(perspective, perspectiveLayout);
 		this.root.setCacheHint(CacheHint.DEFAULT);
@@ -178,31 +178,39 @@ public class FXWorkbenchHandler implements
 			children.add(root);
 		} else {
 			int index = children.indexOf(root);
-			if (index != 0)
-				children.set(0, root);
-			GridPane.setHgrow(root, Priority.ALWAYS);
-			GridPane.setVgrow(root, Priority.ALWAYS);
+			if (index != 0){
+                GridPane.setHgrow(root, Priority.ALWAYS);
+                GridPane.setVgrow(root, Priority.ALWAYS);
+                children.set(0, root);
+            }
+
 		}
 
 	}
 
 	/**
 	 * handle reassignment of components in perspective ui
-	 * 
-	 * @param parent
+	 *
 	 * @param oldComp
 	 * @param newComp
 	 */
-	private void reassignChild(final Node parent, final Node oldComp, final Node newComp) {
+	private void reassignChild(final Node oldComp, final Node newComp) {
 		final ObservableList<Node> children = this.root.getChildren();
-		this.hideChildren(children);
-		newComp.setVisible(true);
-		if (!oldComp.equals(newComp)) {
-			children.remove(oldComp);
-			newComp.setVisible(true);
-			children.add(newComp);
-		}
 
+        hideChildrenAndExecuteOnHide(children,oldComp);
+
+        if(oldComp.equals(newComp) && children.contains(newComp) && !newComp.isVisible()){
+                 // execute OnShow
+            System.out.println("%%%%%%%%%%%%%%%%%%% execute onShow");
+        } else if(!oldComp.equals(newComp) && children.contains(oldComp)) {
+                 if(!oldComp.isVisible()) {
+                     // execute OnShow
+                     System.out.println("%%%%%%%%%%%%%%%%%%% execute onShow");
+                 }
+            children.remove(oldComp);
+            children.add(newComp);
+        }
+        newComp.setVisible(true);
 	}
 
 	/**
@@ -314,9 +322,7 @@ public class FXWorkbenchHandler implements
 	 * @return the root Node
 	 */
 	private Node getLayoutComponentFromPerspectiveLayout(final IPerspectiveLayout<? extends Node, Node> layout) {
-		final Node comp = layout.getRootComponent();
-		comp.setVisible(true);
-		return comp;
+		return layout.getRootComponent();
 	}
 
 	/**
@@ -326,9 +332,24 @@ public class FXWorkbenchHandler implements
 	 */
 	private void hideChildren(final ObservableList<Node> children) {
 		for (final Node child : children) {
-			child.setVisible(false);
+            if(child.isVisible())child.setVisible(false);
 		}
 	}
+
+    /**
+     * set all child components to invisible
+     *
+     * @param children
+     */
+    private void hideChildrenAndExecuteOnHide(final ObservableList<Node> children, Node oldComponent) {
+        for (final Node child : children) {
+            if(child.isVisible() && !child.equals(oldComponent)){
+                           // execute onHide
+                System.out.println("%%%%%%%%%%%%%%%%%%% execute onHide");
+                child.setVisible(false);
+            }
+        }
+    }
 
 	private void log(final String message) {
 		if (this.logger.isLoggable(Level.FINE)) {
