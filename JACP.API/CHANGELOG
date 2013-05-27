@@ -1,4 +1,5 @@
-06. May  2013 - amo - Action interface, renamed getLastMessage to getMessage, new method: getTypedMessage, isMessageTypeOf, messageEquals
+27. May. 2013 - amo - OnStart, OnHide annotation introduced to mark perspective methods
+06. May. 2013 - amo - Action interface, renamed getLastMessage to getMessage, new method: getTypedMessage, isMessageTypeOf, messageEquals
 24. Jan. 2013 - amo - changed version to 1.2 and update to java 7
 24. Jan. 2013 - amo - add new Annotations (@Dialog, @Resource); add new package and define Scope enum, add new method to Launcher (registerAndGetBean) to register beans dynamically
 12. Sep. 2012 - amo - Reduced IAction interface to ensure thread safety
