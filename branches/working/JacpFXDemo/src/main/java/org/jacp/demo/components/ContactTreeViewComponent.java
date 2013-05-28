@@ -29,7 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
-import org.jacp.api.annotations.OnStart;
+import org.jacp.api.annotations.PostConstruct;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -83,8 +83,8 @@ public class ContactTreeViewComponent extends AFXComponent {
 	/**
 	 * handle menu an toolbar entries on component start up
 	 */
-	@OnStart
-	public void onStartComponent(final FXComponentLayout layout) {
+	@PostConstruct
+	public void PostConstructComponent(final FXComponentLayout layout) {
 		final JACPToolBar north = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
 		final Button add = new Button("add category");

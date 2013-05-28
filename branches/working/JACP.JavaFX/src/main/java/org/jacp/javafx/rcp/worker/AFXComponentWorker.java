@@ -41,8 +41,8 @@ import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.OnStart;
-import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.PostConstruct;
+import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.ISubComponent;
@@ -249,7 +249,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             final UIComponent<Node, EventHandler<Event>, Event, Object> component,
             final FXComponentLayout layout) {
 		if (component instanceof AFXComponent) {
-			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component,
+			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component,
 					layout);
 		}
 		// handle target outside current perspective
@@ -316,14 +316,14 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	}
 
 	/**
-	 * checks if component started, if so run OnStart annotations
+	 * checks if component started, if so run PostConstruct annotations
 	 * 
 	 * @param component
 	 */
     void runCallbackOnStartMethods(
             final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		if (!component.isStarted())
-			FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component);
+			FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component);
 	}
 
 	/**
@@ -351,7 +351,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 			FXUtil.setPrivateMemberValue(Checkable.class, component,
 					FXUtil.ACOMPONENT_STARTED, false);
 			// run teardown
-			FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class, component);
+			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component);
 		}
 	}
 

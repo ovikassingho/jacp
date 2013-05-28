@@ -30,6 +30,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 
 /**
@@ -100,7 +101,7 @@ public class ComponentRegistry {
 	public static ISubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
 		lock.readLock().lock();
 		try{
-			for(ISubComponent<EventHandler<Event>, Event, Object> comp : components) {
+			for(final ISubComponent<EventHandler<Event>, Event, Object> comp : components) {
 				if(comp.getClass().isAssignableFrom(clazz))return comp;
 			}
 			return null;
@@ -108,4 +109,19 @@ public class ComponentRegistry {
 			lock.readLock().unlock();
 		}		
 	}
+
+    /**
+     * applies a simple predicate to all components
+     * @param predicate
+     */
+    public static void applyToComponents(final Predicate predicate) {
+        lock.writeLock().lock();
+        try{
+            for(final ISubComponent<EventHandler<Event>, Event, Object> comp : components) {
+                predicate.apply(comp);
+            }
+        }finally{
+            lock.writeLock().unlock();
+        }
+    }
 }

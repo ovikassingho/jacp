@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks the tear down method in ui components;Usage use @OnTearDown on method
+ * Marks the tear down method in ui components;Usage use @PreDestroy on method
  * level and provide access to IBaseLayout parameter.
  * 
  * @author Andy Moncsek
@@ -36,6 +36,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OnTearDown {
+public @interface PreDestroy {
 
 }

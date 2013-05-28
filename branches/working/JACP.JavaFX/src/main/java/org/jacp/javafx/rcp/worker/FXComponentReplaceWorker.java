@@ -33,7 +33,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -137,7 +137,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                     FXComponentReplaceWorker.this.removeComponentValue(
                             component, previousContainer, layout);
                     // run teardown
-                    FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+                    FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                             component, layout);
                 }
             }
@@ -181,7 +181,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                 // unregister component
                 this.removeComponentValue(component, previousContainer, layout);
                 // run teardown
-                FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+                FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                         component, layout);
             }
 

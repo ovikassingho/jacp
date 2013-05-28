@@ -170,7 +170,7 @@ public class FXUtil {
 
 				} catch (final IllegalArgumentException e) {
 					throw new UnsupportedOperationException(
-							"use @OnStart and @OnTeardown either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
+							"use @PostConstruct and @OnTeardown either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
 							e.getCause());
 				} catch (final IllegalAccessException e) {
 					Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,

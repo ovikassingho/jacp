@@ -14,8 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.DeclarativeComponent;
-import org.jacp.api.annotations.OnStart;
-import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.PostConstruct;
+import org.jacp.api.annotations.PreDestroy;
 import org.jacp.demo.common.GenderType;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
@@ -79,12 +79,12 @@ public class XMLDetailView extends AFXComponent {
 
 	}
 
-	@OnStart
+	@PostConstruct
 	public void start(FXComponentLayout layout, URL url,
 			ResourceBundle resourceBundle) {
 	}
 
-	@OnTearDown
+	@PreDestroy
 	public void stop(FXComponentLayout layout) {
 	}
 
