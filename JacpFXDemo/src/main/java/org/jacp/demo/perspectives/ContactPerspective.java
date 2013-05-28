@@ -31,8 +31,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.OnStart;
-import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.PostConstruct;
+import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -71,12 +71,12 @@ public class ContactPerspective extends AFXPerspective {
 	@FXML
 	private AnchorPane detailAnchor;
 
-	@OnStart
+	@PostConstruct
 	/**
 	 * create buttons in tool bars; menu entries  
 	 */
-	public void onStartPerspective(final FXComponentLayout layout) {
-		LOGGER.debug("onStartPerspective");
+	public void PostConstructPerspective(final FXComponentLayout layout) {
+		LOGGER.debug("PostConstructPerspective");
 		// create button in toolbar; button should switch top and bottom id's
 		final JACPToolBar north = layout
 				.getRegisteredToolBar(ToolbarPosition.NORTH);
@@ -97,9 +97,9 @@ public class ContactPerspective extends AFXPerspective {
 		north.addOnEnd(this.getId(), custom);
 	}
 
-	@OnTearDown
-	public void onTearDownPerspective(final FXComponentLayout layout) {
-		LOGGER.debug("onTearDownPerspective");
+	@PreDestroy
+	public void PreDestroyPerspective(final FXComponentLayout layout) {
+		LOGGER.debug("PreDestroyPerspective");
 	}
 
 	@Override

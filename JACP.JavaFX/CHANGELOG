@@ -1,3 +1,5 @@
+28. May  2013 - amo -  Add PerspectiveRegistry
+28. May  2013 - amo -  FXWorkbenchHandler, add OnShow / OnHide functionality
 26. May  2013 - amo -  FXWorkbenchHandler, prepared for OnShow, OnHide annotation usage
 06. May  2013 - amo -  FXAction, changes due to changes in Action interface
 06. May  2013 - amo -  FXComponentCoordinator: fixed bug with local/global messages

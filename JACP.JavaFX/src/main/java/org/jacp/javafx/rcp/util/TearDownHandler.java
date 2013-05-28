@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
-import org.jacp.api.annotations.OnTearDown;
+import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IStatelessCallabackComponent;
@@ -86,7 +86,7 @@ public class TearDownHandler {
 							.add((ICallbackComponent<EventHandler<Event>, Event, Object>) component);
 				} else {
 					// run teardown in app thread
-					FXUtil.invokeHandleMethodsByAnnotation(OnTearDown.class,
+					FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
 							component);
 				}
 

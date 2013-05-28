@@ -35,7 +35,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.OnStart;
+import org.jacp.api.annotations.PostConstruct;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -76,7 +76,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	/**
 	 * Run all methods that need to be invoked before worker thread start to
-	 * run. Programmatic components runs OnStart; declarative components init
+	 * run. Programmatic components runs PostConstruct; declarative components init
 	 * the FXML and set the value to root node.
 	 * 
 	 * @throws InterruptedException
@@ -156,7 +156,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void runComponentOnStartupSequence(AFXComponent component,
 			Object... param) {
-		FXUtil.invokeHandleMethodsByAnnotation(OnStart.class, component, param);
+		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component, param);
 	}
 
 	/**

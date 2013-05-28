@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [OnStart.java]
+ * [PostConstruct.java]
  * AHCP Project (http://jacp.googlecode.com/)
  * All rights reserved.
  *
@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks on start methods in UI components; Usage use @OnStart on method level
+ * Marks on start methods in UI components; Usage use @PostConstruct on method level
  * and provide access to IBaseLayout parameter.
  * 
  * @author Andy Moncsek
@@ -36,6 +36,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OnStart {
+public @interface PostConstruct {
 
 }

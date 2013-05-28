@@ -247,6 +247,7 @@ public abstract class AFXWorkbench
 		this.perspectiveCoordinator.addPerspective(perspective);
 		this.componentDelegator.addPerspective(perspective);
 		this.messageDelegator.addPerspective(perspective);
+        PerspectiveRegistry.registerPerspective(perspective);
 	}
 
 	/**
@@ -303,6 +304,7 @@ public abstract class AFXWorkbench
 		this.perspectiveCoordinator.removePerspective(perspective);
 		this.componentDelegator.removePerspective(perspective);
 		this.messageDelegator.removePerspective(perspective);
+        PerspectiveRegistry.removePerspective(perspective);
 	}
 
 	@Override
