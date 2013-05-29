@@ -1,4 +1,3 @@
-29. May. 2013 - amo - first changes with java8 stream API in FXUtil, be aware code is running sice jdk 8 build 91
 28. May. 2013 - amo - renamed OnStart and OnTearDown to PostConstruct and PreDestroy
 27. May. 2013 - amo - OnStart, OnHide annotation introduced to mark perspective methods
 06. May. 2013 - amo - Action interface, renamed getLastMessage to getMessage, new method: getTypedMessage, isMessageTypeOf, messageEquals

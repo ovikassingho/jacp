@@ -82,9 +82,9 @@ public abstract class AFXCoordinator extends Thread implements
 	 * @param action
 	 * @param queue
 	 */
-	protected final void delegateMessageToCorrectPerspective(
-			final String target, final IAction<Event, Object> action,
-			final BlockingQueue<IDelegateDTO<Event, Object>> queue) {
+	final void delegateMessageToCorrectPerspective(
+            final String target, final IAction<Event, Object> action,
+            final BlockingQueue<IDelegateDTO<Event, Object>> queue) {
 		queue.add(new DelegateDTO(target, action));
 	}
 

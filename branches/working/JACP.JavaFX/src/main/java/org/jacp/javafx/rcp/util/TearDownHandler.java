@@ -61,7 +61,7 @@ public class TearDownHandler {
 	 * 
 	 * @param rootWorkbench
 	 */
-	public final static void registerBase(
+	public static void registerBase(
 			IBase<EventHandler<Event>, Event, Object> rootWorkbench) {
 		TearDownHandler.rootWorkbench = rootWorkbench;
 	}
@@ -70,7 +70,7 @@ public class TearDownHandler {
 	 * perform global teardown on all components. This method will cause all @TearDown
 	 * annotated methods to be executed.
 	 */
-	public final static void handleGlobalTearDown() {
+	public static void handleGlobalTearDown() {
 		if (rootWorkbench == null)
 			throw new UnsupportedOperationException("can't teardown workbench");
 		final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = rootWorkbench
@@ -104,7 +104,7 @@ public class TearDownHandler {
 	 * 
 	 * @param components
 	 */
-	public final static void handleAsyncTearDown(
+	public static void handleAsyncTearDown(
 			ICallbackComponent<EventHandler<Event>, Event, Object>... components) {
 		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
         Collections.addAll(handleAsync, components);
@@ -117,7 +117,7 @@ public class TearDownHandler {
 	 * 
 	 * @param components
 	 */
-	public final static void handleAsyncTearDown(
+	public static void handleAsyncTearDown(
 			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> components) {
 		try {
 			final Set<Future<Boolean>> set = new HashSet<Future<Boolean>>();

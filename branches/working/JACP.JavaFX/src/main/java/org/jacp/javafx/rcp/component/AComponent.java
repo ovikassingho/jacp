@@ -44,7 +44,7 @@ import org.jacp.javafx.rcp.util.Checkable;
 
 public class AComponent extends Checkable implements
 		IComponent<EventHandler<Event>, Event, Object> {
-	protected String id;
+	private String id;
 	private String name;
 	private volatile boolean active;
 

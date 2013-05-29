@@ -167,11 +167,11 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param parent
 	 * @param currentTaget
 	 */
-	protected void handleNewComponentValue(
-			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final IComponentView<Node, EventHandler<Event>, Event, Object> component,
-			final Map<String, Node> targetComponents, final Node parent,
-			final String currentTaget) {
+    void handleNewComponentValue(
+            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+            final Map<String, Node> targetComponents, final Node parent,
+            final String currentTaget) {
 		if (parent == null) {
 			final String validId = this.getValidTargetId(currentTaget,
 					component.getExecutionTarget());
@@ -195,8 +195,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param futureTarget
 	 * @return
 	 */
-	protected String getValidTargetId(final String currentTaget,
-			final String futureTarget) {
+    String getValidTargetId(final String currentTaget,
+                            final String futureTarget) {
 		return currentTaget.length() < 2 ? FXUtil
 				.getTargetComponentId(futureTarget) : futureTarget;
 	}
@@ -229,9 +229,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param targetComponents
 	 * @param validContainer
 	 */
-	protected void handleLocalTargetChange(
-			final UIComponent<Node, EventHandler<Event>, Event, Object> component,
-			final Map<String, Node> targetComponents, final Node validContainer) {
+    void handleLocalTargetChange(
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final Map<String, Node> targetComponents, final Node validContainer) {
 		this.addComponentByType(validContainer, component);
 	}
 
@@ -261,9 +261,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected final void changeComponentTarget(
-			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+	final void changeComponentTarget(
+            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		final String targetId = component.getExecutionTarget();
 		final String parentIdOld = component.getParentId();
 		final String parentId = FXUtil.getTargetParentId(targetId);
@@ -297,8 +297,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param component
 	 * @param action
 	 */
-	protected void executeComponentViewPostHandle(final Node handleReturnValue,
-			final AFXComponent component, final IAction<Event, Object> action) {
+    void executeComponentViewPostHandle(final Node handleReturnValue,
+                                        final AFXComponent component, final IAction<Event, Object> action) {
 		Node potsHandleReturnValue = component.postHandle(handleReturnValue,
 				action);
 		if (potsHandleReturnValue == null) {
@@ -331,8 +331,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * 
 	 * @param component
 	 */
-	protected void runCallbackPostExecution(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+    void runCallbackPostExecution(
+            final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
 		if (!component.isStarted())
 			FXUtil.setPrivateMemberValue(Checkable.class, component,
 					FXUtil.ACOMPONENT_STARTED, true);
@@ -355,7 +355,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		}
 	}
 
-	protected void log(final String message) {
+	void log(final String message) {
 		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
 				Level.FINE)) {
 			Logger.getLogger(AFXComponentWorker.class.getName()).fine(

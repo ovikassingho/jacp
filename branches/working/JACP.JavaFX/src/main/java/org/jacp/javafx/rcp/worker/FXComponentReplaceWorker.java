@@ -70,7 +70,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     private void setCacheHints(boolean cache, CacheHint hint) {
         Node currentRoot = this.component.getRoot();
         if (currentRoot != null && currentRoot.getParent() != null) {
-            currentRoot.getParent().setCache(true);
+            currentRoot.getParent().setCache(cache);
             currentRoot.getParent().setCacheHint(CacheHint.SPEED);
         }
     }

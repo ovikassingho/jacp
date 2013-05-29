@@ -44,20 +44,20 @@ public final class ShutdownThreadsHandler{
 	 * Register a Thread.
 	 * @param t
 	 */
-	public static final <T extends Thread> void registerThread(T t) {
+	public static <T extends Thread> void registerThread(T t) {
 		registeredThreads.add(t);
 	}
 	/**
 	 * Register an Executor service.
 	 * @param t
 	 */
-	public static final <E extends ExecutorService> void registerexecutor(E t) {
+	public static <E extends ExecutorService> void registerexecutor(E t) {
 		registeredExecutors.add(t);
 	}
 	/**
 	 * Shutdown all registered Threads.
 	 */
-	public static final void shutdownThreads() {
+	public static void shutdownThreads() {
 		APPLICATION_RUNNING.set(false);
 		for(final Thread t:registeredThreads) {
 			logger.info("shutdown thread: "+t);
@@ -67,7 +67,7 @@ public final class ShutdownThreadsHandler{
 	/**
 	 * Shutdown all registered Executors.
 	 */
-	public static final void shutDownExecutors() {
+	public static void shutDownExecutors() {
 		for(final ExecutorService e: registeredExecutors) {
 			e.shutdown();
 		}
@@ -76,7 +76,7 @@ public final class ShutdownThreadsHandler{
 	/**
 	 * Shutdown registered Threads and Executors.
 	 */
-	public static final void shutdowAll() {
+	public static void shutdowAll() {
 		APPLICATION_RUNNING.set(false);
 		for(final Thread t:registeredThreads) {
 			logger.info("shutdown thread: "+t);
