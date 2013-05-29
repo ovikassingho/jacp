@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -356,12 +357,8 @@ public class FXUtil {
      */
 	public static final <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
 			final String id, final List<P> components) {
-        for (int i = 0; i < components.size(); i++) {
-            final P p = components.get(i);
-            if (p.getId().equals(id)) {
-                return p;
-            }
-        }
+        final Optional<P> filter = components.parallelStream().filter(c -> c.getId().equals(id)).findFirst();
+        if(filter.isPresent()) return filter.get();
         return null;
 	}
 
