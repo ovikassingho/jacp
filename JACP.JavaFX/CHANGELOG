@@ -1,3 +1,5 @@
+29. May. 2013 - amo -  FXWorkbenchHandler and FXUtil.findRootByObserveableId converted to stream API
+29. May. 2013 - amo -  first changes with java8 stream API in FXUtil, be aware code is running since jdk 8 build 91
 28. May  2013 - amo -  Add PerspectiveRegistry
 28. May  2013 - amo -  FXWorkbenchHandler, add OnShow / OnHide functionality
 26. May  2013 - amo -  FXWorkbenchHandler, prepared for OnShow, OnHide annotation usage

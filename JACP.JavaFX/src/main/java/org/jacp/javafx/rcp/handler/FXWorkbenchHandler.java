@@ -96,7 +96,7 @@ public class FXWorkbenchHandler implements
             this.handlePerspectiveReassignment(perspective, perspectiveLayout, componentOld);
         } // End outer if
         else {
-            this.initPerspectiveUI(perspective, perspectiveLayout);
+            this.initPerspectiveUI(perspectiveLayout);
         } // End else
 
     }
@@ -112,7 +112,7 @@ public class FXWorkbenchHandler implements
         final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
                 .getIPerspectiveLayout();
         this.log("3.4.5: perspective init bar entries");
-        this.initPerspectiveUI(perspective, perspectiveLayout);
+        this.initPerspectiveUI(perspectiveLayout);
         PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getId());
 
     }
@@ -154,13 +154,13 @@ public class FXWorkbenchHandler implements
         final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective.getSubcomponents();
         if (subcomponents == null)
             return;
-        for (int i = 0; i < subcomponents.size(); i++) {
-            final ISubComponent<EventHandler<Event>, Event, Object> subComp = subcomponents.get(i);
+        subcomponents.forEach(subComp -> {
             if (subComp instanceof AFXComponent && subComp.isActive()) {
                 final AFXComponent subComponent = (AFXComponent) subComp;
                 this.addComponentByType(subComponent, layout);
             } // End outer if
-        } // End for
+        });
+
     }
 
     /**
@@ -201,7 +201,7 @@ public class FXWorkbenchHandler implements
         final ObservableList<Node> children = this.root.getChildren();
         final IPerspective<EventHandler<Event>, Event, Object> previousPerspective = getPreviousPerspective(perspective);
 
-        hideChildrenAndExecuteOnHide(perspective, previousPerspective, children, oldComp);
+        hideChildrenAndExecuteOnHide(perspective, previousPerspective, children);
 
         final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) perspective);
         final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
@@ -225,18 +225,16 @@ public class FXWorkbenchHandler implements
      */
     private IPerspective<EventHandler<Event>, Event, Object> getPreviousPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         final String previousId = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getId());
-        if(previousId==null)return perspective;
+        if (previousId == null) return perspective;
         return perspective.getId().equals(previousId) ? perspective : PerspectiveRegistry.findPerspectiveById(previousId);
     }
 
     /**
      * add perspective UI to workbench root component
      *
-     * @param perspective
      * @param perspectiveLayout
      */
-    private void initPerspectiveUI(final IPerspective<EventHandler<Event>, Event, Object> perspective,
-                                   final IPerspectiveLayout<? extends Node, Node> perspectiveLayout) {
+    private void initPerspectiveUI(final IPerspectiveLayout<? extends Node, Node> perspectiveLayout) {
         this.log("3.4.6: perspective init SINGLE_PANE");
         final Node comp = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
         if (comp != null) {
@@ -325,13 +323,13 @@ public class FXWorkbenchHandler implements
     }
 
     private Locale getCorrectLocale(final String localeID) {
-        Locale locale = Locale.getDefault();
+        final Locale locale = Locale.getDefault();
         if (localeID != null && localeID.length() > 1) {
             if (localeID.contains("_")) {
                 String[] loc = localeID.split("_");
-                locale = new Locale(loc[0], loc[1]);
+                return new Locale(loc[0], loc[1]);
             } else {
-                locale = new Locale(localeID);
+                return new Locale(localeID);
             }
 
         }
@@ -354,9 +352,9 @@ public class FXWorkbenchHandler implements
      * @param children
      */
     private void hideChildren(final ObservableList<Node> children) {
-        for (final Node child : children) {
-            if (child.isVisible()) child.setVisible(false);
-        }
+        children.forEach(c -> {
+            if (c.isVisible()) c.setVisible(false);
+        });
     }
 
     /**
@@ -364,10 +362,8 @@ public class FXWorkbenchHandler implements
      *
      * @param children
      */
-    private void hideChildrenAndExecuteOnHide(final IPerspective<EventHandler<Event>, Event, Object> perspective, final IPerspective<EventHandler<Event>, Event, Object> previousPerspective, final ObservableList<Node> children, Node oldComponent) {
-        for (final Node child : children) {
-            if (child.isVisible()) child.setVisible(false);
-        }
+    private void hideChildrenAndExecuteOnHide(final IPerspective<EventHandler<Event>, Event, Object> perspective, final IPerspective<EventHandler<Event>, Event, Object> previousPerspective, final ObservableList<Node> children) {
+        hideChildren(children);
         if (previousPerspective != null && !previousPerspective.equals(perspective)) {
             final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());

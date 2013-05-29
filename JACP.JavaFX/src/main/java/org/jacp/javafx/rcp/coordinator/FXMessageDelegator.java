@@ -90,8 +90,8 @@ public class FXMessageDelegator extends Thread implements
 		} // End else
 	}
 
-	public void handleMessage(final String target,
-			final IAction<Event, Object> action) {
+	void handleMessage(final String target,
+                       final IAction<Event, Object> action) {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
@@ -163,8 +163,8 @@ public class FXMessageDelegator extends Thread implements
 		} // End else
 	}
 
-	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
-			final P component, final IAction<Event, Object> action) {
+	<P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
+            final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
 		Platform.runLater(new Runnable() {
 			@Override
@@ -220,7 +220,7 @@ public class FXMessageDelegator extends Thread implements
 
 	}
 
-	public BlockingQueue<IDelegateDTO<Event, Object>> getComponentDelegateQueue() {
+	BlockingQueue<IDelegateDTO<Event, Object>> getComponentDelegateQueue() {
 		return this.messageDelegateQueue;
 	}
 
@@ -249,7 +249,7 @@ public class FXMessageDelegator extends Thread implements
 
 	}
 
-	protected void log(final String message) {
+	void log(final String message) {
 		this.logger.fine(message);
 	}
 

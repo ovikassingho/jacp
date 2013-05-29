@@ -50,7 +50,7 @@ public abstract class ASubComponent extends AComponent implements
 	
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-	protected volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
+	private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
 			1000);
 
 	@Override
