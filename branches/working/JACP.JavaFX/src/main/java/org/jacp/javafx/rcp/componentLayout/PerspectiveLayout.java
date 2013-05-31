@@ -22,21 +22,20 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.componentLayout;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javafx.scene.Node;
-
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.javafx.rcp.util.Checkable;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 /**
  * The basic perspective layout to set the root and the child nodes of a perspective. Use registerChildNodes to define and register containers where subcomponents can be added.
  * 
  * @author Andy Moncsek
  */
 public abstract class PerspectiveLayout extends Checkable implements IPerspectiveLayout<Node, Node> {
-	protected Node rootComponent;
-	protected volatile  Map<String, Node> targetComponents = new ConcurrentHashMap<String, Node>();
+	Node rootComponent;
+	private volatile  Map<String, Node> targetComponents = new ConcurrentHashMap<>();
 	
 	public PerspectiveLayout() {
 		

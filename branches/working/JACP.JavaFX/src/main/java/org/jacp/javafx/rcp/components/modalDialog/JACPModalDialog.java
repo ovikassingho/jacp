@@ -27,7 +27,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.animation.TimelineBuilder;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -81,15 +80,10 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
             JACPModalDialog.instance = new JACPModalDialog();
             JACPModalDialog.instance.setId("error-dimmer");
             final Button test = new Button("close");
-            test.setOnAction(new EventHandler<ActionEvent>() {
-
-                @Override
-                public void handle(final ActionEvent arg0) {
+            test.setOnAction(arg-> {
                     final GaussianBlur blur = (GaussianBlur) rootNode.getEffect();
                     blur.setRadius(0.0);
                     JACPModalDialog.instance.setVisible(false);
-                }
-
             });
         }
 
@@ -101,7 +95,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      * @param message
      *            the message
      */
-    public void showModalMessage(final Node message) {
+    public synchronized void showModalMessage(final Node message) {
         if (getHideTimeline().getStatus() == Status.RUNNING) {
             getHideTimeline().stop();
         }
@@ -119,30 +113,34 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      * Hide any modal message that is shown.
      */
     @Override
-    public void hideModalMessage() {
+    public synchronized void hideModalMessage() {
         this.setCache(true);
         getHideTimeline().play();
         ((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(0.0);
     }
 
+    /**
+     *  Returns the timeline to hide dialog, should always called from a thread save block
+     * @return the hide timeline
+     */
     private Timeline getHideTimeline() {
-        hideTimeline = (hideTimeline == null) ? TimelineBuilder.create().keyFrames(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(final ActionEvent t) {
+        if(hideTimeline==null){
+            hideTimeline = new Timeline(new KeyFrame(Duration.millis(250), (EventHandler<ActionEvent>)(t)-> {
                 JACPModalDialog.this.setCache(false);
                 JACPModalDialog.this.setVisible(false);
-            }
-        }, new KeyValue(this.opacityProperty(), 0, Interpolator.EASE_BOTH))).build() : hideTimeline;
+            }, new KeyValue(this.opacityProperty(), 0, Interpolator.EASE_BOTH)));
+        }
         return hideTimeline;
     }
 
+    /**
+     * Returns the timeline to show dialog, should always called from a thread save block
+     * @return  the show timeline
+     */
     private Timeline getShowTimeline() {
-        showTimeline = (showTimeline == null) ? TimelineBuilder.create().keyFrames(new KeyFrame(Duration.millis(250), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(final ActionEvent t) {
-                JACPModalDialog.this.setCache(false);
-            }
-        }, new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH))).build() : showTimeline;
+        if(showTimeline==null) {
+            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (EventHandler<ActionEvent>)(t)-> JACPModalDialog.this.setCache(false), new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
+        }
         return showTimeline;
     }
 

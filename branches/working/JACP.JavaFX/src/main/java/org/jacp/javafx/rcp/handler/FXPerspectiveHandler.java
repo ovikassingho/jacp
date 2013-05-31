@@ -22,17 +22,10 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.handler;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
@@ -50,6 +43,12 @@ import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
 import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
 import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handles initialization an reassignment of components in perspective.
@@ -88,12 +87,9 @@ public class FXPerspectiveHandler
 		if (Platform.isFxApplicationThread()) {
 			this.handleInit(action, component);
 		} else {
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					FXPerspectiveHandler.this.handleInit(action, component);
-				}
-			});
+			Platform.runLater(() -> {
+                FXPerspectiveHandler.this.handleInit(action, component);
+            });
 		}
 
 	}

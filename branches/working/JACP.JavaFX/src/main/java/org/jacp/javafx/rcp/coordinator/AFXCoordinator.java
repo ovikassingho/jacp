@@ -22,17 +22,16 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.logging.Logger;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.logging.Logger;
 
 /**
  * Observer handles messages and notifies correct components, the observer is
@@ -44,7 +43,7 @@ public abstract class AFXCoordinator extends Thread implements
 		ICoordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<IAction<Event, Object>>(
+	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<>(
 			100000);
 
 	AFXCoordinator(String name) {

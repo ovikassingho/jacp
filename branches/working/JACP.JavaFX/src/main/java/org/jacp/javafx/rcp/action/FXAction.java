@@ -23,7 +23,6 @@
 package org.jacp.javafx.rcp.action;
 
 import javafx.event.Event;
-
 import org.jacp.api.action.IAction;
 
 /**

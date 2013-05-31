@@ -22,13 +22,12 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.action;
 
-import java.util.concurrent.BlockingQueue;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * This class represents the JACP FX2 Event listener... this class can be

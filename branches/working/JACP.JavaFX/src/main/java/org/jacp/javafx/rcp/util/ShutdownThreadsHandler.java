@@ -35,11 +35,11 @@ import java.util.logging.Logger;
  *
  */
 public final class ShutdownThreadsHandler{
-	private static  List<Thread> registeredThreads = new CopyOnWriteArrayList<Thread>();
-	private static  List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<ExecutorService>();
+	private static final List<Thread> registeredThreads = new CopyOnWriteArrayList<>();
+	private static final List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<>();
 	private static final Logger logger = Logger.getLogger("ShutdownThreadsHandler");
 	public static volatile AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
-	public static Long WAIT = 1500L;
+	public static final Long WAIT = 1500L;
 	/**
 	 * Register a Thread.
 	 * @param t

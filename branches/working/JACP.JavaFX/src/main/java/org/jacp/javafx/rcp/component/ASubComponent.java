@@ -22,16 +22,15 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.component;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.ISubComponent;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
-
-import javafx.event.Event;
-import javafx.event.EventHandler;
-
-import org.jacp.api.action.IAction;
-import org.jacp.api.component.ISubComponent;
 
 /**
  * the AFXSubComponent is the basic component for all components
@@ -50,7 +49,7 @@ public abstract class ASubComponent extends AComponent implements
 	
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-	private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<IAction<Event, Object>>(
+	private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
 			1000);
 
 	@Override

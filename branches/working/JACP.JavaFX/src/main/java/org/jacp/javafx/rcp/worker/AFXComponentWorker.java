@@ -22,23 +22,12 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.PostConstruct;
@@ -54,6 +43,16 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * handles component methods in own thread;
@@ -377,24 +376,21 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 		final AtomicBoolean conditionReady = new AtomicBoolean(false);
 		lock.lock();
 		try {
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						lock.lock();
-						// prevent execution when application is closed
-						if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-							runnable.run();
-					} catch (Exception e) {
-						e.printStackTrace();
-					} finally {
-						conditionReady.set(true);
-						condition.signal();
-						lock.unlock();
-					}
+			Platform.runLater(() -> {
+                try {
+                    lock.lock();
+                    // prevent execution when application is closed
+                    if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
+                        runnable.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    conditionReady.set(true);
+                    condition.signal();
+                    lock.unlock();
+                }
 
-				}
-			});
+            });
 			// wait until execution is finished and check if application is
 			// still running to prevent wait
 			while (!conditionReady.get()

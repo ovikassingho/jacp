@@ -22,18 +22,17 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.componentLayout;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
-
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.util.Tupel;
 import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * defines basic layout of workbench; define if menus are enabled; declare tool
@@ -44,8 +43,8 @@ import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
-	private final Tupel<Integer, Integer> size = new Tupel<Integer, Integer>();
-	private final Map<ToolbarPosition, JACPToolBar> registeredToolbars = new TreeMap<ToolbarPosition, JACPToolBar>();
+	private final Tupel<Integer, Integer> size = new Tupel<>();
+	private final Map<ToolbarPosition, JACPToolBar> registeredToolbars = new TreeMap<>();
 	private JACPMenuBar menu;
 	private Pane glassPane;
 	private StageStyle style = StageStyle.DECORATED;
