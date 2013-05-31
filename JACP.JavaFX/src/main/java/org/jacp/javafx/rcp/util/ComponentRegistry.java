@@ -22,16 +22,14 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import org.jacp.api.component.ISubComponent;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import javafx.event.Event;
-import javafx.event.EventHandler;
-
-import org.jacp.api.component.IPerspective;
-import org.jacp.api.component.ISubComponent;
 
 /**
  * Global registry with references to all components.
@@ -40,7 +38,7 @@ import org.jacp.api.component.ISubComponent;
  * 
  */
 public class ComponentRegistry {
-	private static volatile List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<ISubComponent<EventHandler<Event>, Event, Object>>();
+	private static volatile List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<>();
 	private static volatile ReadWriteLock lock = new ReentrantReadWriteLock();
 	/**
 	 * Registers a component.

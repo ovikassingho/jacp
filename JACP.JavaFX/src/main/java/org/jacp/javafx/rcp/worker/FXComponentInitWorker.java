@@ -22,18 +22,9 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
-
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.PostConstruct;
 import org.jacp.api.util.UIType;
@@ -41,6 +32,14 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Background Worker to execute components; handle method to init component.
@@ -192,7 +191,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * 
 	 * @param validContainer
 	 *            , a valid target where the component ui node is included
-	 * @param component
+	 * @param myComponent
 	 *            , the ui component
 	 * @throws InterruptedException
 	 * @throws InvocationTargetException
@@ -200,18 +199,15 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private void addComponent(final Node validContainer,
 			final Node handleReturnValue, final AFXComponent myComponent,
 			final IAction<Event, Object> myAction) throws InterruptedException {
-		this.invokeOnFXThreadAndWait(new Runnable() {
-			@Override
-			public void run() {
-				FXComponentInitWorker.this.executeComponentViewPostHandle(
-						handleReturnValue, myComponent, myAction);
-				if (validContainer == null || myComponent.getRoot() == null) {
-					return;
-				}
-				FXComponentInitWorker.this.addComponentByType(validContainer,
-						myComponent);
-			}
-		});
+		this.invokeOnFXThreadAndWait(() -> {
+            FXComponentInitWorker.this.executeComponentViewPostHandle(
+                    handleReturnValue, myComponent, myAction);
+            if (validContainer == null || myComponent.getRoot() == null) {
+                return;
+            }
+            FXComponentInitWorker.this.addComponentByType(validContainer,
+                    myComponent);
+        });
 	}
 
 	@Override

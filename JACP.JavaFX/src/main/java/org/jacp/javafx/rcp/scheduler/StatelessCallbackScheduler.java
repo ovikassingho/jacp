@@ -22,12 +22,8 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.scheduler;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
@@ -35,6 +31,9 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.api.scheduler.IStatelessComponentScheduler;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.worker.StateLessComponentRunWorker;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatelessCallbackScheduler implements
 		IStatelessComponentScheduler<EventHandler<Event>, Event, Object> {
@@ -127,13 +126,11 @@ public class StatelessCallbackScheduler implements
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
 		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = baseComponent
 				.getInstances();
-		for (int i = 0; i < componentInstances.size(); i++) {
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp = componentInstances
-					.get(i);
-			if (!comp.isBlocked()) {
-				return comp;
-			} // End if
-		} // End for
+        for (final ICallbackComponent<EventHandler<Event>, Event, Object> comp : componentInstances) {
+            if (!comp.isBlocked()) {
+                return comp;
+            } // End if
+        } // End for
 
 		return null;
 	}

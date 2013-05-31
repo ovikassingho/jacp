@@ -22,18 +22,17 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
-
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.javafx.rcp.util.TearDownHandler;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Component worker to run instances of a stateless component in a worker
@@ -91,17 +90,13 @@ public class StateLessComponentRunWorker
 					&& parent.getInstances().contains(component)) {
 				forceShutdown(component, parent);
 			}
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-			// TODO add to error queue and restart thread if messages in
-			// queue
-		} catch (final ExecutionException e) {
+		} catch (final InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 			// TODO add to error queue and restart thread if messages in
 			// queue
 		}
 
-	}
+    }
 
 	/**
 	 * Handle shutdown of components.
@@ -116,10 +111,10 @@ public class StateLessComponentRunWorker
 		if (parent.getInstances().contains(component))
 			parent.getInstances().remove(component);
 		// create a copy off all remaining instances
-		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instances = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>(
+		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instances = new CopyOnWriteArrayList<>(
 				parent.getInstances());
 		// create a backup (for iteration and later to handle teardown)
-		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instancesCopy = new CopyOnWriteArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>(
+		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instancesCopy = new CopyOnWriteArrayList<>(
 				instances);
 		// clear all created instances
 		parent.getInstances().clear();
@@ -135,11 +130,8 @@ public class StateLessComponentRunWorker
 		// teardown
 		instancesCopy.add(component);
 
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				TearDownHandler.handleAsyncTearDown(instancesCopy);
-			}
-		});
+		Platform.runLater(() -> {
+            TearDownHandler.handleAsyncTearDown(instancesCopy);
+        });
 	}
 }

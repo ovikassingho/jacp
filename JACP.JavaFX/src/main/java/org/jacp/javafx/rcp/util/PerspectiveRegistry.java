@@ -18,14 +18,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Global registry with references to all perspectives
  */
 public class PerspectiveRegistry {
-    private static volatile List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
+    private static volatile List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
     private static volatile ReadWriteLock lock = new ReentrantReadWriteLock();
-    private static AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
+    private static final AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
 
     /**
      * Set a new perspective id and returns the current id.
-     * @param id
-     * @return
+     * @param id, the new perspective id
+     * @return   the previous perspective id
      */
     public static String getAndSetCurrentVisiblePerspective(final String id){
         final String current = currentVisiblePerspectiveId.get();
@@ -37,14 +37,14 @@ public class PerspectiveRegistry {
     /**
      * Registers a component.
      *
-     * @param component
+     * @param perspective, a perspective to register
      */
     public static void registerPerspective(
-            final IPerspective<EventHandler<Event>, Event, Object> component) {
+            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         lock.writeLock().lock();
         try{
-            if (!perspectives.contains(component))
-                perspectives.add(component);
+            if (!perspectives.contains(perspective))
+                perspectives.add(perspective);
         }finally{
             lock.writeLock().unlock();
         }
@@ -54,14 +54,14 @@ public class PerspectiveRegistry {
     /**
      * Removes component from registry.
      *
-     * @param component
+     * @param perspective, a perspective to remove
      */
     public static void removePerspective(
-            final IPerspective<EventHandler<Event>, Event, Object> component) {
+            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         lock.writeLock().lock();
         try{
-            if (perspectives.contains(component))
-                perspectives.remove(component);
+            if (perspectives.contains(perspective))
+                perspectives.remove(perspective);
         }finally{
             lock.writeLock().unlock();
         }
@@ -71,8 +71,8 @@ public class PerspectiveRegistry {
     /**
      * Returns a component by component id
      *
-     * @param targetId
-     * @return
+     * @param targetId , the target perspective id
+     * @return a perspective
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveById(
             final String targetId) {
@@ -87,8 +87,8 @@ public class PerspectiveRegistry {
     }
     /**
      * Returns the a component by class.
-     * @param clazz
-     * @return
+     * @param clazz , a perspective class
+     * @return   a perspective
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveByClass(final Class<?> clazz) {
         lock.readLock().lock();
@@ -104,7 +104,7 @@ public class PerspectiveRegistry {
 
     /**
      * applies a simple predicate to all perspectives
-     * @param predicate
+     * @param predicate, a predicate to apply on all perspectives
      */
     public static void applyToPerspectives(Predicate predicate) {
         lock.writeLock().lock();

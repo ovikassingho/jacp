@@ -22,18 +22,17 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.component;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponentView;
 import org.jacp.api.component.IDeclarative;
 import org.jacp.api.util.UIType;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Represents a basic FX2 component to extend from, uses this abstract class to
@@ -93,8 +92,6 @@ public abstract class AFXComponent extends ASubComponent implements
 	public abstract Node handleAction(final IAction<Event, Object> action);
 
 	/**
-	 * @see org.jacp.api.component.IVComponent#postHandle(Object, IAction)
-	 *      {@inheritDoc}
 	 * @param node
 	 * @param action
 	 * @return a node

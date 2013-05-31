@@ -1,14 +1,14 @@
 package org.jacp.javafx.rcp.util;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  *

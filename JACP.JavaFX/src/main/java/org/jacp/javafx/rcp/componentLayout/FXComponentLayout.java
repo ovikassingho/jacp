@@ -22,15 +22,14 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.componentLayout;
 
-import java.util.Map;
-
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-
 import org.jacp.api.componentLayout.IBaseLayout;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+
+import java.util.Map;
 
 /**
  * A FX2ComponentLayout acts as an wrapper to the references of the main menu

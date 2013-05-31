@@ -22,6 +22,17 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
+import org.jacp.api.component.ISubComponent;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -30,19 +41,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
-
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-
-import org.jacp.api.action.IAction;
-import org.jacp.api.component.IComponent;
-import org.jacp.api.component.IPerspective;
-import org.jacp.api.component.ISubComponent;
 
 /**
  * Util class with helper methods
@@ -96,19 +94,7 @@ public class FXUtil {
                 returnValue = (ObservableList<Node>) protectedChildrenMethod
                         .invoke(tmp);
 
-            } catch (final NoSuchMethodException ex) {
-                Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
-                        null, ex);
-            } catch (final SecurityException ex) {
-                Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
-                        null, ex);
-            } catch (final IllegalAccessException ex) {
-                Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
-                        null, ex);
-            } catch (final IllegalArgumentException ex) {
-                Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
-                        null, ex);
-            } catch (final InvocationTargetException ex) {
+            } catch (final NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
                         null, ex);
             }
@@ -128,13 +114,7 @@ public class FXUtil {
             privateStringField.setAccessible(true);
             privateStringField.set(object, value);
 
-        } catch (final SecurityException e) {
-            Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
-        } catch (final NoSuchFieldException e) {
-            Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
-        } catch (final IllegalArgumentException e) {
-            Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
-        } catch (final IllegalAccessException e) {
+        } catch (final SecurityException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException e) {
             Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE, null, e);
         }
     }
@@ -171,10 +151,7 @@ public class FXUtil {
                     throw new UnsupportedOperationException(
                             "use @PostConstruct and @OnTeardown either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
                             e.getCause());
-                } catch (final IllegalAccessException e) {
-                    Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
-                            null, e);
-                } catch (final InvocationTargetException e) {
+                } catch (final IllegalAccessException | InvocationTargetException e) {
                     Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
                             null, e);
                 }
@@ -339,7 +316,7 @@ public class FXUtil {
      * @param messageId
      * @return
      */
-    protected static String[] getTargetId(final String messageId) {
+    private static String[] getTargetId(final String messageId) {
         return messageId.split("\\.");
     }
 

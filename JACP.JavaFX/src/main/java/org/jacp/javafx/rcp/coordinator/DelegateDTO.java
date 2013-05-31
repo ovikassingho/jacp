@@ -23,7 +23,6 @@
 package org.jacp.javafx.rcp.coordinator;
 
 import javafx.event.Event;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 

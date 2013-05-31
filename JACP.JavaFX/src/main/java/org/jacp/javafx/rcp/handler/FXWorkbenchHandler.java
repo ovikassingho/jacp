@@ -22,15 +22,6 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.handler;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -39,7 +30,6 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnHide;
 import org.jacp.api.annotations.OnShow;
@@ -62,6 +52,15 @@ import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.PerspectiveRegistry;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handles initialization and re assignment of perspectives in workbench.
@@ -379,7 +378,7 @@ public class FXWorkbenchHandler implements
         }
     }
 
-    public final FXWorkbenchLayout getWorkbenchLayout() {
+    final FXWorkbenchLayout getWorkbenchLayout() {
         return (FXWorkbenchLayout) this.workbenchLayout;
     }
 

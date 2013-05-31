@@ -22,16 +22,9 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.IPerspective;
@@ -41,6 +34,12 @@ import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 /**
  * The component delegator handles a component target change, find the correct
@@ -52,10 +51,10 @@ import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 public class FXComponentDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>>(
+	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
 			100);
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
+	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 
 	public FXComponentDelegator() {
 		super("FXComponentDelegator");
@@ -129,15 +128,12 @@ public class FXComponentDelegator extends Thread implements
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
 			final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				FXComponentDelegator.this.componentHandler
-						.initComponent(
-								action,
-								(IPerspective<EventHandler<Event>, Event, Object>) component);
-			}
-		});
+		Platform.runLater(() -> {
+            FXComponentDelegator.this.componentHandler
+                    .initComponent(
+                            action,
+                            (IPerspective<EventHandler<Event>, Event, Object>) component);
+        });
 	}
 
 	/**

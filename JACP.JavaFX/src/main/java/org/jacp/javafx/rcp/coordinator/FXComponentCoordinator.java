@@ -22,11 +22,8 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-import java.util.concurrent.BlockingQueue;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
@@ -35,6 +32,8 @@ import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * observe component actions and delegates to correct component

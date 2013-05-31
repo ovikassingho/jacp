@@ -22,15 +22,14 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 
 /**
  * This class handles running stateful background components
@@ -107,14 +106,11 @@ public class StateComponentRunWorker
 		synchronized (this.component) {
 			try {
 				this.get();
-			} catch (final InterruptedException e) {
+			} catch (final InterruptedException | ExecutionException e) {
 				// FIXME: Handle Exceptions the right way
 				e.printStackTrace();
-			} catch (final ExecutionException e) {
-				// FIXME: Handle Exceptions the right way
-				e.printStackTrace();
-			} 
-		}
+			}
+        }
 	}
 
 }

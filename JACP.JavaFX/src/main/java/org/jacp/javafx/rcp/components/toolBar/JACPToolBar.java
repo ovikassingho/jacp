@@ -22,8 +22,6 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.components.toolBar;
 
-import org.jacp.javafx.rcp.util.CSSUtil;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -35,6 +33,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.jacp.javafx.rcp.util.CSSUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +48,7 @@ import java.util.Map;
  */
 public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>, ListChangeListener<Node> {
 
-    private Map<String, List<Node>> nodeMap = new HashMap<>();
+    private final Map<String, List<Node>> nodeMap = new HashMap<>();
 
     /** The left buttons. */
     private HBox leftButtons;

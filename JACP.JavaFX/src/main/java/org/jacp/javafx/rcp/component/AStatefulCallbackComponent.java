@@ -24,7 +24,6 @@ package org.jacp.javafx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
 

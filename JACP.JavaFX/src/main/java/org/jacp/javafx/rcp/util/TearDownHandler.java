@@ -22,18 +22,8 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.util;
 
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IPerspective;
@@ -42,6 +32,11 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.workbench.IBase;
 import org.jacp.javafx.rcp.worker.AFXComponentWorker;
 import org.jacp.javafx.rcp.worker.TearDownWorker;
+
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handles TearDown annotations on all components when application is closed.
@@ -79,7 +74,7 @@ public class TearDownHandler {
 			// TODO ... teardown perspective itself
 			final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective
 					.getSubcomponents();
-			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
+			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
 			for (final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
 				if (component instanceof ICallbackComponent) {
 					handleAsync
@@ -104,9 +99,10 @@ public class TearDownHandler {
 	 * 
 	 * @param components
 	 */
-	public static void handleAsyncTearDown(
+	@SafeVarargs
+    public static void handleAsyncTearDown(
 			ICallbackComponent<EventHandler<Event>, Event, Object>... components) {
-		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<ICallbackComponent<EventHandler<Event>, Event, Object>>();
+		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
         Collections.addAll(handleAsync, components);
 		handleAsyncTearDown(handleAsync);
 	}
@@ -120,7 +116,7 @@ public class TearDownHandler {
 	public static void handleAsyncTearDown(
 			final List<ICallbackComponent<EventHandler<Event>, Event, Object>> components) {
 		try {
-			final Set<Future<Boolean>> set = new HashSet<Future<Boolean>>();
+			final Set<Future<Boolean>> set = new HashSet<>();
 			for (final ICallbackComponent<EventHandler<Event>, Event, Object> component : components) {
 				if(component instanceof IStatelessCallabackComponent){
 					final IStatelessCallabackComponent<EventHandler<Event>, Event, Object>tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
@@ -135,14 +131,11 @@ public class TearDownHandler {
 			for (final Future<Boolean> future : set) {
 				try {
 					future.get();
-				} catch (InterruptedException e) {
-					log("error while handle TearDown");
-					e.printStackTrace();
-				} catch (ExecutionException e) {
+				} catch (InterruptedException | ExecutionException e) {
 					log("error while handle TearDown");
 					e.printStackTrace();
 				}
-			}
+            }
 		} catch (RejectedExecutionException e) {
 			log("component teardown was not executed");
 		}

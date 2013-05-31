@@ -22,22 +22,21 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil;
+
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
 
 /**
  * Background Worker to execute components handle method in separate thread and
@@ -68,10 +67,10 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     }
 
     private void setCacheHints(boolean cache, CacheHint hint) {
-        Node currentRoot = this.component.getRoot();
+        final Node currentRoot = this.component.getRoot();
         if (currentRoot != null && currentRoot.getParent() != null) {
-            currentRoot.getParent().setCache(cache);
-            currentRoot.getParent().setCacheHint(CacheHint.SPEED);
+            if(currentRoot.getParent().isCache()!=cache)currentRoot.getParent().setCache(cache);
+            if(!currentRoot.getParent().getCacheHint().equals(hint))currentRoot.getParent().setCacheHint(CacheHint.SPEED);
         }
     }
 
@@ -124,9 +123,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                          final FXComponentLayout layout, final Node handleReturnValue,
                          final Node previousContainer, final String currentTaget)
             throws InterruptedException {
-        this.invokeOnFXThreadAndWait(new Runnable() {
-            @Override
-            public void run() {
+        this.invokeOnFXThreadAndWait(()-> {
                 // check if component was set to inactive, if so remove
                 if (component.isActive()) {
                     FXComponentReplaceWorker.this.publishComponentValue(
@@ -140,7 +137,6 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                             component, layout);
                 }
-            }
         });
     }
 

@@ -22,16 +22,9 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.coordinator;
 
-import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
-
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
@@ -40,6 +33,12 @@ import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Logger;
 
 /**
  * The message delegate handles messages from one perspective to an other.
@@ -51,9 +50,9 @@ public class FXMessageDelegator extends Thread implements
 		IMessageDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<IDelegateDTO<Event, Object>>(
+	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<>(
 			10000);
-	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<IPerspective<EventHandler<Event>, Event, Object>>();
+	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 
 	public FXMessageDelegator() {
 		super("FXMessageDelegator");
@@ -63,9 +62,8 @@ public class FXMessageDelegator extends Thread implements
 	@Override
 	public final void run() {
 		while (!Thread.interrupted()) {
-			IDelegateDTO<Event, Object> dto = null;
 			try {
-				dto = this.messageDelegateQueue.take();
+				final IDelegateDTO<Event, Object> dto = this.messageDelegateQueue.take();
 				final String targetId = dto.getTarget();
 				final IAction<Event, Object> action = dto.getAction();
 				this.delegateMessage(targetId, action);
@@ -166,15 +164,12 @@ public class FXMessageDelegator extends Thread implements
 	<P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
             final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				FXMessageDelegator.this.componentHandler
-						.initComponent(
-								action,
-								(IPerspective<EventHandler<Event>, Event, Object>) component);
-			}
-		});
+		Platform.runLater(() -> {
+            FXMessageDelegator.this.componentHandler
+                    .initComponent(
+                            action,
+                            (IPerspective<EventHandler<Event>, Event, Object>) component);
+        });
 	}
 
 	/**
@@ -185,15 +180,12 @@ public class FXMessageDelegator extends Thread implements
 	 */
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
 			final P component, final IAction<Event, Object> action) {
-		Platform.runLater(new Runnable() {
-			@Override
-			public final void run() {
-				FXMessageDelegator.this.componentHandler
-						.handleAndReplaceComponent(
-								action,
-								(IPerspective<EventHandler<Event>, Event, Object>) component);
-			} // End run
-		} // End runnable
+		Platform.runLater(() -> {
+            FXMessageDelegator.this.componentHandler
+                    .handleAndReplaceComponent(
+                            action,
+                            (IPerspective<EventHandler<Event>, Event, Object>) component);
+        } // End runnable
 		); // End runlater
 	}
 
