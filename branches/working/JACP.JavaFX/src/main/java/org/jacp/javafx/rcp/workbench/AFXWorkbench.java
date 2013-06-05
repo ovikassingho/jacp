@@ -155,13 +155,10 @@ public abstract class AFXWorkbench
                     // again?
                     this.log("3.4.2: create perspective menu");
                     if (perspective.isActive()) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public final void run() {
+                        Platform.runLater(()->{
                                 AFXWorkbench.this.componentHandler.initComponent(
                                         new FXAction(perspective.getId(), perspective
                                                 .getId(), "init", null), perspective);
-                            }
                         }); // FX2 UTILS END
                     }
                 });
@@ -203,9 +200,9 @@ public abstract class AFXWorkbench
     /**
      * JavaFX2 specific initialization method to create a workbench instance
      *
-     * @param action
-     * @param layout
-     * @param stage
+     * @param action, the initial event
+     * @param layout, the workbench layout
+     * @param stage, the JavaFX stage
      */
     public abstract void handleInitialLayout(
             final IAction<Event, Object> action,
@@ -215,7 +212,7 @@ public abstract class AFXWorkbench
      * Handle menu and bar entries created in @see
      * {@link org.jacp.javafx.rcp.workbench.AFXWorkbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
      *
-     * @param layout
+     * @param layout, the component layout
      */
     public abstract void postHandle(final FXComponentLayout layout);
 
