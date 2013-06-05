@@ -31,6 +31,12 @@
 		<javafx.version>2.2</javafx.version>
 		<spring.version>3.1.3.RELEASE</spring.version>
 	</properties>
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.springsource.org/snapshot</url>
+        </repository>
+    </repositories>
 	<build>
 		<plugins>
             <plugin>
