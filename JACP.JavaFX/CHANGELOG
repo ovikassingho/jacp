@@ -1,3 +1,4 @@
+24. Jun. 2013 - amo -  start initial work on context object
 30. May  2013 - amo -  overall cleanup and and Java 8 changes
 29. May. 2013 - amo -  FXWorkbenchHandler and FXUtil.findRootByObserveableId converted to stream API
 29. May. 2013 - amo -  first changes with java8 stream API in FXUtil, be aware code is running since jdk 8 build 91

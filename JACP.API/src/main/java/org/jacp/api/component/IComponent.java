@@ -63,13 +63,6 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 */
 	String getId();
 
-	/**
-	 * Set unique id of component.
-	 * 
-	 * @param id ; the component id.
-	 */
-	@Deprecated
-	void setId(final String id);
 
 	/**
 	 * Get the default active status of component.
@@ -100,12 +93,5 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 */
 	String getName();
 
-	/**
-	 * Defines the name of a component.
-	 * 
-	 * @param name ; the component name
-	 */
-	@Deprecated
-	void setName(String name);
 
 }

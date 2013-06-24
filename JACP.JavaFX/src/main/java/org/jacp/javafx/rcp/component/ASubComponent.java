@@ -60,62 +60,62 @@ public abstract class ASubComponent extends AComponent implements
 
 	}
 
-	@Override
-	public final String getExecutionTarget() {
-		return this.executionTarget;
-	}
+	    @Override
+    public final String getExecutionTarget() {
+        return this.executionTarget;
+    }
 
-	@Override
-	public final void setExecutionTarget(final String target) {
-		this.executionTarget = target;
+    @Override
+    public final void setExecutionTarget(final String target) {
+        this.executionTarget = target;
 
-	}
+    }
 
-	@Override
-	public final boolean hasIncomingMessage() {
-		return !this.incomingMessage.isEmpty();
-	}
+    @Override
+    public final boolean hasIncomingMessage() {
+        return !this.incomingMessage.isEmpty();
+    }
 
-	@Override
-	public final void putIncomingMessage(final IAction<Event, Object> action) {
-		try {
-			this.incomingMessage.put(action);
-		} catch (final InterruptedException e) {
-			logger.info("massage put failed:");
-		}
+    @Override
+    public final void putIncomingMessage(final IAction<Event, Object> action) {
+        try {
+            this.incomingMessage.put(action);
+        } catch (final InterruptedException e) {
+            logger.info("massage put failed:");
+        }
 
-	}
+    }
 
-	@Override
-	public final IAction<Event, Object> getNextIncomingMessage() {
-		if (this.hasIncomingMessage()) {
-			try {
-				return this.incomingMessage.take();
-			} catch (final InterruptedException e) {
-				logger.info("massage take failed:");
-			}
-		}
-		return null;
-	}
+    @Override
+    public final IAction<Event, Object> getNextIncomingMessage() {
+        if (this.hasIncomingMessage()) {
+            try {
+                return this.incomingMessage.take();
+            } catch (final InterruptedException e) {
+                logger.info("massage take failed:");
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public final boolean isBlocked() {
-		return lock.availablePermits() == 0;
-	}
+    @Override
+    public final boolean isBlocked() {
+        return lock.availablePermits() == 0;
+    }
 
-	@Override
-	public final void lock() {
-		try {
-			lock.acquire();
-		} catch (InterruptedException e) {
-			logger.info("lock interrupted.");
-		}
-	}
+    @Override
+    public final void lock() {
+        try {
+            lock.acquire();
+        } catch (InterruptedException e) {
+            logger.info("lock interrupted.");
+        }
+    }
 
-	@Override
-	public final void release() {
-		lock.release();
-	}
+    @Override
+    public final void release() {
+        lock.release();
+    }
 
 	@Override
 	public final String getParentId() {
