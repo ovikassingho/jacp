@@ -78,12 +78,6 @@ public class AComponent extends Checkable implements
 	}
 
 	@Override
-	public final void setId(final String id) {
-		this.checkPolicy(this.id, "Do Not Set ID manually");
-		this.id = id;
-	}
-
-	@Override
 	public final boolean isActive() {
 		return this.active;
 	}
@@ -107,11 +101,6 @@ public class AComponent extends Checkable implements
 		return this.name;
 	}
 
-	@Override
-	public final void setName(final String name) {
-		this.checkPolicy(this.name, "Do Not Set NAME manually");
-		this.name = name;
-	}
 
 
     @Override
