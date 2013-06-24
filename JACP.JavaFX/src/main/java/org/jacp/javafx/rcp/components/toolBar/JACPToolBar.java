@@ -53,6 +53,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /** The left buttons. */
     private HBox leftButtons;
 
+    /** The center buttons. */
+    private HBox centerButtons;
+
     /** The right buttons. */
     private HBox rightButtons;
 
@@ -61,6 +64,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     /** The top buttons. */
     private VBox topButtons;
+
+    /** The middle buttons. */
+    private VBox middleButtons;
 
     /** The bottom buttons. */
     private VBox bottomButtons;
@@ -120,9 +126,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     public void remove(final Node node) {
         if (this.getOrientation() == Orientation.HORIZONTAL) {
             this.leftButtons.getChildren().remove(node);
+            this.centerButtons.getChildren().remove(node);
             this.rightButtons.getChildren().remove(node);
         } else {
             this.topButtons.getChildren().remove(node);
+            this.middleButtons.getChildren().remove(node);
             this.bottomButtons.getChildren().remove(node);
         }
     }
@@ -141,7 +149,32 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
     }
 
+    public void addAllToCenter(String id, Node... nodes){
+        for(final Node node : nodes){
+            addToCenter(id, node);
+        }
+    }
+
     /**
+     * Adds the on end.
+     *
+     * @param node
+     *            the node
+     */
+    public void addToCenter(String id, final Node node) {
+        if (this.getOrientation() == Orientation.HORIZONTAL) {
+            HBox.setMargin(node, new Insets(0, 2, 0, 2));
+            this.centerButtons.getChildren().add(node);
+        } else {
+            VBox.setMargin(node, new Insets(2, 0, 2, 0));
+            this.middleButtons.getChildren().add(node);
+        }
+
+        getNodes(id).add(node);
+
+        this.bind();
+    }
+/**
      * Adds the on end.
      *
      * @param node
@@ -166,9 +199,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      */
     private void initHorizontalToolBar() {
         /*
-         * --------------------------------------------------------------- |
-         * |left hand side buttons| |spacer| |right hand side buttons| |
-         * ---------------------------------------------------------------
+         * ----------------------------------------------------------------------
+         * |left hand side buttons| | centered buttons| |right hand side buttons|
+         * ----------------------------------------------------------------------
          */
         this.clear();
         // the main box for the toolbar
@@ -178,15 +211,18 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.horizontalToolBar = new HBox();
         // the place for the buttons on the left hand side
         this.leftButtons = new HBox();
-        this.leftButtons.getStyleClass().add(CSSUtil.CSSConstants.CLASS_JACP_BUTTON_BAR);
         this.leftButtons.setAlignment(Pos.CENTER_LEFT);
         // the spacer that fills the remaining width between the buttons
-        final HBox spacer = new HBox();
+        this.centerButtons = new HBox();
+        this.centerButtons.setAlignment(Pos.CENTER);
+        HBox.setHgrow(this.centerButtons, Priority.ALWAYS);
+
+
         this.rightButtons = new HBox();
         this.rightButtons.setAlignment(Pos.CENTER_RIGHT);
-        this.rightButtons.getStyleClass().add(CSSUtil.CSSConstants.CLASS_JACP_BUTTON_BAR);
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        this.horizontalToolBar.getChildren().addAll(this.leftButtons, spacer, this.rightButtons);
+
+        CSSUtil.addCSSClass(CSSUtil.CSSConstants.CLASS_JACP_BUTTON_BAR, this,leftButtons, this.centerButtons, this.rightButtons);
+        this.horizontalToolBar.getChildren().addAll(this.leftButtons, this.centerButtons, this.rightButtons);
         this.getItems().add(0, this.horizontalToolBar);
     }
 
@@ -210,11 +246,13 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.topButtons = new VBox();
         this.topButtons.setAlignment(Pos.CENTER_LEFT);
         // the spacer that fills the remaining width between the buttons
-        final VBox spacer = new VBox();
+        this.middleButtons = new VBox();
+        VBox.setVgrow(this.middleButtons, Priority.ALWAYS);
+
         this.bottomButtons = new VBox();
         this.bottomButtons.setAlignment(Pos.CENTER_RIGHT);
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-        this.verticalToolBar.getChildren().addAll(this.topButtons, spacer, this.bottomButtons);
+
+        this.verticalToolBar.getChildren().addAll(this.topButtons, this.middleButtons, this.bottomButtons);
         this.getItems().add(0, this.verticalToolBar);
     }
 
