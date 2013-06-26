@@ -205,7 +205,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
          */
         this.clear();
         // the main box for the toolbar
-        // holds the lefthand side and the right hand side buttons!
+        // holds the left hand side and the right hand side buttons!
         // the buttons are separated by a spacer box, that fills the remaining
         // width
         this.horizontalToolBar = new HBox();
