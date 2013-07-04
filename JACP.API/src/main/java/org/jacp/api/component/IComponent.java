@@ -45,7 +45,7 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * @param message ; the initial message to be send by invoking the listener
 	 * @return the action listener instance
 	 */
-	IActionListener<L, A, M> getActionListener(M message);
+	IActionListener<L, A, M> getActionListener(final M message);
 
 	/**
 	 * Returns an action listener (for global use). targetId defines the id or
@@ -54,7 +54,7 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * @param targetId ; the targets component id.
 	 * @return the action listener instance
 	 */
-	IActionListener<L, A, M> getActionListener(String targetId, M message);
+	IActionListener<L, A, M> getActionListener(final String targetId, final M message);
 
 	/**
 	 * Returns the id of the component.
@@ -62,6 +62,13 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * @return the component id
 	 */
 	String getId();
+
+
+    /**
+     * Set the component id.
+     * @param id
+     */
+    void setId(final String id);
 
 
 	/**
@@ -76,7 +83,7 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * 
 	 * @param active ; the component active state.
 	 */
-	void setActive(boolean active);
+	void setActive(final boolean active);
 
 	/**
 	 * Get if component was activated, can occur if message was send before
@@ -92,6 +99,12 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * @return the component name
 	 */
 	String getName();
+
+    /**
+     * Set the component name.
+     * @param name
+     */
+    void setName(final String name);
 
 
 }

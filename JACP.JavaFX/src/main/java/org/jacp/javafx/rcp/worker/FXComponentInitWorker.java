@@ -23,10 +23,13 @@
 package org.jacp.javafx.rcp.worker;
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.PostConstruct;
+import org.jacp.api.annotations.Resource;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
@@ -34,6 +37,7 @@ import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Map;
@@ -81,16 +85,13 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @throws InterruptedException
 	 */
 	private void runPreInitMethods() throws InterruptedException {
-		this.invokeOnFXThreadAndWait(new Runnable() {
-			@Override
-			public void run() {
+		this.invokeOnFXThreadAndWait(()->{
 				if (component.getType().equals(UIType.DECLARATIVE)) {
 					final URL url = getClass().getResource(
 							component.getViewLocation());
 					initLocalization(url, component);
-					FXUtil.setPrivateMemberValue(AFXComponent.class, component,
-							FXUtil.AFXCOMPONENT_ROOT,
-							loadFXMLandSetController(component, url));
+                    component.setRoot(loadFXMLandSetController(component, url));
+                    performContextInjection(component);
 					runComponentOnStartupSequence(component, layout,
 							component.getDocumentURL(),
 							component.getResourceBundle());
@@ -98,12 +99,23 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 				}
 				initLocalization(null, component);
+                performContextInjection(component);
 				runComponentOnStartupSequence(component, layout,
 						component.getResourceBundle());
 
-			}
 		});
 	}
+
+    /**
+     * Inject Context object.
+     * @param component
+     */
+    private void performContextInjection(AFXComponent component) {
+        IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
+        FXUtil.performResourceInjection(handler,component.getContext());
+    }
+
+
 
 	@Override
 	protected AFXComponent call() throws Exception {
@@ -138,6 +150,11 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 		}
 	}
 
+    /**
+     * Set Resource Bundle
+     * @param url
+     * @param component
+     */
 	private void initLocalization(final URL url, final AFXComponent component) {
 		final String bundleLocation = component.getResourceBundleLocation();
 		if (bundleLocation.equals(""))
@@ -155,7 +172,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void runComponentOnStartupSequence(AFXComponent component,
 			Object... param) {
-		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component, param);
+		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle(), param);
 	}
 
 	/**
@@ -163,8 +180,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * 
 	 * @param fxmlComponent
 	 *            a FXML aware component
-	 * @param componentName
-	 *            the components name.
 	 * @return The components root Node.
 	 */
 	private Node loadFXMLandSetController(final AFXComponent fxmlComponent,
@@ -174,7 +189,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			fxmlLoader.setResources(fxmlComponent.getResourceBundle());
 		}
 		fxmlLoader.setLocation(url);
-		fxmlLoader.setController(fxmlComponent);
+		fxmlLoader.setController(fxmlComponent.getComponentHandle());
 		try {
 			return (Node) fxmlLoader.load();
 		} catch (IOException e) {

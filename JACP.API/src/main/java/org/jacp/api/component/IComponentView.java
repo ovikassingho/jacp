@@ -38,7 +38,7 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponentView<C, L, A, M> extends UIComponent<C, L, A, M> {
+public interface IComponentView<C, L, A, M>  extends IComponentHandle<C, L, A, M> {
 
 	/**
 	 * To avoid toolkit specific threading issues the postHandle method always

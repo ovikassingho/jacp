@@ -94,7 +94,7 @@ public class ContactAddDialog {
                     // contacts
                     final Contact contact = new Contact();
                     contact.setFirstName(catName);
-                    final IActionListener<EventHandler<Event>, Event, Object> listener = parent.getActionListener(contact);
+                    final IActionListener<EventHandler<Event>, Event, Object> listener = parent.getContext().getActionListener(contact);
                     listener.performAction(actionEvent);
                     JACPModalDialog.getInstance().hideModalMessage();
                 }

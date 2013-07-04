@@ -100,7 +100,9 @@ public class ComponentRegistry {
 		lock.readLock().lock();
 		try{
 			for(final ISubComponent<EventHandler<Event>, Event, Object> comp : components) {
-				if(comp.getClass().isAssignableFrom(clazz))return comp;
+				if(comp.getComponentHandle()!=null && comp.getComponentHandle().getClass().isAssignableFrom(clazz))return comp;
+                // TODO remove when all components mirgrated to handle
+                if(comp.getClass().isAssignableFrom(clazz))return comp;
 			}
 			return null;
 		}finally{

@@ -26,6 +26,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IHandleable;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
@@ -46,7 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AStatelessCallbackComponent extends ASubComponent
 		implements
-		IStatelessCallabackComponent<EventHandler<Event>, Event, Object> {
+		IStatelessCallabackComponent<EventHandler<Event>, Event, Object>{
 	public static int MAX_INCTANCE_COUNT;
 
 	private volatile String handleComponentTarget;

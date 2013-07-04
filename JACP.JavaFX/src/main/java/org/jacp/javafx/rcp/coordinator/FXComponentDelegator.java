@@ -128,12 +128,10 @@ public class FXComponentDelegator extends Thread implements
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
 			final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
-		Platform.runLater(() -> {
-            FXComponentDelegator.this.componentHandler
-                    .initComponent(
-                            action,
-                            (IPerspective<EventHandler<Event>, Event, Object>) component);
-        });
+		Platform.runLater(() -> FXComponentDelegator.this.componentHandler
+                .initComponent(
+                        action,
+                        (IPerspective<EventHandler<Event>, Event, Object>) component));
 	}
 
 	/**

@@ -29,9 +29,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.Resource;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.context.Context;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -157,6 +160,40 @@ public class FXUtil {
                 }
                 break;
             }
+        }
+    }
+
+    public static void performResourceInjection(IComponentHandle<?, EventHandler<Event>, Event, Object> handler,Context<EventHandler<Event>, Event, Object> context) {
+        final Field[] fields = handler.getClass().getDeclaredFields();
+        final List<Field> fieldList = Arrays.asList(fields);
+        fieldList.parallelStream().forEach(f->{
+            if(f.isAnnotationPresent(Resource.class)) {
+                // context injection
+                if(f.getType().isAssignableFrom(context.getClass())) {
+                    injectContext(handler,f,context);
+                } else if(context.getResourceBundle() !=null && f.getType().isAssignableFrom(context.getResourceBundle().getClass())) {
+                    injectResourceBundle(handler,f,context.getResourceBundle());
+                }
+            }
+
+        });
+    }
+
+    private static void injectContext(final IComponentHandle<?, EventHandler<Event>, Event, Object> handler,final Field f, final Context context) {
+        f.setAccessible(true);
+        try {
+            f.set(handler, context);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void injectResourceBundle(final IComponentHandle<?, EventHandler<Event>, Event, Object> handler,final Field f, final ResourceBundle bundle) {
+        f.setAccessible(true);
+        try {
+            f.set(handler, bundle);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 

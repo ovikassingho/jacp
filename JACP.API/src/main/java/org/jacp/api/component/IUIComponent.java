@@ -22,8 +22,12 @@
  ************************************************************************/
 package org.jacp.api.component;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+
 /**
- * Represents an basic UI component handled by a perspective. A UIComponent is
+ * Represents an basic UI component handled by a perspective. A IUIComponent is
  * an // * visible UI component displayed in a defined area of perspective.
  * 
  * @author Andy Moncsek
@@ -36,7 +40,7 @@ package org.jacp.api.component;
  * @param <M>
  *            defines the basic message type
  */
-public interface UIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
+public interface IUIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
 
 	/**
 	 * Returns the 'root' ui component created by the handle method.
@@ -44,4 +48,20 @@ public interface UIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
 	 * @return the root component
 	 */
 	C getRoot();
+
+
+    /**
+     * Set the 'root' ui component created by the handle method.
+     * @param root
+     */
+    void setRoot(C root);
+
+    /**
+     * Returns the component handle class, this is the users implementation of the component.
+     * @return IComponentHandle, the component handle.
+     */
+    public default <X extends IComponentView<C, L, A, M>> X  getComponentViewHandle(){
+        return (X) this.getComponentHandle();
+    }
+
 }

@@ -164,12 +164,10 @@ public class FXMessageDelegator extends Thread implements
 	<P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
             final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
-		Platform.runLater(() -> {
-            FXMessageDelegator.this.componentHandler
-                    .initComponent(
-                            action,
-                            (IPerspective<EventHandler<Event>, Event, Object>) component);
-        });
+		Platform.runLater(() -> FXMessageDelegator.this.componentHandler
+                .initComponent(
+                        action,
+                        (IPerspective<EventHandler<Event>, Event, Object>) component));
 	}
 
 	/**
@@ -180,12 +178,10 @@ public class FXMessageDelegator extends Thread implements
 	 */
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
 			final P component, final IAction<Event, Object> action) {
-		Platform.runLater(() -> {
-            FXMessageDelegator.this.componentHandler
-                    .handleAndReplaceComponent(
-                            action,
-                            (IPerspective<EventHandler<Event>, Event, Object>) component);
-        } // End runnable
+		Platform.runLater(() -> FXMessageDelegator.this.componentHandler
+                .handleAndReplaceComponent(
+                        action,
+                        (IPerspective<EventHandler<Event>, Event, Object>) component) // End runnable
 		); // End runlater
 	}
 

@@ -26,6 +26,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IHandleable;
 
 /**
  * represents a basic, stateful background component

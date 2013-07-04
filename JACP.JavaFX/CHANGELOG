@@ -1,3 +1,4 @@
+04. Jul. 2013 - amo -  many changes for Context (JACPContext) and FXComponent, components are now implemented and not extended.
 24. Jun. 2013 - amo -  start initial work on context object
 30. May  2013 - amo -  overall cleanup and and Java 8 changes
 29. May. 2013 - amo -  FXWorkbenchHandler and FXUtil.findRootByObserveableId converted to stream API

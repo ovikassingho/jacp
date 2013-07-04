@@ -25,6 +25,7 @@ package org.jacp.api.component;
 import java.util.concurrent.BlockingQueue;
 
 import org.jacp.api.action.IAction;
+import org.jacp.api.context.Context;
 
 /**
  * Defines a subcomponent handled by a root component. A subcomponent is running
@@ -40,8 +41,7 @@ import org.jacp.api.action.IAction;
  * @param <M>
  *            defines the basic message type
  */
-public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
-		IHandleable<A, M> {
+public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	/**
 	 * Returns the target id where component will be displayed in.
 	 * 
@@ -108,4 +108,24 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void initEnv(final String parentId,
 			final BlockingQueue<IAction<A, M>> messageQueue);
+
+
+    /**
+     * Returns the components context object.
+     * @return the context object.
+     */
+    Context<L, A, M> getContext();
+
+    /**
+     * Returns the component handle class, this is the users implementation of the component.
+     * @return IComponentHandle, the component handle.
+     */
+    <X extends IComponentHandle<?, L, A, M>> X  getComponentHandle();
+
+    /**
+     * Set the component handle class. This is the users implementation of the component.
+     * @param handle
+     * @param <X>
+     */
+    <X extends IComponentHandle<?, L, A, M>>  void setComponentHandle(final X  handle);
 }

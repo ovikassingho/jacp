@@ -81,9 +81,7 @@ public class JACPOptionButton extends Button {
     }
 
     private void initAction() {
-        this.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        this.setOnAction((EventHandler<ActionEvent>)(actionEvent)-> {
                 double testX = getBoundsInParent().getMinX() + getParent().getBoundsInParent().getMinX();
                 double target = testX - (options.getWidth() - getWidth()) / 2;
                 double move = target - glassPane.getBoundsInParent().getMinX();
@@ -91,7 +89,7 @@ public class JACPOptionButton extends Button {
                 glassPane.setTranslateX(move);
                 glassPane.setTranslateY(-(glassPane.getBoundsInParent().getMinY() - getBoundsInParent().getMaxY()));
                 glassPane.setVisible(!glassPane.isVisible());
-            }
+
         });
     }
 

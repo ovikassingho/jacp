@@ -117,12 +117,10 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
 			final P component, final IAction<Event, Object> action) {
-		Platform.runLater(() -> {
-            FXPerspectiveCoordinator.this.componentHandler
-                    .handleAndReplaceComponent(
-                            action,
-                            (IPerspective<EventHandler<Event>, Event, Object>) component);
-        } // End runnable
+		Platform.runLater(() -> FXPerspectiveCoordinator.this.componentHandler
+                .handleAndReplaceComponent(
+                        action,
+                        (IPerspective<EventHandler<Event>, Event, Object>) component) // End runnable
 		); // End runlater
 	}
 
@@ -130,12 +128,10 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
 			final P component, final IAction<Event, Object> action) {
 		component.setActive(true);
-		Platform.runLater(() -> {
-            FXPerspectiveCoordinator.this.componentHandler
-                    .initComponent(
-                            action,
-                            (IPerspective<EventHandler<Event>, Event, Object>) component);
-        });
+		Platform.runLater(() -> FXPerspectiveCoordinator.this.componentHandler
+                .initComponent(
+                        action,
+                        (IPerspective<EventHandler<Event>, Event, Object>) component));
 	}
 
 	@Override

@@ -30,11 +30,15 @@ import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.PostConstruct;
+import org.jacp.api.annotations.Resource;
+import org.jacp.api.context.Context;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
@@ -45,19 +49,21 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek Patrick Symmangk
  */
 @Component(defaultExecutionTarget = "PleftMenu", id = "id001", name = "contactDemoTreeView", active = true)
-public class ContactTreeViewComponent extends AFXComponent {
+public class ContactTreeViewComponent implements FXComponent {
 	private final static Log LOGGER = LogFactory
 			.getLog(ContactTreeViewComponent.class);
 	private ContactTreeView pane;
 	private ObservableList<Contact> contactList;
+    @Resource
+    private JACPContext context;
 
 	@Override
 	/**
 	 * handle the component in worker thread
 	 */
-	public Node handleAction(final IAction<Event, Object> action) {
+	public Node handle(final IAction<Event, Object> action) {
 		// on initial message create the layout outside the FXApplication thread
-		if (action.getMessage().equals(MessageUtil.INIT)) {
+		if (action.isMessage(MessageUtil.INIT)) {
 			return this.createInitialLayout();
 		}
 		LOGGER.debug("ContactTreeViewComponent handleAction message: "+action.getMessage());
@@ -68,11 +74,11 @@ public class ContactTreeViewComponent extends AFXComponent {
 	/**
 	 * handle the component in FX application thread
 	 */
-	public Node postHandleAction(final Node node,
+	public Node postHandle(final Node node,
 			final IAction<Event, Object> action) {
 		// add a new contact in FXApplication thread
-		if (action.getMessage() instanceof Contact) {
-			final Contact contact = (Contact) action.getMessage();
+		if (action.isMessageType(Contact.class)) {
+			final Contact contact = action.getTypedMessage(Contact.class);
 			this.addNewContact(contact);
 		}
 		return this.pane;
@@ -98,7 +104,7 @@ public class ContactTreeViewComponent extends AFXComponent {
 			}
 
 		});
-		north.add(this.getId(), add);
+		north.add(context.getId(), add);
 	}
 
 	private ContactTreeView createInitialLayout() {
@@ -130,4 +136,8 @@ public class ContactTreeViewComponent extends AFXComponent {
 	private void addNewContact(final Contact contact) {
 		this.contactList.add(contact);
 	}
+
+    public JACPContext getContext(){
+        return this.context;
+    }
 }
