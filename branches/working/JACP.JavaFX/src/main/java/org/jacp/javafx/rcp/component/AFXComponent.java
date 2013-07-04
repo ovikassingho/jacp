@@ -26,10 +26,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacp.api.action.IAction;
-import org.jacp.api.component.IComponentView;
-import org.jacp.api.component.IDeclarative;
+import org.jacp.api.component.*;
+import org.jacp.api.context.Context;
 import org.jacp.api.util.UIType;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,7 +41,7 @@ import java.util.ResourceBundle;
  * @author Andy Moncsek
  */
 public abstract class AFXComponent extends ASubComponent implements
-		IComponentView<Node, EventHandler<Event>, Event, Object>, IDeclarative,
+		IUIComponent<Node, EventHandler<Event>, Event, Object>, IDeclarative,
 		Initializable  {
 
 	private volatile Node root;
@@ -58,6 +58,9 @@ public abstract class AFXComponent extends ASubComponent implements
 	
 	private String resourceBundleLocation="";
 
+
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -65,40 +68,15 @@ public abstract class AFXComponent extends ASubComponent implements
 	public final Node getRoot() {
 		return this.root;
 	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setRoot(Node root) {
+            this.root = root;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	@SuppressWarnings("unchecked")
-	public final <C> C handle(final IAction<Event, Object> action) {
-		return (C) this.handleAction(action);
-	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final Node postHandle(final Node node,
-			final IAction<Event, Object> action) {
-		return this.postHandleAction(node, action);
-	}
-
-	/**
-	 * @see org.jacp.api.component.IHandleable#handle(IAction) {@inheritDoc}
-	 * @param action
-	 * @return a node
-	 */
-	public abstract Node handleAction(final IAction<Event, Object> action);
-
-	/**
-	 * @param node
-	 * @param action
-	 * @return a node
-	 */
-	public abstract Node postHandleAction(final Node node,
-			final IAction<Event, Object> action);
-	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -116,12 +94,21 @@ public abstract class AFXComponent extends ASubComponent implements
 		this.viewLocation = document;
 		this.type = UIType.DECLARATIVE;
 	}
-
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public final void initialize(URL url, ResourceBundle resourceBundle) {
 		this.documentURL = url;
 		this.resourceBundle = resourceBundle;
+        setResourceToContext();
 	}
+
+    private void setResourceToContext() {
+        Context context = this.getContext();
+        JACPContextImpl jContext = JACPContextImpl.class.cast(context);
+        jContext.setResourceBundle(this.resourceBundle );
+    }
 
 	/**
 	 * {@inheritDoc}
@@ -139,6 +126,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	public final ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -153,11 +141,14 @@ public abstract class AFXComponent extends ASubComponent implements
 	public String getLocaleID() {
 		return localeID;
 	}
-
+    /**
+     * {@inheritDoc}
+     *//*
+    @Override
 	public void setLocaleID(String localeID) {
 		super.checkPolicy(this.localeID, "Do Not Set document manually");
 		this.localeID = localeID;
-	}
+	}*/
 	/**
 	 * {@inheritDoc}
 	 */
@@ -165,10 +156,15 @@ public abstract class AFXComponent extends ASubComponent implements
 	public String getResourceBundleLocation() {
 		return resourceBundleLocation;
 	}
-
-	public void setResourceBundleLocation(String resourceBundleLocation) {
+    /**
+     * {@inheritDoc}
+     *//*
+    @Override
+	public final void setResourceBundleLocation(String resourceBundleLocation) {
 		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
 		this.resourceBundleLocation = resourceBundleLocation;
-	}
+	}*/
+
+
 
 }

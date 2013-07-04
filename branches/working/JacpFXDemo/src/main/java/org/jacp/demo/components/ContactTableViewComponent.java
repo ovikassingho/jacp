@@ -35,12 +35,15 @@ import org.apache.commons.logging.LogFactory;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.Resource;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
+import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
@@ -53,17 +56,18 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * 
  */
 @Component(defaultExecutionTarget = "PmainContentTop", id = GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW, name = "contactDemoTableView", active = true)
-public class ContactTableViewComponent extends AFXComponent {
+public class ContactTableViewComponent implements FXComponent {
 	private final static Log LOGGER = LogFactory
 			.getLog(ContactTableViewComponent.class);
     private final Map<String, ContactTableView> all = Collections.synchronizedMap(new HashMap<String, ContactTableView>());
     private ContactTableView current;
-
+    @Resource
+    private JACPContext context;
     @Override
     /**
      * run handleAction in worker Thread
      */
-    public Node handleAction(final IAction<Event, Object> action) {
+    public Node handle(final IAction<Event, Object> action) {
         return null;
     }
 
@@ -71,7 +75,7 @@ public class ContactTableViewComponent extends AFXComponent {
     /**
      * run postHandle in FX application Thread, use this method to update UI code
      */
-    public Node postHandleAction(final Node node, final IAction<Event, Object> action) {
+    public Node postHandle(final Node node, final IAction<Event, Object> action) {
         if (action.getMessage() instanceof Contact) {
             // contact selected
             final Contact contact = (Contact) action.getMessage();
@@ -115,10 +119,10 @@ public class ContactTableViewComponent extends AFXComponent {
                                     // send contact to TableView
                                     // component to show containing
                                     // contacts
-                                    final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTableViewComponent.this.getActionListener(
+                                    final IActionListener<EventHandler<Event>, Event, Object> listener =context.getActionListener(
                                             GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.CallbackConstants.CALLBACK_ANALYTICS), contact);
                                     listener.performAction(arg0);
-                                    final IActionListener<EventHandler<Event>, Event, Object> detailListener = ContactTableViewComponent.this.getActionListener(
+                                    final IActionListener<EventHandler<Event>, Event, Object> detailListener = context.getActionListener(
                                             GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_DETAIL_VIEW), contact);
                                     detailListener.performAction(arg0);
 
@@ -172,7 +176,7 @@ public class ContactTableViewComponent extends AFXComponent {
                 contact.setEmpty(false);
                 // redirect contact to coordinator callback to create
                 // contacts
-                final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTableViewComponent.this.getActionListener("id01.id004", contact);
+                final IActionListener<EventHandler<Event>, Event, Object> listener = context.getActionListener("id01.id004", contact);
                 listener.performAction(arg0);
             }
         });

@@ -1,3 +1,5 @@
+04. Jul. 2013 - amo - initial commit of changinf component model to pure interface model... developers should implement components instead of extending
+04. Jul. 2013 - amo - initial commit of Context, which contains basic metadata as well as the message listeners and will contain stuff like managedDialog factory
 24. Jun. 2013 - amo - start initial work on context object
 28. May. 2013 - amo - renamed OnStart and OnTearDown to PostConstruct and PreDestroy.
 27. May. 2013 - amo - OnStart, OnHide annotation introduced to mark perspective methods

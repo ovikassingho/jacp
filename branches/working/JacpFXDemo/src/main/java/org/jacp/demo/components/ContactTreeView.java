@@ -87,20 +87,22 @@ public class ContactTreeView extends ScrollPane {
 
             @Override
             public ListCell<Contact> call(final ListView<Contact> arg0) {
-                final Label label = new Label();
-                label.getStyleClass().add("dark-text");
+
                 final HBox box = new HBox();
-                final Pane spacer = new Pane();
+
                 final ListCell<Contact> cell = new ListCell<Contact>() {
                     @Override
                     public void updateItem(final Contact contact, final boolean emty) {
                         super.updateItem(contact, emty);
                         if (contact != null) {
+                            final Label label = new Label();
+                            label.getStyleClass().add("dark-text");
                             label.setText(contact.getFirstName());
+                            final Pane spacer = new Pane();
                             ContactTreeView.this.configureProgressBar(contact);
                             HBox.setMargin(contact.getProgress(), new Insets(3, 0, 0, 0));
                             HBox.setHgrow(spacer, Priority.ALWAYS);
-                            box.getChildren().addAll(label, spacer, contact.getProgress());
+                            box.getChildren().addAll(label, spacer);// contact.getProgress());
 
                             this.setGraphic(box);
                             this.setOnMouseClicked(new EventHandler<Event>() {
@@ -111,11 +113,11 @@ public class ContactTreeView extends ScrollPane {
                                     // component to show containing
                                     // contacts
                                     // send event to Table View
-                                    final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeView.this.parent.getActionListener(
+                                    final IActionListener<EventHandler<Event>, Event, Object> listener = ContactTreeView.this.parent.getContext().getActionListener(
                                             GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW), contact);
                                     listener.performAction(event);
                                     // Send Event to BarChart
-                                    final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent.getActionListener(
+                                    final IActionListener<EventHandler<Event>, Event, Object> resetListener = ContactTreeView.this.parent.getContext().getActionListener(
                                             GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_CHART_VIEW),
                                             BarChartAction.RESET);
                                     resetListener.performAction(event);

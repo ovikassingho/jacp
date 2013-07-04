@@ -155,11 +155,9 @@ public abstract class AFXWorkbench
                     // again?
                     this.log("3.4.2: create perspective menu");
                     if (perspective.isActive()) {
-                        Platform.runLater(()->{
-                                AFXWorkbench.this.componentHandler.initComponent(
-                                        new FXAction(perspective.getId(), perspective
-                                                .getId(), "init", null), perspective);
-                        }); // FX2 UTILS END
+                        Platform.runLater(()-> AFXWorkbench.this.componentHandler.initComponent(
+                                new FXAction(perspective.getId(), perspective
+                                        .getId(), "init", null), perspective)); // FX2 UTILS END
                     }
                 });
     }

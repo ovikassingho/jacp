@@ -60,7 +60,8 @@ public interface IDeclarative {
 	 * @return the resource bundle for the UI document
 	 */
 	ResourceBundle getResourceBundle();
-	
+
+
 	/**
 	 * Distinguish component types.
 	 * @return the type of the component.
@@ -72,9 +73,21 @@ public interface IDeclarative {
 	 * @return the locale id
 	 */
 	String getLocaleID();
+
+   /* *//**
+     *  Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+     * @param localeId
+     *//*
+    void setLocaleID(final String localeId);*/
 	/**
 	 * Represents the location of your resource bundle file.
 	 * @return the url of resource bundle
 	 */
 	String getResourceBundleLocation();
+
+/*    *//**
+     * Set the location of your resource bundle file.
+     * @param location
+     *//*
+    void  setResourceBundleLocation(final String location);*/
 }

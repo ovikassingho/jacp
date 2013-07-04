@@ -40,6 +40,7 @@ package org.jacp.api.component;
  *            defines the basic message type
  */
 public interface ICallbackComponent<L, A, M> extends ISubComponent<L, A, M>,
+        IHandleable<A, M>,
 		Cloneable {
 
 	/**

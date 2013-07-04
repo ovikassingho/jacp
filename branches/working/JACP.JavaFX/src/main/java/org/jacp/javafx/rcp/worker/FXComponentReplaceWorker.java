@@ -63,11 +63,10 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         this.component = component;
         this.layout = layout;
         this.componentDelegateQueue = componentDelegateQueue;
-        setCacheHints(true, CacheHint.SPEED);
     }
 
-    private void setCacheHints(boolean cache, CacheHint hint) {
-        final Node currentRoot = this.component.getRoot();
+    private void setCacheHints(boolean cache, CacheHint hint,final AFXComponent component) {
+        final Node currentRoot = component.getRoot();
         if (currentRoot != null && currentRoot.getParent() != null) {
             if(currentRoot.getParent().isCache()!=cache)currentRoot.getParent().setCache(cache);
             if(!currentRoot.getParent().getCacheHint().equals(hint))currentRoot.getParent().setCacheHint(CacheHint.SPEED);
@@ -124,18 +123,21 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                          final Node previousContainer, final String currentTaget)
             throws InterruptedException {
         this.invokeOnFXThreadAndWait(()-> {
+                setCacheHints(true, CacheHint.SPEED,component);
                 // check if component was set to inactive, if so remove
+            // TODO active will be set on context!!
                 if (component.isActive()) {
                     FXComponentReplaceWorker.this.publishComponentValue(
                             component, myAction, targetComponents, layout,
                             handleReturnValue, previousContainer, currentTaget);
                 } else {
+                    // TODO merge with code from  publishComponentValue
                     // unregister component
                     FXComponentReplaceWorker.this.removeComponentValue(
                             component, previousContainer, layout);
                     // run teardown
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                            component, layout);
+                            component.getComponentHandle(), layout);
                 }
         });
     }
@@ -168,6 +170,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         if (previousContainer != null) {
             // check again if component was set to inactive (in postHandle), if
             // so remove
+            // TODO active will be set on context!!
             if (component.isActive()) {
                 this.removeOldComponentValue(component, previousContainer,
                         currentTaget);
@@ -178,7 +181,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                 this.removeComponentValue(component, previousContainer, layout);
                 // run teardown
                 FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                        component, layout);
+                        component.getComponentHandle(), layout);
             }
 
         }
@@ -242,8 +245,9 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
     @Override
     protected final void done() {
+        AFXComponent component=null;
         try {
-            this.get();
+            component = this.get();
         } catch (final InterruptedException e) {
             logger.info("execution interrupted for component: " + this.component.getName());
         } catch (final ExecutionException e) {
@@ -256,15 +260,13 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             // TODO add to error queue and restart thread if
             // messages in
             // queue
-        } catch (final UnsupportedOperationException e) {
-            e.printStackTrace();
         } catch (final Exception e) {
             e.printStackTrace();
             // TODO add to error queue and restart thread if
             // messages in
             // queue
         } finally {
-            setCacheHints(true, CacheHint.DEFAULT);
+            if(component!=null)setCacheHints(true, CacheHint.DEFAULT,component);
         }
 
     }

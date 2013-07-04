@@ -82,6 +82,8 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	void setSubcomponents(final List<ISubComponent<L, A, M>> subComponents);
 
+    void setComponents(final List<Injectable> components);
+
 	/**
 	 * Handle a message call on perspective instance. This method should be
 	 * override to handle the layout of an perspective.

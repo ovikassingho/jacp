@@ -20,11 +20,12 @@ import org.jacp.demo.common.GenderType;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 
 @DeclarativeComponent(defaultExecutionTarget = "PdetailComponent", id = GlobalConstants.ComponentConstants.COMPONENT_DETAIL_VIEW, name = "XMlDetailView", active = true, viewLocation = "/fxml/UserDetail.fxml", resourceBundleLocation = "bundles.languageBundle")
 // , localeID="en_US")
-public class XMLDetailView extends AFXComponent {
+public class XMLDetailView implements FXComponent {
 	private final static Log LOGGER = LogFactory
 			.getLog(XMLDetailView.class);
 	@FXML
@@ -47,7 +48,7 @@ public class XMLDetailView extends AFXComponent {
 	}
 
 	@Override
-	public Node handleAction(IAction<Event, Object> action) {
+	public Node handle(IAction<Event, Object> action) {
 		LOGGER.debug("XMLDetailView handleAction message: "+action.getMessage());
 		return null;
 	}
@@ -65,9 +66,9 @@ public class XMLDetailView extends AFXComponent {
 	}
 
 	@Override
-	public Node postHandleAction(final Node node,
+	public Node postHandle(final Node node,
 			final IAction<Event, Object> action) {
-		if (action.getMessage() instanceof Contact) {
+		if (action.isMessageType(Contact.class)) {
 			// contact selected
 			final Contact contact = (Contact) action.getMessage();
 			if (contact != null) {

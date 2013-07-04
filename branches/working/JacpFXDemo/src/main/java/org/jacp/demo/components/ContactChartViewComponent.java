@@ -42,6 +42,7 @@ import org.jacp.demo.entity.Contact;
 import org.jacp.demo.enums.BarChartAction;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 
 /**
@@ -51,7 +52,7 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek Patrick Symmangk
  */
 @Component(defaultExecutionTarget = "PmainContentBottom", id = "id003", name = "contactDemoChartView", active = true)
-public class ContactChartViewComponent extends AFXComponent {
+public class ContactChartViewComponent implements FXComponent {
 	private final static Log LOGGER = LogFactory
 			.getLog(ContactChartViewComponent.class);
 	private GridPane root;
@@ -66,7 +67,7 @@ public class ContactChartViewComponent extends AFXComponent {
 			"2010", "2011" };
 
 	@Override
-	public Node handleAction(final IAction<Event, Object> action) {
+	public Node handle(final IAction<Event, Object> action) {
 		if (action.getMessage().equals(MessageUtil.INIT)) {
 			this.root = this.createRoot();
 			this.root.getChildren().add(this.createChart());
@@ -76,7 +77,7 @@ public class ContactChartViewComponent extends AFXComponent {
 	}
 
 	@Override
-	public Node postHandleAction(final Node node,
+	public Node postHandle(final Node node,
 			final IAction<Event, Object> action) {
 		if (action.getMessage() instanceof BarChartAction) {
 			if (BarChartAction.RESET.equals(action.getMessage())) {

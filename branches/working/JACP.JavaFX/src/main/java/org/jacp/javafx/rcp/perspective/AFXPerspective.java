@@ -32,8 +32,7 @@ import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.DeclarativeComponent;
-import org.jacp.api.component.IPerspectiveView;
-import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
@@ -42,12 +41,14 @@ import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
+import org.jacp.javafx.rcp.component.EmbeddedFXComponent;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
@@ -78,6 +79,7 @@ public abstract class AFXPerspective extends AComponent implements
     private String localeID = "";
     private String resourceBundleLocation = "";
     private final Object lock = new Object();
+    private List<? extends Injectable> handlers;
 
     @Override
     public final void init(
@@ -109,8 +111,23 @@ public abstract class AFXPerspective extends AComponent implements
         this.componentCoordinator
                 .setMessageDelegateQueue(this.messageDelegateQueue);
         this.componentCoordinator.setParentId(this.getId());
+        initSubcomponentsAndHandlers();
         if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
     }
+
+    private void initSubcomponentsAndHandlers() {
+        if(handlers==null) return;
+        if(this.subcomponents==null)this.subcomponents=new ArrayList<>();
+        handlers.forEach(handler ->{
+            if(IComponentView.class.isAssignableFrom(handler.getClass())) {
+                this.subcomponents.add(new EmbeddedFXComponent(IComponentView.class.cast(handler)));
+            } else if(IComponentHandle.class.isAssignableFrom(handler.getClass())) {
+
+            }
+
+        });
+    }
+
 
     /**
      * Handle perspective method to initialize the perspective and the layout.
@@ -150,19 +167,22 @@ public abstract class AFXPerspective extends AComponent implements
      * @param component ; the component containing metadata.
      */
     private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final Component componentAnnotation = component.getClass().getAnnotation(Component.class);
-        if (componentAnnotation != null && component instanceof AFXComponent) {
-            handleComponentAnnotation(component, componentAnnotation);
-            this.log("register component with annotations : " + componentAnnotation.id());
-            return;
-        }
+        // TODO switch to handler.getClass()
         final CallbackComponent callbackAnnotation = component.getClass().getAnnotation(CallbackComponent.class);
         if (callbackAnnotation != null) {
             handleCallbackAnnotation(component, callbackAnnotation);
             this.log("register CallbackComponent with annotations : " + callbackAnnotation.id());
             return;
         }
-        final DeclarativeComponent declarativeComponent = component.getClass()
+        IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
+        final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
+        if (componentAnnotation!=null && component instanceof AFXComponent) {
+            handleComponentAnnotation(component, componentAnnotation);
+            this.log("register component with annotations : " + componentAnnotation.id());
+            return;
+        }
+
+        final DeclarativeComponent declarativeComponent = handler.getClass()
                 .getAnnotation(DeclarativeComponent.class);
         if (declarativeComponent != null && component instanceof AFXComponent) {
             handleDeclarativeComponentAnnotation(component, declarativeComponent);
@@ -209,10 +229,7 @@ public abstract class AFXPerspective extends AComponent implements
      */
     private void handleDeclarativeComponentAnnotations(final DeclarativeComponent declarativeComponent, final AFXComponent component) {
         setExecutionTarget(component, declarativeComponent.defaultExecutionTarget());
-        FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION,
-                declarativeComponent.viewLocation());
-        FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_TYPE,
-                UIType.DECLARATIVE);
+        component.setViewLocation(declarativeComponent.viewLocation());
         setLocale(component, declarativeComponent.localeID());
         setRessourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
     }
@@ -229,10 +246,19 @@ public abstract class AFXPerspective extends AComponent implements
                     locale);
     }
 
+   /* private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation) {
+        if (component.getResourceBundleLocation() != null)
+            component.setResourceBundleLocation(bundleLocation);
+    }
+        //TODO  when perspective is also moved to interface that remove reflection and use this
+    private void setLocale(final AFXComponent component, String locale) {
+        if (component.getLocaleID() != null)
+            component.setLocaleID(locale);
+    }*/
+
     private void setExecutionTarget(final AFXComponent component, String value) {
         if (component.getExecutionTarget().length() <= 1)
-            FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.ACOMPONENT_EXTARGET,
-                    value);
+            component.setExecutionTarget(value);
     }
 
     /**
@@ -247,9 +273,9 @@ public abstract class AFXPerspective extends AComponent implements
     private void handleBaseAttributes(Class<?> clazz,
                                       final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
-        if (id != null) FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ID, id);
-        FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_ACTIVE, active);
-        if (name != null) FXUtil.setPrivateMemberValue(clazz, component, FXUtil.ACOMPONENT_NAME, name);
+        if (id != null) component.setId(id);
+        component.setActive(active);
+        if (name != null) component.setName(name);
     }
 
     @Override
@@ -288,10 +314,16 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
+    @Deprecated //TODO remove subcomponents when migration is done
     public final void setSubcomponents(
             final List<ISubComponent<EventHandler<Event>, Event, Object>> subComponents) {
         this.subcomponents = subComponents;
 
+    }
+
+    @Override
+    public final void setComponents(List<Injectable> handlers){
+        this.handlers = handlers;
     }
 
     private void log(final String message) {

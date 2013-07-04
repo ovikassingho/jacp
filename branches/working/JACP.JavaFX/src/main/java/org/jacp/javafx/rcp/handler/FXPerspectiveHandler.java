@@ -87,9 +87,7 @@ public class FXPerspectiveHandler
 		if (Platform.isFxApplicationThread()) {
 			this.handleInit(action, component);
 		} else {
-			Platform.runLater(() -> {
-                FXPerspectiveHandler.this.handleInit(action, component);
-            });
+			Platform.runLater(() -> FXPerspectiveHandler.this.handleInit(action, component));
 		}
 
 	}

@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2012
  *
  * [AFXSubComponent.java]
@@ -36,73 +36,109 @@ import java.util.concurrent.BlockingQueue;
 /**
  * The most abstract component, used to define components as well as
  * perspectives
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 
 public class AComponent extends Checkable implements
-		IComponent<EventHandler<Event>, Event, Object> {
-	private String id;
-	private String name;
-	private volatile boolean active;
+        IComponent<EventHandler<Event>, Event, Object> {
+    private String id;
+    private String name;
+    private volatile boolean active;
 
-	protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+    protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			final Object message) {
-		return new FXActionListener(new FXAction(this.id, message),
-				this.globalMessageQueue);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+            final Object message) {
+        return new FXActionListener(new FXAction(this.id, message),
+                this.globalMessageQueue);
+    }
 
-	@Override
-	public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-			final String targetId, final Object message) {
-		return new FXActionListener(new FXAction(this.id, targetId, message, null),
-				this.globalMessageQueue);
-	}
-
-	
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public final String getId() {
-		if (this.id == null) {
-			throw new UnsupportedOperationException("No id set");
-		}
-		return this.id;
-
-	}
-
-	@Override
-	public final boolean isActive() {
-		return this.active;
-	}
-
-	@Override
-	public final void setActive(final boolean active) {
-		this.active = active;
-
-	}
-
-	@Override
-	public final boolean isStarted() {
-		return super.started;
-	}
-
-	@Override
-	public final String getName() {
-		if (this.name == null) {
-			throw new UnsupportedOperationException("No name set");
-		}
-		return this.name;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+            final String targetId, final Object message) {
+        return new FXActionListener(new FXAction(this.id, targetId, message, null),
+                this.globalMessageQueue);
+    }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getId() {
+        if (this.id == null) {
+            throw new UnsupportedOperationException("No id set");
+        }
+        return this.id;
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setId(final String id) {
+        super.checkPolicy(this.id, "Do Not Set document manually");
+        this.id = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isActive() {
+        return this.active;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setActive(final boolean active) {
+        this.active = active;
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isStarted() {
+        return super.started;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getName() {
+        if (this.name == null) {
+            throw new UnsupportedOperationException("No name set");
+        }
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setName(final String name) {
+        super.checkPolicy(this.name, "Do Not Set document manually");
+        this.name = name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int compareTo(String o) {
         return this.getId().compareTo(o);

@@ -130,8 +130,6 @@ public class StateLessComponentRunWorker
 		// teardown
 		instancesCopy.add(component);
 
-		Platform.runLater(() -> {
-            TearDownHandler.handleAsyncTearDown(instancesCopy);
-        });
+		Platform.runLater(() -> TearDownHandler.handleAsyncTearDown(instancesCopy));
 	}
 }

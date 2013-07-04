@@ -25,7 +25,10 @@ package org.jacp.javafx.rcp.component;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.context.Context;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -52,30 +55,50 @@ public abstract class ASubComponent extends AComponent implements
 	private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
 			1000);
 
-	@Override
+    private JACPContextImpl context;
+
+
+    private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public final void initEnv(final String parentId,
 			final BlockingQueue<IAction<Event, Object>> messageQueue) {
 		this.parentId = parentId;
 		this.globalMessageQueue = messageQueue;
-
+        this.context = new JACPContextImpl(this.getId(),this.getName(),this.globalMessageQueue);
 	}
 
-	    @Override
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final String getExecutionTarget() {
         return this.executionTarget;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void setExecutionTarget(final String target) {
         this.executionTarget = target;
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean hasIncomingMessage() {
         return !this.incomingMessage.isEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void putIncomingMessage(final IAction<Event, Object> action) {
         try {
@@ -86,6 +109,9 @@ public abstract class ASubComponent extends AComponent implements
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final IAction<Event, Object> getNextIncomingMessage() {
         if (this.hasIncomingMessage()) {
@@ -98,11 +124,17 @@ public abstract class ASubComponent extends AComponent implements
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final boolean isBlocked() {
         return lock.availablePermits() == 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void lock() {
         try {
@@ -112,14 +144,43 @@ public abstract class ASubComponent extends AComponent implements
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void release() {
         lock.release();
     }
 
-	@Override
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public final String getParentId() {
 		return this.parentId;
 	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final Context<EventHandler<Event>, Event, Object> getContext() {
+        return this.context;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final IComponentHandle<?, EventHandler<Event>, Event, Object> getComponentHandle() {
+        return componentHandle;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <X extends IComponentHandle<?, EventHandler<Event>, Event, Object>> void setComponentHandle(final X  handle) {
+        this.componentHandle =  handle;
+    }
 
 }

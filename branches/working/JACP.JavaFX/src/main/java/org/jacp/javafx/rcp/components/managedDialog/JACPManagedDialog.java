@@ -27,11 +27,14 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.annotations.Dialog;
 import org.jacp.api.annotations.Resource;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.context.Context;
 import org.jacp.api.dialog.Scope;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
@@ -45,7 +48,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The JACPManagedDialog handles creation of managed dialog components. A
- * managed Dialog is part of an UIComponent, it has always a UIComponent as a
+ * managed Dialog is part of an IUIComponent, it has always a IUIComponent as a
  * parent element (normally the caller component), it has full access to DI
  * injection (services, etc.) and it can be used as managed node or JACPModal
  * dialog.
@@ -199,12 +202,14 @@ public class JACPManagedDialog {
                 try {
                     if (bundle != null && field.getType().isAssignableFrom(bundle.getClass())) {
                         field.setAccessible(true);
-
                         field.set(bean, bundle);
 
                     } else if (ASubComponent.class.isAssignableFrom(field.getType())
-                            || AFXComponent.class.isAssignableFrom(field.getType())) {
+                            || IComponentHandle.class.isAssignableFrom(field.getType())) {
                         handleParentComponentAnnotation(bean, field, resource,
+                                callerClassName);
+                    } else if (Context.class.isAssignableFrom(field.getType())) {
+                        handleParentComponentContextAnnotation(bean, field, resource,
                                 callerClassName);
                     }
                 } catch (IllegalAccessException e) {
@@ -220,6 +225,26 @@ public class JACPManagedDialog {
                                                      final Field field, final Resource resource,
                                                      final String callerClassName) throws ClassNotFoundException,
             IllegalArgumentException, IllegalAccessException {
+        final ISubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponent(resource,callerClassName);
+        if (comp == null)
+            throw new IllegalArgumentException("component could not be found");
+        field.setAccessible(true);
+        field.set(bean, comp.getComponentHandle());
+    }
+
+    private <T> void handleParentComponentContextAnnotation(final T bean,
+                                                            final Field field, final Resource resource,
+                                                            final String callerClassName) throws ClassNotFoundException,
+            IllegalArgumentException, IllegalAccessException {
+
+        final ISubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponent(resource,callerClassName);
+        if (comp == null)
+            throw new IllegalArgumentException("component could not be found");
+        field.setAccessible(true);
+        field.set(bean, comp.getContext());
+    }
+
+    private ISubComponent<EventHandler<Event>, Event, Object> findSubcomponent(final Resource resource,final String callerClassName) throws ClassNotFoundException {
         final String parentId = resource.parentId();
         ISubComponent<EventHandler<Event>, Event, Object> comp = null;
         if (parentId.isEmpty()) {
@@ -228,10 +253,8 @@ public class JACPManagedDialog {
         } else {
             comp = ComponentRegistry.findComponentById(parentId);
         }
-        if (comp == null)
-            throw new IllegalArgumentException("component could not be foud");
-        field.setAccessible(true);
-        field.set(bean, comp);
+
+        return comp;
     }
 
 }

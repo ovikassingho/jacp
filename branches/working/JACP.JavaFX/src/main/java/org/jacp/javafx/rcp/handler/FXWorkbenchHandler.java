@@ -34,10 +34,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.OnHide;
 import org.jacp.api.annotations.OnShow;
 import org.jacp.api.annotations.PostConstruct;
-import org.jacp.api.component.IComponentView;
-import org.jacp.api.component.IPerspective;
-import org.jacp.api.component.IPerspectiveView;
-import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.handler.IComponentHandler;
@@ -168,7 +165,7 @@ public class FXWorkbenchHandler implements
      * @param component
      * @param layout
      */
-    private void addComponentByType(final IComponentView<Node, EventHandler<Event>, Event, Object> component,
+    private void addComponentByType(final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
                                     final IPerspectiveLayout<? extends Node, Node> layout) {
         final Node validContainer = layout.getTargetLayoutComponents().get(component.getExecutionTarget());
         final ObservableList<Node> children = FXUtil.getChildren(validContainer);
