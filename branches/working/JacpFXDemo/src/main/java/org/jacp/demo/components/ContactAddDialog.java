@@ -80,7 +80,7 @@ public class ContactAddDialog {
         cancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
-                JACPModalDialog.getInstance().hideModalMessage();
+                JACPModalDialog.getInstance().hideModalDialog();
             }
         });
 
@@ -96,14 +96,14 @@ public class ContactAddDialog {
                     contact.setFirstName(catName);
                     final IActionListener<EventHandler<Event>, Event, Object> listener = parent.getContext().getActionListener(contact);
                     listener.performAction(actionEvent);
-                    JACPModalDialog.getInstance().hideModalMessage();
+                    JACPModalDialog.getInstance().hideModalDialog();
                 }
             }
         });
 
         hboxButtons.getChildren().addAll(ok, cancel);
         box.getChildren().addAll(title, hboxInput, hboxButtons);
-        JACPModalDialog.getInstance().showModalMessage(box);
+        JACPModalDialog.getInstance().showModalDialog(box);
     }
 
 }

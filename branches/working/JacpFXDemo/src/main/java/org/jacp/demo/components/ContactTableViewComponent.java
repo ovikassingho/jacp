@@ -40,7 +40,6 @@ import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
-import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.context.JACPContext;
@@ -188,7 +187,7 @@ public class ContactTableViewComponent implements FXComponent {
 
             }
         });
-        JACPModalDialog.getInstance().showModalMessage(dialog);
+        JACPModalDialog.getInstance().showModalDialog(dialog);
 
     }
 
