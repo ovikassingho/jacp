@@ -95,13 +95,13 @@ public class ContactWorkbench extends AFXWorkbench {
 
                     @Override
                     public void handle(final ActionEvent actionEvent) {
-                        JACPModalDialog.getInstance().hideModalMessage();
+                        JACPModalDialog.getInstance().hideModalDialog();
                     }
                 });
 
                 hboxButtons.getChildren().addAll(ok);
                 box.getChildren().addAll(ContactWorkbench.this.createTitle(), ContactWorkbench.this.createInfoText(), ContactWorkbench.this.createProjectLink(), hboxButtons);
-                JACPModalDialog.getInstance().showModalMessage(box);
+                JACPModalDialog.getInstance().showModalDialog(box);
 
             }
         });
