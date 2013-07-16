@@ -22,28 +22,32 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.components.toolBar;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.CSSUtil;
+import org.jacp.javafx.rcp.util.LayoutUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * The Class JACPOptionButton.
@@ -57,6 +61,12 @@ public class JACPOptionButton extends Button {
     private VBox hoverMenu;
 
     private VBox options;
+
+    private Logger LOGGER = Logger.getLogger(JACPOptionButton.class.getName());
+
+    private SimpleDoubleProperty padding         = new SimpleDoubleProperty();
+    private SimpleDoubleProperty buttonXLocation = new SimpleDoubleProperty();
+    private SimpleDoubleProperty buttonYLocation = new SimpleDoubleProperty();
 
     public JACPOptionButton(String label, final FXComponentLayout layout) {
         super(label);
@@ -72,23 +82,48 @@ public class JACPOptionButton extends Button {
         arrow.setMinHeight(5);
         arrow.setMaxWidth(10);
         hoverMenu.setAlignment(Pos.CENTER);
+        hoverMenu.setVisible(false);
         CSSUtil.addCSSClass("top-arrow", arrow);
         CSSUtil.setBackgroundColor(options, "#333333");
         this.hoverMenu.getChildren().setAll(arrow, options);
-        this.glassPane.getChildren().setAll(hoverMenu);
-        this.glassPane.setMaxWidth(options.getWidth());
-        this.glassPane.setMaxHeight(options.getHeight());
+        this.hoverMenu.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            //  ----------
+            //  |        |
+            //  ----------
+            //      A
+            // ------------
+            // |           |
+
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+                // get padding to center hovermenu
+                padding.set((getWidth() - hoverMenu.getWidth()) / 2);
+
+            }
+        });
     }
 
     private void initAction() {
         this.setOnAction((EventHandler<ActionEvent>)(actionEvent)-> {
-                double testX = getBoundsInParent().getMinX() + getParent().getBoundsInParent().getMinX();
-                double target = testX - (options.getWidth() - getWidth()) / 2;
-                double move = target - glassPane.getBoundsInParent().getMinX();
+                // get location of the optionbutton
+                Point2D translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMaxY());
+                buttonXLocation.set(translate.getX());
+                buttonYLocation.set(translate.getY());
 
-                glassPane.setTranslateX(move);
-                glassPane.setTranslateY(-(glassPane.getBoundsInParent().getMinY() - getBoundsInParent().getMaxY()));
-                glassPane.setVisible(!glassPane.isVisible());
+                hoverMenu.setVisible(!hoverMenu.isVisible());
+                // if another option is show, hide everything before switching to the current content
+                if(!glassPane.getChildren().contains(hoverMenu)){
+                    LayoutUtil.hideAllChildren(glassPane);
+                }
+                // adjust hovermenu
+                glassPane.getChildren().setAll(hoverMenu);
+                glassPane.setMaxWidth(options.getWidth());
+                glassPane.setMaxHeight(options.getHeight());
+                StackPane.setAlignment(glassPane, Pos.TOP_LEFT);
+                glassPane.translateXProperty().bind(buttonXLocation.add(padding));
+                glassPane.translateYProperty().bind(buttonYLocation);
+                // show everything
+                glassPane.setVisible(hoverMenu.isVisible());
 
         });
     }
@@ -96,12 +131,20 @@ public class JACPOptionButton extends Button {
     public void addOption(Button option) {
         option.setMaxWidth(Integer.MAX_VALUE);
         options.getChildren().add(option);
+        option.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                // hide option when button is pressed
+                hideOptions();
+            }
+        });
         VBox.setMargin(option, new Insets(5,5,5,5));
     }
 
 
     public void hideOptions(){
         this.glassPane.setVisible(false);
+        this.hoverMenu.setVisible(false);
     }
 
 
