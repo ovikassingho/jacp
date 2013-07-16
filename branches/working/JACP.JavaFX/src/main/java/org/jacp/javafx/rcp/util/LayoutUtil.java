@@ -2,10 +2,7 @@ package org.jacp.javafx.rcp.util;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -170,6 +167,11 @@ public class LayoutUtil {
                 }
             }
         }
+    }
 
+    public static void hideAllChildren(Region parent){
+        for(Node node : parent.getChildrenUnmodifiable() ){
+            node.setVisible(false);
+        }
     }
 }
