@@ -95,7 +95,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      * @param message
      *            the message
      */
-    public synchronized void showModalMessage(final Node message) {
+    public synchronized void showModalDialog(final Node message) {
         if (getHideTimeline().getStatus() == Status.RUNNING) {
             getHideTimeline().stop();
         }
@@ -113,7 +113,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      * Hide any modal message that is shown.
      */
     @Override
-    public synchronized void hideModalMessage() {
+    public synchronized void hideModalDialog() {
         this.setCache(true);
         getHideTimeline().play();
         ((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(0.0);

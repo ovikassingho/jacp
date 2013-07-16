@@ -32,6 +32,6 @@ public interface IModalMessageNode {
 	/**
 	 * Hide modal message.
 	 */
-	public void hideModalMessage();
+	public void hideModalDialog();
 
 }

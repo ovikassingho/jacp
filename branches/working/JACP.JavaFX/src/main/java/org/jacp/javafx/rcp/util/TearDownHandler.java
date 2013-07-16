@@ -79,7 +79,12 @@ public class TearDownHandler {
 				if (component instanceof ICallbackComponent) {
 					handleAsync
 							.add((ICallbackComponent<EventHandler<Event>, Event, Object>) component);
-				} else {
+				} else if(component.getComponentHandle() !=null) {
+                    // run teardown in app thread
+                    FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                            component.getComponentHandle());
+                }
+                else {
 					// run teardown in app thread
 					FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
 							component);

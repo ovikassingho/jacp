@@ -38,7 +38,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
@@ -268,7 +267,7 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	*/
 	@Override
 	public void handle(final ActionEvent actionEvent) {
-		JACPModalDialog.getInstance().hideModalMessage();
+		JACPModalDialog.getInstance().hideModalDialog();
 	}
 
 	/**

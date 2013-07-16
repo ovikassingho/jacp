@@ -2,11 +2,15 @@ package org.jacp.javafx.rcp.context;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
+import org.jacp.javafx.rcp.components.managedDialog.ManagedDialogHandler;
+import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
@@ -29,7 +33,7 @@ public class JACPContextImpl implements JACPContext {
     // TODO remove ResourceBundle from AFXComponent
     private ResourceBundle resourceBundle;
 
-    public JACPContextImpl(final String id, final String name, BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
+    public JACPContextImpl(final String id, final String name, final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
         this.id = id;
         this.name = name;
         this.globalMessageQueue = globalMessageQueue;
@@ -77,6 +81,27 @@ public class JACPContextImpl implements JACPContext {
 
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> ManagedDialogHandler<T> getManagedDialogHandler(final Class<T> clazz)  {
+        return JACPManagedDialog.getInstance().getManagedDialog(clazz);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void showModalDialog(final Node node) {
+        JACPModalDialog.getInstance().showModalDialog(node);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void hideModalDialog() {
+        JACPModalDialog.getInstance().hideModalDialog();
     }
 
 }
