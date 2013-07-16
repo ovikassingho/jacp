@@ -1,3 +1,4 @@
+16. Jul. 2013 - amo -  update JACPContext to include methods for managed dialogs and modal dialogs, fixed teardown handler
 04. Jul. 2013 - amo -  many changes for Context (JACPContext) and FXComponent, components are now implemented and not extended.
 24. Jun. 2013 - amo -  start initial work on context object
 30. May  2013 - amo -  overall cleanup and and Java 8 changes
