@@ -32,6 +32,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.context.Context;
 import org.jacp.api.dialog.Scope;
 import org.jacp.api.launcher.Launcher;
+import org.jacp.api.util.CustomSecurityManager;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.component.FXComponent;
@@ -66,20 +67,12 @@ public class JACPManagedDialog {
      */
     private static JACPManagedDialog instance;
 
-    private final static int CALL_STACK_DEPTH=2;
+
     /**
      * the singleton scoped dialogs cache
      */
     private static final Map<String, ManagedDialogHandler<?>> cache = new ConcurrentHashMap<>();
 
-    /**
-     * A custom security manager that exposes the getClassContext() information
-     */
-    static class CustomSecurityManager extends SecurityManager {
-        public String getCallerClassName() {
-            return getClassContext()[CALL_STACK_DEPTH].getName();
-        }
-    }
 
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
@@ -113,8 +106,7 @@ public class JACPManagedDialog {
      * @param type
      * @return a managed dialog handler see {@link ManagedDialogHandler}
      */
-    public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type) {
-        final String callerClassName = customSecurityManager.getCallerClassName();
+    public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type,final String callerClassName) {
         final Dialog dialogAnnotation = type.getAnnotation(Dialog.class);
         if (dialogAnnotation == null)
             throw new ManagedDialogAnnotationMissingException();
@@ -137,6 +129,16 @@ public class JACPManagedDialog {
             return new ManagedDialogHandler<>(bean, (Node) bean, id);
 
         return putDialogToCache(id, scope, createFXMLDialog(dialogAnnotation, id, scope, bean, bundle));
+    }
+    /**
+     * Creates a managed dialog.
+     *
+     * @param type
+     * @return a managed dialog handler see {@link ManagedDialogHandler}
+     */
+    public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type) {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+          return getManagedDialog(type,callerClassName);
 
     }
 
