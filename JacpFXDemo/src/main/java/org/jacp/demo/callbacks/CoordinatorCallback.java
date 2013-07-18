@@ -22,7 +22,7 @@ import javafx.event.EventHandler;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.api.annotations.Component;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
@@ -36,7 +36,7 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
-@CallbackComponent(id = GlobalConstants.CallbackConstants.CALLBACK_COORDINATOR, name = "coordinatorCallback", active = false)
+@Component(id = GlobalConstants.CallbackConstants.CALLBACK_COORDINATOR, name = "coordinatorCallback", active = false)
 public class CoordinatorCallback extends AStatelessCallbackComponent {
 
     @Override

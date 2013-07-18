@@ -46,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *            defines the basic message type
  */
 public interface IStatelessCallabackComponent<L, A, M> extends
-		ICallbackComponent<L, A, M> {
+		ICallbackComponent<L, A, M> , IHandleable<A,M>{
 
 	/**
 	 * return instances of current state less component

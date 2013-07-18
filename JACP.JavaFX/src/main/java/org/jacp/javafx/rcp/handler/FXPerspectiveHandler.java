@@ -28,6 +28,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -38,6 +39,7 @@ import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
+import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
@@ -84,6 +86,7 @@ public class FXPerspectiveHandler
 	@Override
 	public final void initComponent(final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        // TODO there is no reason why the init process should run on FX applicatrion thread!! check
 		if (Platform.isFxApplicationThread()) {
 			this.handleInit(action, component);
 		} else {
@@ -203,6 +206,8 @@ public class FXPerspectiveHandler
 		if (component instanceof AStatefulCallbackComponent) {
 			this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
+            // TODO inject RessourceBundle
+            handleContextInjection(component);
 			this.putMessageToQueue(component, action);
 			this.runStateComponent(action,
 					((AStatefulCallbackComponent) component));
@@ -211,11 +216,17 @@ public class FXPerspectiveHandler
 		if (component instanceof AStatelessCallbackComponent) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
 					+ component.getName());
+            // TODO  handleContextInjection(component);
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
         }// else if END
 
 	}
+
+    private void handleContextInjection(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
+        FXUtil.performResourceInjection(handler, component.getContext());
+    }
 	
 	
 	/**

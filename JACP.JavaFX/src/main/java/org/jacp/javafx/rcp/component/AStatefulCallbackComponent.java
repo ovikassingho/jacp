@@ -39,17 +39,6 @@ public abstract class AStatefulCallbackComponent extends ASubComponent
 
 	private volatile String handleComponentTarget;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	/**
-	 * {@inheritDoc}
-	 */
-	public final <C> C handle(final IAction<Event, Object> action) {
-		return (C) this.handleAction(action);
-	}
-
-	public abstract Object handleAction(IAction<Event, Object> action);
-
 	@Override
 	/**
 	 * {@inheritDoc}

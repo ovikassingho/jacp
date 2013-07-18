@@ -62,7 +62,7 @@ public @interface Component {
      * 
      * @return The default execution target defined by perspective
      */
-    String defaultExecutionTarget();
+    String defaultExecutionTarget() default "";
 
     /**
      * Represents the location of your resource bundle file.

@@ -18,6 +18,7 @@
                 <ref bean="XMLDetailView"/>
                 <ref bean="contactTableView"/>
                 <ref bean="contactChartView"/>
+                <ref bean="analyticsCallback"/>
             </list>
         </property>
         <property name="subcomponents">
@@ -25,7 +26,7 @@
 
                 <ref bean="coordinatorCallback"/>
                 <ref bean="creatorCallback"/>
-                <ref bean="analyticsCallback"/>
+
             </list>
         </property>
     </bean>
