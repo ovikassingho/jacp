@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.context.Context;
+import org.jacp.api.util.CustomSecurityManager;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
@@ -27,7 +28,8 @@ public class JACPContextImpl implements JACPContext {
     protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
     private String id;
     private String name;
-
+    private final static CustomSecurityManager customSecurityManager =
+            new CustomSecurityManager();
 
 
     // TODO remove ResourceBundle from AFXComponent
@@ -87,7 +89,9 @@ public class JACPContextImpl implements JACPContext {
      */
     @Override
     public <T> ManagedDialogHandler<T> getManagedDialogHandler(final Class<T> clazz)  {
-        return JACPManagedDialog.getInstance().getManagedDialog(clazz);
+        // TODO check if call is from UI component, otherwise throw exception
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        return JACPManagedDialog.getInstance().getManagedDialog(clazz,callerClassName);
     }
     /**
      * {@inheritDoc}
