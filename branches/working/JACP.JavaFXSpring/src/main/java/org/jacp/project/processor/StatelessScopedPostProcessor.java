@@ -36,6 +36,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 public final class StatelessScopedPostProcessor implements BeanFactoryPostProcessor {
 
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory factory) throws BeansException {
+        // TODO update to new CallbackComponent interface and set classes with @Stateless to "prototype" all others to "singleton"
     	final String[] stateless =factory.getBeanNamesForType(AStatelessCallbackComponent.class);
         for(final String beanName: stateless) {
             final BeanDefinition beanDefinition = factory.getBeanDefinition(beanName);

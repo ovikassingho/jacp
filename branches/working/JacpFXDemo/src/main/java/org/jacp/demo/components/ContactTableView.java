@@ -48,7 +48,7 @@ import org.jacp.demo.entity.Contact;
 import org.jacp.demo.main.Util;
 
 /**
- * The view object returned in a "TableView"-Component; each contact category is
+ * The view object returned in a "TableView"-CallbackComponent; each contact category is
  * associated to an contact view; this view contains the table and all contacts
  * to a parent contact.
  * 

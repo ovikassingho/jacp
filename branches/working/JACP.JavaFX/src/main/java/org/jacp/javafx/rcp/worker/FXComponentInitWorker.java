@@ -231,14 +231,14 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			try {
 				this.get();
 			} catch (final InterruptedException e) {
-				this.log("Exception in Component INIT Worker, Thread interrupted: "
+				this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
 						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
 				e.printStackTrace();
 			} catch (final ExecutionException e) {
-				this.log("Exception in Component INIT Worker, Thread Excecution Exception: "
+				this.log("Exception in CallbackComponent INIT Worker, Thread Excecution Exception: "
 						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
@@ -247,7 +247,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			} catch (final UnsupportedOperationException e) {
 				e.printStackTrace();
 			} catch (final Exception e) {
-				this.log("Exception in Component INIT Worker, Thread Exception: "
+				this.log("Exception in CallbackComponent INIT Worker, Thread Exception: "
 						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in

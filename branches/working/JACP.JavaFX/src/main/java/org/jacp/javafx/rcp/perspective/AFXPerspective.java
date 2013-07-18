@@ -29,7 +29,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
-import org.jacp.api.annotations.CallbackComponent;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.DeclarativeComponent;
 import org.jacp.api.component.*;
@@ -38,10 +37,7 @@ import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.component.AComponent;
-import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.component.EmbeddedFXComponent;
+import org.jacp.javafx.rcp.component.*;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
@@ -122,7 +118,8 @@ public abstract class AFXPerspective extends AComponent implements
             if(IComponentView.class.isAssignableFrom(handler.getClass())) {
                 this.subcomponents.add(new EmbeddedFXComponent(IComponentView.class.cast(handler)));
             } else if(IComponentHandle.class.isAssignableFrom(handler.getClass())) {
-
+                           // this must be a component, check weather it is a stateless or stateful component
+                this.subcomponents.add(new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler)));
             }
 
         });
@@ -168,13 +165,24 @@ public abstract class AFXPerspective extends AComponent implements
      */
     private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
         // TODO switch to handler.getClass()
-        final CallbackComponent callbackAnnotation = component.getClass().getAnnotation(CallbackComponent.class);
-        if (callbackAnnotation != null) {
-            handleCallbackAnnotation(component, callbackAnnotation);
-            this.log("register CallbackComponent with annotations : " + callbackAnnotation.id());
-            return;
+        // TODO add exceptions when no annotation is present
+        // TODO when all migrated to CallbackComponent check for stateless
+        if(AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())||(component.getComponentHandle()!=null && CallbackComponent.class.isAssignableFrom(component.getComponentHandle().getClass())) ){
+            Component componentAnnotation = null;
+            if(component.getComponentHandle()!=null) {
+                IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
+                componentAnnotation = handler.getClass().getAnnotation(Component.class);
+            }  else {
+                componentAnnotation = component.getClass().getAnnotation(Component.class);
+            }
+            if (componentAnnotation != null) {
+                handleCallbackAnnotation(component, componentAnnotation);
+                this.log("register CallbackComponent with annotations : " + componentAnnotation.id());
+                return;
+            }
         }
-        IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
+
+        final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
         final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
         if (componentAnnotation!=null && component instanceof AFXComponent) {
             handleComponentAnnotation(component, componentAnnotation);
@@ -197,7 +205,7 @@ public abstract class AFXPerspective extends AComponent implements
         handleDeclarativeComponentAnnotations(declarativeComponent, (AFXComponent) component);
     }
 
-    private void handleCallbackAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final CallbackComponent callbackAnnotation) {
+    private void handleCallbackAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
         handleBaseAttributes(AComponent.class, component, callbackAnnotation.id(), callbackAnnotation.active(),
                 callbackAnnotation.name());
     }

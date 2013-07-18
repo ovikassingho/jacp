@@ -35,7 +35,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Component worker to run instances of a stateless component in a worker
+ * CallbackComponent worker to run instances of a stateless component in a worker
  * thread.
  * 
  * @author Andy Moncsek
@@ -66,7 +66,10 @@ public class StateLessComponentRunWorker
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
 					this.component.setHandleTarget(myAction.getSourceId());
-					final Object value = this.component.handle(myAction);
+
+                    // TODO this is a workaroud until it is not migrated to component interface, switch to getComponentHandle()
+                    IStatelessCallabackComponent<EventHandler<Event>, Event, Object> tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
+                    final Object value = tmp.handle(myAction);
 					final String targetId = this.component
 							.getHandleTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,

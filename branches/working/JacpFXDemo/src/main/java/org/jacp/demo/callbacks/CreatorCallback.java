@@ -20,7 +20,7 @@ package org.jacp.demo.callbacks;
 import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.api.annotations.Component;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
@@ -31,7 +31,7 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
-@CallbackComponent(id = GlobalConstants.CallbackConstants.CALLBACK_CREATOR, name = "creatorCallback", active = false)
+@Component(id = GlobalConstants.CallbackConstants.CALLBACK_CREATOR, name = "creatorCallback", active = false)
 public class CreatorCallback extends AStatelessCallbackComponent {
 
     @Override

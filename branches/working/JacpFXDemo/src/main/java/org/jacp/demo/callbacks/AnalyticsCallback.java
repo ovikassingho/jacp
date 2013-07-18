@@ -27,25 +27,29 @@ import javafx.scene.chart.XYChart;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.CallbackComponent;
+import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.Resource;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
-import org.jacp.javafx.rcp.component.AStatefulCallbackComponent;
+import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.context.JACPContext;
 
 /**
- * The AnalyticsCallbac components creates chart data (random data)
+ * The AnalyticsCallback components creates chart data (random data)
  * 
  * @author Andy Moncsek
  * 
  */
-@CallbackComponent(id = GlobalConstants.CallbackConstants.CALLBACK_ANALYTICS, name = "analyticsCallback", active = false)
-public class AnalyticsCallback extends AStatefulCallbackComponent {
+@Component(id = GlobalConstants.CallbackConstants.CALLBACK_ANALYTICS, name = "analyticsCallback", active = false)
+public class AnalyticsCallback implements CallbackComponent {
     private final Random rnd = new Random();
+    @Resource
+    private JACPContext context;
 
     @Override
-    public Object handleAction(final IAction<Event, Object> action) {
+    public Object handle(final IAction<Event, Object> action) {
         if (action.getMessage() instanceof Contact) {
             final Contact contact = (Contact) action.getMessage();
             this.creatAndSendData(contact);
@@ -72,7 +76,7 @@ public class AnalyticsCallback extends AStatefulCallbackComponent {
     }
 
     private void sendChartData(final Object data) {
-        final IActionListener<EventHandler<Event>, Event, Object> listener = this.getActionListener(
+        final IActionListener<EventHandler<Event>, Event, Object> listener = context.getActionListener(
                 GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_CHART_VIEW), data);
         listener.performAction(null);
     }

@@ -64,7 +64,7 @@ public class StateComponentRunWorker
 					this.component.setHandleTarget(myAction.getSourceId());
 					final String targetCurrent = this.component
 							.getExecutionTarget();
-					final Object value = this.component.handle(myAction);
+					final Object value = this.component.getComponentHandle().handle(myAction);
 					final String targetId = this.component
 							.getHandleTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,
@@ -96,7 +96,7 @@ public class StateComponentRunWorker
 		if (!targetNew.equals(currentTaget)) {
 			if (!component.isActive())
 				throw new UnsupportedOperationException(
-						"Component may be moved or set to inactive but not both");
+						"CallbackComponent may be moved or set to inactive but not both");
 			this.changeComponentTarget(this.delegateQueue, comp);
 		}
 	}
