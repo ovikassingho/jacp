@@ -44,6 +44,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -67,6 +68,7 @@ public class FXUtil {
     public static final String IDECLARATIVECOMPONENT_LOCALE = "localeID";
     public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
+    private final static String PATTERN_LOCALE ="_";
 
 
     /**
@@ -221,13 +223,13 @@ public class FXUtil {
     }
 
     public static Locale getCorrectLocale(final String localeID) {
-        Locale locale = Locale.getDefault();
-        if (localeID != null && !localeID.isEmpty()) {
-            if (localeID.contains("_")) {
-                String[] loc = localeID.split("_");
-                locale = new Locale(loc[0], loc[1]);
+        final Locale locale = Locale.getDefault();
+        if (localeID != null && localeID.length() > 1) {
+            if (localeID.contains(PATTERN_LOCALE)) {
+                final String[] loc = Pattern.compile(PATTERN_LOCALE).split(localeID);
+                return new Locale(loc[0], loc[1]);
             } else {
-                locale = new Locale(localeID);
+                return new Locale(localeID);
             }
 
         }

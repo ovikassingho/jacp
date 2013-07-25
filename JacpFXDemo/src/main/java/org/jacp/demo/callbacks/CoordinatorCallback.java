@@ -56,7 +56,7 @@ public class CoordinatorCallback implements CallbackComponent {
                     while (amount > Util.PARTITION_SIZE) {
                         this.waitAmount(100);
                         this.createAmountAndSend(contact.getFirstName(), Util.PARTITION_SIZE);
-                        amount = amount - Util.PARTITION_SIZE;
+                        amount -= Util.PARTITION_SIZE;
                     }
                     this.createAmountAndSend(contact.getFirstName(), amount);
                 } else {
