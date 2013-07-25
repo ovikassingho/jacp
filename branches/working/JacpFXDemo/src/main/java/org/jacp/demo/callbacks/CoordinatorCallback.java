@@ -23,11 +23,15 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.Resource;
+import org.jacp.api.annotations.Stateless;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.Contact;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.demo.main.Util;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.context.JACPContext;
 
 /**
  * The coordinatorCallback splits the amount of contacts in to chunks and sends
@@ -36,11 +40,14 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
  * @author Andy Moncsek
  * 
  */
+@Stateless
 @Component(id = GlobalConstants.CallbackConstants.CALLBACK_COORDINATOR, name = "coordinatorCallback", active = false)
-public class CoordinatorCallback extends AStatelessCallbackComponent {
 
+public class CoordinatorCallback implements CallbackComponent {
+    @Resource
+    private JACPContext context;
     @Override
-    public Object handleAction(final IAction<Event, Object> action) {
+    public Object handle(final IAction<Event, Object> action) {
         if (action.getMessage() instanceof Contact) {
             final Contact contact = (Contact) action.getMessage();
             if (contact.getContacts().isEmpty()) {
@@ -80,7 +87,7 @@ public class CoordinatorCallback extends AStatelessCallbackComponent {
      */
     private void createAmountAndSend(final String name, final int amount) {
         final ContactDTO dto = new ContactDTO(name, amount);
-        final IActionListener<EventHandler<Event>, Event, Object> listener = this.getActionListener(
+        final IActionListener<EventHandler<Event>, Event, Object> listener = context.getActionListener(
                 GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.CallbackConstants.CALLBACK_CREATOR), dto);
         listener.performAction(null);
     }

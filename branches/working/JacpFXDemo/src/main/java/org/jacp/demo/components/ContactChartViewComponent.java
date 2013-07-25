@@ -67,7 +67,7 @@ public class ContactChartViewComponent implements FXComponent {
 			"2010", "2011" };
 
 	@Override
-	public Node handle(final IAction<Event, Object> action) {
+	public Node handle(final IAction<Event, Object> action) throws Exception {
 		if (action.getMessage().equals(MessageUtil.INIT)) {
 			this.root = this.createRoot();
 			this.root.getChildren().add(this.createChart());
@@ -78,7 +78,7 @@ public class ContactChartViewComponent implements FXComponent {
 
 	@Override
 	public Node postHandle(final Node node,
-			final IAction<Event, Object> action) {
+			final IAction<Event, Object> action) throws Exception {
 		if (action.getMessage() instanceof BarChartAction) {
 			if (BarChartAction.RESET.equals(action.getMessage())) {
 				this.clearChartPane();

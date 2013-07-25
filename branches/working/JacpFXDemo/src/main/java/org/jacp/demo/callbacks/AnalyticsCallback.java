@@ -49,9 +49,9 @@ public class AnalyticsCallback implements CallbackComponent {
     private JACPContext context;
 
     @Override
-    public Object handle(final IAction<Event, Object> action) {
-        if (action.getMessage() instanceof Contact) {
-            final Contact contact = (Contact) action.getMessage();
+    public Object handle(final IAction<Event, Object> action) throws Exception {
+        if (action.isMessageType(Contact.class)) {
+            final Contact contact = action.getTypedMessage(Contact.class);
             this.creatAndSendData(contact);
         }
         return null;

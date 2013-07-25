@@ -22,9 +22,9 @@
  ************************************************************************/
 package org.jacp.api.coordinator;
 
-import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.component.ISubComponent;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * A component delegate handles delegate actions.

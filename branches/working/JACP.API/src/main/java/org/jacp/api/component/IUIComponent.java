@@ -22,10 +22,6 @@
  ************************************************************************/
 package org.jacp.api.component;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-
 /**
  * Represents an basic UI component handled by a perspective. A IUIComponent is
  * an // * visible UI component displayed in a defined area of perspective.

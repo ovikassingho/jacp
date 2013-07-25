@@ -25,8 +25,8 @@ package org.jacp.javafx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -39,20 +39,20 @@ import java.util.concurrent.ExecutionException;
  */
 public class StateComponentRunWorker
 		extends
-		AFXComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
+		AFXComponentWorker<ISubComponent<EventHandler<Event>, Event, Object>> {
+	private final ISubComponent<EventHandler<Event>, Event, Object> component;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
 
 	public StateComponentRunWorker(
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		super(component.getName());
 		this.component = component;
 		this.delegateQueue = delegateQueue;
 	}
 
 	@Override
-	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
+	protected ISubComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
 		synchronized (this.component) {
 			this.component.lock();
@@ -61,11 +61,13 @@ public class StateComponentRunWorker
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
-					this.component.setHandleTarget(myAction.getSourceId());
+                    final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+                    context.setHandleTarget(myAction.getSourceId());
+                      // TODO move execution target to Context!
 					final String targetCurrent = this.component
 							.getExecutionTarget();
 					final Object value = this.component.getComponentHandle().handle(myAction);
-					final String targetId = this.component
+					final String targetId = context
 							.getHandleTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,
 							myAction);
@@ -90,7 +92,7 @@ public class StateComponentRunWorker
 	 * @param currentTaget
 	 */
 	private void checkAndHandleTargetChange(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+			final ISubComponent<EventHandler<Event>, Event, Object> comp,
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {

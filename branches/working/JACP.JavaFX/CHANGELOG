@@ -1,3 +1,4 @@
+25. Jul. 2013 - amo -  update due to changes of API (removed ICallbackComponent)
 18. Jul. 2013 - amo -  remove AStatelessComponent in flavour for interface @CallbackComponent, now you should implement CallbackComponents and use JACPContext to send messages
 16. Jul. 2013 - amo -  update JACPContext to include methods for managed dialogs and modal dialogs, fixed teardown handler  ...
 04. Jul. 2013 - amo -  many changes for Context (JACPContext) and FXComponent, components are now implemented and not extended.

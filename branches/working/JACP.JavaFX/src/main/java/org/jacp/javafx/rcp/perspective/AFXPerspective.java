@@ -31,6 +31,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.DeclarativeComponent;
+import org.jacp.api.annotations.Stateless;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
@@ -116,10 +117,14 @@ public abstract class AFXPerspective extends AComponent implements
         if(this.subcomponents==null)this.subcomponents=new ArrayList<>();
         handlers.forEach(handler ->{
             if(IComponentView.class.isAssignableFrom(handler.getClass())) {
-                this.subcomponents.add(new EmbeddedFXComponent(IComponentView.class.cast(handler)));
+                    this.subcomponents.add(new EmbeddedFXComponent(IComponentView.class.cast(handler)));
             } else if(IComponentHandle.class.isAssignableFrom(handler.getClass())) {
-                           // this must be a component, check weather it is a stateless or stateful component
-                this.subcomponents.add(new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler)));
+                if(handler.getClass().isAnnotationPresent(Stateless.class)){
+                       // stateless components
+                    this.subcomponents.add(new EmbeddedStatelessCallbackComponent(IComponentHandle.class.cast(handler)));
+                }else {
+                    this.subcomponents.add(new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler)));
+                }
             }
 
         });
@@ -164,37 +169,30 @@ public abstract class AFXPerspective extends AComponent implements
      * @param component ; the component containing metadata.
      */
     private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        // TODO switch to handler.getClass()
-        // TODO add exceptions when no annotation is present
-        // TODO when all migrated to CallbackComponent check for stateless
-        if(AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())||(component.getComponentHandle()!=null && CallbackComponent.class.isAssignableFrom(component.getComponentHandle().getClass())) ){
-            Component componentAnnotation = null;
-            if(component.getComponentHandle()!=null) {
-                IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
-                componentAnnotation = handler.getClass().getAnnotation(Component.class);
-            }  else {
-                componentAnnotation = component.getClass().getAnnotation(Component.class);
-            }
-            if (componentAnnotation != null) {
-                handleCallbackAnnotation(component, componentAnnotation);
-                this.log("register CallbackComponent with annotations : " + componentAnnotation.id());
-                return;
-            }
-        }
-
         final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
-        final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
-        if (componentAnnotation!=null && component instanceof AFXComponent) {
-            handleComponentAnnotation(component, componentAnnotation);
-            this.log("register component with annotations : " + componentAnnotation.id());
-            return;
-        }
+        if(handler==null)return;
 
         final DeclarativeComponent declarativeComponent = handler.getClass()
                 .getAnnotation(DeclarativeComponent.class);
-        if (declarativeComponent != null && component instanceof AFXComponent) {
+        if (declarativeComponent != null && FXComponent.class.isAssignableFrom(handler.getClass())) {
             handleDeclarativeComponentAnnotation(component, declarativeComponent);
-            this.log("register component with annotations : " + declarativeComponent.id());
+            this.log("register declarative component with annotations : " + declarativeComponent.id());
+            return;
+        }
+
+        final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
+        if(componentAnnotation==null)return;
+
+        if(CallbackComponent.class.isAssignableFrom(handler.getClass())){
+            handleCallbackAnnotation(component, componentAnnotation);
+            this.log("register CallbackComponent with annotations : " + componentAnnotation.id());
+            return;
+        }
+
+        if (FXComponent.class.isAssignableFrom(handler.getClass())) {
+            handleComponentAnnotation(component, componentAnnotation);
+            this.log("register component with annotations : " + componentAnnotation.id());
+            return;
         }
 
     }
@@ -244,13 +242,13 @@ public abstract class AFXPerspective extends AComponent implements
 
     private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation) {
         if (component.getResourceBundleLocation() != null)
-            FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
+            FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
                     bundleLocation);
     }
 
     private void setLocale(final AFXComponent component, String locale) {
         if (component.getLocaleID() != null)
-            FXUtil.setPrivateMemberValue(AFXComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
+            FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
                     locale);
     }
 

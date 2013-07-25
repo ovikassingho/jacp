@@ -61,7 +61,7 @@ public class ContactTreeViewComponent implements FXComponent {
 	/**
 	 * handle the component in worker thread
 	 */
-	public Node handle(final IAction<Event, Object> action) {
+	public Node handle(final IAction<Event, Object> action) throws Exception {
 		// on initial message create the layout outside the FXApplication thread
 		if (action.isMessage(MessageUtil.INIT)) {
 			return this.createInitialLayout();
@@ -75,7 +75,7 @@ public class ContactTreeViewComponent implements FXComponent {
 	 * handle the component in FX application thread
 	 */
 	public Node postHandle(final Node node,
-			final IAction<Event, Object> action) {
+			final IAction<Event, Object> action) throws Exception {
 		// add a new contact in FXApplication thread
 		if (action.isMessageType(Contact.class)) {
 			final Contact contact = action.getTypedMessage(Contact.class);

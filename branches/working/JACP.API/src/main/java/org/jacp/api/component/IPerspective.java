@@ -22,12 +22,12 @@
  ************************************************************************/
 package org.jacp.api.component;
 
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.handler.IComponentHandler;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines a perspective, a perspective is a root component handled by an

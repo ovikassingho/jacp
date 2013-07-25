@@ -24,10 +24,9 @@ package org.jacp.javafx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IHandleable;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IStatelessCallabackComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
@@ -50,11 +49,11 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 		IStatelessCallabackComponent<EventHandler<Event>, Event, Object>{
 	public static int MAX_INCTANCE_COUNT;
 
-	private volatile String handleComponentTarget;
+
 
 	private final AtomicInteger threadCount = new AtomicInteger(0);
 
-	private final List<ICallbackComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<>();
+	private final List<ISubComponent<EventHandler<Event>, Event, Object>> componentInstances = new CopyOnWriteArrayList<>();
 
 	private volatile ExecutorService executor = Executors
 			.newCachedThreadPool(new HandlerThreadFactory("AStatelessCallbackComponent:"));
@@ -68,54 +67,21 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 		ShutdownThreadsHandler.registerexecutor(executor);
 	}
 
-	@Override
-	public final String getHandleTargetAndClear() {
-		return this.handleComponentTarget;
-	}
 
-	@Override
-	public final void setHandleTarget(final String componentTargetId) {
-		this.handleComponentTarget = componentTargetId;
-	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public final <C> C handle(final IAction<Event, Object> action) {
-		return (C) this.handleAction(action);
-	}
 
-	public abstract Object handleAction(IAction<Event, Object> action);
 
-	@Override
-	protected final Object clone() {
-		try {
-			final AStatelessCallbackComponent comp = (AStatelessCallbackComponent) super
-					.clone();
-			FXUtil.setPrivateMemberValue(AComponent.class, comp,
-					FXUtil.ACOMPONENT_ID, this.getId());
-			FXUtil.setPrivateMemberValue(AComponent.class, comp,
-					FXUtil.ACOMPONENT_ACTIVE, this.isActive());
-			FXUtil.setPrivateMemberValue(AComponent.class, comp,
-					FXUtil.ACOMPONENT_NAME, this.getName());
-			FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
-					FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
-			comp.setHandleTarget(this.handleComponentTarget);
-			comp.initEnv(this.getParentId(), this.globalMessageQueue);
-			return comp;
-		} catch (final CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/**
 	 * init cloned instance with values of blueprint
 	 * 
-	 * @param comp
+	 * @param handler
 	 * @return
 	 */
-	public final ICallbackComponent<EventHandler<Event>, Event, Object> init(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> comp) {
+	public final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> init(
+			final IComponentHandle<Object,EventHandler<Event>, Event, Object> handler) {
+
+        final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = new EmbeddedStatelessCallbackComponent(handler);
 		FXUtil.setPrivateMemberValue(AComponent.class, comp,
 				FXUtil.ACOMPONENT_ID, this.getId());
 		FXUtil.setPrivateMemberValue(AComponent.class, comp,
@@ -124,13 +90,12 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 				FXUtil.ACOMPONENT_NAME, this.getName());
 		FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
 				FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
-		comp.setHandleTarget(this.handleComponentTarget);
 		comp.initEnv(this.getParentId(), this.globalMessageQueue);
 		return comp;
 	}
 
 	@Override
-	public final List<ICallbackComponent<EventHandler<Event>, Event, Object>> getInstances() {
+	public final List<ISubComponent<EventHandler<Event>, Event, Object>> getInstances() {
 		return this.componentInstances;
 	}
 

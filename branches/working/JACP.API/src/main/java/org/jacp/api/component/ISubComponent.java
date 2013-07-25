@@ -22,10 +22,11 @@
  ************************************************************************/
 package org.jacp.api.component;
 
-import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.context.Context;
+
+import java.util.ResourceBundle;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines a subcomponent handled by a root component. A subcomponent is running
@@ -128,4 +129,12 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
      * @param <X>
      */
     <X extends IComponentHandle<?, L, A, M>>  void setComponentHandle(final X  handle);
+
+    /**
+     * Set the defined ResourceBundle for the component.
+     * @param resourceBundle
+     */
+    void setResourceBundle(ResourceBundle resourceBundle);
+
+
 }

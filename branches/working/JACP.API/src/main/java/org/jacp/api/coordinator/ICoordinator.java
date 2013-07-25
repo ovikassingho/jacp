@@ -22,11 +22,11 @@
  ************************************************************************/
 package org.jacp.api.coordinator;
 
-import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.handler.IComponentHandler;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines a basic observer for component messages; handles the message and

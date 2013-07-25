@@ -56,4 +56,15 @@ public interface Context<L, A, M>  {
      * @return  the defined resource bundle
      */
     ResourceBundle getResourceBundle();
+
+    /**
+     * Set component target id which is targeted by background component return
+     * value; the return value will be handled like an average message and will
+     * be delivered to targeted component.
+     *
+     * @param componentTargetId ; represents a component id to return the value to
+     */
+    void setHandleTarget(final String componentTargetId);
+
+
 }

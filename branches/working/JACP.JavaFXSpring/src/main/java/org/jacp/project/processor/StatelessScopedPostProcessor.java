@@ -23,7 +23,9 @@
 package org.jacp.project.processor;
 
 
+import org.jacp.api.annotations.Stateless;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -36,11 +38,17 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 public final class StatelessScopedPostProcessor implements BeanFactoryPostProcessor {
 
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory factory) throws BeansException {
-        // TODO update to new CallbackComponent interface and set classes with @Stateless to "prototype" all others to "singleton"
-    	final String[] stateless =factory.getBeanNamesForType(AStatelessCallbackComponent.class);
+    	final String[] stateless =factory.getBeanNamesForType(CallbackComponent.class);
         for(final String beanName: stateless) {
             final BeanDefinition beanDefinition = factory.getBeanDefinition(beanName);
-            beanDefinition.setScope("prototype");
+            final String className = beanDefinition.getBeanClassName();
+            try {
+                Class<?> clazz = Class.forName(className);
+                if(clazz.isAnnotationPresent(Stateless.class)) beanDefinition.setScope("prototype");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

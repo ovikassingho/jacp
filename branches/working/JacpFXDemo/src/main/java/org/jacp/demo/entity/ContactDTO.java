@@ -30,7 +30,7 @@ import javafx.scene.chart.XYChart;
 public class ContactDTO {
     private String parentName;
     private int amount;
-    private ObservableList<Contact> contacts = FXCollections.observableArrayList();
+    private ObservableList<Contact> contacts = FXCollections.synchronizedObservableList(FXCollections.observableArrayList());
     private List<XYChart.Data<String, Number>> seriesOneData;
     private List<XYChart.Data<String, Number>> seriesTwoData;
     private List<XYChart.Data<String, Number>> seriesThreeData;

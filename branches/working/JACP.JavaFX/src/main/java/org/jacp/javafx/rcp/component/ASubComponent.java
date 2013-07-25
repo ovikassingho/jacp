@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2012
  *
  * [AFXSubComponent.java]
@@ -30,6 +30,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 
+import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -37,39 +38,42 @@ import java.util.logging.Logger;
 
 /**
  * the AFXSubComponent is the basic component for all components
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 public abstract class ASubComponent extends AComponent implements
-		ISubComponent<EventHandler<Event>, Event, Object> {
+        ISubComponent<EventHandler<Event>, Event, Object> {
 
-	private volatile String executionTarget = "";
+    private volatile String executionTarget = "";
 
-	private volatile String parentId;
+    private volatile String parentId;
 
-	private final Semaphore lock = new Semaphore(1);
-	
-	private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Semaphore lock = new Semaphore(1);
 
-	private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
-			1000);
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+    private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
+            1000);
 
     private JACPContextImpl context;
 
 
     private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
 
+    private String localeID = "";
+
+    private String resourceBundleLocation = "";
+
     /**
      * {@inheritDoc}
      */
     @Override
-	public final void initEnv(final String parentId,
-			final BlockingQueue<IAction<Event, Object>> messageQueue) {
-		this.parentId = parentId;
-		this.globalMessageQueue = messageQueue;
-        this.context = new JACPContextImpl(this.getId(),this.getName(),this.globalMessageQueue);
-	}
+    public final void initEnv(final String parentId,
+                              final BlockingQueue<IAction<Event, Object>> messageQueue) {
+        this.parentId = parentId;
+        this.globalMessageQueue = messageQueue;
+        this.context = new JACPContextImpl(this.getId(), this.getName(), this.globalMessageQueue);
+    }
 
     /**
      * {@inheritDoc}
@@ -156,9 +160,9 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-	public final String getParentId() {
-		return this.parentId;
-	}
+    public final String getParentId() {
+        return this.parentId;
+    }
 
     /**
      * {@inheritDoc}
@@ -175,12 +179,58 @@ public abstract class ASubComponent extends AComponent implements
     public final IComponentHandle<?, EventHandler<Event>, Event, Object> getComponentHandle() {
         return componentHandle;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <X extends IComponentHandle<?, EventHandler<Event>, Event, Object>> void setComponentHandle(final X  handle) {
-        this.componentHandle =  handle;
+    public <X extends IComponentHandle<?, EventHandler<Event>, Event, Object>> void setComponentHandle(final X handle) {
+        this.componentHandle = handle;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLocaleID() {
+        return localeID;
+    }
+    /**
+     * {@inheritDoc}
+     *//*
+    @Override
+	public void setLocaleID(String localeID) {
+		super.checkPolicy(this.localeID, "Do Not Set document manually");
+		this.localeID = localeID;
+	}*/
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getResourceBundleLocation() {
+        return resourceBundleLocation;
+    }
+    /**
+     * {@inheritDoc}
+     *//*
+    @Override
+	public final void setResourceBundleLocation(String resourceBundleLocation) {
+		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
+		this.resourceBundleLocation = resourceBundleLocation;
+	}*/
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setResourceBundle(final ResourceBundle resourceBundle) {
+        initResourceToContext(resourceBundle);
+    }
+
+    protected void initResourceToContext(final ResourceBundle resourceBundle) {
+        Context context = this.getContext();
+        JACPContextImpl jContext = JACPContextImpl.class.cast(context);
+        jContext.setResourceBundle(resourceBundle);
+    }
 }
