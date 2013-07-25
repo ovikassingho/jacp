@@ -227,21 +227,21 @@ public class JACPOptionPaneBuilder {
     public JACPOptionPane build() {
         // build OptionPane!
         final JACPOptionPane pane = JACPDialogUtil.createOptionPane(
-                this.getTitle(), this.getContent());
-        if (this.getOnCancelAction() != null) {
-            pane.setOnCancelAction(this.getOnCancelAction());
+                this.title, this.content);
+        if (this.onCancelAction != null) {
+            pane.setOnCancelAction(this.onCancelAction);
         }
-        if (this.getOnOkAction() != null) {
-            pane.setOnOkAction(this.getOnOkAction());
+        if (this.onOkAction != null) {
+            pane.setOnOkAction(this.onOkAction);
         }
-        if (this.getOnYesAction() != null) {
-            pane.setOnYesAction(this.getOnYesAction());
+        if (this.onYesAction != null) {
+            pane.setOnYesAction(this.onYesAction);
         }
-        if (this.getOnNoAction() != null) {
-            pane.setOnNoAction(this.getOnNoAction());
+        if (this.onNoAction != null) {
+            pane.setOnNoAction(this.onNoAction);
         }
-        pane.setDefaultButton(this.getDefaultButton());
-        pane.setAutoHide(this.isAutoHide());
+        pane.setDefaultButton(this.defaultButton);
+        pane.setAutoHide(this.autoHide);
         return pane;
     }
 }

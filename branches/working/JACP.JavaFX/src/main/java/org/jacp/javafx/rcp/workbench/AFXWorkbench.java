@@ -145,9 +145,7 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final void initComponents(final IAction<Event, Object> action) {
-        final List<IPerspective<EventHandler<Event>, Event, Object>> perspectivesTmp = this
-                .getPerspectives();
-        perspectivesTmp.forEach(perspective ->
+        this.perspectives.forEach(perspective ->
                 {
                     this.registerComponent(perspective);
                     this.log("3.4.1: register component: " + perspective.getName());

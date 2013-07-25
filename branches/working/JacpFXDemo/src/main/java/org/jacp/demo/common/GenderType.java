@@ -26,7 +26,7 @@ public enum GenderType {
 
 	MALE("Mr."), FEMALE("Mrs.");
 
-	private String label;
+	private final String label;
 
 	private GenderType(String label) {
 		this.label = label;

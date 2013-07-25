@@ -61,6 +61,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * Handles initialization and re assignment of perspectives in workbench.
@@ -74,6 +75,8 @@ public class FXWorkbenchHandler implements
     private final Launcher<?> launcher;
     private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
     private final GridPane root;
+
+
 
     public FXWorkbenchHandler(final Launcher<?> launcher, final IWorkbenchLayout<Node> workbenchLayout,
                               final GridPane root, final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
@@ -300,7 +303,7 @@ public class FXWorkbenchHandler implements
         final String bundleLocation = perspective.getResourceBundleLocation();
         if (bundleLocation.equals("")) return;
         final String localeID = perspective.getLocaleID();
-        perspective.initialize(url, ResourceBundle.getBundle(bundleLocation, getCorrectLocale(localeID)));
+        perspective.initialize(url, ResourceBundle.getBundle(bundleLocation, FXUtil.getCorrectLocale(localeID)));
 
     }
 
@@ -321,19 +324,6 @@ public class FXWorkbenchHandler implements
         }
     }
 
-    private Locale getCorrectLocale(final String localeID) {
-        final Locale locale = Locale.getDefault();
-        if (localeID != null && localeID.length() > 1) {
-            if (localeID.contains("_")) {
-                String[] loc = localeID.split("_");
-                return new Locale(loc[0], loc[1]);
-            } else {
-                return new Locale(localeID);
-            }
-
-        }
-        return locale;
-    }
 
     /**
      * get perspectives ui root container

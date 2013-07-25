@@ -36,7 +36,8 @@ public class HandlerThreadFactory implements ThreadFactory {
 	public HandlerThreadFactory(String name) {
 		this.name = name;
 	}
-	public Thread newThread(Runnable r) {
+	@Override
+    public Thread newThread(Runnable r) {
 		return new Thread(r,PREFIX.concat(name.concat(Integer.toString(counter.incrementAndGet()))));
 	}
 

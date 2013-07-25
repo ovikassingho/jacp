@@ -37,6 +37,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
  */
 public final class StatelessScopedPostProcessor implements BeanFactoryPostProcessor {
 
+    @Override
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory factory) throws BeansException {
     	final String[] stateless =factory.getBeanNamesForType(CallbackComponent.class);
         for(final String beanName: stateless) {

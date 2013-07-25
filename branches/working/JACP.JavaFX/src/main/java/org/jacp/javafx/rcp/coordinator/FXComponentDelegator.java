@@ -158,7 +158,7 @@ public class FXComponentDelegator extends Thread implements
 	@Override
 	public void delegateComponent(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.getComponentDelegateQueue().add(component);
+        this.componentDelegateQueue.add(component);
 
 	}
 

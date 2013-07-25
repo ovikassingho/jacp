@@ -147,11 +147,7 @@ public class Contact {
 
 	@Override
 	public String toString() {
-		return "Contact [firstName=" + this.getFirstName() + ", lastName="
-				+ this.getLastName() + ", zip=" + this.getZip() + ", address="
-				+ this.getAddress() + ", country=" + this.getCountry()
-				+ ", phoneNumber=" + this.getPhoneNumber() + "" + ", gender ="
-				+ this.getGender() + "]";
+		return "Contact [firstName=" + this.getFirstName() + ", lastName=" + this.getLastName() + ", zip=" + this.getZip() + ", address=" + this.getAddress() + ", country=" + this.getCountry() + ", phoneNumber=" + this.getPhoneNumber() + ", gender =" + this.getGender() + "]";
 	}
 
 	public ProgressIndicator getProgress() {

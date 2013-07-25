@@ -219,7 +219,7 @@ public class FXMessageDelegator extends Thread implements
 
 	@Override
 	public void delegateMessage(final IDelegateDTO<Event, Object> messageDTO) {
-		this.getComponentDelegateQueue().add(messageDTO);
+        this.messageDelegateQueue.add(messageDTO);
 
 	}
 

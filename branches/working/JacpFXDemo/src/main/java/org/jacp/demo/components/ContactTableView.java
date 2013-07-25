@@ -73,8 +73,8 @@ public class ContactTableView extends GridPane {
 	 */
 	public void updateMaxValue() {
 		if (this.getContact().getContacts().size() < Util.MAX) {
-			this.setMaxPos((this.getContact().getContacts().size() % Util.MAX)
-					/ Util.PARTITION_SIZE);
+            this.maxPos = (this.getContact().getContacts().size() % Util.MAX)
+                    / Util.PARTITION_SIZE;
 		} else {
 			this.end.disableProperty().bind(this.right.disableProperty());
 		}
@@ -134,7 +134,8 @@ public class ContactTableView extends GridPane {
 		int currentPos = this.getCurrentPos();
 		if (currentPos > 1) {
 			this.left.setDisable(false);
-			return --currentPos;
+            --currentPos;
+            return currentPos;
 		} else if (currentPos == 1) {
 			this.left.setDisable(true);
 			return --currentPos;
@@ -169,10 +170,10 @@ public class ContactTableView extends GridPane {
 	public synchronized void updatePositionLabel() {
 		this.position.setText(" " + this.getCurrentPos() + " of " + " "
 				+ this.getMaxPos() + " ");
-		if (this.getContact().getProgress().isVisible() == false) {
+		if (!this.getContact().getProgress().isVisible()) {
 			this.getContact().getProgress().setVisible(true);
 		}
-		final Double current = Double.valueOf(this.getMaxPos() + "") + 1;
+		final Double current = Double.valueOf(String.valueOf(this.getMaxPos())) + 1;
 		final Double max = Double.valueOf(Util.MAX + "");
 		final Double part = Double.valueOf(Util.PARTITION_SIZE + "");
 		final Double result = ((current * part) / max);
