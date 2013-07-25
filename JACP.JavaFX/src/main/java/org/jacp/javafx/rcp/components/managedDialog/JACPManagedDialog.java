@@ -33,9 +33,7 @@ import org.jacp.api.context.Context;
 import org.jacp.api.dialog.Scope;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.CustomSecurityManager;
-import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 

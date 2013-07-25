@@ -22,10 +22,10 @@
  ************************************************************************/
 package org.jacp.api.component;
 
+import org.jacp.api.util.UIType;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import org.jacp.api.util.UIType;
 
 /**
  * Declarative Components always have a document URL and should have an resourceBundle.
@@ -56,9 +56,10 @@ public interface IDeclarative {
 	
 	/**
 	 * Contains locale-specific objects.
-	 * 
+	 *
 	 * @return the resource bundle for the UI document
 	 */
+    @Deprecated // TODO migrate Perspective
 	ResourceBundle getResourceBundle();
 
 
@@ -67,27 +68,5 @@ public interface IDeclarative {
 	 * @return the type of the component.
 	 */
 	UIType getType();
-	
-	/**
-	 * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
-	 * @return the locale id
-	 */
-	String getLocaleID();
 
-   /* *//**
-     *  Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
-     * @param localeId
-     *//*
-    void setLocaleID(final String localeId);*/
-	/**
-	 * Represents the location of your resource bundle file.
-	 * @return the url of resource bundle
-	 */
-	String getResourceBundleLocation();
-
-/*    *//**
-     * Set the location of your resource bundle file.
-     * @param location
-     *//*
-    void  setResourceBundleLocation(final String location);*/
 }

@@ -26,8 +26,9 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
-import org.jacp.api.component.ICallbackComponent;
 import org.jacp.api.component.IStatelessCallabackComponent;
+import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.TearDownHandler;
 
 import java.util.List;
@@ -43,12 +44,12 @@ import java.util.concurrent.ExecutionException;
  */
 public class StateLessComponentRunWorker
 		extends
-		AFXComponentWorker<ICallbackComponent<EventHandler<Event>, Event, Object>> {
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
+		AFXComponentWorker<ISubComponent<EventHandler<Event>, Event, Object>> {
+	private final ISubComponent<EventHandler<Event>, Event, Object> component;
 	private final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent;
 
 	public StateLessComponentRunWorker(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component,
+			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
 		super(component.getName() + component);
 		this.component = component;
@@ -56,22 +57,19 @@ public class StateLessComponentRunWorker
 	}
 
 	@Override
-	protected ICallbackComponent<EventHandler<Event>, Event, Object> call()
+	protected ISubComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-		synchronized (this.component) {
 			this.component.lock();
 			try {
-				runCallbackOnStartMethods(this.component);
+                runCallbackOnStartMethods(this.component);
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
-					this.component.setHandleTarget(myAction.getSourceId());
-
-                    // TODO this is a workaroud until it is not migrated to component interface, switch to getComponentHandle()
-                    IStatelessCallabackComponent<EventHandler<Event>, Event, Object> tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
-                    final Object value = tmp.handle(myAction);
-					final String targetId = this.component
-							.getHandleTargetAndClear();
+                    final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+                    context.setHandleTarget(myAction.getSourceId());
+                    final Object value = this.component.getComponentHandle().handle(myAction);
+                    final String targetId = context
+                            .getHandleTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,
 							myAction);
 				}
@@ -79,13 +77,14 @@ public class StateLessComponentRunWorker
 			} finally {
 				this.component.release();
 			}
-		}
 		return this.component;
 	}
 
+
+
 	@Override
 	protected void done() {
-		ICallbackComponent<EventHandler<Event>, Event, Object> component = null;
+        ISubComponent<EventHandler<Event>, Event, Object> component = null;
 		try {
 			component = this.get();
 			// check if component was deactivated and is still in instance list
@@ -108,23 +107,23 @@ public class StateLessComponentRunWorker
 	 * @param parent
 	 */
 	private void forceShutdown(
-			final ICallbackComponent<EventHandler<Event>, Event, Object> component,
+			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
 		// remove first component from instance list
 		if (parent.getInstances().contains(component))
 			parent.getInstances().remove(component);
 		// create a copy off all remaining instances
-		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instances = new CopyOnWriteArrayList<>(
+		final List<ISubComponent<EventHandler<Event>, Event, Object>> instances = new CopyOnWriteArrayList<>(
 				parent.getInstances());
 		// create a backup (for iteration and later to handle teardown)
-		final List<ICallbackComponent<EventHandler<Event>, Event, Object>> instancesCopy = new CopyOnWriteArrayList<>(
+		final List<ISubComponent<EventHandler<Event>, Event, Object>> instancesCopy = new CopyOnWriteArrayList<>(
 				instances);
 		// clear all created instances
 		parent.getInstances().clear();
 		// check if execution is done and remove from list (TODO: any better
 		// idea?)
 		while (!instances.isEmpty()) {
-			for (final ICallbackComponent<EventHandler<Event>, Event, Object> c : instancesCopy) {
+			for (final ISubComponent<EventHandler<Event>, Event, Object> c : instancesCopy) {
 				if (!c.isBlocked() && instances.contains(c))
 					instances.remove(c);
 			}

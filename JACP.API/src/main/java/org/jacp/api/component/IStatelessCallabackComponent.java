@@ -46,14 +46,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  *            defines the basic message type
  */
 public interface IStatelessCallabackComponent<L, A, M> extends
-		ICallbackComponent<L, A, M> , IHandleable<A,M>{
+        ISubComponent<L, A, M> {
 
 	/**
 	 * return instances of current state less component
 	 * 
 	 * @return an new callback instance
 	 */
-	List<ICallbackComponent<L, A, M>> getInstances();
+	List<ISubComponent<L, A, M>> getInstances();
 
 	/**
 	 * returns thread counter to coordinate amount of existing instances of

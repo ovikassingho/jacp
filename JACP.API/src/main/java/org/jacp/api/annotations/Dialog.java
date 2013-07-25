@@ -22,12 +22,12 @@
  ************************************************************************/
 package org.jacp.api.annotations;
 
+import org.jacp.api.dialog.Scope;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.jacp.api.dialog.Scope;
 
 /**
  * Defines a managed dialog component, A dialog has a parent component

@@ -44,6 +44,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Util class with helper methods
@@ -66,7 +67,7 @@ public class FXUtil {
     public static final String IDECLARATIVECOMPONENT_LOCALE = "localeID";
     public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
-    //private static Comparator<String> COMPARE_IGNORE = (String s1, String s2) -> s1.compareToIgnoreCase(s2);
+
 
     /**
      * contains constant values
@@ -166,14 +167,12 @@ public class FXUtil {
     public static void performResourceInjection(IComponentHandle<?, EventHandler<Event>, Event, Object> handler,Context<EventHandler<Event>, Event, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
-        fieldList.parallelStream().forEach(f->{
-            if(f.isAnnotationPresent(Resource.class)) {
-                // context injection
-                if(f.getType().isAssignableFrom(context.getClass())) {
-                    injectContext(handler,f,context);
-                } else if(context.getResourceBundle() !=null && f.getType().isAssignableFrom(context.getResourceBundle().getClass())) {
-                    injectResourceBundle(handler,f,context.getResourceBundle());
-                }
+        fieldList.parallelStream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
+            // context injection
+            if (f.getType().isAssignableFrom(context.getClass())) {
+                injectContext(handler, f, context);
+            } else if (context.getResourceBundle() != null && f.getType().isAssignableFrom(context.getResourceBundle().getClass())) {
+                injectResourceBundle(handler, f, context.getResourceBundle());
             }
 
         });
@@ -199,17 +198,11 @@ public class FXUtil {
 
     private static Object[] getValidParameterList(final Class<?>[] types,
                                                   Object... value) {
-        final Object[] found = new Object[types.length];
-        int i = 0;
-        for (final Class<?> t : types) {
-            final Object result = findByClass(t, value);
-            if (result != null) {
-                found[i] = result;
-                i++;
-            }
-        }
-
-        return found;
+        final List<Object> resultList = Arrays.asList(types).
+                parallelStream().map(t -> findByClass(t, value)).
+                filter(result -> result != null).
+                collect(Collectors.toList());
+        return resultList.isEmpty()==false?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
     }
 
     private static Object findByClass(Class<?> key, Object[] values) {
@@ -229,7 +222,7 @@ public class FXUtil {
 
     public static Locale getCorrectLocale(final String localeID) {
         Locale locale = Locale.getDefault();
-        if (localeID != null && localeID.length() > 1) {
+        if (localeID != null && !localeID.isEmpty()) {
             if (localeID.contains("_")) {
                 String[] loc = localeID.split("_");
                 locale = new Locale(loc[0], loc[1]);
@@ -375,7 +368,7 @@ public class FXUtil {
 
     /**
      * find the parent perspective to id; should be only used when no
-     * responsible component was found , TODO migrate to Java 8
+     * responsible component was found ,
      *
      * @param id
      * @param perspectives

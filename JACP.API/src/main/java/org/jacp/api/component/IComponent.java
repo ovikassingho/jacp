@@ -45,6 +45,7 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * @param message ; the initial message to be send by invoking the listener
 	 * @return the action listener instance
 	 */
+    @Deprecated
 	IActionListener<L, A, M> getActionListener(final M message);
 
 	/**
@@ -54,6 +55,7 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 * @param targetId ; the targets component id.
 	 * @return the action listener instance
 	 */
+    @Deprecated
 	IActionListener<L, A, M> getActionListener(final String targetId, final M message);
 
 	/**
@@ -106,5 +108,26 @@ public interface IComponent<L, A, M> extends Comparable<String>{
      */
     void setName(final String name);
 
+    /**
+     * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+     * @return the locale id
+     */
+    String getLocaleID();
 
+   /* *//**
+     *  Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+     * @param localeId
+     *//*
+    void setLocaleID(final String localeId);*/
+    /**
+     * Represents the location of your resource bundle file.
+     * @return the url of resource bundle
+     */
+    String getResourceBundleLocation();
+
+/*    *//**
+     * Set the location of your resource bundle file.
+     * @param location
+     *//*
+    void  setResourceBundleLocation(final String location);*/
 }

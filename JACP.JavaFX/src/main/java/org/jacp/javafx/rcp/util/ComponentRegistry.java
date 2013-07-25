@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.component.ISubComponent;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -99,11 +100,9 @@ public class ComponentRegistry {
 	public static ISubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
 		lock.readLock().lock();
 		try{
-			for(final ISubComponent<EventHandler<Event>, Event, Object> comp : components) {
-				if(comp.getComponentHandle()!=null && comp.getComponentHandle().getClass().isAssignableFrom(clazz))return comp;
-                // TODO remove when all components mirgrated to handle
-                if(comp.getClass().isAssignableFrom(clazz))return comp;
-			}
+            final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = components.parallelStream().filter(c -> c.getComponentHandle().getClass().isAssignableFrom(clazz)).findFirst();
+			if(returnVal.isPresent())return returnVal.get();
+
 			return null;
 		}finally{
 			lock.readLock().unlock();

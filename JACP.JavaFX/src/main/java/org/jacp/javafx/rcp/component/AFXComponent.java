@@ -26,10 +26,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacp.api.component.*;
-import org.jacp.api.context.Context;
+import org.jacp.api.component.IDeclarative;
+import org.jacp.api.component.IUIComponent;
 import org.jacp.api.util.UIType;
-import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -49,17 +48,9 @@ public abstract class AFXComponent extends ASubComponent implements
 	private String viewLocation;
 
 	private URL documentURL;
-
-	private ResourceBundle resourceBundle;
 	
 	private UIType type = UIType.PROGRAMMATIC;
 	
-	private String localeID="";
-	
-	private String resourceBundleLocation="";
-
-
-
 
 	/**
 	 * {@inheritDoc}
@@ -100,15 +91,10 @@ public abstract class AFXComponent extends ASubComponent implements
 	@Override
 	public final void initialize(URL url, ResourceBundle resourceBundle) {
 		this.documentURL = url;
-		this.resourceBundle = resourceBundle;
-        setResourceToContext();
+        setResourceBundle(resourceBundle);
 	}
 
-    private void setResourceToContext() {
-        Context context = this.getContext();
-        JACPContextImpl jContext = JACPContextImpl.class.cast(context);
-        jContext.setResourceBundle(this.resourceBundle );
-    }
+
 
 	/**
 	 * {@inheritDoc}
@@ -123,48 +109,14 @@ public abstract class AFXComponent extends ASubComponent implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public final UIType getType() {
 		return type;
 	}
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getLocaleID() {
-		return localeID;
-	}
-    /**
-     * {@inheritDoc}
-     *//*
-    @Override
-	public void setLocaleID(String localeID) {
-		super.checkPolicy(this.localeID, "Do Not Set document manually");
-		this.localeID = localeID;
-	}*/
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getResourceBundleLocation() {
-		return resourceBundleLocation;
-	}
-    /**
-     * {@inheritDoc}
-     *//*
-    @Override
-	public final void setResourceBundleLocation(String resourceBundleLocation) {
-		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
-		this.resourceBundleLocation = resourceBundleLocation;
-	}*/
 
 
+    @Override
+    public ResourceBundle getResourceBundle() {
+        throw new UnsupportedOperationException("This deprecated Method will be removed soon");
+    }
 
 }

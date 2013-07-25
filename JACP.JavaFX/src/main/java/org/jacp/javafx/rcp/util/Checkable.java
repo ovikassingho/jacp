@@ -29,6 +29,7 @@ package org.jacp.javafx.rcp.util;
  * 
  */
 
+@Deprecated
 public abstract class Checkable {
 	protected volatile boolean started = false;
 	

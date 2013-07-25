@@ -25,7 +25,7 @@ package org.jacp.javafx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.annotations.PreDestroy;
-import org.jacp.api.component.ICallbackComponent;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.concurrent.Callable;
@@ -36,8 +36,8 @@ import java.util.concurrent.Callable;
  *
  */
 public class TearDownWorker implements Callable<Boolean>{
-	private final ICallbackComponent<EventHandler<Event>, Event, Object> component;
-	public TearDownWorker(final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+	private final ISubComponent<EventHandler<Event>, Event, Object> component;
+	public TearDownWorker(final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
 	@Override
@@ -45,7 +45,7 @@ public class TearDownWorker implements Callable<Boolean>{
 		synchronized (component) {
 			// run teardown
             if (component.isActive())FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-					component);
+					component.getComponentHandle());
 		}
 		return true;
 	}

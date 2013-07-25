@@ -66,7 +66,7 @@ public class ContactTableViewComponent implements FXComponent {
     /**
      * run handleAction in worker Thread
      */
-    public Node handle(final IAction<Event, Object> action) {
+    public Node handle(final IAction<Event, Object> action) throws Exception {
         return null;
     }
 
@@ -74,7 +74,7 @@ public class ContactTableViewComponent implements FXComponent {
     /**
      * run postHandle in FX application Thread, use this method to update UI code
      */
-    public Node postHandle(final Node node, final IAction<Event, Object> action) {
+    public Node postHandle(final Node node, final IAction<Event, Object> action) throws Exception {
         if (action.getMessage() instanceof Contact) {
             // contact selected
             final Contact contact = (Contact) action.getMessage();

@@ -28,7 +28,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.PostConstruct;
-import org.jacp.api.annotations.Resource;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -37,7 +36,6 @@ import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Map;
@@ -94,14 +92,14 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
                     performContextInjection(component);
 					runComponentOnStartupSequence(component, layout,
 							component.getDocumentURL(),
-							component.getResourceBundle());
+							component.getContext().getResourceBundle());
 					return;
 
 				}
 				initLocalization(null, component);
                 performContextInjection(component);
 				runComponentOnStartupSequence(component, layout,
-						component.getResourceBundle());
+						component.getContext().getResourceBundle());
 
 		});
 	}
@@ -185,8 +183,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private Node loadFXMLandSetController(final AFXComponent fxmlComponent,
 			final URL url) {
 		final FXMLLoader fxmlLoader = new FXMLLoader();
-		if (fxmlComponent.getResourceBundle() != null) {
-			fxmlLoader.setResources(fxmlComponent.getResourceBundle());
+		if (fxmlComponent.getContext().getResourceBundle() != null) {
+			fxmlLoader.setResources(fxmlComponent.getContext().getResourceBundle());
 		}
 		fxmlLoader.setLocation(url);
 		fxmlLoader.setController(fxmlComponent.getComponentHandle());
@@ -213,14 +211,18 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void addComponent(final Node validContainer,
 			final Node handleReturnValue, final AFXComponent myComponent,
-			final IAction<Event, Object> myAction) throws InterruptedException {
-		this.invokeOnFXThreadAndWait(() -> {
-            FXComponentInitWorker.this.executeComponentViewPostHandle(
-                    handleReturnValue, myComponent, myAction);
+			final IAction<Event, Object> myAction) throws Exception {
+		invokeOnFXThreadAndWait(() -> {
+            try {
+                executeComponentViewPostHandle(
+                        handleReturnValue, myComponent, myAction);
+            } catch (Exception e) {
+                e.printStackTrace(); // TODO pass exception
+            }
             if (validContainer == null || myComponent.getRoot() == null) {
                 return;
             }
-            FXComponentInitWorker.this.addComponentByType(validContainer,
+            addComponentByType(validContainer,
                     myComponent);
         });
 	}

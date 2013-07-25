@@ -54,6 +54,6 @@ public interface IComponentView<C, L, A, M>  extends IComponentHandle<C, L, A, M
 	 * @param action ,  the trigger action
 	 * @return an ui component
 	 */
-	C postHandle(final C node, final IAction<A, M> action);
+	C postHandle(final C node, final IAction<A, M> action) throws Exception;
 
 }

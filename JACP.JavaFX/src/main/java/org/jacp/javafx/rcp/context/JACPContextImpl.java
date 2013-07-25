@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.context.Context;
 import org.jacp.api.util.CustomSecurityManager;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
@@ -28,6 +27,7 @@ public class JACPContextImpl implements JACPContext {
     protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
     private String id;
     private String name;
+    private volatile String handleComponentTarget;
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
 
@@ -45,6 +45,7 @@ public class JACPContextImpl implements JACPContext {
     /**
      * {@inheritDoc}
      */
+    // TODO remove getActionListener from AComponent
     @Override
     public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
             final Object message) {
@@ -108,4 +109,21 @@ public class JACPContextImpl implements JACPContext {
         JACPModalDialog.getInstance().hideModalDialog();
     }
 
+    /**
+     * Returns component id which is targeted by bg component return value; the
+     * return value will be handled like an average message and will be
+     * delivered to targeted component.
+     *
+     * @return the target id
+     */
+    public final String getHandleTargetAndClear() {
+        String returnVal= String.valueOf(this.handleComponentTarget);
+        this.handleComponentTarget = null;
+        return returnVal;
+    }
+
+    @Override
+    public final void setHandleTarget(final String componentTargetId) {
+        this.handleComponentTarget = componentTargetId;
+    }
 }

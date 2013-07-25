@@ -22,10 +22,10 @@
  ************************************************************************/
 package org.jacp.api.workbench;
 
-import java.util.List;
-
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.launcher.Launcher;
+
+import java.util.List;
 
 /**
  * 

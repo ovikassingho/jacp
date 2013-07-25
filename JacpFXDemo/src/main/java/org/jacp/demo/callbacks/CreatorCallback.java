@@ -21,9 +21,13 @@ import javafx.event.Event;
 
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.Resource;
+import org.jacp.api.annotations.Stateless;
 import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.demo.entity.ContactDTO;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.context.JACPContext;
 
 /**
  * The CreatorCallback creates contact data with random numbers
@@ -32,15 +36,18 @@ import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
  * 
  */
 @Component(id = GlobalConstants.CallbackConstants.CALLBACK_CREATOR, name = "creatorCallback", active = false)
-public class CreatorCallback extends AStatelessCallbackComponent {
-
+@Stateless
+public class CreatorCallback implements CallbackComponent {
+    @Resource
+    private JACPContext context;
     @Override
-    public Object handleAction(final IAction<Event, Object> action) {
-        if (action.getMessage() instanceof ContactDTO) {
+    public Object handle(final IAction<Event, Object> action) {
+        if (action.isMessageType(ContactDTO.class)) {
             // return all values to defined target
-            this.setHandleTarget(GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW));
+            context.setHandleTarget(GlobalConstants.cascade(GlobalConstants.PerspectiveConstants.DEMO_PERSPECTIVE, GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW));
             waitAmount(100);
-            return ContentGenerator.createEntries((ContactDTO) action.getMessage());
+            System.out.println("THIS THREAD: "+Thread.currentThread()+" this:"+this);
+            return ContentGenerator.createEntries((action.getTypedMessage(ContactDTO.class)));
         }
         return null;
     }

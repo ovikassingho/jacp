@@ -1,3 +1,5 @@
+25. Jul. 2013 - amo - add @Stateless annotation
+25. Jul. 2013 - amo - removed ICallbackComponents as it is obsolete now, lot of updates in component interfaces due to this change
 18. Jul. 2013 - amo - update in JACPContext and JACPManagedDialog to pass the correct accessor class, moved CustomSecurityManager to class
 18. Jul. 2013 - amo - removed @CallbackComponent annotation, updated ICallbackComponent an IStatelessComponent
 04. Jul. 2013 - amo - initial commit of changing component model to pure interface model... developers should implement components instead of extending

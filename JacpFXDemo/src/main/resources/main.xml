@@ -19,14 +19,8 @@
                 <ref bean="contactTableView"/>
                 <ref bean="contactChartView"/>
                 <ref bean="analyticsCallback"/>
-            </list>
-        </property>
-        <property name="subcomponents">
-            <list>
-
                 <ref bean="coordinatorCallback"/>
                 <ref bean="creatorCallback"/>
-
             </list>
         </property>
     </bean>

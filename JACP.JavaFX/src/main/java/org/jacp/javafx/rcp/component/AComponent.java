@@ -40,7 +40,7 @@ import java.util.concurrent.BlockingQueue;
  * @author Andy Moncsek
  */
 
-public class AComponent extends Checkable implements
+public abstract class AComponent extends Checkable implements
         IComponent<EventHandler<Event>, Event, Object> {
     private String id;
     private String name;

@@ -65,11 +65,12 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         this.componentDelegateQueue = componentDelegateQueue;
     }
 
-    private void setCacheHints(boolean cache, CacheHint hint,final AFXComponent component) {
+    private void setCacheHints(boolean cache, CacheHint hint, final AFXComponent component) {
         final Node currentRoot = component.getRoot();
         if (currentRoot != null && currentRoot.getParent() != null) {
-            if(currentRoot.getParent().isCache()!=cache)currentRoot.getParent().setCache(cache);
-            if(!currentRoot.getParent().getCacheHint().equals(hint))currentRoot.getParent().setCacheHint(CacheHint.SPEED);
+            if (currentRoot.getParent().isCache() != cache) currentRoot.getParent().setCache(cache);
+            if (!currentRoot.getParent().getCacheHint().equals(hint))
+                currentRoot.getParent().setCacheHint(CacheHint.SPEED);
         }
     }
 
@@ -122,10 +123,11 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                          final FXComponentLayout layout, final Node handleReturnValue,
                          final Node previousContainer, final String currentTaget)
             throws InterruptedException {
-        this.invokeOnFXThreadAndWait(()-> {
-                setCacheHints(true, CacheHint.SPEED,component);
-                // check if component was set to inactive, if so remove
+        this.invokeOnFXThreadAndWait(() -> {
+            setCacheHints(true, CacheHint.SPEED, component);
+            // check if component was set to inactive, if so remove
             // TODO active will be set on context!!
+            try {
                 if (component.isActive()) {
                     FXComponentReplaceWorker.this.publishComponentValue(
                             component, myAction, targetComponents, layout,
@@ -139,6 +141,9 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                             component.getComponentHandle(), layout);
                 }
+            } catch (Exception e) {
+                e.printStackTrace(); // TODO pass exception
+            }
         });
     }
 
@@ -164,8 +169,8 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                                        final IAction<Event, Object> action,
                                        final Map<String, Node> targetComponents,
                                        final FXComponentLayout layout, final Node handleReturnValue,
-                                       final Node previousContainer, final String currentTaget) {
-        this.executeComponentViewPostHandle(handleReturnValue, component,
+                                       final Node previousContainer, final String currentTaget) throws Exception {
+        executeComponentViewPostHandle(handleReturnValue, component,
                 action);
         if (previousContainer != null) {
             // check again if component was set to inactive (in postHandle), if
@@ -245,7 +250,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
     @Override
     protected final void done() {
-        AFXComponent component=null;
+        AFXComponent component = null;
         try {
             component = this.get();
         } catch (final InterruptedException e) {
@@ -266,7 +271,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             // messages in
             // queue
         } finally {
-            if(component!=null)setCacheHints(true, CacheHint.DEFAULT,component);
+            if (component != null) setCacheHints(true, CacheHint.DEFAULT, component);
         }
 
     }

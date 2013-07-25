@@ -22,9 +22,9 @@
  ************************************************************************/
 package org.jacp.api.coordinator;
 
-import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.action.IDelegateDTO;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines an interface for a message delegator.

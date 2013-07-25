@@ -83,10 +83,12 @@ public class XMLDetailView implements FXComponent {
 	@PostConstruct
 	public void start(FXComponentLayout layout, URL url,
 			ResourceBundle resourceBundle) {
+        System.out.println("STAR XML: "+layout+"  "+url+"  "+resourceBundle);
 	}
 
 	@PreDestroy
 	public void stop(FXComponentLayout layout) {
-	}
+        System.out.println("STOP XML: "+layout);
+    }
 
 }

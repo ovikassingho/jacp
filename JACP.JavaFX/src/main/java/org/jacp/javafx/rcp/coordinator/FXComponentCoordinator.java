@@ -92,7 +92,7 @@ public class FXComponentCoordinator extends AFXCoordinator implements
             handleMessageInCurrentPerspective(targetId, action);
         } else {
             // target component is in an other perspective
-            this.delegateMessageToCorrectPerspective(targetId, action,
+            delegateMessageToCorrectPerspective(targetId, action,
                     this.delegateQueue);
         }
     }

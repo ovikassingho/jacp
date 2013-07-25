@@ -22,9 +22,9 @@
  ************************************************************************/
 package org.jacp.api.coordinator;
 
-import java.util.concurrent.BlockingQueue;
-
 import org.jacp.api.action.IDelegateDTO;
+
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Notifies the components included in perspective.

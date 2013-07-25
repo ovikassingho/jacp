@@ -32,9 +32,9 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.PostConstruct;
 import org.jacp.api.annotations.PreDestroy;
-import org.jacp.api.component.ICallbackComponent;
-import org.jacp.api.component.IUIComponent;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.IUIComponent;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -44,6 +44,7 @@ import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -145,7 +146,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param value
 	 */
     void delegateReturnValue(
-            final ICallbackComponent<EventHandler<Event>, Event, Object> comp,
+            final ISubComponent<EventHandler<Event>, Event, Object> comp,
             final String targetId, final Object value,
             final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null
@@ -281,7 +282,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 */
 	final Node prepareAndRunHandleMethod(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final IAction<Event, Object> action) {
+            final IAction<Event, Object> action) throws Exception {
 		return component.getComponentViewHandle().handle(action);
 
 	}
@@ -296,7 +297,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param action
 	 */
     void executeComponentViewPostHandle(final Node handleReturnValue,
-                                        final AFXComponent component, final IAction<Event, Object> action) {
+                                        final AFXComponent component, final IAction<Event, Object> action) throws Exception {
 
 		Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
 				action);
@@ -319,18 +320,42 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param component
 	 */
     void runCallbackOnStartMethods(
-            final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
-		if (!component.isStarted())
-			FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component);
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+		if (!component.isStarted())   {
+            initLocalization(component);
+            handleContextInjection(component);
+            FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle());
+        }
+
 	}
 
-	/**
+    /**
+     * Set Resource Bundle
+     * @param component
+     */
+    private void initLocalization(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final String bundleLocation = component.getResourceBundleLocation();
+        if (bundleLocation.equals(""))
+            return;
+        final String localeID = component.getLocaleID();
+        component.setResourceBundle(ResourceBundle.getBundle(bundleLocation,
+                FXUtil.getCorrectLocale(localeID)));
+
+    }
+
+    private void handleContextInjection(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
+        FXUtil.performResourceInjection(handler, component.getContext());
+    }
+
+
+    /**
 	 * Check if component was not started yet an activate it.
 	 * 
 	 * @param component
 	 */
     void runCallbackPostExecution(
-            final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (!component.isStarted())
 			FXUtil.setPrivateMemberValue(Checkable.class, component,
 					FXUtil.ACOMPONENT_STARTED, true);
@@ -342,14 +367,14 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	 * @param component
 	 */
     void runCallbackOnTeardownMethods(
-            final ICallbackComponent<EventHandler<Event>, Event, Object> component) {
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
 
 		// turn off component
 		if (!component.isActive()) {
 			FXUtil.setPrivateMemberValue(Checkable.class, component,
 					FXUtil.ACOMPONENT_STARTED, false);
 			// run teardown
-			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component);
+			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());
 		}
 	}
 

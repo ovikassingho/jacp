@@ -17,5 +17,5 @@ public interface IComponentHandle<C, L, A, M> extends Injectable{
      * @param action , the triggering action
      * @return view component
      */
-    C handle(final IAction<A, M> action);
+    C handle(final IAction<A, M> action) throws Exception;
 }
