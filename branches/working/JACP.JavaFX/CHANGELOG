@@ -1,3 +1,5 @@
+15. Aug. 2013 - amo -  update APersprctive, so that components are not injected by DI rather thar scanned by annotation and resolved
+15. Aug. 2013 - amo -  add ClasRegistry and ClassFinder, so components can now be scannes and find by ComponentId
 25. Jul. 2013 - amo -  update due to changes of API (removed ICallbackComponent)
 18. Jul. 2013 - amo -  remove AStatelessComponent in flavour for interface @CallbackComponent, now you should implement CallbackComponents and use JACPContext to send messages
 16. Jul. 2013 - amo -  update JACPContext to include methods for managed dialogs and modal dialogs, fixed teardown handler  ...

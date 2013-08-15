@@ -49,6 +49,11 @@ public class ContactMain extends AFXSpringLauncher {
     }
 
     @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.demo.components","org.jacp.demo.callbacks","org.jacp.demo.perspectives"};  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public void postInit(final Stage stage) {
         this.scene = stage.getScene();
 

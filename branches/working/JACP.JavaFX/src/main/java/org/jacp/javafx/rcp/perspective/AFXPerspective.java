@@ -23,6 +23,7 @@
 
 package org.jacp.javafx.rcp.perspective;
 
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -31,26 +32,32 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.Component;
 import org.jacp.api.annotations.DeclarativeComponent;
+import org.jacp.api.annotations.Perspective;
 import org.jacp.api.annotations.Stateless;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.dialog.Scope;
 import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.*;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
+import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * represents a basic javafx2 perspective that handles subcomponents,
@@ -76,16 +83,17 @@ public abstract class AFXPerspective extends AComponent implements
     private String localeID = "";
     private String resourceBundleLocation = "";
     private final Object lock = new Object();
-    private List<? extends Injectable> handlers;
+    private Launcher<?> launcher;
 
     @Override
     public final void init(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue,
-            final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
+            final BlockingQueue<IAction<Event, Object>> globalMessageQueue,final Launcher<?> launcher) {
         this.componentDelegateQueue = componentDelegateQueue;
         this.messageDelegateQueue = messageDelegateQueue;
         this.globalMessageQueue = globalMessageQueue;
+        this.launcher = launcher;
 
     }
 
@@ -112,23 +120,62 @@ public abstract class AFXPerspective extends AComponent implements
         if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
     }
 
-    private void initSubcomponentsAndHandlers() {
-        if(handlers==null) return;
-        if(this.subcomponents==null)this.subcomponents=new ArrayList<>();
-        handlers.forEach(handler ->{
-            if(IComponentView.class.isAssignableFrom(handler.getClass())) {
-                    this.subcomponents.add(new EmbeddedFXComponent(IComponentView.class.cast(handler)));
-            } else if(IComponentHandle.class.isAssignableFrom(handler.getClass())) {
-                if(handler.getClass().isAnnotationPresent(Stateless.class)){
-                       // stateless components
-                    this.subcomponents.add(new EmbeddedStatelessCallbackComponent(IComponentHandle.class.cast(handler)));
-                }else {
-                    this.subcomponents.add(new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler)));
-                }
-            }
-
-        });
+    private String[] getComponentIds() {
+        final Perspective perspectiveAnnotation = this.getClass()
+                .getAnnotation(Perspective.class);
+        if (perspectiveAnnotation != null) {
+            return perspectiveAnnotation.components();
+        }   else {
+              throw new IllegalArgumentException("no perspective annotatation found");
+        }
     }
+
+    private List<Injectable> getInjectAbles() {
+        final String[] ids = getComponentIds();
+        final List<String> componentIds = Arrays.asList(ids);
+        return componentIds.parallelStream().map(this::mapToInjectAble).collect(Collectors.toList());
+    }
+
+    private Injectable mapToInjectAble(final String id) {
+        final Class componentClass = ClassRegistry.getComponentClassById(id);
+        final Scope scope = getCorrectScopeOfComponent(componentClass);
+        final Object component = launcher.registerAndGetBean(componentClass, id, scope);
+        if(Injectable.class.isAssignableFrom(component.getClass())) {
+            return Injectable.class.cast(component);
+        } else {
+            throw new InvalidParameterException("Only Injectable components are allowed");
+        }
+    }
+
+    private Scope getCorrectScopeOfComponent(final Class componentClass) {
+        Scope scope = Scope.SINGLETON;
+        if(componentClass.isAnnotationPresent(Stateless.class)) {
+            scope = Scope.PROTOTYPE;
+        }
+        return scope;
+    }
+
+    private void initSubcomponentsAndHandlers() {
+        final List<? extends Injectable> handlers = getInjectAbles();
+        if(handlers==null) return;
+        this.subcomponents = handlers.parallelStream().map(this::mapToSubcomponent).collect(Collectors.toList());
+    }
+
+      private ISubComponent<EventHandler<Event>, Event, Object> mapToSubcomponent(Injectable handler) {
+          if(IComponentView.class.isAssignableFrom(handler.getClass())) {
+              return new EmbeddedFXComponent(IComponentView.class.cast(handler));
+          } else if(IComponentHandle.class.isAssignableFrom(handler.getClass())) {
+              if(handler.getClass().isAnnotationPresent(Stateless.class)){
+                  // stateless components
+                  return new EmbeddedStatelessCallbackComponent(IComponentHandle.class.cast(handler));
+              }else {
+                  return new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler));
+              }
+          }else {
+              throw new InvalidParameterException("no useable component interface found");
+          }
+
+      }
 
 
     /**
@@ -317,19 +364,6 @@ public abstract class AFXPerspective extends AComponent implements
                                 "init", null), component);
             } // if END
         });
-    }
-
-    @Override
-    @Deprecated //TODO remove subcomponents when migration is done
-    public final void setSubcomponents(
-            final List<ISubComponent<EventHandler<Event>, Event, Object>> subComponents) {
-        this.subcomponents = subComponents;
-
-    }
-
-    @Override
-    public final void setComponents(List<Injectable> handlers){
-        this.handlers = handlers;
     }
 
     private void log(final String message) {

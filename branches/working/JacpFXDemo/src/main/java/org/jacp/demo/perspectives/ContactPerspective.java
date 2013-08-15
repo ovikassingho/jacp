@@ -35,6 +35,7 @@ import org.jacp.api.annotations.PostConstruct;
 import org.jacp.api.annotations.PreDestroy;
 import org.jacp.api.annotations.Perspective;
 import org.jacp.api.util.ToolbarPosition;
+import org.jacp.demo.constants.GlobalConstants;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
@@ -48,7 +49,18 @@ import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
  * @author Andy Moncsek
  * 
  */
-@Perspective(id = "id01", name = "contactPerspective", viewLocation = "/fxml/contactPerspective.fxml", resourceBundleLocation = "bundles.languageBundle" , localeID="en_US")
+@Perspective(id = "id01", name = "contactPerspective",
+        components ={
+                GlobalConstants.ComponentConstants.COMPONENT_DETAIL_VIEW,
+                GlobalConstants.ComponentConstants.COMPONENT_CHART_VIEW,
+                GlobalConstants.ComponentConstants.COMPONENT_TABLE_VIEW,
+                GlobalConstants.ComponentConstants.COMPONENT_TREE_VIEW,
+                GlobalConstants.CallbackConstants.CALLBACK_CREATOR,
+                GlobalConstants.CallbackConstants.CALLBACK_COORDINATOR,
+                GlobalConstants.CallbackConstants.CALLBACK_ANALYTICS} ,
+        viewLocation = "/fxml/contactPerspective.fxml",
+        resourceBundleLocation = "bundles.languageBundle" ,
+        localeID="en_US")
 public class ContactPerspective extends AFXPerspective {
 	private final static Log LOGGER = LogFactory
 			.getLog(ContactPerspective.class);

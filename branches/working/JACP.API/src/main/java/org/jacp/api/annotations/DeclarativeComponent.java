@@ -35,6 +35,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@Deprecated // TODO create annotation @Declarative and annotate component with @Component AND @Declarative !
 public @interface DeclarativeComponent {
 	/**
 	 * The components name.

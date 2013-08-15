@@ -25,6 +25,7 @@ package org.jacp.api.component;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.launcher.Launcher;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -51,13 +52,15 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	/**
 	 * The initialization method.
 	 * 
-	 * @param componentDelegateQueue
-	 * @param messageDelegateQueue
+	 * @param componentDelegateQueue, components that should be delegated to an other perspective
+	 * @param messageDelegateQueue, messages to components
+     * @param  globalMessageQueue
+     * @param  launcher
 	 */
 	void init(
 			final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,
 			final BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue,
-			final BlockingQueue<IAction<A, M>> globalMessageQueue);
+			final BlockingQueue<IAction<A, M>> globalMessageQueue,final Launcher<?> launcher);
 
 	/**
 	 * post init method to set correct component handler and to initialize
@@ -75,14 +78,6 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 */
 	List<ISubComponent<L, A, M>> getSubcomponents();
 
-	/**
-	 * Set all subcomponents handled by the perspective.
-	 * 
-	 * @param subComponents
-	 */
-	void setSubcomponents(final List<ISubComponent<L, A, M>> subComponents);
-
-    void setComponents(final List<Injectable> components);
 
 	/**
 	 * Handle a message call on perspective instance. This method should be

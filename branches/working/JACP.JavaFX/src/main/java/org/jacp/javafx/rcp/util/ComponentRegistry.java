@@ -109,18 +109,4 @@ public class ComponentRegistry {
 		}		
 	}
 
-    /**
-     * applies a simple predicate to all components
-     * @param predicate
-     */
-    public static void applyToComponents(final Predicate predicate) {
-        lock.writeLock().lock();
-        try{
-            for(final ISubComponent<EventHandler<Event>, Event, Object> comp : components) {
-                predicate.apply(comp);
-            }
-        }finally{
-            lock.writeLock().unlock();
-        }
-    }
 }
