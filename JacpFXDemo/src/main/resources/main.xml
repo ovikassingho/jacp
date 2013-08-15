@@ -12,7 +12,7 @@
     </bean>
 
     <bean id="contactPerspective" class="org.jacp.demo.perspectives.ContactPerspective">
-        <property name="components">
+       <!-- <property name="components">
             <list>
                 <ref bean="contactTreeView"/>
                 <ref bean="XMLDetailView"/>
@@ -22,15 +22,15 @@
                 <ref bean="coordinatorCallback"/>
                 <ref bean="creatorCallback"/>
             </list>
-        </property>
+        </property>-->
     </bean>
 
-    <bean id="XMLDetailView" class="org.jacp.demo.components.XMLDetailView"/>
+<!--    <bean id="XMLDetailView" class="org.jacp.demo.components.XMLDetailView"/>
     <bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent"/>
     <bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent"/>
     <bean id="contactChartView" class="org.jacp.demo.components.ContactChartViewComponent"/>
 
     <bean id="coordinatorCallback" class="org.jacp.demo.callbacks.CoordinatorCallback"/>
     <bean id="creatorCallback" class="org.jacp.demo.callbacks.CreatorCallback"/>
-    <bean id="analyticsCallback" class="org.jacp.demo.callbacks.AnalyticsCallback"/>
+    <bean id="analyticsCallback" class="org.jacp.demo.callbacks.AnalyticsCallback"/>-->
 </beans>

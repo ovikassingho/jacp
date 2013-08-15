@@ -28,9 +28,7 @@ public class PerspectiveRegistry {
      * @return   the previous perspective id
      */
     public static String getAndSetCurrentVisiblePerspective(final String id){
-        final String current = currentVisiblePerspectiveId.get();
-        currentVisiblePerspectiveId.set(id);
-        return current;
+        return currentVisiblePerspectiveId.getAndSet(id);
     }
 
 
@@ -102,18 +100,4 @@ public class PerspectiveRegistry {
         }
     }
 
-    /**
-     * applies a simple predicate to all perspectives
-     * @param predicate, a predicate to apply on all perspectives
-     */
-    public static void applyToPerspectives(Predicate predicate) {
-        lock.writeLock().lock();
-        try{
-            for(final IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
-                    predicate.apply(p);
-            }
-        }finally{
-            lock.writeLock().unlock();
-        }
-    }
 }

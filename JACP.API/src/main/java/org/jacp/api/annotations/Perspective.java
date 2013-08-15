@@ -74,4 +74,10 @@ public @interface Perspective {
 	 * @return The default locale Id
 	 */
 	String localeID() default "";
+
+    /**
+     * Define all component id's which belongs to perspective.
+     * @return all related component ids
+     */
+    String[] components();
 }

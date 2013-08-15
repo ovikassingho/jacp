@@ -68,7 +68,7 @@ public class SpringLauncher implements Launcher<ClassPathXmlApplicationContext> 
 		final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) factory;
 		final GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 		beanDefinition.setBeanClass(type);
-		beanDefinition.setScope(scope.getType());
+		if(scope!=null)beanDefinition.setScope(scope.getType());
 		beanDefinition.setAutowireCandidate(true);
 		registry.registerBeanDefinition(id, beanDefinition);
 		factory.autowireBeanProperties(this,

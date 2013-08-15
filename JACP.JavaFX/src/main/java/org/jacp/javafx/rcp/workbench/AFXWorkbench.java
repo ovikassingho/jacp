@@ -36,12 +36,15 @@ import javafx.stage.StageStyle;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Perspective;
+import org.jacp.api.annotations.Stateless;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
+import org.jacp.api.component.Injectable;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
+import org.jacp.api.dialog.Scope;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.OS;
@@ -63,9 +66,12 @@ import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.*;
 
+import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -153,9 +159,16 @@ public abstract class AFXWorkbench
                     // again?
                     this.log("3.4.2: create perspective menu");
                     if (perspective.isActive()) {
-                        Platform.runLater(()-> AFXWorkbench.this.componentHandler.initComponent(
+                        final Runnable r =   ()-> AFXWorkbench.this.componentHandler.initComponent(
                                 new FXAction(perspective.getId(), perspective
-                                        .getId(), "init", null), perspective)); // FX2 UTILS END
+                                        .getId(), "init", null), perspective);
+                        if(Platform.isFxApplicationThread()) {
+                             r.run();
+                        } else {
+                            Platform.runLater(r);
+                                    
+                        }
+                        
                     }
                 });
     }
@@ -222,7 +235,7 @@ public abstract class AFXWorkbench
         this.handleMetaAnnotation(perspective);
         perspective.init(this.componentDelegator.getComponentDelegateQueue(),
                 this.messageDelegator.getMessageDelegateQueue(),
-                this.perspectiveCoordinator.getMessageQueue());
+                this.perspectiveCoordinator.getMessageQueue(),this.launcher);
         this.perspectiveCoordinator.addPerspective(perspective);
         this.componentDelegator.addPerspective(perspective);
         this.messageDelegator.addPerspective(perspective);
@@ -271,6 +284,8 @@ public abstract class AFXWorkbench
                         resourceBundleLocation);
         }
     }
+
+
 
     @Override
     /**
